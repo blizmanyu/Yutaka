@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -11,7 +10,12 @@ namespace Yutaka.IO
 	{
 		#region Fields
 		// Constants //
-		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig
+		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		const int ONE_GIGABYTE = 1073741824; // Math.Pow(2, 30) //
+		const int ONE_MEGABYTE =    1048576; // Math.Pow(2, 20) //
+		const int FIVE_TWELVE_KB =   524288; // Math.Pow(2, 19) //
+		const int ONE_KILOBYTE =       1024; // Math.Pow(2, 10) //
+		const int BUFFER = FIVE_TWELVE_KB;
 
 		// Config/Settings //
 		private static bool consoleOut = true;
@@ -102,6 +106,62 @@ namespace Yutaka.IO
 		#endregion
 
 		#region Public Methods
+		/// <summary> Time the Move
+		/// </summary> 
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public static void MoveTime(string source, string destination, bool delete = true)
+		{
+			var start_time = DateTime.Now;
+			FastMove(source, destination, delete);
+			var milliseconds = 1 + (int) ((DateTime.Now - start_time).TotalMilliseconds);
+			var size = new FileInfo(destination).Length;
+			// size time in milliseconds per sec
+			var tsize = size * 1000 / milliseconds;
+			if (tsize > ONE_GIGABYTE) {
+				tsize = tsize / ONE_GIGABYTE;
+				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
+			}
+			else if (tsize > ONE_MEGABYTE) {
+				tsize = tsize / ONE_MEGABYTE;
+				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
+			}
+			else if (tsize > ONE_KILOBYTE) {
+				tsize = tsize / ONE_KILOBYTE;
+				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
+			}
+			else
+				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
+		}
+
+		/// <summary> Fast file move with big buffers
+		/// </summary>
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public static void FastMove(string source, string destination, bool delete = true)
+		{
+			var array_length = BUFFER;
+			var dataArray = new byte[array_length];
+
+			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
+				using (var bwread = new BinaryReader(fsread)) {
+					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
+						using (var bwwrite = new BinaryWriter(fswrite)) {
+							for (; ; ) {
+								var read = bwread.Read(dataArray, 0, array_length);
+								if (0 == read)
+									break;
+								bwwrite.Write(dataArray, 0, read);
+							}
+						}
+					}
+				}
+			}
+
+			if (delete)
+				File.Delete(source);
+		}
+
 		public static void CopyFile(string source, string dest, bool delete = false)
 		{
 			if (String.IsNullOrEmpty(source))
