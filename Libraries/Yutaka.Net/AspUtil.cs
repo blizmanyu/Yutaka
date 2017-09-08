@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
+using Rcw.Settings;
 using Yutaka.Utils;
 
 namespace Yutaka.Net
@@ -9,7 +10,7 @@ namespace Yutaka.Net
 	public static class AspUtil
 	{
 		#region Fields
-		const string DB_RCWShared = "server=localhost; database=RCWShared; uid=sa; pwd=dhsSG2j36GDjsASgL";
+		const string DB_RCWShared = ConnectionStrings.DB_RCWShared;
 		private static readonly CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		#endregion
 
