@@ -66,13 +66,13 @@ namespace Yutaka.Net
 			if (String.IsNullOrEmpty(ip))
 				ip = Request.UserHostAddress ?? "";
 			if (String.IsNullOrEmpty(url))
-				url = Request.Url.AbsoluteUri ?? "";
-			if (String.IsNullOrEmpty(referer))
-				referer = Request.UrlReferrer.AbsoluteUri ?? "";
+				url = Request.UrlReferrer.AbsoluteUri ?? "";
 			if (String.IsNullOrEmpty(browser))
 				browser = Request.Browser.Browser ?? "";
 			if (String.IsNullOrEmpty(userAgent))
 				userAgent = Request.UserAgent ?? "";
+			if (String.IsNullOrEmpty(createdBy))
+				createdBy = "Website";
 			#endregion
 
 			#region Insert Lead
