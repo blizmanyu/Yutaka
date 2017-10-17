@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
+using System.Linq;
 using Yutaka.IO;
-using FileUtil = Yutaka.FileUtil;
 
 namespace Yutaka
 {
@@ -9,11 +9,41 @@ namespace Yutaka
 	{
 		static void Main(string[] args)
 		{
-			var paths = new string[] { @"\\DC-RCW\Public\images\Coins\134637b.jpg", @"\\DC-RCW\Public\images\Coins\134671b.jpg", @"\\DC-RCW\Public\images\Coins\134637bc.jpg" };
-			var fileInfos = new FileInfo[] { new FileInfo(paths[0]), new FileInfo(paths[1]), new FileInfo(paths[2]) };
+			StartProgram();
+			Process();
+			EndProgram();
+		}
 
-			Console.Write("\n\n======= IsSameDate(FileInfo fi1, FileInfo fi2) Test =======");
-			//Console.Write("\n{0}: {1}", FileUtil.IsSameDate(v));
+		static void StartProgram()
+		{
+			Console.Clear();
+		}
+
+		static void Process()
+		{
+			var images = FileUtil.EnumerateImageFiles(path: @"C:\Pictures", searchOption: SearchOption.AllDirectories);
+			var songs = FileUtil.EnumerateAudioFiles(path: @"Y:\Music\00 Genres", searchOption: SearchOption.AllDirectories);
+
+			Console.Write("\n");
+
+			//foreach (var v in images) {
+			//	Console.Write("\n{0}", v.FullName);
+			//}
+
+			Console.Write("\n");
+
+			//foreach (var v in songs) {
+			//	Console.Write("\n{0}", v.FullName);
+			//}
+
+			Console.Write("\nimagesCount: {0}", images.Count());
+			Console.Write("\nsongsCount: {0}", songs.Count());
+		}
+
+		static void EndProgram()
+		{
+			Console.Write("\n\n.... Press any key to exit ....\n\n");
+			Console.ReadKey(true);
 		}
 	}
 }

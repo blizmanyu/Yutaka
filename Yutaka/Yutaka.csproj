@@ -39,10 +39,8 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.FileUtil">
-      <HintPath>..\Libraries\Yutaka.FileUtil\bin\Debug\Yutaka.FileUtil.dll</HintPath>
-    </Reference>
-    <Reference Include="Yutaka.IO">
+    <Reference Include="Yutaka.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Yutaka.IO\bin\Debug\Yutaka.IO.dll</HintPath>
     </Reference>
   </ItemGroup>
