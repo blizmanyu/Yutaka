@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Net", "Libraries\Yut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Utils", "Libraries\Yutaka.Utils\Yutaka.Utils.csproj", "{AE56E005-996D-42AC-BF75-CD21648201F0}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{6E0BA83A-247A-4171-B06E-C10731440B2F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.FileProcessor", "Programs\Yutaka.FileProcessor\Yutaka.FileProcessor.csproj", "{4C1795A5-4753-48BF-93AE-3665C2C90F07}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +45,10 @@ Global
 		{AE56E005-996D-42AC-BF75-CD21648201F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE56E005-996D-42AC-BF75-CD21648201F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE56E005-996D-42AC-BF75-CD21648201F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C1795A5-4753-48BF-93AE-3665C2C90F07}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C1795A5-4753-48BF-93AE-3665C2C90F07}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C1795A5-4753-48BF-93AE-3665C2C90F07}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C1795A5-4753-48BF-93AE-3665C2C90F07}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -50,5 +58,6 @@ Global
 		{EFE67BB5-CDA4-4B3E-89F1-60628003D560} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{5DB9AE9C-4643-49E4-BCF1-FCF94B6B9893} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{AE56E005-996D-42AC-BF75-CD21648201F0} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{4C1795A5-4753-48BF-93AE-3665C2C90F07} = {6E0BA83A-247A-4171-B06E-C10731440B2F}
 	EndGlobalSection
 EndGlobal
