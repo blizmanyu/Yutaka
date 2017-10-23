@@ -39,6 +39,25 @@ namespace Yutaka.Net
 		#endregion
 
 		#region Public Methods
+		public static bool IsUrlValid(string url)
+		{
+			if (url == null)
+				return false;
+
+			using (var client = new MyClient()) {
+				client.HeadOnly = true;
+
+				try {
+					var str = client.DownloadString(url);
+					return true;
+				}
+
+				catch (Exception) {
+					return false;
+				}
+			}
+		}
+
 		public static string GetUniqueId(DateTime time)
 		{
 			if (time == null)
