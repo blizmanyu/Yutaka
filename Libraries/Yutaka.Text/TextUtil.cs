@@ -10,9 +10,9 @@ namespace Yutaka.Text
 		public static string ConvertIpToBase36(string ip, bool lowerCase=true)
 		{
 			if (ip == null)
-				throw new ArgumentNullException(ip);
+				Console.Write("\n[{0}||Error] ip can't be NULL", DateTime.Now.ToString("HH:mm:ss.fff"));
 			if (ip.Length < 7 || ip.Length > 16)
-				throw new ArgumentOutOfRangeException(ip, ip, "Enter a value between 0.0.0.0 and 255.255.255.255");
+				Console.Write("\n[{0}||Error] ip: {1} - Enter a value between 0.0.0.0 and 255.255.255.255", DateTime.Now.ToString("HH:mm:ss.fff"), ip);
 
 			var sb = new StringBuilder();
 			ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
@@ -28,9 +28,9 @@ namespace Yutaka.Text
 		public static Int64 ConvertIpToInt64(string ip)
 		{
 			if (ip == null)
-				throw new ArgumentNullException(ip);
+				Console.Write("\n[{0}||Error] ip can't be NULL", DateTime.Now.ToString("HH:mm:ss.fff"));
 			if (ip.Length < 7 || ip.Length > 16)
-				throw new ArgumentOutOfRangeException(ip, ip, "Enter a value between 0.0.0.0 and 255.255.255.255");
+				Console.Write("\n[{0}||Error] ip: {1} - Enter a value between 0.0.0.0 and 255.255.255.255", DateTime.Now.ToString("HH:mm:ss.fff"), ip);
 
 			var sb = new StringBuilder();
 			ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
