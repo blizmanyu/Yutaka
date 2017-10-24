@@ -22,7 +22,7 @@ namespace Yutaka.Text
 			if (Int64.TryParse(sb.ToString(), out result))
 				return Base36.Encode(result, lowerCase);
 
-			return null;
+			return ip;
 		}
 
 		public static Int64 ConvertIpToInt64(string ip)
@@ -38,6 +38,32 @@ namespace Yutaka.Text
 
 			Int64 result;
 			if (Int64.TryParse(sb.ToString(), out result))
+				return result;
+
+			return -1;
+		}
+
+		public static string ConvertTimeToBase36(DateTime? time = null, bool lowerCase = true)
+		{
+			if (time == null)
+				time = DateTime.Now;
+
+			var timeStr = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
+
+			Int64 result;
+			if (Int64.TryParse(timeStr, out result))
+				return Base36.Encode(result, lowerCase);
+
+			return timeStr;
+		}
+
+		public static Int64 ConvertTimeToInt64(DateTime? time=null)
+		{
+			if (time == null)
+				time = DateTime.Now;
+
+			Int64 result;
+			if (Int64.TryParse(((DateTime) time).ToString("yyyyMMddHHmmssfff"), out result))
 				return result;
 
 			return -1;
