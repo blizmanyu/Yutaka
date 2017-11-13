@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AspUtil.cs" />
+    <Compile Include="MailUtil.cs" />
     <Compile Include="MyClient.cs">
       <SubType>Component</SubType>
     </Compile>
