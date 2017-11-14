@@ -6,6 +6,12 @@ namespace Yutaka.Data
 {
 	public static class SqlUtil
 	{
+		#region Constants
+		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
+		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
+		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
+		#endregion
+
 		#region Methods
 		public static Result ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
