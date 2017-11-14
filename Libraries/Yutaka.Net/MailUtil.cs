@@ -7,6 +7,35 @@ namespace Yutaka.Net
 	public static class MailUtil
 	{
 		#region Methods
+		public static string Clean(string email)
+		{
+			if (String.IsNullOrWhiteSpace(email) || email == "")
+				return "";
+
+			while (email.Contains(" "))
+				email.Replace(" ", "");
+
+			if (email == email.ToUpper())
+				email = email.ToLower();
+
+			return email;
+		}
+
+		public static bool IsValid(string email)
+		{
+			if (String.IsNullOrWhiteSpace(email) || email == "")
+				return false;
+
+			try {
+				var v = new MailAddress(email);
+				return true;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
+
 		public static Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
 		{
 			var result = new Result() {
