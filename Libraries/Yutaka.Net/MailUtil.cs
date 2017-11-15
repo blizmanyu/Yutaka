@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
+using NLog;
 
 namespace Yutaka.Net
 {
 	public static class MailUtil
 	{
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+
 		#region Methods
 		public static string Clean(string email)
 		{
@@ -58,6 +61,8 @@ namespace Yutaka.Net
 				catch (Exception ex) {
 					result.Message = ex.Message;
 					result.Exception = ex.ToString();
+					logger.Error(result.Message);
+					logger.Error(result.Exception);
 				}
 			}
 
@@ -80,6 +85,8 @@ namespace Yutaka.Net
 			catch (Exception ex) {
 				result.Message = ex.Message;
 				result.Exception = ex.ToString();
+				logger.Error(result.Message);
+				logger.Error(result.Exception);
 			}
 
 			return result;
@@ -121,6 +128,8 @@ namespace Yutaka.Net
 				catch (Exception ex) {
 					result.Message = ex.Message;
 					result.Exception = ex.ToString();
+					logger.Error(result.Message);
+					logger.Error(result.Exception);
 				}
 			}
 
@@ -169,6 +178,8 @@ namespace Yutaka.Net
 					catch (Exception ex) {
 						result.Message = ex.Message;
 						result.Exception = ex.ToString();
+						logger.Error(result.Message);
+						logger.Error(result.Exception);
 					}
 				}
 			}
