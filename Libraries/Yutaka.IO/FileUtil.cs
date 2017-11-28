@@ -12,7 +12,7 @@ namespace Yutaka.IO
 	{
 		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
 		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
-
+		// asdf //
 		#region Fields
 		// Constants //
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
