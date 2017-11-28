@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Yutaka.IO
 {
-	public class FileLogger
+	public class YuFileLogger
 	{
 		#region Fields
 		// Constants //
@@ -25,7 +25,7 @@ namespace Yutaka.IO
 		#endregion
 
 		#region Ctr
-		public FileLogger(string filename = @"C:\Logs\log<TIMESTAMP>.txt", Mode mode = Mode.FullLog)
+		public YuFileLogger(string filename = @"C:\Logs\log<TIMESTAMP>.txt", Mode mode = Mode.FullLog)
 		{
 			if (filename.Contains(@"C:\Logs\"))
 				Directory.CreateDirectory(@"C:\Logs\");

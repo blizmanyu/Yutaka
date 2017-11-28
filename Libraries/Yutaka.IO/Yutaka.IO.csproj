@@ -45,8 +45,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileLogger.cs" />
-    <Compile Include="Logger.cs" />
+    <Compile Include="YuFileLogger.cs" />
+    <Compile Include="YuLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="FileUtil.cs" />
   </ItemGroup>

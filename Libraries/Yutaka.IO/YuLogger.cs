@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Yutaka.IO
 {
-	public class Logger
+	public class YuLogger
 	{
 		#region Fields
 		// Constants //
@@ -21,7 +21,7 @@ namespace Yutaka.IO
 		#endregion
 
 		#region Public Methods
-		public Logger(string fileName="log <TIMESTAMP>.txt", bool logAll=true, bool logErrors=true, bool consoleOut=false)
+		public YuLogger(string fileName="log <TIMESTAMP>.txt", bool logAll=true, bool logErrors=true, bool consoleOut=false)
 		{
 			StartTime = DateTime.Now;
 
