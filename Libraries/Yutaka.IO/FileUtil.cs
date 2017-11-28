@@ -58,26 +58,6 @@ namespace Yutaka.IO
 			Console.Write("\n{0}", ex.ToString());
 		}
 
-		// Retrieves the datetime WITHOUT loading the whole image //
-		private static DateTime GetDateTakenFromImage(string path)
-		{
-			var r = new Regex(":");
-
-			try {
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read)) {
-					using (var myImage = Image.FromStream(fs, false, false)) {
-						var propItem = myImage.GetPropertyItem(DATE_TAKEN);
-						var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-						return DateTime.Parse(dateTaken);
-					}
-				}
-			}
-
-			catch (Exception) {
-				return dateThreshold;
-			}
-		}
-
 		private static bool MoveFile(FileInfo source, string dest)
 		{
 			try {
@@ -246,6 +226,26 @@ namespace Yutaka.IO
 
 			if (delete)
 				File.Delete(source);
+		}
+
+		// Retrieves the datetime WITHOUT loading the whole image //
+		public static DateTime GetDateTakenFromImage(string path)
+		{
+			var r = new Regex(":");
+
+			try {
+				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read)) {
+					using (var myImage = Image.FromStream(fs, false, false)) {
+						var propItem = myImage.GetPropertyItem(DATE_TAKEN);
+						var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+						return DateTime.Parse(dateTaken);
+					}
+				}
+			}
+
+			catch (Exception) {
+				return dateThreshold;
+			}
 		}
 
 		/// <summary>

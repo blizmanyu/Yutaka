@@ -73,8 +73,6 @@ namespace FileManipulator
 		private static DateTime firstOfYear = new DateTime(startTime.Year, 1, 1);
 		private static DateTime twoMonthsAgo;
 		private static DateTime lastMonth;
-		private static DateTime endTime;
-		private static TimeSpan ts;
 		private static DateTime newDate = new DateTime(2017, 1, 8, 15, 0, 0); // used for SetDateTaken method //
 		private static string thisYearFolder1;
 		private static string lastMonthFolder;
@@ -654,8 +652,8 @@ namespace FileManipulator
 
 		private static void EndProgram()
 		{
-			endTime = DateTime.Now;
-			ts = endTime - startTime;
+			var endTime = DateTime.Now;
+			var ts = endTime - startTime;
 
 			if (consoleOut || consoleOutSummary) {
 				Console.Write("\n");
