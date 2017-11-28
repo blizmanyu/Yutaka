@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using Yutaka.IO;
+using Yutaka.Text;
 
 namespace Yutaka
 {
@@ -10,8 +11,26 @@ namespace Yutaka
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Process();
+			TestTextUtilConvertIpToBase36();
 			EndProgram();
+		}
+
+		static void TestTextUtilConvertIpToBase36()
+		{
+			var tests = new string[] { "0.0.0.0", "10.0.0.1", "172.16.0.1", "192.168.0.1", "255.255.255.255" };
+
+			foreach (var test in tests) {
+				Console.Write("\n\nInput:  {0}\nInt64:  {1}\nBase36: {2}", test, TextUtil.ConvertIpToInt64(test), TextUtil.ConvertIpToBase36(test));
+			}
+		}
+
+		static void TestTextUtilConvertIpToInt64()
+		{
+			var tests = new string[] { "0.0.0.0", "10.0.0.1", "172.16.0.1", "192.168.0.1", "255.255.255.255", "asdf", "asdfasdf", "asdfasdfasdfasdfasdf" };
+
+			foreach (var test in tests) {
+				Console.Write("\n\nInput:  {0}\nOutput: {1}", test, TextUtil.ConvertIpToInt64(test));
+			}
 		}
 
 		static void StartProgram()

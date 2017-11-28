@@ -6,12 +6,19 @@ namespace Yutaka.Utils
 {
 	public static class Base36
 	{
-		const string CharList = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
+		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-		public static string Encode(long input)
+		public static string Encode(long input, bool lowerCase = true)
 		{
 			if (input < 0)
 				throw new ArgumentOutOfRangeException("input", input, "input cannot be negative");
+
+			string CharList;
+			if (lowerCase)
+				CharList = CharListLower;
+			else
+				CharList = CharListUpper;
 
 			char[] clistarr = CharList.ToCharArray();
 			var result = new Stack<char>();
@@ -22,9 +29,15 @@ namespace Yutaka.Utils
 			return new string(result.ToArray());
 		}
 
-		public static Int64 Decode(string input)
+		public static Int64 Decode(string input, bool lowerCase = true)
 		{
-			var reversed = input.ToUpper().Reverse();
+			string CharList;
+			if (lowerCase)
+				CharList = CharListLower;
+			else
+				CharList = CharListUpper;
+
+			var reversed = input.Reverse();
 			long result = 0;
 			var pos = 0;
 			foreach (char c in reversed) {
