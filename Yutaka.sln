@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio Express 2013 for Windows Desktop
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka", "Yutaka\Yutaka.csproj", "{822C4E9A-0EFF-466A-B463-18DBF257479C}"
 EndProject
@@ -22,6 +22,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Text", "Libraries\Yutaka.Text\Yutaka.Text.csproj", "{8EEBC3DA-6086-4CC5-AA8D-E4D08E397BDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Data", "Libraries\Yutaka.Data\Yutaka.Data.csproj", "{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManipulator", "Programs\FileManipulator\FileManipulator.csproj", "{C7160704-DE16-445F-90F6-8DDEEBD83760}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -61,6 +63,10 @@ Global
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C7160704-DE16-445F-90F6-8DDEEBD83760}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C7160704-DE16-445F-90F6-8DDEEBD83760}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C7160704-DE16-445F-90F6-8DDEEBD83760}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C7160704-DE16-445F-90F6-8DDEEBD83760}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -73,5 +79,6 @@ Global
 		{B6F3620A-703A-4B8A-9898-F4BF4A19DA49} = {6E0BA83A-247A-4171-B06E-C10731440B2F}
 		{8EEBC3DA-6086-4CC5-AA8D-E4D08E397BDC} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{C7160704-DE16-445F-90F6-8DDEEBD83760} = {6E0BA83A-247A-4171-B06E-C10731440B2F}
 	EndGlobalSection
 EndGlobal
