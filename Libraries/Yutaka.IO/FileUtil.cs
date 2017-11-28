@@ -10,6 +10,9 @@ namespace Yutaka.IO
 {
 	public static class FileUtil
 	{
+		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
+		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
+
 		#region Fields
 		// Constants //
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
@@ -91,6 +94,55 @@ namespace Yutaka.IO
 		#endregion
 
 		#region Public Methods
+		public static void CopyFile(FileInfo source, string dest, bool overwrite=false, TimestampOption tOption=TimestampOption.WindowsDefault)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
+
+			if (dest == null)
+				throw new ArgumentNullException("dest");
+
+			if (tOption == TimestampOption.WindowsDefault)
+				source.CopyTo(dest, overwrite);
+
+			else {
+				var now = DateTime.Now;
+				var creationTime = now;
+				var lastAccessTime = now;
+				var lastWriteTime = now;
+
+				switch (tOption) {
+					case TimestampOption.PreserveOriginal:
+						creationTime = source.CreationTime;
+						lastAccessTime = source.LastAccessTime;
+						lastWriteTime = source.LastWriteTime;
+						break;
+					case TimestampOption.SetAllToMinDate:
+						var minDate = GetMinTime(source);
+						creationTime = minDate;
+						lastAccessTime = minDate;
+						lastWriteTime = minDate;
+						break;
+					case TimestampOption.SetAllToDateTaken:
+						var dateTaken = GetMinTime(source);
+						creationTime = dateTaken;
+						lastAccessTime = dateTaken;
+						lastWriteTime = dateTaken;
+						break;
+					default:
+						throw new Exception(String.Format("{0} isn't a valid TimestampOption, or, it hasn't been implemented yet", tOption));
+				}
+
+				var newFile = source.CopyTo(dest, overwrite);
+
+				if (newFile != null) {
+					newFile.CreationTime = creationTime;
+					newFile.LastWriteTime = lastAccessTime;
+					newFile.LastAccessTime = lastWriteTime;
+				}
+			}
+		}
+
 		public static void CopyFile(string source, string dest, bool delete = false)
 		{
 			if (String.IsNullOrEmpty(source))
