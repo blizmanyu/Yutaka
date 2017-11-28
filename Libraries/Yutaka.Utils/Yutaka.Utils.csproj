@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\Rcw.Sql\IRONMAN\Rcw.Sql.Ironman.Intranet\bin\Debug\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Rcw.Sql.Ironman.RcwConfiguration">
-      <HintPath>..\..\..\Rcw.Sql\IRONMAN\Rcw.Sql.Ironman.RcwConfiguration\bin\Debug\Rcw.Sql.Ironman.RcwConfiguration.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
