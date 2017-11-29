@@ -15,8 +15,19 @@ namespace FileManipulator
 {
 	class Program
 	{
+		#region Config/Settings
+		const string srcFolder = @"D:\DCIM\Camera\";
+		const string destDrive = @"C:\";
+		static readonly Mode mode = Mode.Copy;
+		static readonly bool consoleOut = true;
+		static readonly bool consoleOutSummary = true;
+		static readonly bool DEBUG = false;
+		static readonly bool deleteAfter = false;
+		static readonly string CopyOrMove = "Copy";
+		#endregion
+
 		#region Fields
-		protected enum Mode { Copy, Move };
+		enum Mode { Copy, Move };
 
 		private static HashSet<string> imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
 			".jpg", ".jpeg", ".nef", ".png", ".svg"
@@ -26,16 +37,7 @@ namespace FileManipulator
 		const int ONE_MEGABYTE = 1048576;
 		const int FIVE_TWELVE_KILOBYTES = 524288;
 		const int BUFFER_SIZE = ONE_MEGABYTE;
-		// Flags //
-		static readonly bool consoleOut   = true;
-		static readonly bool consoleOutSummary   = true;
-		static readonly bool DEBUG        = false;
-		static readonly bool deleteAfter  = false;
-		protected Mode mode = Mode.Copy;
-		static readonly string CopyOrMove = "Copy";
 		// Folders //
-		const string srcFolder = @"D:\DCIM\Camera\";
-		const string destDrive = @"C:\";
 		const string backupsFolder = @"S:\Backups\";
 		const string officeFolder = @"S:\Office\";
 		const string privateFolder = @"S:\Private\";
@@ -81,7 +83,7 @@ namespace FileManipulator
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//Process();
+			Process();
 			//ChangeDateTakens();
 			CheckFolders();
 			ProcessFiles();
@@ -92,6 +94,7 @@ namespace FileManipulator
 			EndProgram();
 		}
 
+		#region Private Helpers
 		#region Process 2017.01.03
 		private static void Process()
 		{
@@ -161,7 +164,7 @@ namespace FileManipulator
 							path = path.Replace(".jpg", "b.jpg");
 						if (path.EndsWith(".JPG"))
 							path = path.Replace(".JPG", "b.jpg");
-						
+
 						myImage.Save(path);
 					}
 				}
@@ -214,9 +217,9 @@ namespace FileManipulator
 				}
 			}
 
-			var kb = totalFileSizes/1024;
-			var mb = kb/1024;
-			var gb = mb/1024;
+			var kb = totalFileSizes / 1024;
+			var mb = kb / 1024;
+			var gb = mb / 1024;
 			Console.Write("\ntotalFileSizes: {0} bytes", totalFileSizes);
 			Console.Write("\nkb: {0} kb", kb);
 			Console.Write("\nmb: {0} mb", mb);
@@ -642,15 +645,15 @@ namespace FileManipulator
 			}
 		}
 
-		#region Start & End Program
-		private static void StartProgram()
+		#region Start & EndProgram
+		static void StartProgram()
 		{
 			Console.Write("\nFile Modifier started at {0}", startTime.ToString(datePattern).ToLower());
 			Console.Write("\nconsoleOut: {0}", consoleOut.ToString().ToUpper());
 			Console.Write("\n");
 		}
 
-		private static void EndProgram()
+		static void EndProgram()
 		{
 			var endTime = DateTime.Now;
 			var ts = endTime - startTime;
@@ -669,6 +672,7 @@ namespace FileManipulator
 				Console.ReadKey(true);
 			}
 		}
+		#endregion
 		#endregion
 	}
 }

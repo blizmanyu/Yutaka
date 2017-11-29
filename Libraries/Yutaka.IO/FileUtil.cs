@@ -10,9 +10,6 @@ namespace Yutaka.IO
 {
 	public static class FileUtil
 	{
-		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
-		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
-
 		#region Fields
 		// Constants //
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
@@ -372,6 +369,11 @@ namespace Yutaka.IO
 			else
 				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
 		}
+		#endregion
+
+		#region Enum
+		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
+		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
 		#endregion
 	}
 }

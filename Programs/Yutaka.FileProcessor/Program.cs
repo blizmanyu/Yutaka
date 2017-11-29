@@ -1,29 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NLog;
-using Yutaka.IO;
 
 namespace Yutaka.FileProcessor
 {
 	class Program
 	{
+		#region Config/Settings
+		#endregion
+
+		#region Fields
+		private static DateTime startTime = DateTime.Now;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static int totalCount = 0;
+		private static int errorCount = 0;
+		#endregion
 
 		static void Main(string[] args)
 		{
-			logger.Trace("Sample trace message");
-			logger.Debug("Sample debug message");
-			logger.Info("Sample informational message");
-			logger.Warn("Sample warning message");
-			logger.Error("Sample error message");
-			logger.Fatal("Sample fatal error message");
-
-			// alternatively you can call the Log() method
-			// and pass log level as the parameter.
-			logger.Log(LogLevel.Info, "Sample informational message");
+			StartProgram();
+			Process();
+			EndProgram();
 		}
+
+		#region Private Helpers
+		private static void Process()
+		{
+			logger.Trace("Sample trace message");
+		}
+
+		#region Start & EndProgram
+		private static void StartProgram()
+		{
+			logger.Trace("Starting program...");
+		}
+
+		private static void EndProgram()
+		{
+			var endTime = DateTime.Now;
+			var ts = endTime - startTime;
+			var errorPercent = 0.0;
+
+			if (errorCount > 0 && totalCount > 0)
+				errorPercent = (double) errorCount / totalCount;
+
+			logger.Trace("=====================================");
+			logger.Trace("Program took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
+			logger.Trace("Total Count: {0}", totalCount);
+			logger.Trace("Error Count: {0}", errorCount);
+			if (errorPercent > 0)
+				logger.Trace("Error Percent: {0:p1}", errorPercent);
+			logger.Trace("====================================={0}", Environment.NewLine);
+		}
+		#endregion
+		#endregion
 	}
 }
