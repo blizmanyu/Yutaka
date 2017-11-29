@@ -1,11 +1,17 @@
 ﻿using System;
+using System.IO;
+using System.Linq;
 using NLog;
+using Yutaka.IO;
 
 namespace Yutaka.FileProcessor
 {
 	class Program
 	{
 		#region Config/Settings
+		const string srcFolder = @"C:\";
+		const string destFolder = @"C:\";
+		const string destDrive = @"C:\";
 		#endregion
 
 		#region Fields
@@ -15,6 +21,27 @@ namespace Yutaka.FileProcessor
 		private static int errorCount = 0;
 		#endregion
 
+		#region Private Helpers
+		private static void Process()
+		{
+			var di = new DirectoryInfo(srcFolder);
+			var files = di.EnumerateFiles("*", SearchOption.AllDirectories);
+			totalCount = files.Count();
+
+			foreach (var file in files) {
+				try {
+					FileUtil.CopyFile(file, String.Format(destFolder + file.Name), true, FileUtil.TimestampOption.PreserveOriginal);
+				}
+
+				catch (Exception ex) {
+					errorCount++;
+					logger.Error(ex.Message);
+				}
+			}
+		}
+		#endregion
+
+		#region Methods
 		static void Main(string[] args)
 		{
 			StartProgram();
@@ -22,19 +49,12 @@ namespace Yutaka.FileProcessor
 			EndProgram();
 		}
 
-		#region Private Helpers
-		private static void Process()
-		{
-			logger.Trace("Sample trace message");
-		}
-
-		#region Start & EndProgram
-		private static void StartProgram()
+		static void StartProgram()
 		{
 			logger.Trace("Starting program...");
 		}
 
-		private static void EndProgram()
+		static void EndProgram()
 		{
 			var endTime = DateTime.Now;
 			var ts = endTime - startTime;
@@ -51,7 +71,6 @@ namespace Yutaka.FileProcessor
 				logger.Trace("Error Percent: {0:p1}", errorPercent);
 			logger.Trace("====================================={0}", Environment.NewLine);
 		}
-		#endregion
 		#endregion
 	}
 }
