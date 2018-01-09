@@ -20,7 +20,7 @@ namespace Yutaka.Net
 				throw new ArgumentNullException("password", "password is required");
 			#endregion
 
-			var result = new Result() { Success = false };
+			var result = new Result() { Success = false, Message = "", Exception = "" };
 			FtpWebResponse response = null;
 
 			try {
@@ -78,7 +78,7 @@ namespace Yutaka.Net
 				throw new ArgumentNullException("password", "password is required");
 			#endregion
 
-			var result = new Result() { Success = false };
+			var result = new Result() { Success = false, Message = "", Exception = "" };
 			FtpWebResponse response = null;
 
 			try {
