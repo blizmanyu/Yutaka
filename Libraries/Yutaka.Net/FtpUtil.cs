@@ -116,6 +116,8 @@ namespace Yutaka.Net
 					result.Message = String.Format("Upload <{0}> complete, status: {1}", source, response.StatusDescription);
 					response.Close();
 				}
+
+				result.Success = true;
 				#endregion
 			}
 
