@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Data", "Libraries\Yu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Excel", "Libraries\Yutaka.Excel\Yutaka.Excel.csproj", "{557A8FC4-12F8-43BA-AA31-E1055743A984}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{E964C772-CE6B-484A-A575-8F123C38CB1E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.NewConsoleAppTemplate", "Programs\Yutaka.NewConsoleAppTemplate\Yutaka.NewConsoleAppTemplate.csproj", "{78EEE560-70D0-467C-8619-C2E02695BC11}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -59,6 +63,10 @@ Global
 		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78EEE560-70D0-467C-8619-C2E02695BC11}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78EEE560-70D0-467C-8619-C2E02695BC11}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78EEE560-70D0-467C-8619-C2E02695BC11}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78EEE560-70D0-467C-8619-C2E02695BC11}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -71,5 +79,6 @@ Global
 		{8EEBC3DA-6086-4CC5-AA8D-E4D08E397BDC} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{557A8FC4-12F8-43BA-AA31-E1055743A984} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{78EEE560-70D0-467C-8619-C2E02695BC11} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
 	EndGlobalSection
 EndGlobal
