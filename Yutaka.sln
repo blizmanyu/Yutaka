@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2013 for Windows Desktop
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka", "Yutaka\Yutaka.csproj", "{822C4E9A-0EFF-466A-B463-18DBF257479C}"
 EndProject
@@ -18,6 +18,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Text", "Libraries\Yutaka.Text\Yutaka.Text.csproj", "{8EEBC3DA-6086-4CC5-AA8D-E4D08E397BDC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Data", "Libraries\Yutaka.Data\Yutaka.Data.csproj", "{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Excel", "Libraries\Yutaka.Excel\Yutaka.Excel.csproj", "{557A8FC4-12F8-43BA-AA31-E1055743A984}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +55,10 @@ Global
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{557A8FC4-12F8-43BA-AA31-E1055743A984}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,5 +70,6 @@ Global
 		{AE56E005-996D-42AC-BF75-CD21648201F0} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{8EEBC3DA-6086-4CC5-AA8D-E4D08E397BDC} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{9EA6152A-EEB2-4033-BFFB-AEADC37E736B} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{557A8FC4-12F8-43BA-AA31-E1055743A984} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 	EndGlobalSection
 EndGlobal
