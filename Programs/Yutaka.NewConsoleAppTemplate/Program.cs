@@ -88,7 +88,6 @@ namespace Yutaka.NewConsoleAppTemplate
 				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[1]);
 				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[2]);
 				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[3]);
-				Console.Write("\n");
 				Console.Write("\n.... Press any key to close the program ....");
 				Console.ReadKey(true);
 			}
