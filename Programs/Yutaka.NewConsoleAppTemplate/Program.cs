@@ -91,6 +91,8 @@ namespace Yutaka.NewConsoleAppTemplate
 				Console.Write("\n.... Press any key to close the program ....");
 				Console.ReadKey(true);
 			}
+
+			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
 		#endregion
 	}
