@@ -13,14 +13,8 @@ namespace Yutaka.Data
 		#endregion
 
 		#region Methods
-		public static Result ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public static void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
-			var result = new Result() {
-				Success = false,
-				Message = "",
-				Exception = ""
-			};
-
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
 					cmd.CommandType = commandType;
@@ -28,29 +22,19 @@ namespace Yutaka.Data
 						cmd.Parameters.AddRange(parameters);
 						conn.Open();
 						cmd.ExecuteNonQuery();
-						result.Success = true;
 					}
 
 					catch (Exception ex) {
-						result.Message = ex.Message;
-						result.Exception = ex.ToString();
+						throw ex;
 					}
 				}
 			}
-
-			return result;
 		}
 
 		// This method should never actually be called. It is provided as an example only since the reader will get destroyed before returning. You
 		// may want to use the GetData method instead.
-		public static Result ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public static void ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
-			var result = new Result() {
-				Success = false,
-				Message = "",
-				Exception = ""
-			};
-
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
 					cmd.CommandType = commandType;
@@ -61,27 +45,17 @@ namespace Yutaka.Data
 							while (reader.Read())
 								Console.WriteLine(String.Format("{0}", reader[0]));
 						}
-						result.Success = true;
 					}
 
 					catch (Exception ex) {
-						result.Message = ex.Message;
-						result.Exception = ex.ToString();
+						throw ex;
 					}
 				}
 			}
-
-			return result;
 		}
 
-		public static Result ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public static void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
-			var result = new Result() {
-				Success = false,
-				Message = "",
-				Exception = ""
-			};
-
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
 					cmd.CommandType = commandType;
@@ -89,17 +63,13 @@ namespace Yutaka.Data
 						cmd.Parameters.AddRange(parameters);
 						conn.Open();
 						cmd.ExecuteScalar();
-						result.Success = true;
 					}
 
 					catch (Exception ex) {
-						result.Message = ex.Message;
-						result.Exception = ex.ToString();
+						throw ex;
 					}
 				}
 			}
-
-			return result;
 		}
 
 		public static DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
@@ -122,15 +92,6 @@ namespace Yutaka.Data
 					}
 				}
 			}
-		}
-		#endregion
-
-		#region Struct
-		public struct Result
-		{
-			public bool Success;
-			public string Message;
-			public string Exception;
 		}
 		#endregion
 	}
