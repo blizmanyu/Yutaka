@@ -7,31 +7,33 @@ namespace Yutaka.Text
 {
 	public static class TextUtil
 	{
-		public static string BadHash(string input)
+		#region Encode/Decode
+		public static string Encode(string input)
 		{
 			if (String.IsNullOrEmpty(input))
 				throw new ArgumentNullException("input", "<input> is required.");
 
-			var hash = new StringBuilder();
+			var sb = new StringBuilder();
 
 			for (int i = 0; i < input.Length; i++)
-				hash.Append((char) (input[i] + 2));
+				sb.Append((char) (input[i] + 2));
 
-			return hash.ToString();
+			return sb.ToString();
 		}
 
-		public static string BadUnHash(string input)
+		public static string Decode(string input)
 		{
 			if (String.IsNullOrEmpty(input))
 				throw new ArgumentNullException("input", "<input> is required.");
 
-			var hash = new StringBuilder();
+			var sb = new StringBuilder();
 
 			for (int i = 0; i < input.Length; i++)
-				hash.Append((char) (input[i] - 2));
+				sb.Append((char) (input[i] - 2));
 
-			return hash.ToString();
+			return sb.ToString();
 		}
+		#endregion Encode/Decode
 
 		public static Int64 ConvertIpToInt64(string ip)
 		{

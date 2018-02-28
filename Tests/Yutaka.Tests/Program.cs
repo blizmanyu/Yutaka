@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Text;
 using NLog;
+using Yutaka.Text;
 
 namespace Yutaka.Tests
 {
@@ -31,28 +31,20 @@ namespace Yutaka.Tests
 		#endregion
 
 		#region Private Helpers
-		private static string BadHash(string input)
-		{
-			if (String.IsNullOrEmpty(input))
-				throw new ArgumentNullException("input", "<input> is required.");
-
-			var hash = new StringBuilder();
-
-			for (int i=0; i<input.Length; i++) {
-				hash.Append((char) (input[i] + 2));
-			}
-
-			return hash.ToString();
-		}
 		#endregion
 
 		#region Methods
 		static void Process()
 		{
 			var tests = new string[] { "yblizman@rcw1.com", "blizmanyu@gmail.com" };
+			var hashed = "";
+			var unhashed = "";
 
-			for (int i=0; i<tests.Length; i++)
-				Console.Write("\n{0}: {1}", tests[i], BadHash(tests[i]));
+			for (int i=0; i<tests.Length; i++) {
+				hashed = TextUtil.BadHash(tests[i]);
+				unhashed = TextUtil.BadUnHash(hashed);
+				Console.Write("\n{0} --> {1} --> {2}", tests[i], hashed, unhashed);
+			}
 		}
 
 		static void Main(string[] args)
