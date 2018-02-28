@@ -37,13 +37,13 @@ namespace Yutaka.Tests
 		static void Process()
 		{
 			var tests = new string[] { "yblizman@rcw1.com", "blizmanyu@gmail.com" };
-			var hashed = "";
-			var unhashed = "";
+			var encoded = "";
+			var decoded = "";
 
 			for (int i=0; i<tests.Length; i++) {
-				hashed = TextUtil.BadHash(tests[i]);
-				unhashed = TextUtil.BadUnHash(hashed);
-				Console.Write("\n{0} --> {1} --> {2}", tests[i], hashed, unhashed);
+				encoded = TextUtil.Encode(tests[i]);
+				decoded = TextUtil.Decode(encoded);
+				Console.Write("\n{0} --> {1} --> {2}", tests[i], encoded, decoded);
 			}
 		}
 
