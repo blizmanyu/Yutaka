@@ -7,7 +7,7 @@ namespace Yutaka.Net
 {
 	public static class FtpUtil
 	{
-		public static Result UploadFile(string source, string dest, string username, string password)
+		public static void UploadExcel(string source, string dest, string username, string password)
 		{
 			#region Input Validation
 			if (String.IsNullOrEmpty(source))
@@ -20,7 +20,52 @@ namespace Yutaka.Net
 				throw new ArgumentNullException("password", "password is required");
 			#endregion
 
-			var result = new Result() { Success = false, Message = "", Exception = "" };
+			FtpWebResponse response = null;
+
+			try {
+				#region Get the contents of the file to the request stream
+				byte[] fileContents = File.ReadAllBytes(source);
+				#endregion
+
+				#region Get the object used to communicate with the server
+				var request = (FtpWebRequest) WebRequest.Create(dest);
+				request.ContentLength = fileContents.Length;
+				request.Credentials = new NetworkCredential(username, password);
+				request.Method = WebRequestMethods.Ftp.UploadFile;
+				#endregion
+
+				#region Copy the contents of the file to the request stream
+				using (var requestStream = request.GetRequestStream()) {
+					requestStream.Write(fileContents, 0, fileContents.Length);
+					requestStream.Close();
+				}
+				#endregion
+
+				#region Get response
+				using (response = (FtpWebResponse) request.GetResponse()) {
+					response.Close();
+				}
+				#endregion
+			}
+
+			catch (Exception ex) {
+				throw ex;
+			}
+		}
+
+		public static void UploadFile(string source, string dest, string username, string password)
+		{
+			#region Input Validation
+			if (String.IsNullOrEmpty(source))
+				throw new ArgumentNullException("source", "source is required");
+			if (String.IsNullOrEmpty(dest))
+				throw new ArgumentNullException("dest", "dest is required");
+			if (String.IsNullOrEmpty(username))
+				throw new ArgumentNullException("username", "username is required");
+			if (String.IsNullOrEmpty(password))
+				throw new ArgumentNullException("password", "password is required");
+			#endregion
+
 			FtpWebResponse response = null;
 			byte[] fileContents;
 
@@ -48,23 +93,17 @@ namespace Yutaka.Net
 
 				#region Get response
 				using (response = (FtpWebResponse) request.GetResponse()) {
-					result.Message = String.Format("Upload <{0}> complete, status: {1}", source, response.StatusDescription);
 					response.Close();
 				}
 				#endregion
 			}
 
 			catch (Exception ex) {
-				result.Message = ex.Message;
-				if (response != null && !String.IsNullOrEmpty(response.StatusDescription))
-					result.Message = String.Format("{0}: {1}", ex.Message, response.StatusDescription);
-				result.Exception = ex.ToString();
+				throw ex;
 			}
-
-			return result;
 		}
 
-		public static Result UploadImage(string source, string dest, string username, string password, bool enableSsl = true, bool keepAlive = true, IWebProxy proxy = null, bool useBinary = true, bool usePassive = false)
+		public static void UploadImage(string source, string dest, string username, string password, bool enableSsl = true, bool keepAlive = true, IWebProxy proxy = null, bool useBinary = true, bool usePassive = false)
 		{
 			#region Input Validation
 			if (String.IsNullOrEmpty(source))
@@ -77,7 +116,6 @@ namespace Yutaka.Net
 				throw new ArgumentNullException("password", "password is required");
 			#endregion
 
-			var result = new Result() { Success = false, Message = "", Exception = "" };
 			FtpWebResponse response = null;
 			byte[] fileContents;
 
@@ -111,31 +149,14 @@ namespace Yutaka.Net
 
 				#region Get response
 				using (response = (FtpWebResponse) request.GetResponse()) {
-					result.Message = String.Format("Upload <{0}> complete, status: {1}", source, response.StatusDescription);
 					response.Close();
 				}
 				#endregion
-
-				result.Success = true;
 			}
 
 			catch (Exception ex) {
-				result.Message = ex.Message;
-				if (response != null && !String.IsNullOrEmpty(response.StatusDescription))
-					result.Message = String.Format("{0}: {1}", ex.Message, response.StatusDescription);
-				result.Exception = ex.ToString();
+				throw ex;
 			}
-
-			return result;
 		}
-
-		#region Struct
-		public struct Result
-		{
-			public bool Success;
-			public string Message;
-			public string Exception;
-		}
-		#endregion
 	}
 }
