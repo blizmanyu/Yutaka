@@ -22,10 +22,9 @@ namespace Yutaka.Net
 
 			var result = new Result() { Success = false, Message = "", Exception = "" };
 			FtpWebResponse response = null;
+			byte[] fileContents;
 
 			try {
-				byte[] fileContents;
-
 				#region Get the contents of the file to the request stream
 				using (var sourceStream = new StreamReader(source)) {
 					fileContents = Encoding.UTF8.GetBytes(sourceStream.ReadToEnd());
@@ -80,10 +79,9 @@ namespace Yutaka.Net
 
 			var result = new Result() { Success = false, Message = "", Exception = "" };
 			FtpWebResponse response = null;
+			byte[] fileContents;
 
 			try {
-				byte[] fileContents;
-
 				#region Get the contents of the file to the request stream
 				using (var sourceStream = File.OpenRead(source)) {
 					fileContents = new byte[sourceStream.Length];
