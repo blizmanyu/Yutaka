@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Yutaka.Utils;
@@ -95,6 +96,14 @@ namespace Yutaka.Text
 				return Base36.Encode(result, lowerCase);
 
 			return timeStr;
+		}
+
+		public static string ToTitleCase(string str)
+		{
+			if (str == null)
+				return "";
+
+			return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
 		}
 	}
 }
