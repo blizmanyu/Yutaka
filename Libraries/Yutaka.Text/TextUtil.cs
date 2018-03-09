@@ -36,6 +36,39 @@ namespace Yutaka.Text
 		}
 		#endregion Encode/Decode
 
+		#region Phone Utils
+		public static string BeautifyPhone(string phone)
+		{
+			if (phone == null)
+				return "";
+
+			var stripped = StripPhone(phone);
+			var substring = stripped.Substring(1);
+
+			if (stripped.Length == 10 && stripped.All(Char.IsDigit))
+				return String.Format("({0}) {1}-{2}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 4));
+			if (stripped.Length == 11 && stripped.StartsWith("1") && substring.All(Char.IsDigit))
+				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 1), stripped.Substring(1, 3), stripped.Substring(4, 3), stripped.Substring(7, 4));
+			if (stripped.Length == 12 && substring.All(Char.IsDigit))
+				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 2), stripped.Substring(2, 3), stripped.Substring(5, 3), stripped.Substring(8, 4));
+			if (stripped.Length == 13 && substring.All(Char.IsDigit))
+				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 3), stripped.Substring(9, 4));
+
+			return phone;
+		}
+
+		public static string StripPhone(string phone)
+		{
+			if (phone == null)
+				return "";
+
+			var stripped = phone.Trim().Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Trim();
+			while (stripped.Contains(" "))
+				stripped = stripped.Replace(" ", "");
+
+			return stripped;
+		}
+		#endregion Phone Utils
 		public static Int64 ConvertIpToInt64(string ip)
 		{
 			if (String.IsNullOrEmpty(ip))
