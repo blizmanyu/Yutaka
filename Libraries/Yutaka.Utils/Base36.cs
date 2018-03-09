@@ -46,5 +46,14 @@ namespace Yutaka.Utils
 			}
 			return result;
 		}
+
+		public static string UniqueID(DateTime? time = null)
+		{
+			if (time == null)
+				time = DateTime.Now;
+
+			var num = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
+			return Encode(Int64.Parse(num));
+		}
 	}
 }
