@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Yutaka.Utils
 {
@@ -54,6 +55,20 @@ namespace Yutaka.Utils
 
 			var num = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
 			return Encode(Int64.Parse(num));
+		}
+
+		public static string UniqueID(string ip)
+		{
+			if (String.IsNullOrEmpty(ip))
+				throw new ArgumentNullException("ip", "<ip> is required");
+			if (ip.Length < 7 || 16 < ip.Length)
+				throw new ArgumentOutOfRangeException("ip", ip, "<ip> must be a value between 0.0.0.0 and 255.255.255.255");
+
+			var sb = new StringBuilder();
+			ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
+			sb.Replace(".", "");
+
+			return Encode(Int64.Parse(sb.ToString()));
 		}
 	}
 }
