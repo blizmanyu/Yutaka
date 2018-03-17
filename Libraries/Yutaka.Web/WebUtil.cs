@@ -1,18 +1,18 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
 using Yutaka.Utils;
 
 namespace Yutaka.Web
 {
-    public class WebUtil : Controller
+	public static class WebUtil
     {
-		public WebUtil() { }
-
 		#region Methods
-		public void SetSessionVariables()
+		public static void SetSessionVariables()
 		{
 			var uniqueId = Base36.UniqueID();
+			var Request = HttpContext.Current.Request;
 			var url = Request.Url;
 			var referer = Request.UrlReferrer;
+			var Session = HttpContext.Current.Session;
 
 			if (Session["SessionId"] == null)
 				Session["SessionId"] = uniqueId;
