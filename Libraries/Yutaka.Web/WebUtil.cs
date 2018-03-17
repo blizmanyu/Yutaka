@@ -8,8 +8,8 @@ namespace Yutaka.Web
 		#region Methods
 		public static void SetSessionVariables()
 		{
-			var uniqueId = Base36.UniqueID();
 			var Request = HttpContext.Current.Request;
+			var uniqueId = Base36.UniqueID() + Base36.UniqueID(Request.UserHostAddress);
 			var url = Request.Url;
 			var referer = Request.UrlReferrer;
 			var Session = HttpContext.Current.Session;
