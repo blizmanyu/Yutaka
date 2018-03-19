@@ -9,7 +9,7 @@ namespace Yutaka.Web
 		public static void SetSessionVariables()
 		{
 			var Request = HttpContext.Current.Request;
-			var uniqueId = Base36.UniqueID() + Base36.UniqueID(Request.UserHostAddress);
+			var uniqueId = string.Format("{0}-{1}", Base36.UniqueID(), Base36.UniqueID(Request.UserHostAddress));
 			var url = Request.Url;
 			var referer = Request.UrlReferrer;
 			var Session = HttpContext.Current.Session;
