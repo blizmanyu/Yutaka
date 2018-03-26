@@ -225,6 +225,32 @@ namespace Yutaka.IO
 				File.Delete(source);
 		}
 
+		public static string[] GetAllLines(string filePath, int maxLines=-1)
+		{
+			if (String.IsNullOrEmpty(filePath))
+				throw new ArgumentNullException("filePath", "<filePath> is required.");
+
+			try {
+				if (maxLines < 1)
+					maxLines = File.ReadLines(filePath).Count();
+
+				var allLines = new string[maxLines];
+				using (var sr = File.OpenText(filePath)) {
+					var x = 0;
+					while (!sr.EndOfStream) {
+						allLines[x] = sr.ReadLine();
+						x += 1;
+					}
+				}
+
+				return allLines;
+			}
+
+			catch (Exception ex) {
+				throw ex;
+			}
+		}
+
 		// Retrieves the datetime WITHOUT loading the whole image //
 		public static DateTime GetDateTakenFromImage(string path)
 		{
