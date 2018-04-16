@@ -13,9 +13,9 @@ namespace Yutaka.Diagnostics
 			if (processes == null || processes.Length < 1)
 				return;
 
-			foreach (var p in processes) {
-				p.Kill();
-				p.Close();
+			for (int i = 0; i < processes.Length; i++) {
+				processes[i].Kill();
+				processes[i].Close();
 			}
 		}
 		#endregion
@@ -25,16 +25,15 @@ namespace Yutaka.Diagnostics
 		{
 			var processes = Process.GetProcessesByName(processName);
 
-			if (processes == null || processes.Length < 1) {
+			if (processes == null || processes.Length < 1)
 				return;
+
+			for (int i = 0; i < processes.Length; i++) {
+				processes[i].CloseMainWindow();
+				processes[i].Close();
 			}
 
-			foreach (var p in processes) {
-				p.CloseMainWindow();
-				p.Close();
-			}
-
-			Thread.Sleep(2000);
+			Thread.Sleep(2200);
 
 			if (forceKill)
 				KillProcessesByName(processName);
@@ -44,8 +43,25 @@ namespace Yutaka.Diagnostics
 		{
 			var args = "/r /f /t 30";
 
-			if (remoteCompName != null)
+			if (!string.IsNullOrEmpty(remoteCompName))
 				args = string.Format(@"{0} /m \\{1}", args, remoteCompName);
+
+			var psi = new ProcessStartInfo("shutdown", args);
+			psi.CreateNoWindow = true;
+			psi.UseShellExecute = false;
+			Process.Start(psi);
+		}
+
+		public static void RestartComputer(bool force = true, int waitTime = 30, string remoteCompName = null)
+		{
+			var args = "/r ";
+
+			if (force)
+				args += "/f ";
+			if (waitTime > 0)
+				args += string.Format("/t {0} ", waitTime);
+			if (!string.IsNullOrEmpty(remoteCompName))
+				args += string.Format(@"/m \\{1}", remoteCompName);
 
 			var psi = new ProcessStartInfo("shutdown", args);
 			psi.CreateNoWindow = true;
