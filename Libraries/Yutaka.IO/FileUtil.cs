@@ -271,6 +271,25 @@ namespace Yutaka.IO
 			}
 		}
 
+		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern="*")
+		{
+			Console.Write("\n");
+
+			var files = Directory.GetFiles(targetDirectory, searchPattern).ToList();
+			for (int i=0; i<files.Count; i++) {
+				Console.Write("\n{0}", files[i]);
+			}
+
+			// Recurse into subdirectories of this directory //
+			var subdirectories = Directory.GetDirectories(targetDirectory);
+			for (int i = 0; i < subdirectories.Length; i++) {
+				Console.Write("\n{0}", subdirectories[i]);
+				files.AddRange(GetFilesRecursive(subdirectories[i], searchPattern));
+			}
+			
+			return files;
+		}
+
 		/// <summary>
 		/// Gets the MinDate based on CreationTime, LastAccessTime, and LastWriteTime. Sometimes a date can be "blank" if the source is from a removable media (flash drives,
 		/// SD cards). In those cases, the date will be less than the dateThreshold of Jan 1, 1982, and will NOT return that date.
