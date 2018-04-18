@@ -161,6 +161,75 @@ namespace Yutaka.IO
 			}
 		}
 
+		public static List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int maxStackSize = 100)
+		{
+			if (String.IsNullOrEmpty(targetDirectory))
+				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
+			if (!Directory.Exists(targetDirectory))
+				throw new ArgumentException();
+
+			var list = new List<string>();
+			var dirs = new Stack<string>(maxStackSize);
+
+			dirs.Push(targetDirectory);
+
+			while (dirs.Count > 0) {
+				var currentDir = dirs.Pop();
+				Console.Write("\n");
+				Console.Write("\n==============================");
+				Console.Write("\ncurrentDir: {0}", currentDir);
+				Console.Write("\n==============================");
+				string[] subDirs;
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+				// An UnauthorizedAccessException exception will be thrown if we do not have discovery permission on a folder or file //
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				var files = new List<string>();
+				try {
+					files = Directory.EnumerateFiles(currentDir, searchPattern).ToList();
+					list.AddRange(files);
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				// Perform the required action on each file here. Modify this block to perform your required task.
+				for (int i=0; i<files.Count; i++) {
+					try {
+						// Perform whatever action is required in your scenario.
+						var fi = new FileInfo(files[i]);
+						Console.Write("\n{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+					}
+					catch (FileNotFoundException e) {
+						Console.Write("\n{0}: {1}", e.Message, currentDir);
+						continue;
+					}
+				}
+
+				// Push the subdirectories onto the stack for traversal.
+				for (int i=0; i<subDirs.Length; i++)
+					dirs.Push(subDirs[i]);
+			}
+
+			return list;
+		}
+
 		/// <summary>
 		/// Returns an IEnumerable of audio FileInfos that matches a specified search patthern and search subdirectory option.
 		/// </summary>
