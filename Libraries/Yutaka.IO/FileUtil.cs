@@ -271,22 +271,47 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern="*")
+		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern="*", int maxDepth=7)
 		{
-			Console.Write("\n");
+			if (String.IsNullOrEmpty(targetDirectory))
+				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
 
-			var files = Directory.GetFiles(targetDirectory, searchPattern).ToList();
-			for (int i=0; i<files.Count; i++) {
-				Console.Write("\n{0}", files[i]);
+			//Console.Write("\n");
+			//Console.Write("\n==============================");
+			//Console.Write("\ntargetDirectory: {0}", targetDirectory);
+			//Console.Write("\n==============================");
+			var files = new List<string>();
+			if (maxDepth < 1)
+				return files;
+
+			try {
+				files = Directory.EnumerateFiles(targetDirectory, searchPattern).ToList();
+				for (int i = 0; i < files.Count; i++) {
+					//Console.Write("\n{0}", files[i]);
+				}
+			}
+
+			catch (Exception) {
+				return files;
 			}
 
 			// Recurse into subdirectories of this directory //
 			var subdirectories = Directory.GetDirectories(targetDirectory);
 			for (int i = 0; i < subdirectories.Length; i++) {
-				Console.Write("\n{0}", subdirectories[i]);
-				files.AddRange(GetFilesRecursive(subdirectories[i], searchPattern));
+				//Console.Write("\n");
+				//Console.Write("\nsubDirectory: {0}", subdirectories[i]);
+				var fInfo = new FileInfo(subdirectories[i]);
+				var attributes = fInfo.Attributes;
+				var isReadOnly = fInfo.IsReadOnly;
+				if (isReadOnly)
+					fInfo.Attributes = FileAttributes.Normal;
+
+				files.AddRange(GetFilesRecursive(subdirectories[i], searchPattern, maxDepth-1));
+
+				if (isReadOnly)
+					fInfo.Attributes = attributes;
 			}
-			
+
 			return files;
 		}
 
