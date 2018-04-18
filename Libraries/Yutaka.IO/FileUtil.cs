@@ -175,10 +175,10 @@ namespace Yutaka.IO
 
 			while (dirs.Count > 0) {
 				var currentDir = dirs.Pop();
-				Console.Write("\n");
-				Console.Write("\n==============================");
-				Console.Write("\ncurrentDir: {0}", currentDir);
-				Console.Write("\n==============================");
+				//Console.Write("\n");
+				//Console.Write("\n==============================");
+				//Console.Write("\ncurrentDir: {0}", currentDir);
+				//Console.Write("\n==============================");
 				string[] subDirs;
 				try {
 					subDirs = Directory.GetDirectories(currentDir);
@@ -214,7 +214,7 @@ namespace Yutaka.IO
 					try {
 						// Perform whatever action is required in your scenario.
 						var fi = new FileInfo(files[i]);
-						Console.Write("\n{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+						//Console.Write("\n{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
 					}
 					catch (FileNotFoundException e) {
 						Console.Write("\n{0}: {1}", e.Message, currentDir);

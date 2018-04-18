@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using NLog;
+using Yutaka.IO;
 using Yutaka.Text;
 
 namespace Yutaka.Tests
@@ -31,22 +33,20 @@ namespace Yutaka.Tests
 		#endregion
 
 		#region Private Helpers
+		static void Process()
+		{
+			var tests = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) };
+			var files = new List<String>();
+
+			for (int i = 0; i < tests.Length; i++) {
+				files = FileUtil.EnumerateFilesStack(tests[i], "Green*");
+			}
+
+			Console.Write("\n\nCount: {0}", files.Count);
+		}
 		#endregion
 
 		#region Methods
-		static void Process()
-		{
-			var tests = new string[] { "yblizman@rcw1.com", "blizmanyu@gmail.com" };
-			var encoded = "";
-			var decoded = "";
-
-			for (int i=0; i<tests.Length; i++) {
-				encoded = TextUtil.Encode(tests[i]);
-				decoded = TextUtil.Decode(encoded);
-				Console.Write("\n{0} --> {1} --> {2}", tests[i], encoded, decoded);
-			}
-		}
-
 		static void Main(string[] args)
 		{
 			StartProgram();
