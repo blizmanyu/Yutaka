@@ -6,7 +6,7 @@ namespace Yutaka.Images
 {
 	public static class ImageUtil
 	{
-		public static bool ExistsAndValid(string filepath)
+		public static bool FileExistsAndValid(string filepath)
 		{
 			if (String.IsNullOrEmpty(filepath) || !File.Exists(filepath))
 				return false;
