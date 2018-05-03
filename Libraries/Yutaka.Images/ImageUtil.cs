@@ -9,13 +9,13 @@ namespace Yutaka.Images
 	{
 		private static HttpWebRequest request;
 
-		public static bool FileExistsAndValid(string filepath)
+		public static bool ExistsAndValidByFilePath(string filePath)
 		{
-			if (String.IsNullOrEmpty(filepath) || !File.Exists(filepath))
+			if (String.IsNullOrEmpty(filePath) || !File.Exists(filePath))
 				return false;
 
 			try {
-				using (var bmp = new Bitmap(filepath)) { }
+				using (var bmp = new Bitmap(filePath)) { }
 				return true;
 			}
 
@@ -24,7 +24,7 @@ namespace Yutaka.Images
 			}
 		}
 
-		public static bool UrlExistsAndValid(string url)
+		public static bool ExistsAndValidByUrl(string url)
 		{
 			if (String.IsNullOrEmpty(url))
 				return false;
