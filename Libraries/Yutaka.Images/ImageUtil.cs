@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -8,6 +9,7 @@ namespace Yutaka.Images
 	public static class ImageUtil
 	{
 		private static HttpWebRequest request;
+		private static string[] supportedExtensions = { ".BMP", ".EXIF", ".GIF", ".JPG", ".JPEG", ".PNG", ".TIFF" };
 
 		public static bool ExistsAndValidByFilePath(string filePath)
 		{
@@ -29,23 +31,41 @@ namespace Yutaka.Images
 			if (String.IsNullOrEmpty(url))
 				return false;
 
-			request = (HttpWebRequest) WebRequest.Create(url);
-			request.KeepAlive = true;
-			request.Method = "HEAD";
-			request.Proxy = null;
+			var contains = false;
+			url = url.ToUpper();
 
-			try {
-				using (var response = (HttpWebResponse) request.GetResponse()) {
-					var len = response.ContentLength;
-
-					if (len > 1024)
-						return true;
-					else
-						return false;
+			for (int i=0; i<supportedExtensions.Length; i++) {
+				if (url.Contains(supportedExtensions[i])) {
+					contains = true;
+					break;
 				}
 			}
 
-			catch (Exception) {
+			if (contains) {
+				Console.Write("\nsupportedExtensions.Contains(url)");
+				request = (HttpWebRequest) WebRequest.Create(url);
+				request.KeepAlive = true;
+				request.Method = "HEAD";
+				request.Proxy = null;
+
+				try {
+					using (var response = (HttpWebResponse) request.GetResponse()) {
+						var len = response.ContentLength;
+
+						if (len > 1024)
+							return true;
+						else
+							return false;
+					}
+				}
+
+				catch (Exception) {
+					return false;
+				}
+			}
+
+			else {
+				Console.Write("\n!!!supportedExtensions.Contains(url)");
 				return false;
 			}
 		}

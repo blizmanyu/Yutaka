@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using NLog;
 using Yutaka.IO;
 using Yutaka.Text;
+using Yutaka.Images;
 
 namespace Yutaka.Tests
 {
@@ -35,14 +36,15 @@ namespace Yutaka.Tests
 		#region Private Helpers
 		static void Process()
 		{
-			var tests = new string[] { Environment.GetFolderPath(Environment.SpecialFolder.ProgramFiles) };
-			var files = new List<String>();
+			var tests = new string[] {
+				"http://www.rarecoinwholesalers.com/Content/Images/Coins/134917fcs.jpg",
+				"http://www.rarecoinwholesalers.com/Content/Images/Coins/134917fcs.JPEG",
+				"http://www.rarecoinwholesalers.com/Content/Images/Coins/134917fcs.asdf",
+			};
 
 			for (int i = 0; i < tests.Length; i++) {
-				files = FileUtil.EnumerateFilesStack(tests[i], "Green*");
+				Console.Write("\n\nTest: {0}\n  ExistsAndValidByUrl: {1}", tests[i], ImageUtil.ExistsAndValidByUrl(tests[i]));
 			}
-
-			Console.Write("\n\nCount: {0}", files.Count);
 		}
 		#endregion
 
