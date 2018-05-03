@@ -1,12 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing;
+using System.IO;
 
 namespace Yutaka.Images
 {
-	public class ImageUtil
+	public static class ImageUtil
 	{
+		public static bool ExistsAndValid(string filepath)
+		{
+			if (String.IsNullOrEmpty(filepath) || !File.Exists(filepath))
+				return false;
+
+			try {
+				using (var bmp = new Bitmap(filepath)) { }
+				return true;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
 	}
 }
