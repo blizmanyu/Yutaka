@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Net;
@@ -13,7 +12,7 @@ namespace Yutaka.Images
 
 		public static bool ExistsAndValidByFilePath(string filePath)
 		{
-			if (String.IsNullOrEmpty(filePath) || !File.Exists(filePath))
+			if (String.IsNullOrWhiteSpace(filePath) || !File.Exists(filePath))
 				return false;
 
 			try {
@@ -28,44 +27,24 @@ namespace Yutaka.Images
 
 		public static bool ExistsAndValidByUrl(string url)
 		{
-			if (String.IsNullOrEmpty(url))
+			if (String.IsNullOrWhiteSpace(url))
 				return false;
 
-			var contains = false;
-			url = url.ToUpper();
+			request = (HttpWebRequest) WebRequest.Create(url);
+			request.KeepAlive = true;
+			request.Method = "HEAD";
+			request.Proxy = null;
 
-			for (int i=0; i<supportedExtensions.Length; i++) {
-				if (url.Contains(supportedExtensions[i])) {
-					contains = true;
-					break;
+			try {
+				using (var response = (HttpWebResponse) request.GetResponse()) {
+					if (response.ContentLength > 1024)
+						return true;
+					else
+						return false;
 				}
 			}
 
-			if (contains) {
-				Console.Write("\nsupportedExtensions.Contains(url)");
-				request = (HttpWebRequest) WebRequest.Create(url);
-				request.KeepAlive = true;
-				request.Method = "HEAD";
-				request.Proxy = null;
-
-				try {
-					using (var response = (HttpWebResponse) request.GetResponse()) {
-						var len = response.ContentLength;
-
-						if (len > 1024)
-							return true;
-						else
-							return false;
-					}
-				}
-
-				catch (Exception) {
-					return false;
-				}
-			}
-
-			else {
-				Console.Write("\n!!!supportedExtensions.Contains(url)");
+			catch (Exception) {
 				return false;
 			}
 		}
