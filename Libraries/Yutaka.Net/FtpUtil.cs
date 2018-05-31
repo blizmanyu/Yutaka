@@ -155,7 +155,7 @@ namespace Yutaka.Net
 			}
 
 			catch (Exception ex) {
-				throw ex;
+				throw new Exception(String.Format("Exception thrown in FtpUtil.UploadImage(source: {3}, dest: {4}, enableSsl: {5}, keepAlive: {6}, useBinary: {7}, usePassive: {8}){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, source, dest, enableSsl, keepAlive, useBinary, usePassive));
 			}
 		}
 	}
