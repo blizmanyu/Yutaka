@@ -160,12 +160,12 @@ namespace Yutaka.Text
 			return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
 		}
 
-		public static string ToTitleCaseSmart(string str)
+		public static string ToTitleCaseIfLengthGreaterThan(string str, int strLength=0)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
-			if (str.Length > 7 && (str == str.ToUpper() || str == str.ToLower()))
+			if (str.Length > strLength && (str == str.ToUpper() || str == str.ToLower()))
 				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
 
 			return str;
