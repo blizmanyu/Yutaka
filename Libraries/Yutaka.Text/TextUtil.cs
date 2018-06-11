@@ -137,9 +137,9 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(label))
 				return "";
 
+			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "PAGER" };
 			label = label.Trim();
 			var labelUpper = label.ToUpper();
-			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "PAGER" };
 
 			if (label.Length > 7 && (label == labelUpper || label == label.ToLower()))
 				return TextUtil.ToTitleCase(label);
