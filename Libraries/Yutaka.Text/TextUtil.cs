@@ -69,6 +69,7 @@ namespace Yutaka.Text
 			return stripped;
 		}
 		#endregion Phone Utils
+
 		public static Int64 ConvertIpToInt64(string ip)
 		{
 			if (String.IsNullOrEmpty(ip))
@@ -129,6 +130,26 @@ namespace Yutaka.Text
 				return Base36.Encode(result, lowerCase);
 
 			return timeStr;
+		}
+
+		public static string FormatCommonLabels(string label)
+		{
+			if (String.IsNullOrWhiteSpace(label))
+				return "";
+
+			label = label.Trim();
+			var labelUpper = label.ToUpper();
+			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "PAGER" };
+
+			if (label.Length > 7 && (label == labelUpper || label == label.ToLower()))
+				return TextUtil.ToTitleCase(label);
+
+			for (int i = 0; i < commonLabels.Length; i++) {
+				if (labelUpper == commonLabels[i])
+					return TextUtil.ToTitleCase(label);
+			}
+
+			return label;
 		}
 
 		public static string ToTitleCase(string str)
