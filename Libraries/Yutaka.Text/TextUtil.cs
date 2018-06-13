@@ -137,7 +137,7 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(label))
 				return "";
 
-			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "PAGER" };
+			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "FAX", "PAGER" };
 			label = label.Trim();
 			var labelUpper = label.ToUpper();
 
