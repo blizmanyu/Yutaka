@@ -51,10 +51,16 @@ namespace Yutaka.Utils
 		public static string UniqueID(DateTime? time = null)
 		{
 			if (time == null)
-				time = DateTime.Now;
+				time = DateTime.UtcNow;
 
-			var num = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
-			return Encode(Int64.Parse(num));
+			try {
+				var num = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
+				return Encode(Int64.Parse(num));
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.UniqueID(DateTime? time){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+			}
 		}
 
 		public static string UniqueID(string ip)
