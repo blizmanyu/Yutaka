@@ -70,11 +70,17 @@ namespace Yutaka.Utils
 			if (ip.Length < 7 || 16 < ip.Length)
 				throw new ArgumentOutOfRangeException("ip", ip, "<ip> must be a value between 0.0.0.0 and 255.255.255.255");
 
-			var sb = new StringBuilder();
-			ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
-			sb.Replace(".", "");
+			try {
+				var sb = new StringBuilder();
+				ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
+				sb.Replace(".", "");
 
-			return Encode(Int64.Parse(sb.ToString()));
+				return Encode(Int64.Parse(sb.ToString()));
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.UniqueID(string ip={3}){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, ip));
+			}
 		}
 	}
 }
