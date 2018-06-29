@@ -48,6 +48,42 @@ namespace Yutaka.Utils
 			return result;
 		}
 
+		public static string GetUniqueId(DateTime? time = null)
+		{
+			if (time == null)
+				time = DateTime.UtcNow;
+
+			try {
+				var num = ((DateTime) time).ToString("yyyyMMddHHmmssfff");
+				return Encode(Int64.Parse(num));
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.GetUniqueId(DateTime? time){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+			}
+		}
+
+		public static string GetUniqueIdByIP(string ipAddress)
+		{
+			if (String.IsNullOrEmpty(ipAddress))
+				throw new ArgumentNullException("ipAddress");
+			if (ipAddress.Length < 7 || 16 < ipAddress.Length)
+				throw new ArgumentOutOfRangeException("ipAddress", ipAddress, "<ipAddress> must be a value between 0.0.0.0 and 255.255.255.255");
+
+			try {
+				var sb = new StringBuilder();
+				ipAddress.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
+				sb.Replace(".", "");
+
+				return Encode(Int64.Parse(sb.ToString()));
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.GetUniqueIdByIP(string ipAddress={3}){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, ipAddress));
+			}
+		}
+
+		[Obsolete("Deprecated on Jun 28, 2018. Use GetUniqueId(DateTime? time = null) instead.")]
 		public static string UniqueID(DateTime? time = null)
 		{
 			if (time == null)
@@ -63,6 +99,7 @@ namespace Yutaka.Utils
 			}
 		}
 
+		[Obsolete("Deprecated on Jun 28, 2018. Use GetUniqueIdByIP(string ipAddress) instead.")]
 		public static string UniqueID(string ip)
 		{
 			if (String.IsNullOrEmpty(ip))
