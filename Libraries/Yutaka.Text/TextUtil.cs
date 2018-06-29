@@ -57,6 +57,30 @@ namespace Yutaka.Text
 			return phone;
 		}
 
+		public static bool IsValidPhone(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				throw new ArgumentNullException("phone");
+
+			try {
+				phone = StripPhone(phone);
+
+				if (phone.Length < 10)
+					return false;
+
+				if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") || phone.Contains("4444444") ||
+					phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") || phone.Contains("8888888") || phone.Contains("9999999") ||
+					phone.Contains("123456789") || phone.Contains("987654321"))
+					return false;
+
+				return true;
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in TextUtil.IsValidPhone(string phone={3}){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, phone));
+			}
+		}
+
 		public static string StripPhone(string phone)
 		{
 			if (phone == null)
