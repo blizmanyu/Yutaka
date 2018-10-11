@@ -340,6 +340,23 @@ namespace Yutaka.IO
 			}
 		}
 
+		public static long GetDirectorySize(string path, string searchPattern="*", SearchOption searchOption=SearchOption.AllDirectories)
+		{
+			try {
+				var files = Directory.EnumerateFiles(path, searchPattern, searchOption);
+				long bytes = 0;
+
+				foreach (var file in files)
+					bytes += new FileInfo(file).Length;
+
+				return bytes;
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in FileUtil.GetDirectorySize(string path='{3}', string searchPattern='{4}', SearchOption searchOption='{5}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, path ?? "null", searchPattern ?? "null", searchOption));
+			}
+		}
+
 		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern="*", int maxDepth=7)
 		{
 			if (String.IsNullOrEmpty(targetDirectory))
