@@ -33,8 +33,30 @@ namespace Yutaka.Tests
 		private static double errorPerThreshold = 0.07;
 		#endregion
 
-		#region Private Helpers
-		static void Process()
+		static void Main(string[] args)
+		{
+			StartProgram();
+			Test_FileUtil_GetDirectorySize();
+			EndProgram();
+		}
+
+		#region Test FileUtil.GetDirectorySize()
+		private static void Test_FileUtil_GetDirectorySize()
+		{
+			var tests = new string[] {
+				@"D:\_DeleteAfter2018_0822\Private\IT\backups\RCW_Imports(dev)\",
+				@"D:\_DeleteAfter2018_0822\Public\Jeff's Ads\IT\cdrive clement\RCW_Imports\",
+				@"D:\Departments\DevIT\Projects\RCW_Imports\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n\nTest: {0}\n  DirectorySize: {1}", tests[i], FileUtil.GetDirectorySize(tests[i]));
+			}
+		}
+		#endregion Test FileUtil.GetDirectorySize()
+
+		#region Test ImageUtil.ExistsAndValidByUrl()
+		static void Test_ImageUtil_ExistsAndValidByUrl()
 		{
 			var tests = new string[] {
 				"http://www.rarecoinwholesalers.com/Content/Images/Coins/134917fcs.jpg",
@@ -46,16 +68,9 @@ namespace Yutaka.Tests
 				Console.Write("\n\nTest: {0}\n  ExistsAndValidByUrl: {1}", tests[i], ImageUtil.ExistsAndValidByUrl(tests[i]));
 			}
 		}
-		#endregion
+		#endregion Test ImageUtil.ExistsAndValidByUrl()
 
 		#region Methods
-		static void Main(string[] args)
-		{
-			StartProgram();
-			Process();
-			EndProgram();
-		}
-
 		static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
