@@ -544,14 +544,12 @@ namespace Yutaka.IO
 				bufferSize = 4096;
 			#endregion Parameter Check
 
-			try
-			{
+			try {
 				using (StreamWriter sw = new StreamWriter(path, append, encoding, bufferSize))
 					sw.Write(value);
 			}
 
-			catch (Exception ex)
-			{
+			catch (Exception ex) {
 				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}', int bufferSize='{7}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, value, path, append, encoding, bufferSize));
 			}
 		}
