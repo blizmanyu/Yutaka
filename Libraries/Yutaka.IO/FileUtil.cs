@@ -525,6 +525,36 @@ namespace Yutaka.IO
 			else
 				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
 		}
+
+		public static void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
+		{
+			#region Parameter Check
+			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}<value> is NULL or whitespace", Environment.NewLine, value, path, append, encoding, bufferSize));
+
+			if (String.IsNullOrWhiteSpace(path))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}<path> is NULL or whitespace", Environment.NewLine, value, path, append, encoding, bufferSize));
+			if (String.IsNullOrWhiteSpace(Path.GetDirectoryName(path)))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}Directory doesn't exist or is inaccessible", Environment.NewLine, value, path, append, encoding, bufferSize));
+
+			if (encoding == null)
+				encoding = Encoding.Default;
+
+			if (bufferSize < 4096)
+				bufferSize = 4096;
+			#endregion Parameter Check
+
+			try
+			{
+				using (StreamWriter sw = new StreamWriter(path, append, encoding, bufferSize))
+					sw.Write(value);
+			}
+
+			catch (Exception ex)
+			{
+				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}', int bufferSize='{7}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, value, path, append, encoding, bufferSize));
+			}
+		}
 		#endregion
 
 		#region Enum
