@@ -36,9 +36,16 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_GetDirectorySize();
+			Test_FileUtil_Write();
 			EndProgram();
 		}
+
+		#region Test FileUtil.Write()
+		private static void Test_FileUtil_Write()
+		{
+			FileUtil.Write("delete me 2018 1023 0122", @"C:\TEMP\_DeleteMe 2018 1023 0122.txt");
+		}
+		#endregion Test FileUtil.Write()
 
 		#region Test FileUtil.GetDirectorySize()
 		private static void Test_FileUtil_GetDirectorySize()
