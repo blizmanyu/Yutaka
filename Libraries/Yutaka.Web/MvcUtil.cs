@@ -49,24 +49,20 @@ namespace Yutaka.Web
 			var Request = HttpContext.Current.Request;
 			var Session = HttpContext.Current.Session;
 
-			if (Session["SessionId"] == null || Session["SessionId"].ToString().Equals(""))
+			if (Session["SessionId"] == null || String.IsNullOrWhiteSpace(Session["SessionId"].ToString()))
 				Session["SessionId"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
 
-			if (Session["Url"] == null || Session["Url"].ToString().Equals(""))
+			if (Session["Url"] == null || String.IsNullOrWhiteSpace(Session["Url"].ToString()))
 				Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
 
-			if (Session["IsMobileDevice"] == null || Session["IsMobileDevice"].ToString().Equals(""))
+			if (Session["Orig_Referer"] == null)
+				Session["Orig_Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+
+			if (Session["Referer"] == null || String.IsNullOrWhiteSpace(Session["Referer"].ToString()))
+				Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+
+			if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
 				Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
-
-			if (Session["Orig_Referer"] == null || Session["Referer"] == null || Session["Referer"].ToString().Equals("")) {
-				var referer = Request.UrlReferrer;
-
-				if (Session["Orig_Referer"] == null)
-					Session["Orig_Referer"] = referer == null ? "" : referer.AbsoluteUri ?? "";
-
-				if (Session["Referer"] == null || Session["Referer"].ToString().Equals(""))
-					Session["Referer"] = referer == null ? "" : referer.AbsoluteUri ?? "";
-			}
 		}
 		#endregion Methods
 	}
