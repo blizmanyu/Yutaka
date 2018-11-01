@@ -2,9 +2,10 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using NLog;
+using Yutaka.Images;
 using Yutaka.IO;
 using Yutaka.Text;
-using Yutaka.Images;
+using Yutaka.Utils;
 
 namespace Yutaka.Tests
 {
@@ -36,16 +37,32 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_Write();
+			Test_Base36_GetUniqueIdByEmail();
 			EndProgram();
 		}
 
-		#region Test FileUtil.Write()
-		private static void Test_FileUtil_Write()
+		#region Test Base36.GetUniqueIdByEmail()
+		private static void Test_Base36_GetUniqueIdByEmail()
 		{
-			FileUtil.Write("delete me 2018 1023 0122", @"C:\TEMP\_DeleteMe 2018 1023 0122.txt");
+			var tests = new string[] {
+				@"yblizman@rcw1.com",
+				@" ! ! ! ! ! ! ! ! ",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\nInput: {0}", tests[i]);
+				Console.Write("\nOutput: {0}", Base36.GetUniqueIdByEmail(tests[i]));
+			}
 		}
-		#endregion Test FileUtil.Write()
+		#endregion Test Base36.GetUniqueIdByEmail()
+
+		//#region Test FileUtil.Write()
+		//private static void Test_FileUtil_Write()
+		//{
+		//	FileUtil.Write("delete me 2018 1023 0122", @"C:\TEMP\_DeleteMe 2018 1023 0122.txt");
+		//}
+		//#endregion Test FileUtil.Write()
 
 		#region Test FileUtil.GetDirectorySize()
 		private static void Test_FileUtil_GetDirectorySize()

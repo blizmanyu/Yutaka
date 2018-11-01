@@ -54,6 +54,10 @@
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Debug\Yutaka.Text.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Debug\Yutaka.Utils.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
