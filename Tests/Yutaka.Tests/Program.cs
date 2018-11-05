@@ -37,9 +37,31 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Base36_GetUniqueIdByEmail();
+			CampaignKeyGenerator();
 			EndProgram();
 		}
+
+		#region Campaign Key Generator
+		private static void CampaignKeyGenerator()
+		{
+		}
+		#endregion Campaign Key Generator
+
+		#region Test Base36.Encode/Decode()
+		private static void Test_Base36_Decode()
+		{
+			Console.Write("\nOutput: {0}", Base36.Decode("a0a0"));
+		}
+
+		private static void Test_Base36_Encode()
+		{
+			for (int i = 466920; i < 467220; i += 3) {
+				Console.Write("\n");
+				Console.Write("\nInput: {0}", i);
+				Console.Write("\nOutput: {0}", Base36.Encode(i));
+			}
+		}
+		#endregion Test Base36.GetUniqueIdByEmail()
 
 		#region Test Base36.GetUniqueIdByEmail()
 		private static void Test_Base36_GetUniqueIdByEmail()
