@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using Yutaka.IO;
+using Yutaka.Utils;
 
 namespace GoogleContactsCreator
 {
@@ -18,10 +19,7 @@ namespace GoogleContactsCreator
 		const int SW_HIDE = 0;
 		#endregion
 
-		// Constants //
 		const string TIMESTAMP = @"[HH:mm:ss] ";
-
-		// PIVs //
 		private static DateTime startTime = DateTime.Now;
 		private static int errorCount = 0;
 		private static int totalCount = 0;
@@ -35,7 +33,14 @@ namespace GoogleContactsCreator
 		#region Methods
 		static void Process()
 		{
+			var url = "asdf";
+			var now = DateTime.Now;
+			var path = String.Format(@"C:\TEMP\CampaignKeys {0}.txt", now.ToString("yyyy MMdd HHmm ssff"));
 
+			FileUtil.Write("CampaignId\tKey\tCreatedOn\tUrl\n", path);
+
+			for (int i = 466920; i < 467220; i += 3)
+				FileUtil.Write(String.Format("{0}\t{1}\t{2}\t{3}{1}\n", 1, Base36.Encode(i), now, url), path);
 		}
 
 		static void Main(string[] args)
