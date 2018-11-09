@@ -63,6 +63,7 @@ namespace Yutaka.Utils
 			}
 		}
 
+		// Work in progress. Do NOT use yet //
 		public static string GetUniqueIdByEmail(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
