@@ -43,7 +43,7 @@ namespace GoogleContactsCreator
 			var phonePrefix = "(408) 717-";
 
 			for (int i = 0; i < 10000; i++) {
-				if (i % 400 == 0)
+				if (i % 477 == 0)
 					FileUtil.Write(String.Format("\n{1} {0:d4},{1},{0:d4},* myContacts,,{2}{0:d4}", i, givenName, phonePrefix), path);
 				else if (i == 860)
 					continue;
