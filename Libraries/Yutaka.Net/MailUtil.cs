@@ -9,7 +9,7 @@ namespace Yutaka.Net
 		#region Methods
 		public static string Clean(string email)
 		{
-			if (email == null)
+			if (String.IsNullOrWhiteSpace(email))
 				return "";
 
 			while (email.Contains(" "))
