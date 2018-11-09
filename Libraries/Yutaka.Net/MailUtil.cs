@@ -21,10 +21,13 @@ namespace Yutaka.Net
 			return email;
 		}
 
-		public static bool IsValid(string email)
+		public static bool IsValid(string email, bool cleanFirst = false)
 		{
-			if (String.IsNullOrWhiteSpace(email) || email == "")
+			if (String.IsNullOrWhiteSpace(email))
 				return false;
+
+			if (cleanFirst)
+				email = Clean(email);
 
 			try {
 				var v = new MailAddress(email);
