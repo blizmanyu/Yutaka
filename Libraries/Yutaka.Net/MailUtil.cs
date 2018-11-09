@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Mail;
+using System.Text;
 
 namespace Yutaka.Net
 {
@@ -19,6 +20,31 @@ namespace Yutaka.Net
 				email = email.ToLower();
 
 			return email;
+		}
+
+		public static string EncodeEmail(string email, bool cleanFirst = false)
+		{
+			if (String.IsNullOrWhiteSpace(email))
+				return "";
+
+			if (cleanFirst)
+				email = Clean(email);
+
+			try {
+				var sb = new StringBuilder();
+				int c;
+
+				for (int i = 0; i < email.Length; i++) {
+					c = email[i] + 2;
+					sb.Append((char) c);
+				}
+
+				return sb.ToString();
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in WebHelper.EncodeEmail(string email='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, email));
+			}
 		}
 
 		public static bool IsValid(string email, bool cleanFirst = false)
