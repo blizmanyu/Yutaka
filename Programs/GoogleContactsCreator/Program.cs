@@ -33,14 +33,23 @@ namespace GoogleContactsCreator
 		#region Methods
 		static void Process()
 		{
-			var url = "asdf";
 			var now = DateTime.Now;
-			var path = String.Format(@"C:\TEMP\CampaignKeys {0}.txt", now.ToString("yyyy MMdd HHmm ssff"));
+			var path = String.Format(@"C:\TEMP\Contacts {0}.csv", now.ToString("yyyy MMdd HHmm ssff"));
 
-			FileUtil.Write("CampaignId\tKey\tCreatedOn\tUrl\n", path);
+			// Headers //
+			FileUtil.Write("Name,Given Name,Family Name,Group Membership,Phone 1 - Type,Phone 1 - Value", path);
 
-			for (int i = 466920; i < 467220; i += 3)
-				FileUtil.Write(String.Format("{0}\t{1}\t{2}\t{3}{1}\n", 1, Base36.Encode(i), now, url), path);
+			var givenName = "RoboCall";
+			var phonePrefix = "(408) 717-";
+
+			for (int i = 0; i < 10000; i++) {
+				if (i % 400 == 0)
+					FileUtil.Write(String.Format("\n{1} {0:d4},{1},{0:d4},* myContacts,,{2}{0:d4}", i, givenName, phonePrefix), path);
+				else if (i == 860)
+					continue;
+				else
+					FileUtil.Write(String.Format(" ::: {1}{0:d4}", i, phonePrefix), path);
+			}
 		}
 
 		static void Main(string[] args)
