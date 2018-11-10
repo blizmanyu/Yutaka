@@ -100,8 +100,15 @@ namespace Yutaka.Web
 				if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
 					Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
 
-				Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
-				Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+				if (Session["Url"] == null || String.IsNullOrWhiteSpace(Session["Url"].ToString())) {
+					Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
+					Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+				}
+
+				else {
+					Session["Referer"] = Session["Url"].ToString();
+					Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
+				}
 			}
 
 			catch (Exception ex) {
