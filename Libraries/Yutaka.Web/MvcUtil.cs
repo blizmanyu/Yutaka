@@ -87,20 +87,26 @@ namespace Yutaka.Web
 
 		public static void SetSessionVariables()
 		{
-			var Request = HttpContext.Current.Request;
-			var Session = HttpContext.Current.Session;
+			try {
+				var Request = HttpContext.Current.Request;
+				var Session = HttpContext.Current.Session;
 
-			if (Session["SessionId"] == null || String.IsNullOrWhiteSpace(Session["SessionId"].ToString()))
-				Session["SessionId"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
+				if (Session["SessionId"] == null || String.IsNullOrWhiteSpace(Session["SessionId"].ToString()))
+					Session["SessionId"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
 
-			if (Session["Orig_Referer"] == null)
-				Session["Orig_Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+				if (Session["SessionSource"] == null)
+					Session["SessionSource"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
 
-			if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
-				Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
+				if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
+					Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
 
-			Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
-			Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+				Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
+				Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in MvcUtil.SetSessionVariables(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+			}
 		}
 	}
 }
