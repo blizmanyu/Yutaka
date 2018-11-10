@@ -39,6 +39,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Yutaka.Web\bin\Debug\System.Web.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -57,6 +61,9 @@
     <Reference Include="Yutaka.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.Utils\bin\Debug\Yutaka.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Web">
+      <HintPath>..\..\Libraries\Yutaka.Web\bin\Debug\Yutaka.Web.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
