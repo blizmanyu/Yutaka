@@ -6,6 +6,7 @@ using Yutaka.Utils;
 
 namespace Yutaka.Web
 {
+	[Obsolete("Deprecated. Use WebUtil instead.")]
 	public static class MvcUtil
 	{
 		// Fields //
