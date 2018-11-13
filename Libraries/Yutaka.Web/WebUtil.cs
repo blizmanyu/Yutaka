@@ -72,11 +72,11 @@ namespace Yutaka.Web
 				var Request = HttpContext.Current.Request;
 				var Session = HttpContext.Current.Session;
 
-				if (Session["SessionId"] == null || String.IsNullOrWhiteSpace(Session["SessionId"].ToString()))
-					Session["SessionId"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
+				if (Session["Id"] == null || String.IsNullOrWhiteSpace(Session["Id"].ToString()))
+					Session["Id"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
 
-				if (Session["SessionSource"] == null)
-					Session["SessionSource"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+				if (Session["Source"] == null)
+					Session["Source"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
 
 				if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
 					Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
