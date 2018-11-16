@@ -66,6 +66,37 @@ namespace Yutaka.Web
 			return false;
 		}
 
+		// Work in progress: do NOT use yet //
+		public static void SetCookie(string name, string id=null, string ip=null, string email = null, string source=null)
+		{
+			try {
+				var now = DateTime.Now;
+				var Session = HttpContext.Current.Session;
+				var Request = HttpContext.Current.Request;
+				var newCookie = Request.Cookies[name];
+
+				if (newCookie == null)
+					newCookie = new HttpCookie(name);
+
+				if (String.IsNullOrWhiteSpace(id))
+					newCookie["id"] = Session["Id"] == null ? "" : Session["Id"].ToString();
+				else
+					newCookie["id"] = id;
+
+				if (String.IsNullOrWhiteSpace(ip))
+					newCookie["i"] = Request.UserHostAddress ?? "";
+				else
+					newCookie["i"] = ip;
+
+				newCookie.Expires = now.AddYears(4);
+				HttpContext.Current.Response.Cookies.Add(newCookie);
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in WebUtil.SetCookie(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+			}
+		}
+
 		public static void SetSessionVariables()
 		{
 			try {
