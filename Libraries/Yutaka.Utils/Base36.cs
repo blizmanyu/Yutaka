@@ -83,6 +83,21 @@ namespace Yutaka.Utils
 			}
 		}
 
+		public static string DecodeIp(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			try {
+				var decoded = Decode(str);
+				return decoded.ToString();
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.DecodeIp(string str='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, str));
+			}
+		}
+
 		// Work in progress. Do NOT use yet //
 		public static string GetUniqueIdByEmail(string email)
 		{
