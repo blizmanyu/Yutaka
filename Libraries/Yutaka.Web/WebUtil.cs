@@ -73,23 +73,32 @@ namespace Yutaka.Web
 				var now = DateTime.Now;
 				var Session = HttpContext.Current.Session;
 				var Request = HttpContext.Current.Request;
-				var newCookie = Request.Cookies[name];
+				var cookie = Request.Cookies[name];
 
-				if (newCookie == null)
-					newCookie = new HttpCookie(name);
+				if (cookie == null)
+					cookie = new HttpCookie(name);
 
-				if (String.IsNullOrWhiteSpace(id))
-					newCookie["id"] = Session["Id"] == null ? "" : Session["Id"].ToString();
-				else
-					newCookie["id"] = id;
+				// ID - should never change unless obviously NULL or empty //
+				if (String.IsNullOrWhiteSpace(cookie["id"])) {
+					cookie["id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
+																 : id;
+				}
 
-				if (String.IsNullOrWhiteSpace(ip))
-					newCookie["i"] = Request.UserHostAddress ?? "";
-				else
-					newCookie["i"] = ip;
+				// IP - should never change unless obviously NULL or empty //
+				if (String.IsNullOrWhiteSpace(cookie["i"])) {
+					if (String.IsNullOrWhiteSpace(ip))
+						ip = Request.UserHostAddress ?? "";
+					cookie["i"] = EncodeIp(ip);
+				}
 
-				newCookie.Expires = now.AddYears(4);
-				HttpContext.Current.Response.Cookies.Add(newCookie);
+				// Email - can change if the //
+
+				// Source - laskdjf //
+
+
+
+				cookie.Expires = now.AddYears(4);
+				HttpContext.Current.Response.Cookies.Add(cookie);
 			}
 
 			catch (Exception ex) {
