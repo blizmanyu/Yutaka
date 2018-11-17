@@ -91,7 +91,7 @@ namespace Yutaka.Utils
 			try {
 				var decoded = Decode(str);
 
-
+				// https://stackoverflow.com/questions/461742/how-to-convert-an-ipv4-address-into-a-integer-in-c //
 
 				return String.Format("{0:d10}", decoded);
 			}
