@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 using System.Text;
 
 namespace Yutaka.Utils
@@ -10,36 +9,6 @@ namespace Yutaka.Utils
 	{
 		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-		public static string Encode2(BigInteger input, bool lowerCase = true)
-		{
-			if (input < 0)
-				throw new ArgumentOutOfRangeException("input", input, "input cannot be negative");
-
-			var CharList = lowerCase ? CharListLower : CharListUpper;
-			var result = new Stack<char>();
-			int i;
-			while (!input.IsZero) {
-				i = (int)(input % 36);
-				result.Push(CharList[i]);
-				input = BigInteger.Divide(input, 36);
-			}
-
-			return new string(result.ToArray());
-		}
-
-		public static BigInteger Decode2(string input, bool lowerCase = true)
-		{
-			var CharList = lowerCase ? CharListLower : CharListUpper;
-			var reversed = input.Reverse();
-			var result = BigInteger.Zero;
-			var pos = 0;
-			foreach (char c in reversed) {
-				result = BigInteger.Add(result, BigInteger.Multiply(CharList.IndexOf(c), BigInteger.Pow(36, pos)));
-				pos++;
-			}
-			return result;
-		}
 
 		public static string Encode(long input, bool lowerCase = true)
 		{
@@ -104,9 +73,8 @@ namespace Yutaka.Utils
 			try {
 				var sb = new StringBuilder();
 				ipAddress.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
-				Console.Write("\n{0}", sb);
 
-				return Encode2(BigInteger.Parse(sb.ToString()));
+				return Encode(Int64.Parse(sb.ToString()));
 			}
 
 			catch (Exception ex) {
@@ -121,8 +89,11 @@ namespace Yutaka.Utils
 				return "";
 
 			try {
-				var decoded = Decode2(str);
-				return decoded.ToString();
+				var decoded = Decode(str);
+
+
+
+				return String.Format("{0:d10}", decoded);
 			}
 
 			catch (Exception ex) {
