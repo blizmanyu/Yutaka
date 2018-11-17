@@ -41,9 +41,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_MvcUtil_IsBot();
+			Test_Base36_EncodeIp_DecodeIp();
 			EndProgram();
 		}
+
+		#region Test Base36.EncodeIp/DecodeIp
+		private static void Test_Base36_EncodeIp_DecodeIp()
+		{
+			var tests = new string[] {
+				"0.0.0.1",
+				"98.189.176.208",
+				"255.255.255.255",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\nInput: {0}", tests[i]);
+				Console.Write("\nEncoded: {0}", Base36.EncodeIp(tests[i]));
+				Console.Write("\nDecoded: {0}", Base36.DecodeIp(tests[i]));
+			}
+		}
+		#endregion Test Base36.EncodeIp/DecodeIp
 
 		#region Test MvcUtil.IsBot()
 		private static void Test_MvcUtil_IsBot()
