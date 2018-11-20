@@ -72,53 +72,53 @@ namespace Yutaka.IO
 
 		#region Public Methods
 		public static void CopyFile(FileInfo source, string dest, bool overwrite=false, TimestampOption tOption=TimestampOption.WindowsDefault)
-		{
-			if (source == null)
-				throw new ArgumentNullException("source");
+			{
+				if (source == null)
+					throw new ArgumentNullException("source");
 
-			if (dest == null)
-				throw new ArgumentNullException("dest");
+				if (dest == null)
+					throw new ArgumentNullException("dest");
 
-			if (tOption == TimestampOption.WindowsDefault)
-				source.CopyTo(dest, overwrite);
+				if (tOption == TimestampOption.WindowsDefault)
+					source.CopyTo(dest, overwrite);
 
-			else {
-				var now = DateTime.Now;
-				var creationTime = now;
-				var lastAccessTime = now;
-				var lastWriteTime = now;
+				else {
+					var now = DateTime.Now;
+					var creationTime = now;
+					var lastAccessTime = now;
+					var lastWriteTime = now;
 
-				switch (tOption) {
-					case TimestampOption.PreserveOriginal:
-						creationTime = source.CreationTime;
-						lastAccessTime = source.LastAccessTime;
-						lastWriteTime = source.LastWriteTime;
-						break;
-					case TimestampOption.SetAllToMinDate:
-						var minDate = GetMinTime(source);
-						creationTime = minDate;
-						lastAccessTime = minDate;
-						lastWriteTime = minDate;
-						break;
-					case TimestampOption.SetAllToDateTaken:
-						var dateTaken = GetMinTime(source);
-						creationTime = dateTaken;
-						lastAccessTime = dateTaken;
-						lastWriteTime = dateTaken;
-						break;
-					default:
-						throw new Exception(String.Format("{0} isn't a valid TimestampOption, or, it hasn't been implemented yet", tOption));
-				}
+					switch (tOption) {
+						case TimestampOption.PreserveOriginal:
+							creationTime = source.CreationTime;
+							lastAccessTime = source.LastAccessTime;
+							lastWriteTime = source.LastWriteTime;
+							break;
+						case TimestampOption.SetAllToMinDate:
+							var minDate = GetMinTime(source);
+							creationTime = minDate;
+							lastAccessTime = minDate;
+							lastWriteTime = minDate;
+							break;
+						case TimestampOption.SetAllToDateTaken:
+							var dateTaken = GetMinTime(source);
+							creationTime = dateTaken;
+							lastAccessTime = dateTaken;
+							lastWriteTime = dateTaken;
+							break;
+						default:
+							throw new Exception(String.Format("{0} isn't a valid TimestampOption, or, it hasn't been implemented yet", tOption));
+					}
 
-				var newFile = source.CopyTo(dest, overwrite);
+					var newFile = source.CopyTo(dest, overwrite);
 
-				if (newFile != null) {
-					newFile.CreationTime = creationTime;
-					newFile.LastWriteTime = lastAccessTime;
-					newFile.LastAccessTime = lastWriteTime;
+					if (newFile != null) {
+						newFile.CreationTime = creationTime;
+						newFile.LastWriteTime = lastAccessTime;
+						newFile.LastAccessTime = lastWriteTime;
+					}
 				}
 			}
-		}
 
 		public static void CopyFile(string source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
 		{
@@ -159,75 +159,6 @@ namespace Yutaka.IO
 			else /*!destInfo.Exists*/ {
 				CopyFile(sourceInfo, dest);
 			}
-		}
-
-		public static List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int maxStackSize = 100)
-		{
-			if (String.IsNullOrEmpty(targetDirectory))
-				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
-			if (!Directory.Exists(targetDirectory))
-				throw new ArgumentException();
-
-			var list = new List<string>();
-			var dirs = new Stack<string>(maxStackSize);
-
-			dirs.Push(targetDirectory);
-
-			while (dirs.Count > 0) {
-				var currentDir = dirs.Pop();
-				//Console.Write("\n");
-				//Console.Write("\n==============================");
-				//Console.Write("\ncurrentDir: {0}", currentDir);
-				//Console.Write("\n==============================");
-				string[] subDirs;
-				try {
-					subDirs = Directory.GetDirectories(currentDir);
-				}
-				// An UnauthorizedAccessException exception will be thrown if we do not have discovery permission on a folder or file //
-				catch (UnauthorizedAccessException e) {
-					Console.Write("\n{0}: {1}", e.Message, currentDir);
-					continue;
-				}
-				catch (DirectoryNotFoundException e) {
-					Console.Write("\n{0}: {1}", e.Message, currentDir);
-					continue;
-				}
-
-				var files = new List<string>();
-				try {
-					files = Directory.EnumerateFiles(currentDir, searchPattern).ToList();
-					list.AddRange(files);
-				}
-
-				catch (UnauthorizedAccessException e) {
-					Console.Write("\n{0}: {1}", e.Message, currentDir);
-					continue;
-				}
-
-				catch (DirectoryNotFoundException e) {
-					Console.Write("\n{0}: {1}", e.Message, currentDir);
-					continue;
-				}
-
-				// Perform the required action on each file here. Modify this block to perform your required task.
-				for (int i=0; i<files.Count; i++) {
-					try {
-						// Perform whatever action is required in your scenario.
-						var fi = new FileInfo(files[i]);
-						//Console.Write("\n{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
-					}
-					catch (FileNotFoundException e) {
-						Console.Write("\n{0}: {1}", e.Message, currentDir);
-						continue;
-					}
-				}
-
-				// Push the subdirectories onto the stack for traversal.
-				for (int i=0; i<subDirs.Length; i++)
-					dirs.Push(subDirs[i]);
-			}
-
-			return list;
 		}
 
 		/// <summary>
@@ -292,6 +223,68 @@ namespace Yutaka.IO
 
 			if (delete)
 				File.Delete(source);
+		}
+
+		public static void FixCreationTime(string root, string searchPattern="*", int initialCapacity = 1024)
+		{
+			if (String.IsNullOrWhiteSpace(root))
+				throw new Exception(String.Format("Exception thrown in FileUtil.FixCreationTime(string root, string searchPattern='*', int initialCapacity=1024){0}<root> is {1}", Environment.NewLine, root == null ? "NULL" : "Empty"));
+			if (!Directory.Exists(root))
+				throw new Exception(String.Format("Exception thrown in FileUtil.FixCreationTime(string root, string searchPattern='*', int initialCapacity=1024){0}Directory doesn't exist: {1}", Environment.NewLine, root));
+
+			// Data structure to hold names of subfolders to be examined for files.
+			var dirs = new Stack<string>(initialCapacity);
+			dirs.Push(root);
+			string currentDir;
+			FileInfo fi;
+
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
+
+				// Perform required action on each file  //
+				try {
+					foreach (var file in Directory.EnumerateFiles(currentDir, searchPattern)) {
+						try {
+							fi = new FileInfo(file);
+
+							if (fi.CreationTime > fi.LastWriteTime)
+								fi.CreationTime = fi.LastWriteTime;
+						}
+						catch (FileNotFoundException) {
+							continue;
+						}
+					}
+				}
+
+				catch (UnauthorizedAccessException) {
+					continue;
+				}
+
+				catch (DirectoryNotFoundException) {
+					continue;
+				}
+
+				catch (PathTooLongException) {
+					continue;
+				}
+
+				// Push subdirectories onto stack for traversal //
+				try {
+					try {
+						foreach (var suDir in Directory.EnumerateDirectories(currentDir))
+							dirs.Push(suDir);
+					}
+					catch (PathTooLongException) {
+						continue;
+					}
+				}
+				catch (UnauthorizedAccessException) {
+					continue;
+				}
+				catch (DirectoryNotFoundException) {
+					continue;
+				}
+			}
 		}
 
 		public static string[] GetAllLines(string filePath, int maxLines=-1)
@@ -559,5 +552,77 @@ namespace Yutaka.IO
 		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
 		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
 		#endregion
+
+		#region Deprecated
+		[Obsolete("Deprecated on Nov 19, 2018. No alternate method exists.", true)]
+		public static List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int initialCapacity = 100)
+		{
+			if (String.IsNullOrEmpty(targetDirectory))
+				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
+			if (!Directory.Exists(targetDirectory))
+				throw new ArgumentException();
+
+			var list = new List<string>();
+			var dirs = new Stack<string>(initialCapacity);
+
+			dirs.Push(targetDirectory);
+
+			while (dirs.Count > 0) {
+				var currentDir = dirs.Pop();
+				//Console.Write("\n");
+				//Console.Write("\n==============================");
+				//Console.Write("\ncurrentDir: {0}", currentDir);
+				//Console.Write("\n==============================");
+				string[] subDirs;
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+				// An UnauthorizedAccessException exception will be thrown if we do not have discovery permission on a folder or file //
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				var files = new List<string>();
+				try {
+					files = Directory.EnumerateFiles(currentDir, searchPattern).ToList();
+					list.AddRange(files);
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				// Perform the required action on each file here. Modify this block to perform your required task.
+				for (int i = 0; i < files.Count; i++) {
+					try {
+						// Perform whatever action is required in your scenario.
+						var fi = new FileInfo(files[i]);
+						//Console.Write("\n{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+					}
+					catch (FileNotFoundException e) {
+						Console.Write("\n{0}: {1}", e.Message, currentDir);
+						continue;
+					}
+				}
+
+				// Push the subdirectories onto the stack for traversal.
+				for (int i = 0; i < subDirs.Length; i++)
+					dirs.Push(subDirs[i]);
+			}
+
+			return list;
+		}
+		#endregion Deprecated
 	}
 }

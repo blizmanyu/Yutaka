@@ -42,9 +42,24 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Base36_EncodeIp_DecodeIp();
+			Test_FileUtil_FixCreationTime();
 			EndProgram();
 		}
+
+		#region Test FileUtil.FixCreationTime
+		private static void Test_FileUtil_FixCreationTime()
+		{
+			var tests = new string[] {
+				@"D:\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\nTest {0}: {1}", i+1, tests[i]);
+				FileUtil.FixCreationTime(tests[i], "RCW_Imports*");
+			}
+		}
+		#endregion Test FileUtil.FixCreationTime
 
 		#region Test Base36.EncodeIp/DecodeIp
 		private static void Test_Base36_EncodeIp_DecodeIp()
