@@ -49,14 +49,16 @@ namespace Yutaka.Tests
 		#region Test FileUtil.FixCreationTime
 		private static void Test_FileUtil_FixCreationTime()
 		{
+			var searchPattern = @"*";
 			var tests = new string[] {
-				@"D:\",
+				@"D:\RCW_Imports",
+				@"D:\RCW_Imports\03\RCW_Imports\RCW_Imports\bin\Debug\",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
 				Console.Write("\n");
-				Console.Write("\nTest {0}: {1}", i+1, tests[i]);
-				FileUtil.FixCreationTime(tests[i], "RCW_Imports*");
+				Console.Write("\nTest #{0}: {1}", i+1, tests[i]);
+				FileUtil.FixCreationTime(tests[i], searchPattern);
 			}
 		}
 		#endregion Test FileUtil.FixCreationTime
