@@ -29,15 +29,6 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static double errorPerThreshold = 0.07;
 		#endregion
 
-		#region Private Helpers
-		#endregion
-
-		#region Methods
-		static void Process()
-		{
-
-		}
-
 		static void Main(string[] args)
 		{
 			StartProgram();
@@ -45,7 +36,12 @@ namespace Yutaka.NewConsoleAppTemplate
 			EndProgram();
 		}
 
-		static void StartProgram()
+		private static void Process()
+		{
+
+		}
+
+		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
 			logger.Info(log);
@@ -61,7 +57,7 @@ namespace Yutaka.NewConsoleAppTemplate
 			}
 		}
 
-		static void EndProgram()
+		private static void EndProgram()
 		{
 			var endTime = DateTime.Now;
 			var ts = endTime - startTime;
@@ -93,6 +89,5 @@ namespace Yutaka.NewConsoleAppTemplate
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
-		#endregion
 	}
 }
