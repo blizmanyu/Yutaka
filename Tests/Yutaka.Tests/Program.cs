@@ -86,49 +86,49 @@ namespace Yutaka.Tests
 		#endregion Test Base36.EncodeIp/DecodeIp
 
 		#region Test MvcUtil.IsBot()
-		private static void Test_MvcUtil_IsBot()
-		{
-			var tests = new string[] {
-				@"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0 (NetShelter ContentScan, contact abuse@inpwrd.com for information)",
-				@"panscient.com",
-				@"mixnode.com",
-				@"Mozilla/5.0 (compatible; Dataprovider.com;)",
-				@"Barkrowler/0.5.1 (experimenting / debugging - sorry for your logs ) www.exensa.com/crawl - admin@exensa.com -- based on BUBing",
-				@"Mozilla/5.0 (compatible; um-LN/1.0; mailto: techinfo@ubermetrics-technologies.com)",
-				@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; Avant Browser [avantbrowser.com]; Hotbar 4.4.5.0)",
-				@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; TheFreeDictionary.com; .NET CLR 1.1.4322; .NET CLR 1.0.3705; .NET CLR 2.0.50727)",
-				@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; MAXTHON 2.0); Connect Us: webauth@cmcm.com",
-				@"Barkrowler/0.4.8 (experimenting / debugging - sorry for your logs ) www.exensa.com/crawl - admin@exensa.com -- based on BUBing",
-				@"dj-research/Nutch-1.11 (analytics@@demandjump.com)",
-				@"Mozilla/5.0 (X11; U; Linux x86; en-US) adbeat.com/policy Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3 AppleWebKit/532.4 Safari/532.4",
-				@"Mozilla/5.0 (compatible; um-LN/1.0; mailto: techinfo@ubermetrics-technologies.com; Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
-				@"Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)",
-				@"Mozilla/5.0 (X11; Linux x86_64) adbeat.com/policy AppleWebKit/537.21 (KHTML, like Gecko) Firefox/34.0 Safari/537.21",
-				@"Mozilla/5.0 (compatible; Dataprovider.com)",
-				@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36 Scanning for research (researchscan.comsys.rwth-aachen.de)",
-				@"Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3 like Mac OS X; en-US) adbeat.com/policy AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8F190 Safari/6533.18.5",
-				@"Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20100101 Firefox/21.0 WordPress.com mShots",
-				@"izsearch.com",
-				@"VSE/1.0 (rabraham@multiview.com)",
-				@"Mozilla/5.0 (X11; U; Linux x86; es-ES) adbeat.com/policy Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3 AppleWebKit/532.4 Safari/532.4",
-				@"Icarus6j - (contact: phil@icarus6.com)",
-				@"Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0) LinkCheck by Siteimprove.com",
-				@"Mozilla/5.0 (Windows NT 10.0; WOW64; %lang_code%) adbeat.com/policy AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36",
-				@"Mozilla/5.0 (Windows NT 6.1; rv:12.0; StumbleUpon; noc@stumbleupon.com) Gecko/20100101 Firefox/12.0",
-				@"Scanning for research (researchscan.comsys.rwth-aachen.de)",
-				@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_6) AppleWebKit/534.24 (KHTML, like Gecko) (Contact: backend@getprismatic.com)",
-				@"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) WordPress.com mShots Safari/537.36",
-				@"Mozilla/5.0 Project 25499 (project25499.com)",
-				@"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/67.0.3372.0 Safari/537.36 WordPress.com mShots",
-				@"SiteTruth.com site rating system",
-			};
+		//private static void Test_MvcUtil_IsBot()
+		//{
+		//	var tests = new string[] {
+		//		@"Mozilla/5.0 (Windows NT 6.3; WOW64; rv:36.0) Gecko/20100101 Firefox/36.0 (NetShelter ContentScan, contact abuse@inpwrd.com for information)",
+		//		@"panscient.com",
+		//		@"mixnode.com",
+		//		@"Mozilla/5.0 (compatible; Dataprovider.com;)",
+		//		@"Barkrowler/0.5.1 (experimenting / debugging - sorry for your logs ) www.exensa.com/crawl - admin@exensa.com -- based on BUBing",
+		//		@"Mozilla/5.0 (compatible; um-LN/1.0; mailto: techinfo@ubermetrics-technologies.com)",
+		//		@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; Avant Browser [avantbrowser.com]; Hotbar 4.4.5.0)",
+		//		@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; TheFreeDictionary.com; .NET CLR 1.1.4322; .NET CLR 1.0.3705; .NET CLR 2.0.50727)",
+		//		@"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727; MAXTHON 2.0); Connect Us: webauth@cmcm.com",
+		//		@"Barkrowler/0.4.8 (experimenting / debugging - sorry for your logs ) www.exensa.com/crawl - admin@exensa.com -- based on BUBing",
+		//		@"dj-research/Nutch-1.11 (analytics@@demandjump.com)",
+		//		@"Mozilla/5.0 (X11; U; Linux x86; en-US) adbeat.com/policy Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3 AppleWebKit/532.4 Safari/532.4",
+		//		@"Mozilla/5.0 (compatible; um-LN/1.0; mailto: techinfo@ubermetrics-technologies.com; Windows NT 6.1; WOW64; rv:40.0) Gecko/20100101 Firefox/40.1",
+		//		@"Mozilla/5.0 (Windows NT 5.1; rv:11.0) Gecko Firefox/11.0 (via ggpht.com GoogleImageProxy)",
+		//		@"Mozilla/5.0 (X11; Linux x86_64) adbeat.com/policy AppleWebKit/537.21 (KHTML, like Gecko) Firefox/34.0 Safari/537.21",
+		//		@"Mozilla/5.0 (compatible; Dataprovider.com)",
+		//		@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/46.0.2490.86 Safari/537.36 Scanning for research (researchscan.comsys.rwth-aachen.de)",
+		//		@"Mozilla/5.0 (iPhone; U; CPU iPhone OS 4_3 like Mac OS X; en-US) adbeat.com/policy AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8F190 Safari/6533.18.5",
+		//		@"Mozilla/5.0 (X11; Linux x86_64; rv:10.0.12) Gecko/20100101 Firefox/21.0 WordPress.com mShots",
+		//		@"izsearch.com",
+		//		@"VSE/1.0 (rabraham@multiview.com)",
+		//		@"Mozilla/5.0 (X11; U; Linux x86; es-ES) adbeat.com/policy Gecko/20100423 Ubuntu/10.04 (lucid) Firefox/3.6.3 AppleWebKit/532.4 Safari/532.4",
+		//		@"Icarus6j - (contact: phil@icarus6.com)",
+		//		@"Mozilla/5.0 (compatible; MSIE 10.0; Windows NT 6.1; Trident/6.0) LinkCheck by Siteimprove.com",
+		//		@"Mozilla/5.0 (Windows NT 10.0; WOW64; %lang_code%) adbeat.com/policy AppleWebKit/537.36 (KHTML, like Gecko) Chrome/48.0.2564.116 Safari/537.36",
+		//		@"Mozilla/5.0 (Windows NT 6.1; rv:12.0; StumbleUpon; noc@stumbleupon.com) Gecko/20100101 Firefox/12.0",
+		//		@"Scanning for research (researchscan.comsys.rwth-aachen.de)",
+		//		@"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_6) AppleWebKit/534.24 (KHTML, like Gecko) (Contact: backend@getprismatic.com)",
+		//		@"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) WordPress.com mShots Safari/537.36",
+		//		@"Mozilla/5.0 Project 25499 (project25499.com)",
+		//		@"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) HeadlessChrome/67.0.3372.0 Safari/537.36 WordPress.com mShots",
+		//		@"SiteTruth.com site rating system",
+		//	};
 
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\nInput: {0}", tests[i]);
-				Console.Write("\nOutput: {0}", MvcUtil.IsBot(tests[i]));
-			}
-		}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		Console.Write("\n");
+		//		Console.Write("\nInput: {0}", tests[i]);
+		//		Console.Write("\nOutput: {0}", MvcUtil.IsBot(tests[i]));
+		//	}
+		//}
 		#endregion Test Base36.GetUniqueIdByEmail()
 
 		#region Campaign Key Generator

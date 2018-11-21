@@ -54,14 +54,13 @@
       <HintPath>..\..\Libraries\Yutaka.Images\bin\Debug\Yutaka.Images.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.IO">
-      <HintPath>..\..\Libraries\Yutaka.IO\bin\Debug\Yutaka.IO.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Debug\Yutaka.Text.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.Utils, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Debug\Yutaka.Utils.dll</HintPath>
+    <Reference Include="Yutaka.Utils">
+      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Web">
       <HintPath>..\..\Libraries\Yutaka.Web\bin\Debug\Yutaka.Web.dll</HintPath>
