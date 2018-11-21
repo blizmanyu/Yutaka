@@ -135,6 +135,24 @@ namespace Yutaka.IO
 				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
 		}
 
+		// DRY is ignored in favor of performance //
+		public static void Move(FileInfo source, string destFilePath)
+		{
+			if (source == null)
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<source> is NULL", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(destFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
+
+			try {
+				source.MoveTo(destFilePath);
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, destFilePath));
+			}
+		}
+
+		// DRY is ignored in favor of performance //
 		public static void Move(string sourceFilePath, string destFilePath)
 		{
 			if (String.IsNullOrWhiteSpace(sourceFilePath))
