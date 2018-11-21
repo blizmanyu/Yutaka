@@ -144,6 +144,7 @@ namespace Yutaka.IO
 				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
 
 			try {
+				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
 				source.MoveTo(destFilePath);
 			}
 
@@ -161,6 +162,7 @@ namespace Yutaka.IO
 				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
 
 			try {
+				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
 				new FileInfo(sourceFilePath).MoveTo(destFilePath);
 			}
 
