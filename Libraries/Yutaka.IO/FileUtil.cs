@@ -31,7 +31,7 @@ namespace Yutaka.IO
 		private static HashSet<string> documentExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".doc", ".docx", ".xls", ".xlsx", ".pdf", ".ppt", ".pptx" };
 		private static HashSet<string> imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff" };
 		private static HashSet<string> videoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv" };
-		#endregion
+		#endregion Fields
 
 		#region Private Helpers
 		private static bool CopyFile(FileInfo source, string dest)
@@ -68,7 +68,89 @@ namespace Yutaka.IO
 				return false;
 			}
 		}
-		#endregion
+		#endregion Private Helpers
+
+		#region Move
+		/// <summary> Fast file move with big buffers
+		/// </summary>
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public static void FastMove(string source, string destination, bool delete = true)
+		{
+			var array_length = BUFFER;
+			var dataArray = new byte[array_length];
+
+			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length))
+			{
+				using (var bwread = new BinaryReader(fsread))
+				{
+					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length))
+					{
+						using (var bwwrite = new BinaryWriter(fswrite))
+						{
+							for (; ; )
+							{
+								var read = bwread.Read(dataArray, 0, array_length);
+								if (0 == read)
+									break;
+								bwwrite.Write(dataArray, 0, read);
+							}
+						}
+					}
+				}
+			}
+
+			if (delete)
+				File.Delete(source);
+		}
+
+		/// <summary> Time the Move
+		/// </summary> 
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public static void MoveTime(string source, string destination, bool delete = true)
+		{
+			var start_time = DateTime.Now;
+			FastMove(source, destination, delete);
+			var milliseconds = 1 + (int) ((DateTime.Now - start_time).TotalMilliseconds);
+			var size = new FileInfo(destination).Length;
+			// size time in milliseconds per sec
+			var tsize = size * 1000 / milliseconds;
+			if (tsize > ONE_GIGABYTE)
+			{
+				tsize = tsize / ONE_GIGABYTE;
+				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
+			}
+			else if (tsize > ONE_MEGABYTE)
+			{
+				tsize = tsize / ONE_MEGABYTE;
+				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
+			}
+			else if (tsize > ONE_KILOBYTE)
+			{
+				tsize = tsize / ONE_KILOBYTE;
+				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
+			}
+			else
+				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
+		}
+
+		public static void Move(string sourceFilePath, string destFilePath)
+		{
+			if (String.IsNullOrWhiteSpace(sourceFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<sourceFilePath> is {1}", Environment.NewLine, sourceFilePath == null ? "NULL" : "Empty"));
+			if (String.IsNullOrWhiteSpace(destFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
+
+			try {
+				new FileInfo(sourceFilePath).MoveTo(destFilePath);
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath='{3}', string destFilePath='{4}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, sourceFilePath, destFilePath));
+			}
+		}
+		#endregion Move
 
 		#region Public Methods
 		public static void CopyFile(FileInfo source, string dest, bool overwrite=false, TimestampOption tOption=TimestampOption.WindowsDefault)
@@ -195,34 +277,6 @@ namespace Yutaka.IO
 		public static IEnumerable<FileInfo> EnumerateVideoFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => videoExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
-		}
-
-		/// <summary> Fast file move with big buffers
-		/// </summary>
-		/// <param name="source">Source file path</param> 
-		/// <param name="destination">Destination file path</param> 
-		public static void FastMove(string source, string destination, bool delete = true)
-		{
-			var array_length = BUFFER;
-			var dataArray = new byte[array_length];
-
-			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
-				using (var bwread = new BinaryReader(fsread)) {
-					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
-						using (var bwwrite = new BinaryWriter(fswrite)) {
-							for (; ; ) {
-								var read = bwread.Read(dataArray, 0, array_length);
-								if (0 == read)
-									break;
-								bwwrite.Write(dataArray, 0, read);
-							}
-						}
-					}
-				}
-			}
-
-			if (delete)
-				File.Delete(source);
 		}
 
 		public static void FixCreationTime(string root, string searchPattern="*", int initialCapacity = 1024)
@@ -491,34 +545,6 @@ namespace Yutaka.IO
 			return IsSameSize(new FileInfo(path1), new FileInfo(path2));
 		}
 
-		/// <summary> Time the Move
-		/// </summary> 
-		/// <param name="source">Source file path</param> 
-		/// <param name="destination">Destination file path</param> 
-		public static void MoveTime(string source, string destination, bool delete = true)
-		{
-			var start_time = DateTime.Now;
-			FastMove(source, destination, delete);
-			var milliseconds = 1 + (int) ((DateTime.Now - start_time).TotalMilliseconds);
-			var size = new FileInfo(destination).Length;
-			// size time in milliseconds per sec
-			var tsize = size * 1000 / milliseconds;
-			if (tsize > ONE_GIGABYTE) {
-				tsize = tsize / ONE_GIGABYTE;
-				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
-			}
-			else if (tsize > ONE_MEGABYTE) {
-				tsize = tsize / ONE_MEGABYTE;
-				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
-			}
-			else if (tsize > ONE_KILOBYTE) {
-				tsize = tsize / ONE_KILOBYTE;
-				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
-			}
-			else
-				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
-		}
-
 		public static void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
@@ -546,12 +572,12 @@ namespace Yutaka.IO
 				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}', int bufferSize='{7}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, value, path, append, encoding, bufferSize));
 			}
 		}
-		#endregion
+		#endregion Public Methods
 
 		#region Enum
 		public enum OverwriteOption { No, Yes, IfSourceIsNewer, IfSourceIsOlder, IsDifferentDate, IfSourceIsLarger, IfSourceIsSmaller, IfDifferentSize, IfDifferentDateOrDifferentSize, RenameAppendCurTime };
 		public enum TimestampOption { WindowsDefault, PreserveOriginal, SetAllToMinDate, SetAllToDateTaken };
-		#endregion
+		#endregion Enum
 
 		#region Deprecated
 		[Obsolete("Deprecated on Nov 19, 2018. No alternate method exists.", true)]
