@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using NLog;
-using OfficeOpenXml;
 
 namespace Yutaka.NewConsoleAppTemplate
 {

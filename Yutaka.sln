@@ -33,6 +33,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Images", "Libraries\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleContactsCreator", "Programs\GoogleContactsCreator\GoogleContactsCreator.csproj", "{0E76DD36-F084-4F43-80B9-B7A615A33C45}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.IO.Tests", "Tests\Yutaka.IO.Tests\Yutaka.IO.Tests.csproj", "{AE27D9D4-8906-4B33-8691-960C5ED01F47}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{0E76DD36-F084-4F43-80B9-B7A615A33C45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E76DD36-F084-4F43-80B9-B7A615A33C45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E76DD36-F084-4F43-80B9-B7A615A33C45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE27D9D4-8906-4B33-8691-960C5ED01F47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE27D9D4-8906-4B33-8691-960C5ED01F47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE27D9D4-8906-4B33-8691-960C5ED01F47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE27D9D4-8906-4B33-8691-960C5ED01F47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -104,6 +110,7 @@ Global
 		{E039E7D2-0BE3-4BDD-9E4F-40DEF4B92F25} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{207A2154-7B0D-439B-AA69-7CB54AECE72F} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{0E76DD36-F084-4F43-80B9-B7A615A33C45} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
+		{AE27D9D4-8906-4B33-8691-960C5ED01F47} = {2D4535E9-B792-47EC-B1D1-D62952932B87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
