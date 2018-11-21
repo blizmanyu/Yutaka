@@ -135,7 +135,7 @@ namespace Yutaka.IO
 				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
 		}
 
-		// DRY is ignored in favor of performance //
+		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(string sourceFilePath, string destFilePath) //
 		public static void Move(FileInfo source, string destFilePath)
 		{
 			if (source == null)
@@ -152,7 +152,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		// DRY is ignored in favor of performance //
+		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(FileInfo source, string destFilePath) //
 		public static void Move(string sourceFilePath, string destFilePath)
 		{
 			if (String.IsNullOrWhiteSpace(sourceFilePath))
