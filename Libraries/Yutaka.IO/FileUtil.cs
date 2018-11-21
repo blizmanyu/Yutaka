@@ -297,7 +297,7 @@ namespace Yutaka.IO
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => videoExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
 		}
 
-		public static void FixCreationTime(string root, string searchPattern="*", int initialCapacity = 1024)
+		public static void FixCreationTime(string root, string searchPattern = "*", int initialCapacity = 1024)
 		{
 			if (String.IsNullOrWhiteSpace(root))
 				throw new Exception(String.Format("Exception thrown in FileUtil.FixCreationTime(string root, string searchPattern='*', int initialCapacity=1024){0}<root> is {1}", Environment.NewLine, root == null ? "NULL" : "Empty"));
@@ -308,6 +308,7 @@ namespace Yutaka.IO
 			var dirs = new Stack<string>(initialCapacity);
 			dirs.Push(root);
 			string currentDir;
+			DirectoryInfo di;
 			FileInfo fi;
 
 			while (dirs.Count > 0) {
@@ -316,15 +317,10 @@ namespace Yutaka.IO
 				// Perform required action on each file  //
 				try {
 					foreach (var file in Directory.EnumerateFiles(currentDir, searchPattern)) {
-						try {
-							fi = new FileInfo(file);
+						fi = new FileInfo(file);
 
-							if (fi.CreationTime > fi.LastWriteTime)
-								fi.CreationTime = fi.LastWriteTime;
-						}
-						catch (FileNotFoundException) {
-							continue;
-						}
+						if (fi.CreationTime > fi.LastWriteTime)
+							fi.CreationTime = fi.LastWriteTime;
 					}
 				}
 
@@ -342,18 +338,21 @@ namespace Yutaka.IO
 
 				// Push subdirectories onto stack for traversal //
 				try {
-					try {
-						foreach (var suDir in Directory.EnumerateDirectories(currentDir))
-							dirs.Push(suDir);
-					}
-					catch (PathTooLongException) {
-						continue;
+					foreach (var suDir in Directory.EnumerateDirectories(currentDir)) {
+						dirs.Push(suDir);
+						di = new DirectoryInfo(suDir);
+
+						if (di.CreationTime > di.LastWriteTime)
+							di.CreationTime = di.LastWriteTime;
 					}
 				}
 				catch (UnauthorizedAccessException) {
 					continue;
 				}
 				catch (DirectoryNotFoundException) {
+					continue;
+				}
+				catch (PathTooLongException) {
 					continue;
 				}
 			}
