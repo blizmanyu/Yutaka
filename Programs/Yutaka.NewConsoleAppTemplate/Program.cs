@@ -6,6 +6,10 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
+		// Config/Settings //
+		const string PROGRAM_NAME = "NewConsoleAppTemplate";
+		private static bool consoleOut = true; // default = false //
+
 		#region Fields
 		#region Static Externs
 		[DllImport("kernel32.dll")]
@@ -15,14 +19,9 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
-		// Constants //
-		const string PROGRAM_NAME = "NewConsoleAppTemplate";
 		const string TIMESTAMP = @"[HH:mm:ss] ";
-
-		// PIVs //
 		private static DateTime startTime = DateTime.Now;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-		private static bool consoleOut = true; // default = false //
 		private static int errorCount = 0;
 		private static int totalCount = 0;
 		private static int errorCountThreshold = 7;
