@@ -156,6 +156,22 @@ namespace Yutaka.Text
 			return timeStr;
 		}
 
+		public static string DecodeBase64(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			var incoming = str.Replace('_', '/').Replace('-', '+');
+
+			switch (str.Length % 4) {
+				case 2: incoming += "=="; break;
+				case 3: incoming += "="; break;
+			}
+
+			var bytes = Convert.FromBase64String(incoming);
+			return Encoding.ASCII.GetString(bytes);
+		}
+
 		public static string FormatCommonLabels(string label)
 		{
 			if (String.IsNullOrWhiteSpace(label))
