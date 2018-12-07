@@ -203,7 +203,7 @@ namespace Yutaka.Text
 			html = regexCss.Replace(html, "");
 			html = Regex.Replace(html, htmlTagPattern, " ");
 			html = Regex.Replace(html, @"^\s+$[\r\n]*", " ", RegexOptions.Multiline);
-			html = html.Replace("&nbsp;", " ").Replace("\n", " ").Trim();
+			html = html.Replace("&nbsp;", " ").Trim();
 
 			while (html.Contains("  "))
 				html = html.Replace("  ", " ");
