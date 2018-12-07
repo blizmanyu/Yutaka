@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Yutaka.Utils;
 
 namespace Yutaka.Text
@@ -190,6 +191,37 @@ namespace Yutaka.Text
 			}
 
 			return label;
+		}
+
+		public static string GetPlainTextFromHtml(string html)
+		{
+			if (String.IsNullOrWhiteSpace(html))
+				return "";
+
+			var htmlTagPattern = "<.*?>";
+			var regexCss = new Regex("(\\<script(.+?)\\</script\\>)|(\\<style(.+?)\\</style\\>)", RegexOptions.Singleline | RegexOptions.IgnoreCase | RegexOptions.Compiled);
+			html = regexCss.Replace(html, "");
+			html = Regex.Replace(html, htmlTagPattern, " ");
+			html = Regex.Replace(html, @"^\s+$[\r\n]*", " ", RegexOptions.Multiline);
+			html = html.Replace("&nbsp;", " ").Replace("\n", " ").Trim();
+
+			while (html.Contains("  "))
+				html = html.Replace("  ", " ");
+
+			return html;
+		}
+
+		public static string StripExcessWhitespace(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			str = str.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Trim();
+
+			while (str.Contains("  "))
+				str = str.Replace("  ", " ");
+
+			return str;
 		}
 
 		public static string ToTitleCase(string str)

@@ -42,7 +42,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_FixCreationTime();
+			//Test_TextUtil_StripExcessWhitespace();
 			EndProgram();
 		}
 
