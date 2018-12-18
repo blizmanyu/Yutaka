@@ -43,21 +43,106 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
+			#region Handle Extensions
+			var ext = "";
+
+			if (phone.ToUpper().Contains("EXT.")) {
+				var ind = phone.ToUpper().IndexOf("EXT.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 4, phone.Length - ind - 4).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("EXT")) {
+				var ind = phone.ToUpper().IndexOf("EXT");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("EX.")) {
+				var ind = phone.ToUpper().IndexOf("EX.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("XT.")) {
+				var ind = phone.ToUpper().IndexOf("XT.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("XT")) {
+				var ind = phone.ToUpper().IndexOf("XT");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("X.")) {
+				var ind = phone.ToUpper().IndexOf("X.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+			#endregion Handle Extensions
+
 			var stripped = StripPhone(phone);
 			var substring = stripped.Substring(1);
+			var len = stripped.Length;
 
-			if (stripped.Length == 7 && stripped.All(Char.IsDigit))
-				return String.Format("{0:###-####}", stripped);
-			if (stripped.Length == 10 && stripped.All(Char.IsDigit))
-				return String.Format("{0:(###) ###-####}", stripped);
-			if (stripped.Length == 11 && stripped.StartsWith("1") && substring.All(Char.IsDigit))
-				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 1), stripped.Substring(1, 3), stripped.Substring(4, 3), stripped.Substring(7, 4));
-			if (stripped.Length == 12 && substring.All(Char.IsDigit))
-				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 2), stripped.Substring(2, 3), stripped.Substring(5, 3), stripped.Substring(8, 4));
-			if (stripped.Length == 13 && substring.All(Char.IsDigit))
-				return String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 3), stripped.Substring(9, 4));
+			if (len < 7)
+				phone = stripped;
 
-			return phone;
+			else if (len == 7 && stripped.All(Char.IsDigit))
+				phone = String.Format("{0}-{1}", stripped.Substring(0, 3), stripped.Substring(3, 4));
+
+			else if (len == 10 && stripped.All(Char.IsDigit))
+				phone = String.Format("({0}) {1}-{2}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 4));
+
+			else if (len == 11) {
+				if (stripped.All(Char.IsDigit))
+					phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 1), stripped.Substring(1, 3), stripped.Substring(4, 3), stripped.Substring(7, 4));
+				else if (substring.All(Char.IsDigit))
+					phone = String.Format("{0}-{1}-{2}", stripped.Substring(0, 4), stripped.Substring(4, 3), stripped.Substring(7, 4));
+			}
+
+			else if (len == 12 && substring.All(Char.IsDigit))
+				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 2), stripped.Substring(2, 3), stripped.Substring(5, 3), stripped.Substring(8, 4));
+
+			else if (len == 13 && substring.All(Char.IsDigit))
+				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 3), stripped.Substring(9, 4));
+
+			if (String.IsNullOrWhiteSpace(ext))
+				return phone;
+
+			return String.Format("{0} ext.{1}", phone, ext);
 		}
 
 		public static bool IsValidPhone(string phone)
