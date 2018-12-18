@@ -10,6 +10,7 @@ using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Web;
 using System.Numerics;
+using System.Net.Mail;
 
 namespace Yutaka.Tests
 {
@@ -42,9 +43,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//Test_TextUtil_StripExcessWhitespace();
+			Test_MailAddress();
 			EndProgram();
 		}
+
+		#region Test MailAddress
+		private static void Test_MailAddress()
+		{
+			var tests = new string[] {
+				"undisclosed recipients",
+			};
+
+			MailAddress address;
+
+			for (int i = 0; i < tests.Length; i++) {
+				address = new MailAddress(tests[i]);
+				Console.Write("\n");
+				Console.Write("\nTest #{0}: {1}", i + 1, tests[i]);
+				Console.Write("\n=> {0}", address.Address);
+			}
+		}
+		#endregion Test FileUtil.FixCreationTime
 
 		#region Test FileUtil.FixCreationTime
 		private static void Test_FileUtil_FixCreationTime()
