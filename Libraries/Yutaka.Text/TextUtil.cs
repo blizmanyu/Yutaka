@@ -270,13 +270,13 @@ namespace Yutaka.Text
 			label = label.Trim();
 			var labelUpper = label.ToUpper();
 
-			if (label.Length > 7 && (label == labelUpper || label == label.ToLower()))
-				return TextUtil.ToTitleCase(label);
-
 			for (int i = 0; i < commonLabels.Length; i++) {
-				if (labelUpper == commonLabels[i])
+				if (labelUpper.Equals(commonLabels[i]))
 					return TextUtil.ToTitleCase(label);
 			}
+
+			if (label.Length > 7 && (label.Equals(labelUpper) || label.Equals(label.ToLower())))
+				return TextUtil.ToTitleCase(label);
 
 			return label;
 		}
