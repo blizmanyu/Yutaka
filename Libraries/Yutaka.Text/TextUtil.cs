@@ -314,7 +314,7 @@ namespace Yutaka.Text
 
 		public static string ToTitleCase(string str)
 		{
-			if (str == null)
+			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
 			return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
