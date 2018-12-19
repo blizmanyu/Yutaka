@@ -272,11 +272,11 @@ namespace Yutaka.Text
 
 			for (int i = 0; i < commonLabels.Length; i++) {
 				if (labelUpper.Equals(commonLabels[i]))
-					return TextUtil.ToTitleCase(label);
+					return ToTitleCase(label);
 			}
 
 			if (label.Length > 7 && (label.Equals(labelUpper) || label.Equals(label.ToLower())))
-				return TextUtil.ToTitleCase(label);
+				return ToTitleCase(label);
 
 			return label;
 		}
