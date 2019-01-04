@@ -62,8 +62,10 @@ namespace Yutaka.NewConsoleAppTemplate
 			var ts = endTime - startTime;
 			var errorPer = (double) errorCount/totalCount;
 
-			if (errorCount > errorCountThreshold && errorPer > errorPerThreshold)
+			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
 				logger.Error("The number of errors is above the threshold.");
+				//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+			}
 
 			var log = new string[4];
 			log[0] = "Ending program";
@@ -77,11 +79,12 @@ namespace Yutaka.NewConsoleAppTemplate
 			logger.Info(log[3]);
 
 			if (consoleOut) {
+				var timestamp = DateTime.Now.ToString(TIMESTAMP);
 				Console.Write("\n");
-				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[0]);
-				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[1]);
-				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[2]);
-				Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[3]);
+				Console.Write("\n{0}{1}", timestamp, log[0]);
+				Console.Write("\n{0}{1}", timestamp, log[1]);
+				Console.Write("\n{0}{1}", timestamp, log[2]);
+				Console.Write("\n{0}{1}", timestamp, log[3]);
 				Console.Write("\n.... Press any key to close the program ....");
 				Console.ReadKey(true);
 			}
