@@ -9,11 +9,17 @@ namespace Yutaka.Music
 {
 	public class MusicUtil
 	{
+		private static HashSet<string> supportedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".mp3", ".m4a", ".wma" };
+
+		public List<string> GetAllSongs(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.AllDirectories)
+		{
+			return Directory.EnumerateFiles(path, searchPattern, searchOption).Where(x => supportedExtensions.Contains(Path.GetExtension(x), StringComparer.OrdinalIgnoreCase)).ToList();
+		}
 	}
 
+	#region Song Class
 	public class Song
 	{
-		#region Fields
 		private readonly DateTime DATE_THRESHOLD = new DateTime(1900, 1, 1);
 
 		public string Path { get; set; }
@@ -30,9 +36,7 @@ namespace Yutaka.Music
 		public string Comment { get; set; }
 		public string AlbumArtist { get; set; }
 		public string Composer { get; set; }
-		#endregion
 
-		#region Methods
 		public Song(string filePath)
 		{
 			if (String.IsNullOrEmpty(filePath))
@@ -136,6 +140,6 @@ namespace Yutaka.Music
 			Console.Write("\nComposer: {0}", Composer);
 			Console.Write("\n");
 		}
-		#endregion
 	}
+	#endregion Song Class
 }
