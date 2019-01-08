@@ -67,44 +67,44 @@ namespace Yutaka.Web
 		}
 
 		// Work in progress: do NOT use yet //
-		public static void SetCookie(string name, string id=null, string ip=null, string email = null, string source=null)
-		{
-			try {
-				var now = DateTime.Now;
-				var Session = HttpContext.Current.Session;
-				var Request = HttpContext.Current.Request;
-				var cookie = Request.Cookies[name];
+		//public static void SetCookie(string name, string id=null, string ip=null, string email = null, string source=null)
+		//{
+		//	try {
+		//		var now = DateTime.Now;
+		//		var Session = HttpContext.Current.Session;
+		//		var Request = HttpContext.Current.Request;
+		//		var cookie = Request.Cookies[name];
 
-				if (cookie == null)
-					cookie = new HttpCookie(name);
+		//		if (cookie == null)
+		//			cookie = new HttpCookie(name);
 
-				// ID - should never change unless obviously NULL or empty //
-				if (String.IsNullOrWhiteSpace(cookie["id"])) {
-					cookie["id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
-																 : id;
-				}
+		//		// ID - should never change unless obviously NULL or empty //
+		//		if (String.IsNullOrWhiteSpace(cookie["id"])) {
+		//			cookie["id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
+		//														 : id;
+		//		}
 
-				// IP - should never change unless obviously NULL or empty //
-				if (String.IsNullOrWhiteSpace(cookie["i"])) {
-					if (String.IsNullOrWhiteSpace(ip))
-						ip = Request.UserHostAddress ?? "";
-					cookie["i"] = EncodeIp(ip);
-				}
+		//		// IP - should never change unless obviously NULL or empty //
+		//		if (String.IsNullOrWhiteSpace(cookie["i"])) {
+		//			if (String.IsNullOrWhiteSpace(ip))
+		//				ip = Request.UserHostAddress ?? "";
+		//			cookie["i"] = EncodeIp(ip);
+		//		}
 
-				// Email - can change if the //
+		//		// Email - can change if the //
 
-				// Source - laskdjf //
+		//		// Source - laskdjf //
 
 
 
-				cookie.Expires = now.AddYears(4);
-				HttpContext.Current.Response.Cookies.Add(cookie);
-			}
+		//		cookie.Expires = now.AddYears(4);
+		//		HttpContext.Current.Response.Cookies.Add(cookie);
+		//	}
 
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in WebUtil.SetCookie(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
-			}
-		}
+		//	catch (Exception ex) {
+		//		throw new Exception(String.Format("Exception thrown in WebUtil.SetCookie(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+		//	}
+		//}
 
 		public static void SetSessionVariables()
 		{

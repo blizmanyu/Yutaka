@@ -590,42 +590,42 @@ namespace Yutaka.Tests
 		#endregion Test FileUtil.FixCreationTime
 
 		#region Test FileUtil.FixCreationTime
-		private static void Test_FileUtil_FixCreationTime()
-		{
-			var searchPattern = @"*";
-			var tests = new string[] {
-				@"D:\RCW_Imports",
-				@"D:\RCW_Imports\03\RCW_Imports\RCW_Imports\bin\Debug\",
-			};
+		//private static void Test_FileUtil_FixCreationTime()
+		//{
+		//	var searchPattern = @"*";
+		//	var tests = new string[] {
+		//		@"D:\RCW_Imports",
+		//		@"D:\RCW_Imports\03\RCW_Imports\RCW_Imports\bin\Debug\",
+		//	};
 
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\nTest #{0}: {1}", i+1, tests[i]);
-				FileUtil.FixCreationTime(tests[i], searchPattern);
-			}
-		}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		Console.Write("\n");
+		//		Console.Write("\nTest #{0}: {1}", i+1, tests[i]);
+		//		FileUtil.FixCreationTime(tests[i], searchPattern);
+		//	}
+		//}
 		#endregion Test FileUtil.FixCreationTime
 
 		#region Test Base36.EncodeIp/DecodeIp
-		private static void Test_Base36_EncodeIp_DecodeIp()
-		{
-			string output;
+		//private static void Test_Base36_EncodeIp_DecodeIp()
+		//{
+		//	string output;
 
-			var tests = new string[] {
-				"0.0.0.1",
-				"1.1.1.1",
-				"98.189.176.208",
-				"255.255.255.255",
-			};
+		//	var tests = new string[] {
+		//		"0.0.0.1",
+		//		"1.1.1.1",
+		//		"98.189.176.208",
+		//		"255.255.255.255",
+		//	};
 
-			for (int i = 0; i < tests.Length; i++) {
-				output = Base36.EncodeIp(tests[i]);
-				Console.Write("\n");
-				Console.Write("\nInput: {0}", tests[i]);
-				Console.Write("\nEncoded: {0}", output);
-				Console.Write("\nDecoded: {0}", Base36.DecodeIp(output));
-			}
-		}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		output = Base36.EncodeIp(tests[i]);
+		//		Console.Write("\n");
+		//		Console.Write("\nInput: {0}", tests[i]);
+		//		Console.Write("\nEncoded: {0}", output);
+		//		Console.Write("\nDecoded: {0}", Base36.DecodeIp(output));
+		//	}
+		//}
 		#endregion Test Base36.EncodeIp/DecodeIp
 
 		#region Test MvcUtil.IsBot()
@@ -697,19 +697,19 @@ namespace Yutaka.Tests
 		#endregion Test Base36.GetUniqueIdByEmail()
 
 		#region Test Base36.GetUniqueIdByEmail()
-		private static void Test_Base36_GetUniqueIdByEmail()
-		{
-			var tests = new string[] {
-				@"yblizman@rcw1.com",
-				@" ! ! ! ! ! ! ! ! ",
-			};
+		//private static void Test_Base36_GetUniqueIdByEmail()
+		//{
+		//	var tests = new string[] {
+		//		@"yblizman@rcw1.com",
+		//		@" ! ! ! ! ! ! ! ! ",
+		//	};
 
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\nInput: {0}", tests[i]);
-				Console.Write("\nOutput: {0}", Base36.GetUniqueIdByEmail(tests[i]));
-			}
-		}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		Console.Write("\n");
+		//		Console.Write("\nInput: {0}", tests[i]);
+		//		Console.Write("\nOutput: {0}", Base36.GetUniqueIdByEmail(tests[i]));
+		//	}
+		//}
 		#endregion Test Base36.GetUniqueIdByEmail()
 
 		//#region Test FileUtil.Write()
