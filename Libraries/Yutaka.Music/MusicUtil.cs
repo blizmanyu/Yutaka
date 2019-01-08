@@ -6,10 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yutaka.Music
 {
-	class Program
+	public class MusicUtil
 	{
-		static void Main(string[] args)
-		{
-		}
 	}
 }
