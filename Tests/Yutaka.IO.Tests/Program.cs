@@ -45,8 +45,7 @@ namespace Yutaka.IO.Tests
 
 		private static void Process()
 		{
-			//Directory.CreateDirectory(DEST_FOLDER);
-			FixCreationTimeThenMove(ROOT_FOLDER, SEARCH_PATTERN);
+			Console.Write("\n{0}", new DateTime());
 		}
 
 		// TODO: Include immediate parent folder in dest folder //
