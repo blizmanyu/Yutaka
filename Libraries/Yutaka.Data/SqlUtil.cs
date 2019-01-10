@@ -6,13 +6,10 @@ namespace Yutaka.Data
 {
 	public static class SqlUtil
 	{
-		#region Constants
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
-		#endregion
 
-		#region Methods
 		public static void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
@@ -93,6 +90,18 @@ namespace Yutaka.Data
 				}
 			}
 		}
-		#endregion
+
+		public static bool IsServerConnected(string connectionString)
+		{
+			using (var conn = new SqlConnection(connectionString)) {
+				try {
+					conn.Open();
+					return true;
+				}
+				catch (SqlException) {
+					return false;
+				}
+			}
+		}
 	}
 }
