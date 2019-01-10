@@ -4,13 +4,13 @@ using System.Data.SqlClient;
 
 namespace Yutaka.Data
 {
-	public static class SqlUtil
+	public abstract class SqlUtil
 	{
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
 
-		public static void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public virtual void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
@@ -30,7 +30,7 @@ namespace Yutaka.Data
 
 		// This method should never actually be called. It is provided as an example only since the reader will get destroyed before returning. You
 		// may want to use the GetData method instead.
-		public static void ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public virtual void ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
@@ -51,7 +51,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public static void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public virtual void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
@@ -69,7 +69,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public static DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public virtual DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			var ds = new DataSet();
 
@@ -91,7 +91,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public static bool IsServerConnected(string connectionString)
+		public virtual bool IsServerConnected(string connectionString)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				try {
