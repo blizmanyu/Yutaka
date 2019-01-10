@@ -51,21 +51,31 @@ namespace Yutaka.Data
 			}
 		}
 
-		public virtual void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public virtual Object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
-			using (var conn = new SqlConnection(connectionString)) {
-				using (var cmd = new SqlCommand(commandText, conn)) {
-					cmd.CommandType = commandType;
-					try {
+			try {
+				using (var conn = new SqlConnection(connectionString)) {
+					using (var cmd = new SqlCommand(commandText, conn)) {
+						cmd.CommandType = commandType;
 						cmd.Parameters.AddRange(parameters);
 						conn.Open();
-						cmd.ExecuteScalar();
-					}
-
-					catch (Exception ex) {
-						throw ex;
+						return cmd.ExecuteScalar();
 					}
 				}
+			}
+
+			catch (Exception ex) {
+				var log = String.Format("commandText: {0}; commandType: {1}", commandText, commandType);
+
+				if (parameters != null && parameters.Length > 0) {
+					for (int i = 0; i < parameters.Length; i++)
+						log = String.Format("{0}; {1}: {2}", log, parameters[i].ParameterName, parameters[i].Value);
+				}
+
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{1}{3}{0}{3}{3}Exception thrown in RcwEmailService.ExecuteScalar(){3}{2}", log, ex.Message, ex.ToString(), Environment.NewLine));
+
+				throw new Exception(String.Format("{1}{3}{0}{3}{3}Exception thrown in InnerException of RcwEmailService.ExecuteScalar(){3}{2}", log, ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
 		}
 
@@ -103,5 +113,25 @@ namespace Yutaka.Data
 				}
 			}
 		}
+
+		#region Commented Out Jan, 10, 2019
+		//public virtual void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		//{
+		//	using (var conn = new SqlConnection(connectionString)) {
+		//		using (var cmd = new SqlCommand(commandText, conn)) {
+		//			cmd.CommandType = commandType;
+		//			try {
+		//				cmd.Parameters.AddRange(parameters);
+		//				conn.Open();
+		//				cmd.ExecuteScalar();
+		//			}
+
+		//			catch (Exception ex) {
+		//				throw ex;
+		//			}
+		//		}
+		//	}
+		//}
+		#endregion Commented Out Jan, 10, 2019
 	}
 }
