@@ -87,6 +87,28 @@ namespace Yutaka.Net
 			}
 		}
 
+		#region Parse/TryParse
+		public static MailAddress Parse(string email)
+		{
+			if (String.IsNullOrWhiteSpace(email))
+				throw new Exception(String.Format("<email> is required.{0}{0}Exception thrown in MailUtil.Parse(string email)", Environment.NewLine));
+
+			try {
+				if (email.ToUpper().Contains("UNDISCLOSED"))
+					return new MailAddress("undisclosed@recipients", "Undisclosed Recipients");
+
+				return new MailAddress(Clean(email.Replace(";", "").Replace(":", "").Replace(",", "")));
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.Parse(string email='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, email));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.Parse(string email='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
+			}
+		}
+		#endregion Parse/TryParse
+
 		public static Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
 		{
 			var result = new Result() {
