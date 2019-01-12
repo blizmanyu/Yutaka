@@ -88,7 +88,7 @@ namespace Yutaka.Net
 			}
 		}
 
-		public static List<MailAddress> Parse(string emails, char separator=',')
+		public static List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',')
 		{
 			if (String.IsNullOrWhiteSpace(emails))
 				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.Parse(string emails, char separator)", Environment.NewLine));
