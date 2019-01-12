@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -88,23 +89,170 @@ namespace Yutaka.Net
 		}
 
 		#region Parse/TryParse
-		public static MailAddress Parse(string email)
+		public static List<MailAddress> Parse(string emails, char separator=',')
 		{
-			if (String.IsNullOrWhiteSpace(email))
-				throw new Exception(String.Format("<email> is required.{0}{0}Exception thrown in MailUtil.Parse(string email)", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(emails))
+				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.Parse(string emails, char separator)", Environment.NewLine));
+
+			var list = new List<MailAddress>();
 
 			try {
-				if (email.ToUpper().Contains("UNDISCLOSED"))
-					return new MailAddress("undisclosed@recipients", "Undisclosed Recipients");
+				// Remove use of separator char that isn't being used as a separator  //
+				switch (separator) {
+					case ',':
+						#region Case ','
+						if (emails.Contains(",")) {
+							emails = emails.Replace(">, ", "REPLACE_ME");
+							emails = emails.Replace(".com, ", "REPLACE_DOT_COM");
+							emails = emails.Replace(".net, ", "REPLACE_DOT_NET");
+							emails = emails.Replace(".edu, ", "REPLACE_DOT_EDU");
+							emails = emails.Replace(".org, ", "REPLACE_DOT_ORG");
+							emails = emails.Replace(".gov, ", "REPLACE_DOT_GOV");
+							emails = emails.Replace(".ca, ", "REPLACE_DOT_CA");
+							emails = emails.Replace(".us, ", "REPLACE_DOT_US");
+							emails = emails.Replace(".ch, ", "REPLACE_DOT_CH");
+							emails = emails.Replace(".uk, ", "REPLACE_DOT_UK");
+							emails = emails.Replace(".au, ", "REPLACE_DOT_AU");
+							emails = emails.Replace(".de, ", "REPLACE_DOT_DE");
+							emails = emails.Replace(".mil, ", "REPLACE_DOT_MIL");
+							emails = emails.Replace(".biz, ", "REPLACE_DOT_BIZ");
+							emails = emails.Replace(".it, ", "REPLACE_DOT_IT");
+							emails = emails.Replace(".es, ", "REPLACE_DOT_ES");
+							emails = emails.Replace(".fr, ", "REPLACE_DOT_FR");
+							emails = emails.Replace(".in, ", "REPLACE_DOT_IN");
+							emails = emails.Replace(".at, ", "REPLACE_DOT_AT");
+							emails = emails.Replace(".nz, ", "REPLACE_DOT_NZ");
+							emails = emails.Replace(".ru, ", "REPLACE_DOT_RU");
+							emails = emails.Replace(".sg, ", "REPLACE_DOT_SG");
+							emails = emails.Replace(".mx, ", "REPLACE_DOT_MX");
+							emails = emails.Replace(".nl, ", "REPLACE_DOT_NL");
+							emails = emails.Replace(".jp, ", "REPLACE_DOT_JP");
+							emails = emails.Replace(",", "");
+							emails = emails.Replace("REPLACE_ME", ">, ");
+							emails = emails.Replace("REPLACE_DOT_COM", ".com, ");
+							emails = emails.Replace("REPLACE_DOT_NET", ".net, ");
+							emails = emails.Replace("REPLACE_DOT_EDU", ".edu, ");
+							emails = emails.Replace("REPLACE_DOT_ORG", ".org, ");
+							emails = emails.Replace("REPLACE_DOT_GOV", ".gov, ");
+							emails = emails.Replace("REPLACE_DOT_CA", ".ca, ");
+							emails = emails.Replace("REPLACE_DOT_US", ".us, ");
+							emails = emails.Replace("REPLACE_DOT_CH", ".ch, ");
+							emails = emails.Replace("REPLACE_DOT_UK", ".uk, ");
+							emails = emails.Replace("REPLACE_DOT_AU", ".au, ");
+							emails = emails.Replace("REPLACE_DOT_DE", ".de, ");
+							emails = emails.Replace("REPLACE_DOT_MIL", ".mil, ");
+							emails = emails.Replace("REPLACE_DOT_BIZ", ".biz, ");
+							emails = emails.Replace("REPLACE_DOT_IT", ".it, ");
+							emails = emails.Replace("REPLACE_DOT_ES", ".es, ");
+							emails = emails.Replace("REPLACE_DOT_FR", ".fr, ");
+							emails = emails.Replace("REPLACE_DOT_IN", ".in, ");
+							emails = emails.Replace("REPLACE_DOT_AT", ".at, ");
+							emails = emails.Replace("REPLACE_DOT_NZ", ".nz, ");
+							emails = emails.Replace("REPLACE_DOT_RU", ".ru, ");
+							emails = emails.Replace("REPLACE_DOT_SG", ".sg, ");
+							emails = emails.Replace("REPLACE_DOT_MX", ".mx, ");
+							emails = emails.Replace("REPLACE_DOT_NL", ".nl, ");
+							emails = emails.Replace("REPLACE_DOT_JP", ".jp, ");
+						}
+						#endregion Case ","
+						break;
+					case ';':
+						#region Case ';'
+						if (emails.Contains(";")) {
+							emails = emails.Replace(">; ", "REPLACE_ME");
+							emails = emails.Replace(".com; ", "REPLACE_DOT_COM");
+							emails = emails.Replace(".net; ", "REPLACE_DOT_NET");
+							emails = emails.Replace(".edu; ", "REPLACE_DOT_EDU");
+							emails = emails.Replace(".org; ", "REPLACE_DOT_ORG");
+							emails = emails.Replace(".gov; ", "REPLACE_DOT_GOV");
+							emails = emails.Replace(".ca; ", "REPLACE_DOT_CA");
+							emails = emails.Replace(".us; ", "REPLACE_DOT_US");
+							emails = emails.Replace(".ch; ", "REPLACE_DOT_CH");
+							emails = emails.Replace(".uk; ", "REPLACE_DOT_UK");
+							emails = emails.Replace(".au; ", "REPLACE_DOT_AU");
+							emails = emails.Replace(".de; ", "REPLACE_DOT_DE");
+							emails = emails.Replace(".mil; ", "REPLACE_DOT_MIL");
+							emails = emails.Replace(".biz; ", "REPLACE_DOT_BIZ");
+							emails = emails.Replace(".it; ", "REPLACE_DOT_IT");
+							emails = emails.Replace(".es; ", "REPLACE_DOT_ES");
+							emails = emails.Replace(".fr; ", "REPLACE_DOT_FR");
+							emails = emails.Replace(".in; ", "REPLACE_DOT_IN");
+							emails = emails.Replace(".at; ", "REPLACE_DOT_AT");
+							emails = emails.Replace(".nz; ", "REPLACE_DOT_NZ");
+							emails = emails.Replace(".ru; ", "REPLACE_DOT_RU");
+							emails = emails.Replace(".sg; ", "REPLACE_DOT_SG");
+							emails = emails.Replace(".mx; ", "REPLACE_DOT_MX");
+							emails = emails.Replace(".nl; ", "REPLACE_DOT_NL");
+							emails = emails.Replace(".jp; ", "REPLACE_DOT_JP");
+							emails = emails.Replace(";", "");
+							emails = emails.Replace("REPLACE_ME", ">; ");
+							emails = emails.Replace("REPLACE_DOT_COM", ".com; ");
+							emails = emails.Replace("REPLACE_DOT_NET", ".net; ");
+							emails = emails.Replace("REPLACE_DOT_EDU", ".edu; ");
+							emails = emails.Replace("REPLACE_DOT_ORG", ".org; ");
+							emails = emails.Replace("REPLACE_DOT_GOV", ".gov; ");
+							emails = emails.Replace("REPLACE_DOT_CA", ".ca; ");
+							emails = emails.Replace("REPLACE_DOT_US", ".us; ");
+							emails = emails.Replace("REPLACE_DOT_CH", ".ch; ");
+							emails = emails.Replace("REPLACE_DOT_UK", ".uk; ");
+							emails = emails.Replace("REPLACE_DOT_AU", ".au; ");
+							emails = emails.Replace("REPLACE_DOT_DE", ".de; ");
+							emails = emails.Replace("REPLACE_DOT_MIL", ".mil; ");
+							emails = emails.Replace("REPLACE_DOT_BIZ", ".biz; ");
+							emails = emails.Replace("REPLACE_DOT_IT", ".it; ");
+							emails = emails.Replace("REPLACE_DOT_ES", ".es; ");
+							emails = emails.Replace("REPLACE_DOT_FR", ".fr; ");
+							emails = emails.Replace("REPLACE_DOT_IN", ".in; ");
+							emails = emails.Replace("REPLACE_DOT_AT", ".at; ");
+							emails = emails.Replace("REPLACE_DOT_NZ", ".nz; ");
+							emails = emails.Replace("REPLACE_DOT_RU", ".ru; ");
+							emails = emails.Replace("REPLACE_DOT_SG", ".sg; ");
+							emails = emails.Replace("REPLACE_DOT_MX", ".mx; ");
+							emails = emails.Replace("REPLACE_DOT_NL", ".nl; ");
+							emails = emails.Replace("REPLACE_DOT_JP", ".jp; ");
+						}
+						#endregion Case ";"
+						break;
+					default:
+						throw new Exception(String.Format("Unsupported <separator>.{0}{0}Exception thrown in MailUtil.Parse(string emails='{1}', char separator='{2}')", Environment.NewLine, emails, separator));
+				}
 
-				return new MailAddress(Clean(email.Replace(";", "").Replace(":", "").Replace(",", "")));
+				if (emails.Contains(separator.ToString())) { // multiple emails //
+					var array = emails.Split(separator);
+
+					for (int i=0; i<array.Length; i++) {
+						if (array[i].ToUpper().Contains("UNDISCLOSED"))
+							list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
+						else {
+							try {
+								list.Add(new MailAddress(Clean(array[i].Replace(";", "").Replace(":", "").Replace(",", ""))));
+							}
+
+							catch (Exception) { }
+						}
+					}
+				}
+
+				else { // single email //
+					if (emails.ToUpper().Contains("UNDISCLOSED"))
+						list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
+					else {
+						try {
+							list.Add(new MailAddress(Clean(emails.Replace(";", "").Replace(":", "").Replace(",", ""))));
+						}
+
+						catch (Exception) { }
+					}
+				}
+
+				return list;
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.Parse(string email='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, email));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.Parse(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.Parse(string email='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.Parse(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
 			}
 		}
 
