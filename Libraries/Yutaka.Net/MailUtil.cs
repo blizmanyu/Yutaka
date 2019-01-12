@@ -91,7 +91,7 @@ namespace Yutaka.Net
 		public static List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',')
 		{
 			if (String.IsNullOrWhiteSpace(emails))
-				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.Parse(string emails, char separator)", Environment.NewLine));
+				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails, char separator)", Environment.NewLine));
 
 			var list = new List<MailAddress>();
 
@@ -213,7 +213,7 @@ namespace Yutaka.Net
 						#endregion Case ";"
 						break;
 					default:
-						throw new Exception(String.Format("Unsupported <separator>.{0}{0}Exception thrown in MailUtil.Parse(string emails='{1}', char separator='{2}')", Environment.NewLine, emails, separator));
+						throw new Exception(String.Format("Unsupported <separator>.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{1}', char separator='{2}')", Environment.NewLine, emails, separator));
 				}
 
 				if (emails.Contains(separator.ToString())) { // multiple emails //
@@ -249,9 +249,9 @@ namespace Yutaka.Net
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.Parse(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.Parse(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
 			}
 		}
 
