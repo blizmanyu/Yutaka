@@ -88,7 +88,6 @@ namespace Yutaka.Net
 			}
 		}
 
-		#region Parse/TryParse
 		public static List<MailAddress> Parse(string emails, char separator=',')
 		{
 			if (String.IsNullOrWhiteSpace(emails))
@@ -255,41 +254,6 @@ namespace Yutaka.Net
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.Parse(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
 			}
 		}
-
-		/// <summary>
-		/// Converts the email address to a MailAddress object. If an error occurs, the return value's Address will be set to Exception@Thrown with the DisplayName containing the error message.
-		/// </summary>
-		/// <param name="email"></param>
-		/// <param name="address"></param>
-		/// <returns></returns>
-		public static bool TryParse(string email, out MailAddress address)
-		{
-			if (String.IsNullOrWhiteSpace(email)) {
-				address = new MailAddress("Exception@Thrown", "\"<email> is required.\"");
-				return false;
-			}
-
-			try {
-				if (email.ToUpper().Contains("UNDISCLOSED")) {
-					address = new MailAddress("undisclosed@recipients", "Undisclosed Recipients");
-					return true;
-				}
-
-				address = new MailAddress(Clean(email.Replace(";", "").Replace(":", "").Replace(",", "")));
-				return true;
-			}
-
-			catch (Exception ex) {
-				if (ex.InnerException == null) {
-					address = new MailAddress("Exception@Thrown", String.Format("\"{0}\"", ex.Message));
-					return false;
-				}
-
-				address = new MailAddress("Exception@Thrown", String.Format("\"{0}\"", ex.InnerException.Message));
-				return false;
-			}
-		}
-		#endregion Parse/TryParse
 
 		public static Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
 		{
