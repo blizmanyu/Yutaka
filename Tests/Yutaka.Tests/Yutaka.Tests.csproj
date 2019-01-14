@@ -56,6 +56,9 @@
     <Reference Include="Yutaka.IO">
       <HintPath>..\..\Libraries\Yutaka.IO\bin\Debug\Yutaka.IO.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.Net">
+      <HintPath>..\..\Libraries\Yutaka.Net\bin\Debug\Yutaka.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Release\Yutaka.Text.dll</HintPath>
     </Reference>

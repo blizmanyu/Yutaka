@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using NLog;
-using Yutaka.IO;
 using Yutaka.Images;
+using Yutaka.IO;
+using Yutaka.Net;
 using Yutaka.Text;
 using Yutaka.Utils;
 
@@ -39,9 +40,25 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_TextUtil_BeautifyPhone();
+			Test_MailUtil_ConvertStringToMailAddresses();
 			EndProgram();
 		}
+
+		#region Test MailUtil.ConvertStringToMailAddresses
+		private static void Test_MailUtil_ConvertStringToMailAddresses()
+		{
+			var tests = new string[] {
+				"Michael Contursi <mcontursi@rcw1.com>",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				var v = MailUtil.ConvertStringToMailAddresses(tests[i]);
+				Console.Write("\n");
+				Console.Write("\nTest #{0}: {1}", i + 1, tests[i]);
+				Console.Write("\n=> {0}", v);
+			}
+		}
+		#endregion Test MailUtil.ConvertStringToMailAddresses
 
 		#region Test TextUtil.BeautifyPhone
 		private static void Test_TextUtil_BeautifyPhone()
@@ -587,7 +604,7 @@ namespace Yutaka.Tests
 				Console.Write("\n=> {0}", address.Address);
 			}
 		}
-		#endregion Test FileUtil.FixCreationTime
+		#endregion Test MailAddress
 
 		#region Test FileUtil.FixCreationTime
 		//private static void Test_FileUtil_FixCreationTime()

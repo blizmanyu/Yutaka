@@ -231,10 +231,15 @@ namespace Yutaka.Net
 							list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
 						else {
 							try {
-								list.Add(new MailAddress(Clean(array[i].Replace(";", "").Replace(":", "").Replace(",", ""))));
+								list.Add(new MailAddress(array[i].Replace(";", "").Replace(":", "").Replace(",", "")));
 							}
 
-							catch (Exception) { }
+							catch (Exception ex) {
+								if (ex.InnerException == null)
+									Console.Write("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator);
+
+								Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator);
+							}
 						}
 
 						if (maxEmails > 0 && list.Count >= maxEmails)
@@ -247,10 +252,15 @@ namespace Yutaka.Net
 						list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
 					else {
 						try {
-							list.Add(new MailAddress(Clean(emails.Replace(";", "").Replace(":", "").Replace(",", ""))));
+							list.Add(new MailAddress(emails.Replace(";", "").Replace(":", "").Replace(",", "")));
 						}
 
-						catch (Exception) { }
+						catch (Exception ex) {
+							if (ex.InnerException == null)
+								Console.Write("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator);
+
+							Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator);
+						}
 					}
 				}
 
