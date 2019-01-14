@@ -393,13 +393,13 @@ namespace Yutaka.IO
 			while (dirs.Count > 0) {
 				string[] subDirs;
 				var currentDir = dirs.Pop();
-				
-				if (FileUtil.IsInIgnoreList(currentDir, ignoreFolders)) {
 
+				while (IsInIgnoreList(currentDir, ignoreFolders)) {
+					currentDir = dirs.Pop();
 				}
 
 				try {
-					for (int i=0; i<audioExtensions.Length; i++) {
+					for (int i = 0; i < audioExtensions.Length; i++) {
 						list.AddRange(Directory.EnumerateFiles(currentDir, audioExtensions[i]));
 					}
 				}
@@ -427,8 +427,15 @@ namespace Yutaka.IO
 					continue;
 				}
 
-				for (int i = 0; i < subDirs.Length; i++)
-					dirs.Push(subDirs[i]);
+				for (int i = 0; i < subDirs.Length; i++) {
+					if (IsInIgnoreList(subDirs[i], ignoreFolders))
+						continue;
+					else
+						dirs.Push(subDirs[i]);
+				}
+
+				if (dirs.Count > initialStackCapacity)
+					Console.Write("\n******* dirs.Count: {0} *******", dirs.Count);
 			}
 
 			return list;
