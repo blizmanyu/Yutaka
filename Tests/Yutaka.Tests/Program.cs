@@ -52,10 +52,12 @@ namespace Yutaka.Tests
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
 				var v = MailUtil.ConvertStringToMailAddresses(tests[i]);
 				Console.Write("\n");
-				Console.Write("\nTest #{0}: {1}", i + 1, tests[i]);
-				Console.Write("\n=> {0}", v);
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				Console.Write("\n   DisplayName: {0}", v[0].DisplayName);
+				Console.Write("\n   Address: {0}", v[0].Address);
 			}
 		}
 		#endregion Test MailUtil.ConvertStringToMailAddresses
