@@ -378,7 +378,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=256)
+		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=200)
 		{
 			if (String.IsNullOrWhiteSpace(rootFolder))
 				throw new Exception(String.Format("<rootFolder> is required.{0}Exception thrown in FileUtil.GetAllAudioFiles(string rootFolder, int initialStackCapacity)", Environment.NewLine));
@@ -574,10 +574,9 @@ namespace Yutaka.IO
 			else {
 				str = str.ToUpper();
 
-				for (int i=0; i<ignoreList.Length; i++) {
+				for (int i=0; i<ignoreList.Length; i++)
 					if (str.Contains(ignoreList[i].ToUpper()))
 						return true;
-				}
 			}
 
 			return false;
