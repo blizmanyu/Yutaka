@@ -378,7 +378,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=100)
+		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=256)
 		{
 			if (String.IsNullOrWhiteSpace(rootFolder))
 				throw new Exception(String.Format("<rootFolder> is required.{0}Exception thrown in FileUtil.GetAllAudioFiles(string rootFolder, int initialStackCapacity)", Environment.NewLine));
@@ -394,8 +394,9 @@ namespace Yutaka.IO
 				string[] subDirs;
 				var currentDir = dirs.Pop();
 
-				while (IsInIgnoreList(currentDir, ignoreFolders))
+				while (IsInIgnoreList(currentDir, ignoreFolders)) {
 					currentDir = dirs.Pop();
+				}
 
 				try {
 					for (int i = 0; i < audioExtensions.Length; i++) {
