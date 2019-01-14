@@ -14,9 +14,9 @@ namespace Yutaka.IO
 		// Constants //
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		const int ONE_GIGABYTE = 1073741824; // Math.Pow(2, 30) //
-		const int ONE_MEGABYTE =    1048576; // Math.Pow(2, 20) //
-		const int FIVE_TWELVE_KB =   524288; // Math.Pow(2, 19) //
-		const int ONE_KILOBYTE =       1024; // Math.Pow(2, 10) //
+		const int ONE_MEGABYTE = 1048576; // Math.Pow(2, 20) //
+		const int FIVE_TWELVE_KB = 524288; // Math.Pow(2, 19) //
+		const int ONE_KILOBYTE = 1024; // Math.Pow(2, 10) //
 		const int BUFFER = FIVE_TWELVE_KB;
 
 		// Config/Settings //
@@ -80,16 +80,11 @@ namespace Yutaka.IO
 			var array_length = BUFFER;
 			var dataArray = new byte[array_length];
 
-			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length))
-			{
-				using (var bwread = new BinaryReader(fsread))
-				{
-					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length))
-					{
-						using (var bwwrite = new BinaryWriter(fswrite))
-						{
-							for (; ; )
-							{
+			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
+				using (var bwread = new BinaryReader(fsread)) {
+					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
+						using (var bwwrite = new BinaryWriter(fswrite)) {
+							for (; ; ) {
 								var read = bwread.Read(dataArray, 0, array_length);
 								if (0 == read)
 									break;
@@ -116,18 +111,15 @@ namespace Yutaka.IO
 			var size = new FileInfo(destination).Length;
 			// size time in milliseconds per sec
 			var tsize = size * 1000 / milliseconds;
-			if (tsize > ONE_GIGABYTE)
-			{
+			if (tsize > ONE_GIGABYTE) {
 				tsize = tsize / ONE_GIGABYTE;
 				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
 			}
-			else if (tsize > ONE_MEGABYTE)
-			{
+			else if (tsize > ONE_MEGABYTE) {
 				tsize = tsize / ONE_MEGABYTE;
 				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
 			}
-			else if (tsize > ONE_KILOBYTE)
-			{
+			else if (tsize > ONE_KILOBYTE) {
 				tsize = tsize / ONE_KILOBYTE;
 				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
 			}
@@ -173,54 +165,54 @@ namespace Yutaka.IO
 		#endregion Move
 
 		#region Public Methods
-		public static void CopyFile(FileInfo source, string dest, bool overwrite=false, TimestampOption tOption=TimestampOption.WindowsDefault)
-			{
-				if (source == null)
-					throw new ArgumentNullException("source");
+		public static void CopyFile(FileInfo source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
+		{
+			if (source == null)
+				throw new ArgumentNullException("source");
 
-				if (dest == null)
-					throw new ArgumentNullException("dest");
+			if (dest == null)
+				throw new ArgumentNullException("dest");
 
-				if (tOption == TimestampOption.WindowsDefault)
-					source.CopyTo(dest, overwrite);
+			if (tOption == TimestampOption.WindowsDefault)
+				source.CopyTo(dest, overwrite);
 
-				else {
-					var now = DateTime.Now;
-					var creationTime = now;
-					var lastAccessTime = now;
-					var lastWriteTime = now;
+			else {
+				var now = DateTime.Now;
+				var creationTime = now;
+				var lastAccessTime = now;
+				var lastWriteTime = now;
 
-					switch (tOption) {
-						case TimestampOption.PreserveOriginal:
-							creationTime = source.CreationTime;
-							lastAccessTime = source.LastAccessTime;
-							lastWriteTime = source.LastWriteTime;
-							break;
-						case TimestampOption.SetAllToMinDate:
-							var minDate = GetMinTime(source);
-							creationTime = minDate;
-							lastAccessTime = minDate;
-							lastWriteTime = minDate;
-							break;
-						case TimestampOption.SetAllToDateTaken:
-							var dateTaken = GetMinTime(source);
-							creationTime = dateTaken;
-							lastAccessTime = dateTaken;
-							lastWriteTime = dateTaken;
-							break;
-						default:
-							throw new Exception(String.Format("{0} isn't a valid TimestampOption, or, it hasn't been implemented yet", tOption));
-					}
+				switch (tOption) {
+					case TimestampOption.PreserveOriginal:
+						creationTime = source.CreationTime;
+						lastAccessTime = source.LastAccessTime;
+						lastWriteTime = source.LastWriteTime;
+						break;
+					case TimestampOption.SetAllToMinDate:
+						var minDate = GetMinTime(source);
+						creationTime = minDate;
+						lastAccessTime = minDate;
+						lastWriteTime = minDate;
+						break;
+					case TimestampOption.SetAllToDateTaken:
+						var dateTaken = GetMinTime(source);
+						creationTime = dateTaken;
+						lastAccessTime = dateTaken;
+						lastWriteTime = dateTaken;
+						break;
+					default:
+						throw new Exception(String.Format("{0} isn't a valid TimestampOption, or, it hasn't been implemented yet", tOption));
+				}
 
-					var newFile = source.CopyTo(dest, overwrite);
+				var newFile = source.CopyTo(dest, overwrite);
 
-					if (newFile != null) {
-						newFile.CreationTime = creationTime;
-						newFile.LastWriteTime = lastAccessTime;
-						newFile.LastAccessTime = lastWriteTime;
-					}
+				if (newFile != null) {
+					newFile.CreationTime = creationTime;
+					newFile.LastWriteTime = lastAccessTime;
+					newFile.LastAccessTime = lastWriteTime;
 				}
 			}
+		}
 
 		public static void CopyFile(string source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
 		{
@@ -360,7 +352,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static string[] GetAllLines(string filePath, int maxLines=-1)
+		public static string[] GetAllLines(string filePath, int maxLines = -1)
 		{
 			if (String.IsNullOrEmpty(filePath))
 				throw new ArgumentNullException("filePath", "<filePath> is required.");
@@ -406,7 +398,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static long GetDirectorySize(string path, string searchPattern="*", SearchOption searchOption=SearchOption.AllDirectories)
+		public static long GetDirectorySize(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.AllDirectories)
 		{
 			try {
 				var files = Directory.EnumerateFiles(path, searchPattern, searchOption);
@@ -423,7 +415,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern="*", int maxDepth=7)
+		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern = "*", int maxDepth = 7)
 		{
 			if (String.IsNullOrEmpty(targetDirectory))
 				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
@@ -458,7 +450,7 @@ namespace Yutaka.IO
 				if (isReadOnly)
 					fInfo.Attributes = FileAttributes.Normal;
 
-				files.AddRange(GetFilesRecursive(subdirectories[i], searchPattern, maxDepth-1));
+				files.AddRange(GetFilesRecursive(subdirectories[i], searchPattern, maxDepth - 1));
 
 				if (isReadOnly)
 					fInfo.Attributes = attributes;
@@ -583,7 +575,7 @@ namespace Yutaka.IO
 			#endregion Parameter Check
 
 			try {
-				using (StreamWriter sw = new StreamWriter(path, append, encoding, bufferSize))
+				using (var sw = new StreamWriter(path, append, encoding, bufferSize))
 					sw.Write(value);
 			}
 
