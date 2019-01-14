@@ -88,7 +88,14 @@ namespace Yutaka.Net
 			}
 		}
 
-		public static List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',')
+		/// <summary>
+		/// Converts a string of email adresses into a List of MailAddress objects. Comma separated is the default, but can be changed by specifying the separator parameter.
+		/// </summary>
+		/// <param name="emails">List of comma-separated emails. Semi-colon is supported if you specify it in the separator parameter</param>
+		/// <param name="separator">Use this parameter if your list is semi-colon delimited. Comma and semi-colon are the only supported separators.</param>
+		/// <param name="maxEmails">Max # of emails to convert from the string in case your list is pulled from a Mailing List that contains hundreds (or even thousands) of emails that you want to limited. If you don't want to cap the list, use 0 or a negative number.</param>
+		/// <returns></returns>
+		public static List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',', int maxEmails=10)
 		{
 			if (String.IsNullOrWhiteSpace(emails))
 				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails, char separator)", Environment.NewLine));
@@ -229,6 +236,9 @@ namespace Yutaka.Net
 
 							catch (Exception) { }
 						}
+
+						if (maxEmails > 0 && list.Count >= maxEmails)
+							return list;
 					}
 				}
 
