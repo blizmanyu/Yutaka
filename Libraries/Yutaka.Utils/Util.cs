@@ -71,7 +71,7 @@ namespace Yutaka.Utils
 				throw new Exception(String.Format("<dt> is required.{0}{0}Exception thrown in Util.LocalTimeToGoogleInternalDate(DateTime dt)", Environment.NewLine));
 
 			try {
-				return (long) Math.Round((dt.ToUniversalTime() - unixTime).TotalMilliseconds, MidpointRounding.AwayFromZero);
+				return (long) (dt.ToUniversalTime() - unixTime).TotalMilliseconds;
 			}
 
 			catch (Exception ex) {
