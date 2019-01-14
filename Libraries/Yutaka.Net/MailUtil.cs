@@ -15,7 +15,7 @@ namespace Yutaka.Net
 				return "";
 
 			while (email.Contains(" "))
-				email.Replace(" ", "");
+				email = email.Replace(" ", "");
 
 			if (email == email.ToUpper())
 				email = email.ToLower();
