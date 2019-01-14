@@ -64,7 +64,7 @@
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Release\Yutaka.Text.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Utils">
-      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Debug\Yutaka.Utils.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Web">
       <HintPath>..\..\Libraries\Yutaka.Web\bin\Debug\Yutaka.Web.dll</HintPath>

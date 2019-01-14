@@ -40,9 +40,34 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_MailUtil_ConvertStringToMailAddresses();
+			Test_Util_GetRelativeDateTimeString();
 			EndProgram();
 		}
+
+		#region Test Util.GetRelativeDateTimeString
+		private static void Test_Util_GetRelativeDateTimeString()
+		{
+			var now = DateTime.Now;
+
+			var tests = new DateTime[] {
+				now,
+				now.Date,
+				now.Date.AddHours(14).AddMinutes(20),
+				now.AddDays(-11),
+				now.AddMonths(-1),
+				now.AddYears(-1),
+				now.AddYears(-2),
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				var v = Util.GetRelativeDateTimeString(tests[i]);
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				Console.Write("\n   {0}", v);
+			}
+		}
+		#endregion Test Util.GetRelativeDateTimeString
 
 		#region Test MailUtil.ConvertStringToMailAddresses
 		private static void Test_MailUtil_ConvertStringToMailAddresses()

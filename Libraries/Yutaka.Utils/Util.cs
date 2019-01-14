@@ -1,18 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Yutaka.Utils
 {
 	public static class Util
 	{
+		private static DateTime dateTimeThreshold = new DateTime(1900, 1, 1);
 		private static DateTime unixTime = new DateTime(1970, 1, 1);
 
 		public static string GetRelativeDateTimeString(DateTime dt)
 		{
-			if (dt == null || dt < unixTime)
+			if (dt == null || dt < dateTimeThreshold)
 				throw new Exception(String.Format("<dt> is required.{0}{0}Exception thrown in Util.GetRelativeDateTimeString(DateTime dt)", Environment.NewLine));
 
 			try {
@@ -32,5 +29,24 @@ namespace Yutaka.Utils
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.GetRelativeDateTimeString(DateTime dt='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dt));
 			}
 		}
+
+		// Google InternalDate //
+		public static DateTime GoogleInternalDateToUtc(long internalDate)
+		{
+			if (internalDate < 0)
+				throw new Exception(String.Format("<internalDate> is required.{0}{0}Exception thrown in Util.GoogleInternalDateToUtc(long internalDate)", Environment.NewLine));
+
+			try {
+				return unixTime.AddMilliseconds(internalDate);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in Util.GoogleInternalDateToUtc(long internalDate='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, internalDate));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.GoogleInternalDateToUtc(long internalDate='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, internalDate));
+			}
+		}
+		// END Google InternalDate //
 	}
 }
