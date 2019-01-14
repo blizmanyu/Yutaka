@@ -19,7 +19,7 @@ namespace Yutaka.Utils
 				if (dt.Year == DateTime.Now.Year) // This Year //
 					return String.Format("{0:MMM d}, {1}", dt, dt.ToString("h:mmtt").ToLower());
 
-				return String.Format("{0}", dt.ToString("M/d/yy, h:mmtt").ToLower());
+				return dt.ToString("M/d/yy, h:mmtt").ToLower();
 			}
 
 			catch (Exception ex) {

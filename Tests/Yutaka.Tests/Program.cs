@@ -40,7 +40,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Util_LocalTimeToGoogleInternalDate();
+			Test_Util_GetRelativeDateTimeString();
 			EndProgram();
 		}
 
