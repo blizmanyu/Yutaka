@@ -378,6 +378,62 @@ namespace Yutaka.IO
 			}
 		}
 
+		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=100)
+		{
+			if (String.IsNullOrWhiteSpace(rootFolder))
+				throw new Exception(String.Format("<rootFolder> is required.{0}Exception thrown in FileUtil.GetAllAudioFiles(string rootFolder, int initialStackCapacity)", Environment.NewLine));
+			if (!Directory.Exists(rootFolder))
+				throw new Exception(String.Format("Directory '{1}' doesn't exist.{0}Exception thrown in FileUtil.GetAllAudioFiles(string rootFolder, int initialStackCapacity)", Environment.NewLine, rootFolder));
+
+			string[] audioExtensions = { "*.aiff", "*.m4a", "*.mp3", "*.au", "*.ogg", "*.wav", "*.wma" };
+			var list = new List<string>();
+			var dirs = new Stack<string>(initialStackCapacity);
+			dirs.Push(rootFolder);
+
+			while (dirs.Count > 0) {
+				string[] subDirs;
+				var currentDir = dirs.Pop();
+				
+				if (FileUtil.IsInIgnoreList(currentDir, ignoreFolders)) {
+
+				}
+
+				try {
+					for (int i=0; i<audioExtensions.Length; i++) {
+						list.AddRange(Directory.EnumerateFiles(currentDir, audioExtensions[i]));
+					}
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}\ncurrentDir: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}\ncurrentDir: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.Write("\n{0}\ncurrentDir: {1}", e.Message, currentDir);
+					continue;
+				}
+				catch (DirectoryNotFoundException e) {
+					Console.Write("\n{0}\ncurrentDir: {1}", e.Message, currentDir);
+					continue;
+				}
+
+				for (int i = 0; i < subDirs.Length; i++)
+					dirs.Push(subDirs[i]);
+			}
+
+			return list;
+		}
+
 		// Retrieves the datetime WITHOUT loading the whole image //
 		public static DateTime GetDateTakenFromImage(string path)
 		{
@@ -497,6 +553,27 @@ namespace Yutaka.IO
 		public static DateTime GetMinTime(string path)
 		{
 			return GetMinTime(new FileInfo(path));
+		}
+
+		public static bool IsInIgnoreList(string str, string[] ignoreList)
+		{
+			if (String.IsNullOrWhiteSpace(str)) {
+				if (ignoreList == null || ignoreList.Length < 1)
+					throw new Exception(String.Format("<str> and <ignoreList> can't BOTH be empty.{0}Exception thrown in FileUtil.IsInIgnoreList(string str, string[] ignoreList)", Environment.NewLine));
+
+				return false;
+			}
+
+			else {
+				str = str.ToUpper();
+
+				for (int i=0; i<ignoreList.Length; i++) {
+					if (str.Contains(ignoreList[i].ToUpper()))
+						return true;
+				}
+			}
+
+			return false;
 		}
 
 		public static bool IsSameDate(FileInfo fi1, FileInfo fi2)
