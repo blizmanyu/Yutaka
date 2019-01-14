@@ -47,6 +47,40 @@ namespace Yutaka.Utils
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.GoogleInternalDateToUtc(long internalDate='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, internalDate));
 			}
 		}
+
+		public static DateTime GoogleInternalDateToLocalTime(long internalDate)
+		{
+			if (internalDate < 0)
+				throw new Exception(String.Format("<internalDate> is required.{0}{0}Exception thrown in Util.GoogleInternalDateToLocalTime(long internalDate)", Environment.NewLine));
+
+			try {
+				return unixTime.AddMilliseconds(internalDate).ToLocalTime();
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in Util.GoogleInternalDateToLocalTime(long internalDate='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, internalDate));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.GoogleInternalDateToLocalTime(long internalDate='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, internalDate));
+			}
+		}
+
+		public static long LocalTimeToGoogleInternalDate(DateTime dt)
+		{
+			if (dt == null || dt < dateTimeThreshold)
+				throw new Exception(String.Format("<dt> is required.{0}{0}Exception thrown in Util.LocalTimeToGoogleInternalDate(DateTime dt)", Environment.NewLine));
+
+			try {
+				return (long) Math.Round((dt.ToUniversalTime() - unixTime).TotalMilliseconds, MidpointRounding.AwayFromZero);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in Util.LocalTimeToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, dt));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.LocalTimeToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dt));
+			}
+		}
 		// END Google InternalDate //
 	}
 }

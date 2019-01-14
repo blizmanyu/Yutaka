@@ -40,9 +40,35 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Util_GetRelativeDateTimeString();
+			Test_Util_LocalTimeToGoogleInternalDate();
 			EndProgram();
 		}
+
+		#region Test Util.LocalTimeToGoogleInternalDate
+		private static void Test_Util_LocalTimeToGoogleInternalDate()
+		{
+			var now = DateTime.Now;
+
+			var tests = new DateTime[] {
+				now,
+				now.Date,
+				now.Date.AddHours(14).AddMinutes(20),
+				now.AddDays(-11),
+				now.AddMonths(-1),
+				now.AddYears(-1),
+				now.AddYears(-2),
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				var v = Util.LocalTimeToGoogleInternalDate(tests[i]);
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				Console.Write("\n   {0}", v);
+				Console.Write("\n   {0}", Util.GoogleInternalDateToLocalTime(v));
+			}
+		}
+		#endregion Test Util.LocalTimeToGoogleInternalDate
 
 		#region Test Util.GetRelativeDateTimeString
 		private static void Test_Util_GetRelativeDateTimeString()
