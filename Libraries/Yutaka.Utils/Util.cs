@@ -19,7 +19,7 @@ namespace Yutaka.Utils
 				if (dt.Year == DateTime.Now.Year) // This Year //
 					return String.Format("{0:MMM d}, {1}", dt, dt.ToString("h:mmtt").ToLower());
 
-				return String.Format("{0:M/d/yy}, {1}", dt, dt.ToString("h:mmtt").ToLower());
+				return String.Format("{0}", dt.ToString("M/d/yy, h:mmtt").ToLower());
 			}
 
 			catch (Exception ex) {
@@ -79,6 +79,23 @@ namespace Yutaka.Utils
 					throw new Exception(String.Format("{0}{2}{2}Exception thrown in Util.LocalTimeToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, dt));
 
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.LocalTimeToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dt));
+			}
+		}
+
+		public static long UtcToGoogleInternalDate(DateTime dt)
+		{
+			if (dt == null || dt < dateTimeThreshold)
+				throw new Exception(String.Format("<dt> is required.{0}{0}Exception thrown in Util.UtcToGoogleInternalDate(DateTime dt)", Environment.NewLine));
+
+			try {
+				return (long) (dt - unixTime).TotalMilliseconds;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in Util.UtcToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, dt));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.UtcToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dt));
 			}
 		}
 		// END Google InternalDate //
