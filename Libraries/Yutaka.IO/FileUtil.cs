@@ -394,9 +394,8 @@ namespace Yutaka.IO
 				string[] subDirs;
 				var currentDir = dirs.Pop();
 
-				while (IsInIgnoreList(currentDir, ignoreFolders)) {
+				while (IsInIgnoreList(currentDir, ignoreFolders))
 					currentDir = dirs.Pop();
-				}
 
 				try {
 					for (int i = 0; i < audioExtensions.Length; i++) {
