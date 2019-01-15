@@ -647,8 +647,10 @@ namespace Yutaka.IO
 
 			if (String.IsNullOrWhiteSpace(path))
 				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}<path> is NULL or whitespace", Environment.NewLine, value, path, append, encoding, bufferSize));
-			if (String.IsNullOrWhiteSpace(Path.GetDirectoryName(path)))
-				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}Directory doesn't exist or is inaccessible", Environment.NewLine, value, path, append, encoding, bufferSize));
+			if (String.IsNullOrWhiteSpace(Path.GetDirectoryName(path)) || !Directory.Exists(Path.GetDirectoryName(path))) {
+				Directory.CreateDirectory(Path.GetDirectoryName(path));
+				//throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}Directory doesn't exist or is inaccessible", Environment.NewLine, value, path, append, encoding, bufferSize));
+			}
 
 			if (encoding == null)
 				encoding = Encoding.Default;
