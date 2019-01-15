@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using Yutaka.IO;
 
 namespace Yutaka.Net
 {
@@ -236,9 +237,9 @@ namespace Yutaka.Net
 
 							catch (Exception ex) {
 								if (ex.InnerException == null)
-									Console.Write("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator);
+									FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 
-								Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator);
+								FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 							}
 						}
 
@@ -257,22 +258,22 @@ namespace Yutaka.Net
 
 						catch (Exception ex) {
 							if (ex.InnerException == null)
-								Console.Write("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator);
+								FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 
-							Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator);
+							FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 						}
 					}
 				}
-
-				return list;
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator));
+					FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
+				FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
 			}
+
+			return list;
 		}
 
 		public static Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)

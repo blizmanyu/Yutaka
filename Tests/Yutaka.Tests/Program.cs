@@ -40,7 +40,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Util_GetRelativeDateTimeString();
+			Test_MailUtil_ConvertStringToMailAddresses();
 			EndProgram();
 		}
 
@@ -100,6 +100,7 @@ namespace Yutaka.Tests
 		{
 			var tests = new string[] {
 				"Michael Contursi <mcontursi@rcw1.com>",
+				"asdfsdf",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
