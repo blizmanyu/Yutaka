@@ -232,7 +232,7 @@ namespace Yutaka.Net
 							list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
 						else {
 							try {
-								list.Add(new MailAddress(array[i].Replace(";", "").Replace(":", "").Replace(",", "")));
+								list.Add(new MailAddress(array[i].Replace(";", "").Replace(",", "").Replace(":", " ")));
 							}
 
 							catch (Exception ex) {
