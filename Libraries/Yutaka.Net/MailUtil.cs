@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
-using Yutaka.IO;
 
 namespace Yutaka.Net
 {
@@ -236,10 +235,8 @@ namespace Yutaka.Net
 							}
 
 							catch (Exception ex) {
-								if (ex.InnerException == null)
-									FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
-
-								FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
+								Console.Write("\n{0}\narray[i]: {1}", ex.Message, array[i]);
+								continue;
 							}
 						}
 
@@ -253,14 +250,11 @@ namespace Yutaka.Net
 						list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
 					else {
 						try {
-							list.Add(new MailAddress(emails.Replace(";", "").Replace(":", "").Replace(",", "")));
+							list.Add(new MailAddress(emails.Replace(";", "").Replace(",", "").Replace(":", " ")));
 						}
 
 						catch (Exception ex) {
-							if (ex.InnerException == null)
-								FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
-
-							FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
+							Console.Write("\n{0}\nemails[i]: {1}", ex.Message, emails);
 						}
 					}
 				}
@@ -268,9 +262,9 @@ namespace Yutaka.Net
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, emails, separator));
 
-				FileUtil.Write(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator), String.Format(@"C:\Logs\MailUtil\Log {0:yyyy MMdd}.log", DateTime.Now));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of MailUtil.ConvertStringToMailAddresses(string emails='{3}', char separator='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, emails, separator));
 			}
 
 			return list;
