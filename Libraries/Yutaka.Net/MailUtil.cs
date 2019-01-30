@@ -229,6 +229,8 @@ namespace Yutaka.Net
 					for (int i=0; i<array.Length; i++) {
 						if (array[i].ToUpper().Contains("UNDISCLOSED"))
 							list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
+						else if(array[i].ToUpper().Contains("SYSTEM ADMINISTRATOR"))
+							list.Add(new MailAddress("system@administrator", "System Administrator"));
 						else {
 							try {
 								list.Add(new MailAddress(array[i].Replace(";", "").Replace(",", "").Replace(":", " ")));
@@ -248,6 +250,8 @@ namespace Yutaka.Net
 				else { // single email //
 					if (emails.ToUpper().Contains("UNDISCLOSED"))
 						list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
+					else if (emails.ToUpper().Contains("SYSTEM ADMINISTRATOR"))
+						list.Add(new MailAddress("system@administrator", "System Administrator"));
 					else {
 						try {
 							list.Add(new MailAddress(emails.Replace(";", "").Replace(",", "").Replace(":", " ")));
