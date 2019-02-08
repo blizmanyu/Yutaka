@@ -29,6 +29,21 @@ namespace Yutaka.Video
 					exitCode = ffmpeg.ExitCode;
 					Console.Write("\nExitCode: {0}", exitCode);
 				}
+
+				if (exitCode == exitCode) {
+					using (ffmpeg = new Process()) {
+						ffmpeg.EnableRaisingEvents = true;
+						ffmpeg.StartInfo.FileName = "ffmpeg.exe";
+						ffmpeg.StartInfo.Arguments = "-y -ss 02:25:0%%x.000 -t %length% -i \"%source%\" -vf fps=10,scale=1000:-1:flags=lanczos,palettegen \"%filename%%%x0.png\"";
+						ffmpeg.StartInfo.CreateNoWindow = !createWindow;
+
+						ffmpeg.Start();
+						ffmpeg.WaitForExit();
+
+						exitCode = ffmpeg.ExitCode;
+						Console.Write("\nExitCode: {0}", exitCode);
+					}
+				}
 			}
 			catch (Exception ex) {
 				if (ex.InnerException == null)
