@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Yutaka.NewConsoleAppTemplate</RootNamespace>
     <AssemblyName>Yutaka.NewConsoleAppTemplate</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -65,6 +66,9 @@
     </Reference>
     <Reference Include="Yutaka.Utils">
       <HintPath>..\..\Libraries\Yutaka.Utils\bin\Release\Yutaka.Utils.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Video">
+      <HintPath>..\..\Libraries\Yutaka.Video\bin\Release\Yutaka.Video.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Web">
       <HintPath>..\..\Libraries\Yutaka.Web\bin\Debug\Yutaka.Web.dll</HintPath>

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using NLog;
@@ -8,6 +10,7 @@ using Yutaka.IO;
 using Yutaka.Net;
 using Yutaka.Text;
 using Yutaka.Utils;
+using Yutaka.Video;
 
 namespace Yutaka.Tests
 {
@@ -40,9 +43,29 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_MailUtil_ConvertStringToMailAddresses();
+			Test_VideoUtil_CreateAnimatedGif();
 			EndProgram();
 		}
+
+		#region Test VideoUtil.CreateAnimatedGif
+		private static void Test_VideoUtil_CreateAnimatedGif()
+		{
+			var source = @"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4";
+			var destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", startTime);
+			var tests = new TimeSpan[] {
+				new TimeSpan(0, 0, 0),
+			};
+
+			Directory.CreateDirectory(destFolder);
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				VideoUtil.CreateAnimatedGif(tests[i], 2, source, destFolder);
+			}
+
+			Process.Start("explorer.exe", destFolder);
+		}
+		#endregion Test Util.LocalTimeToGoogleInternalDate
 
 		#region Test Util.LocalTimeToGoogleInternalDate
 		private static void Test_Util_LocalTimeToGoogleInternalDate()

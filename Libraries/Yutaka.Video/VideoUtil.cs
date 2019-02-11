@@ -1,50 +1,63 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
 
 namespace Yutaka.Video
 {
 	public static class VideoUtil
 	{
-		private static DateTime startTime = DateTime.Now;
-
-		public static void CreateAnimatedGif(TimeSpan ts, bool createWindow=false)
+		public static void CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			try {
 				int exitCode;
-				Process ffmpeg;
+				var arg = "";
+				var dest = "";
+				Process p;
 
-				using (ffmpeg = new Process()) {
-					ffmpeg.EnableRaisingEvents = true;
-					ffmpeg.StartInfo.FileName = "ffmpeg.exe";
-					ffmpeg.StartInfo.Arguments = "-y -ss 02:25:0%%x.000 -t %length% -i \"%source%\" -vf fps=10,scale=1000:-1:flags=lanczos,palettegen \"%filename%%%x0.png\"";
-					ffmpeg.StartInfo.CreateNoWindow = !createWindow;
+				using (p = new Process()) {
+					dest = String.Format("{0}{1}", destFolder, startTime.ToString("hhmmssfff"));
+					Console.Write("\npng: {0}", dest);
+					arg = String.Format("-ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, source, fps, width, dest);
+					Console.Write("\narg: {0}", arg);
 
-					ffmpeg.Start();
-					ffmpeg.WaitForExit();
+					p.StartInfo.RedirectStandardOutput = true;
+					p.StartInfo.RedirectStandardError = true;
+					p.StartInfo.FileName = "ffmpeg.exe";
+					p.StartInfo.Arguments = arg;
+					p.StartInfo.UseShellExecute = false;
+					p.StartInfo.CreateNoWindow = true;
+					p.Start();
+					p.WaitForExit();
 
-					exitCode = ffmpeg.ExitCode;
+					exitCode = p.ExitCode;
 					Console.Write("\nExitCode: {0}", exitCode);
 				}
 
-				if (exitCode == exitCode) {
-					using (ffmpeg = new Process()) {
-						ffmpeg.EnableRaisingEvents = true;
-						ffmpeg.StartInfo.FileName = "ffmpeg.exe";
-						ffmpeg.StartInfo.Arguments = "-y -ss 02:25:0%%x.000 -t %length% -i \"%source%\" -vf fps=10,scale=1000:-1:flags=lanczos,palettegen \"%filename%%%x0.png\"";
-						ffmpeg.StartInfo.CreateNoWindow = !createWindow;
+				if (exitCode == 0) {
+					using (p = new Process()) {
+						arg = String.Format("-ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{6}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, source, dest, fps, width, dest);
+						Console.Write("\narg: {0}", arg);
 
-						ffmpeg.Start();
-						ffmpeg.WaitForExit();
+						p.StartInfo.RedirectStandardOutput = true;
+						p.StartInfo.RedirectStandardError = true;
+						p.StartInfo.FileName = "ffmpeg.exe";
+						p.StartInfo.Arguments = arg;
+						p.StartInfo.UseShellExecute = false;
+						p.StartInfo.CreateNoWindow = true;
+						p.Start();
+						p.WaitForExit();
 
-						exitCode = ffmpeg.ExitCode;
+						exitCode = p.ExitCode;
 						Console.Write("\nExitCode: {0}", exitCode);
+
+						if (exitCode == 0) {
+							//Console.Write("\nDeleteing PNG palette...");
+							File.Delete(String.Format("{0}.png", dest));
+						}
 					}
 				}
 			}
+
 			catch (Exception ex) {
 				if (ex.InnerException == null)
 					throw new Exception(String.Format("{0}{2}{2}Exception thrown in VideoUtil.CreateAnimatedGif(){2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
