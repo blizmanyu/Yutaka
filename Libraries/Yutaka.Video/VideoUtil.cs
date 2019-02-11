@@ -6,6 +6,8 @@ namespace Yutaka.Video
 {
 	public static class VideoUtil
 	{
+		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
+
 		public static void CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			try {
@@ -22,7 +24,7 @@ namespace Yutaka.Video
 
 					p.StartInfo.RedirectStandardOutput = true;
 					p.StartInfo.RedirectStandardError = true;
-					p.StartInfo.FileName = "ffmpeg.exe";
+					p.StartInfo.FileName = FFMPEG_PATH;
 					p.StartInfo.Arguments = arg;
 					p.StartInfo.UseShellExecute = false;
 					p.StartInfo.CreateNoWindow = true;
@@ -40,7 +42,7 @@ namespace Yutaka.Video
 
 						p.StartInfo.RedirectStandardOutput = true;
 						p.StartInfo.RedirectStandardError = true;
-						p.StartInfo.FileName = "ffmpeg.exe";
+						p.StartInfo.FileName = FFMPEG_PATH;
 						p.StartInfo.Arguments = arg;
 						p.StartInfo.UseShellExecute = false;
 						p.StartInfo.CreateNoWindow = true;
@@ -64,6 +66,11 @@ namespace Yutaka.Video
 
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(){2}{2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
+		}
+
+		public static void CreateVersion1(string source, string destFolder)
+		{
+
 		}
 	}
 }
