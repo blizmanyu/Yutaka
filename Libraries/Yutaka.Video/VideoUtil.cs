@@ -68,6 +68,7 @@ namespace Yutaka.Video
 			}
 		}
 
+		// Warning: this method name will most likely change once complete //
 		public static void CreateVersion1(string source, string destFolder)
 		{
 
