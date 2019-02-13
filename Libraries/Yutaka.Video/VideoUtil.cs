@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using WMPLib;
 
 namespace Yutaka.Video
 {
@@ -72,6 +73,11 @@ namespace Yutaka.Video
 		public static void CreateVersion1(string source, string destFolder)
 		{
 
+		}
+
+		public static double GetDuration(string file)
+		{
+			return new WindowsMediaPlayer().newMedia(file).duration;
 		}
 	}
 }
