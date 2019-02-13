@@ -250,24 +250,14 @@ namespace Yutaka.Net
 						throw new Exception(String.Format("Unsupported <separator>.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails='{1}', char separator='{2}')", Environment.NewLine, emails, separator));
 				}
 
+				MailAddress address;
+
 				if (emails.Contains(separator.ToString())) { // multiple emails //
 					var array = emails.Split(separator);
 
 					for (int i=0; i<array.Length; i++) {
-						if (array[i].ToUpper().Contains("UNDISCLOSED"))
-							list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
-						else if (array[i].ToUpper().Contains("SYSTEM ADMINISTRATOR"))
-							list.Add(new MailAddress("system@administrator", "System Administrator"));
-						else {
-							try {
-								list.Add(new MailAddress(array[i].Replace(";", "").Replace(",", "").Replace("mailto:", "").Replace(":", " ")));
-							}
-
-							catch (Exception ex) {
-								Console.Write("\n{0}\narray[i]: {1}", ex.Message, array[i]);
-								continue;
-							}
-						}
+						TryParseEmail(array[i], out address);
+						list.Add(address);
 
 						if (maxEmails > 0 && list.Count >= maxEmails)
 							return list;
@@ -275,19 +265,8 @@ namespace Yutaka.Net
 				}
 
 				else { // single email //
-					if (emails.ToUpper().Contains("UNDISCLOSED"))
-						list.Add(new MailAddress("undisclosed@recipients", "Undisclosed Recipients"));
-					else if (emails.ToUpper().Contains("SYSTEM ADMINISTRATOR"))
-						list.Add(new MailAddress("system@administrator", "System Administrator"));
-					else {
-						try {
-							list.Add(new MailAddress(emails.Replace(";", "").Replace(",", "").Replace("mailto:", "").Replace(":", " ")));
-						}
-
-						catch (Exception ex) {
-							Console.Write("\n{0}\nemails[i]: {1}", ex.Message, emails);
-						}
-					}
+					TryParseEmail(emails, out address);
+					list.Add(address);
 				}
 			}
 
