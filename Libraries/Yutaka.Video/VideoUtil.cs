@@ -76,6 +76,22 @@ namespace Yutaka.Video
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder).{0}{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(destFolder))
 				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder).{0}{0}", Environment.NewLine));
+
+			try {
+				var duration = GetDuration(source);
+				var interval = (duration - 10) / 7;
+
+				for (double i=10; i<duration; i+=interval) {
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 2, source, destFolder);
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateVersion1(string source='{3}', string destFolder='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, source, destFolder));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateVersion1(string source='{3}', string destFolder='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, source, destFolder));
+			}
 		}
 
 		public static double GetDuration(string file)
