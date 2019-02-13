@@ -88,6 +88,33 @@ namespace Yutaka.Net
 			}
 		}
 
+		public static bool TryParseEmail(string email, out MailAddress mailAddress)
+		{
+			if (String.IsNullOrWhiteSpace(email))
+				throw new Exception(String.Format("<email> is required.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddress(string email)", Environment.NewLine));
+
+			if (email.ToUpper().Contains("UNDISCLOSED")) {
+				mailAddress = new MailAddress("undisclosed@recipients", "Undisclosed Recipients");
+				return true;
+			}
+
+			if (email.ToUpper().Contains("SYSTEM ADMINISTRATOR")) {
+				mailAddress = new MailAddress("system@administrator", "System Administrator");
+				return true;
+			}
+
+			try {
+				email = email.Replace("mailto:", "");
+				mailAddress = new MailAddress(email.Replace(";", "").Replace(",", "").Replace(":", " "));
+				return true;
+			}
+
+			catch (Exception) {
+				mailAddress = new MailAddress("exception@thrown", email);
+				return false;
+			}
+		}
+
 		/// <summary>
 		/// Converts a string of email adresses into a List of MailAddress objects. Comma separated is the default, but can be changed by specifying the separator parameter.
 		/// </summary>
