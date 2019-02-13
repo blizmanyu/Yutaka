@@ -43,9 +43,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_VideoUtil_CreateVersion1();
 			EndProgram();
 		}
+
+		#region Test VideoUtil.CreateVersion1
+		private static void Test_VideoUtil_CreateVersion1()
+		{
+			string destFolder;
+			var tests = new string[] {
+				//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 02-45-47.mp4",
+				@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
+			};
+
+			for (int i=0; i<tests.Length; i++) {
+				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+				Directory.CreateDirectory(destFolder);
+				VideoUtil.CreateVersion1(tests[i], destFolder, 0, 7320);
+				Process.Start("explorer.exe", destFolder);
+			}
+		}
+		#endregion Test VideoUtil.CreateVersion1
 
 		#region Test VideoUtil.CreateAnimatedGif
 		private static void Test_VideoUtil_CreateAnimatedGif()
