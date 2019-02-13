@@ -72,12 +72,27 @@ namespace Yutaka.Video
 		// Warning: this method name will most likely change once complete //
 		public static void CreateVersion1(string source, string destFolder)
 		{
-
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder).{0}{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(destFolder))
+				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder).{0}{0}", Environment.NewLine));
 		}
 
 		public static double GetDuration(string file)
 		{
-			return new WindowsMediaPlayer().newMedia(file).duration;
+			if (String.IsNullOrWhiteSpace(file))
+				throw new Exception(String.Format("<file> is NULL.{0}Exception thrown in VideoUtil.GetDuration(string file).{0}{0}", Environment.NewLine));
+
+			try {
+				return new WindowsMediaPlayer().newMedia(file).duration;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.GetDuration(string file='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, file));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.GetDuration(string file='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, file));
+			}
 		}
 	}
 }
