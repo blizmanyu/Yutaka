@@ -9,6 +9,35 @@ namespace Yutaka.Video
 	{
 		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
 
+		public static void CreateAllBetween(string source, string destFolder, double start = 0, double end = 120)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(destFolder))
+				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = start + 120;
+
+			try {
+				//Console.Write("\nsource: {0}", source);
+				//Console.Write("\ndestFolder: {0}", destFolder);
+				//Console.Write("\nstart: {0}", start);
+				//Console.Write("\nend: {0}", end);
+
+				for (var i = start; i < end; i += 10)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateVersion1(string source='{3}', string destFolder='{4}', double start={5}, double end={6}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, source, destFolder, start, end));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateVersion1(string source='{3}', string destFolder='{4}', double start={5}, double end={6}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, source, destFolder, start, end));
+			}
+		}
+
 		public static void CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			try {
