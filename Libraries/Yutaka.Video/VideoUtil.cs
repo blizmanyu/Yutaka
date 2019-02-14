@@ -38,7 +38,36 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder)
+		public static void CreateGallery(string source, string destFolder, string extension, double start = 0, double end = -1)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(destFolder))
+				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = GetDuration(source);
+
+			try {
+				Console.Write("\nsource: {0}", source);
+				Console.Write("\ndestFolder: {0}", destFolder);
+				Console.Write("\nstart: {0}", start);
+				Console.Write("\nend: {0}", end);
+
+				for (var i = start; i < end; i++)
+					CreateSingleImage(TimeSpan.FromSeconds(i), source, destFolder, extension);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateGallery(string source='{3}', string destFolder='{4}', double start={5}, double end={6}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, source, destFolder, start, end));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateGallery(string source='{3}', string destFolder='{4}', double start={5}, double end={6}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, source, destFolder, start, end));
+			}
+		}
+
+		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
@@ -48,7 +77,7 @@ namespace Yutaka.Video
 			try {
 				using (var p = new Process()) {
 					var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", destFolder, startTime);
-					var arg = String.Format("-y -ss {0} -i \"{1}\" -frames:v 1 \"{2}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), source, dest);
+					var arg = String.Format("-y -ss {0} -i \"{1}\" -frames:v 1 \"{2}.{3}\"", startTime.ToString(@"hh\:mm\:ss\.fff"), source, dest, extension);
 					Console.Write("\narg: {0}", arg);
 
 					p.StartInfo.RedirectStandardOutput = true;

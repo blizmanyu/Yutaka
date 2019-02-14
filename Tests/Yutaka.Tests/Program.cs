@@ -56,13 +56,21 @@ namespace Yutaka.Tests
 				@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
 			};
 
-			for (int i=0; i<tests.Length; i++) {
+			for (int i = 0; i < tests.Length; i++) {
 				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 				Directory.CreateDirectory(destFolder);
-				//VideoUtil.CreateVersion1(tests[i], destFolder, 0, 7320);
-				VideoUtil.CreateAllBetween(tests[i], destFolder, 0);
+				VideoUtil.CreateGallery(tests[i], destFolder, "gif", 0, 3);
+				VideoUtil.CreateGallery(tests[i], destFolder, "jpg", 0, 3);
 				Process.Start("explorer.exe", destFolder);
 			}
+
+			//for (int i = 0; i < tests.Length; i++) {
+			//	destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+			//	Directory.CreateDirectory(destFolder);
+			//	//VideoUtil.CreateVersion1(tests[i], destFolder, 0, 7320);
+			//	VideoUtil.CreateAllBetween(tests[i], destFolder, 0);
+			//	Process.Start("explorer.exe", destFolder);
+			//}
 		}
 		#endregion Test VideoUtil.CreateVersion1
 
