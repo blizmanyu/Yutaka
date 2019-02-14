@@ -38,6 +38,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Yutaka.Diagnostics">
+      <HintPath>..\Yutaka.Diagnostics\bin\Release\Yutaka.Diagnostics.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VideoUtil.cs" />

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using WMPLib;
 
 namespace Yutaka.Video
@@ -39,6 +38,42 @@ namespace Yutaka.Video
 			}
 		}
 
+		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
+			if (!File.Exists(source))
+				throw new Exception(String.Format("'{1}' doesn't exist.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine, source));
+
+			try {
+				using (var p = new Process()) {
+					var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", destFolder, startTime);
+					var arg = String.Format("-y -ss {0} -i \"{1}\" -frames:v 1 \"{2}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), source, dest);
+					Console.Write("\narg: {0}", arg);
+
+					p.StartInfo.RedirectStandardOutput = true;
+					p.StartInfo.RedirectStandardError = true;
+					p.StartInfo.FileName = FFMPEG_PATH;
+					p.StartInfo.Arguments = arg;
+					p.StartInfo.UseShellExecute = false;
+					p.StartInfo.CreateNoWindow = true;
+					Console.Write("\nParent FullName: {0}", Directory.GetParent(source).FullName);
+					p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName + "\\";
+					p.Start();
+					p.WaitForExit();
+
+					Console.Write("\nExitCode: {0}", p.ExitCode);
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					Console.Write("{0}{2}{2}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime={3}, string source='{4}', string destFolder='{5}'){2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, startTime, source, destFolder);
+
+				Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateSingleImage(TimeSpan startTime={3}, string source='{4}', string destFolder='{5}'){2}{2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startTime, source, destFolder);
+			}
+		}
+
 		public static void CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			if (String.IsNullOrWhiteSpace(source))
@@ -50,10 +85,9 @@ namespace Yutaka.Video
 				int exitCode;
 				var arg = "";
 				var dest = "";
-				Process p;
 
-				using (p = new Process()) {
-					dest = String.Format("{0}{1}", destFolder, startTime.ToString("hhmmssfff"));
+				using (var p = new Process()) {
+					dest = String.Format("{0}{1:hh}h{1:mm}m{1:ss}s{1:fff}f", destFolder, startTime);
 					Console.Write("\npng: {0}", dest);
 					arg = String.Format("-y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, source, fps, width, dest);
 					Console.Write("\narg: {0}", arg);
@@ -66,7 +100,7 @@ namespace Yutaka.Video
 					p.StartInfo.CreateNoWindow = true;
 					//Console.Write("\nParent Name: {0}", Directory.GetParent(source).Name);
 					//Console.Write("\nParent FullName: {0}", Directory.GetParent(source).FullName);
-					//p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName;
+					p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName + "\\";
 					p.Start();
 					p.WaitForExit();
 
@@ -75,20 +109,20 @@ namespace Yutaka.Video
 				}
 
 				if (exitCode == 0) {
-					using (p = new Process()) {
+					using (var p2 = new Process()) {
 						arg = String.Format("-y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{6}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, source, dest, fps, width, dest);
 						Console.Write("\narg: {0}", arg);
 
-						p.StartInfo.RedirectStandardOutput = true;
-						p.StartInfo.RedirectStandardError = true;
-						p.StartInfo.FileName = FFMPEG_PATH;
-						p.StartInfo.Arguments = arg;
-						p.StartInfo.UseShellExecute = false;
-						p.StartInfo.CreateNoWindow = true;
-						//p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName;
-						p.Start();
-						p.WaitForExit(20000);
-						p.Close();
+						p2.StartInfo.RedirectStandardOutput = true;
+						p2.StartInfo.RedirectStandardError = true;
+						p2.StartInfo.FileName = FFMPEG_PATH;
+						p2.StartInfo.Arguments = arg;
+						p2.StartInfo.UseShellExecute = false;
+						p2.StartInfo.CreateNoWindow = true;
+						p2.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName + "\\";
+						p2.Start();
+						p2.WaitForExit(12000);
+						p2.Close();
 						//Thread.Sleep(2200);
 						//p.Kill();
 
@@ -97,7 +131,7 @@ namespace Yutaka.Video
 
 						//if (exitCode == 0) {
 						//	//Console.Write("\nDeleteing PNG palette...");
-						//	File.Delete(String.Format("{0}.png", dest));
+						//File.Delete(String.Format("{0}.png", dest));
 						//}
 					}
 				}
