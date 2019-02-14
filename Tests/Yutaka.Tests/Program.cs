@@ -53,14 +53,14 @@ namespace Yutaka.Tests
 			string destFolder;
 			var tests = new string[] {
 				//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 02-45-47.mp4",
-				@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
+				@"F:\Videos\Jful\Alex Grey - Slut Puppies 11 Scene Teen Ass Is Open For Business anal 4k 2160p.mp4",
+				//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
 				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 				Directory.CreateDirectory(destFolder);
-				VideoUtil.CreateGallery(tests[i], destFolder, "gif", 0, 3);
-				VideoUtil.CreateGallery(tests[i], destFolder, "jpg", 0, 3);
+				VideoUtil.CreateAnimatedGif(tests[i], 20);
 				Process.Start("explorer.exe", destFolder);
 			}
 

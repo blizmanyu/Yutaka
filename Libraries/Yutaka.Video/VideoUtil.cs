@@ -118,7 +118,7 @@ namespace Yutaka.Video
 				var dest = "";
 
 				using (var p = new Process()) {
-					dest = String.Format("{0}{1:hh}h{1:mm}m{1:ss}s{1:fff}f", destFolder, startTime);
+					dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", destFolder, startTime);
 					Console.Write("\npng: {0}", dest);
 					arg = String.Format("-y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, source, fps, width, dest);
 					Console.Write("\narg: {0}", arg);
@@ -136,6 +136,9 @@ namespace Yutaka.Video
 					p.WaitForExit();
 
 					exitCode = p.ExitCode;
+					//if (exitCode != 0)
+					//	Console.Write("\nresult = {0}", p.StandardOutput.ReadToEnd());
+					
 					Console.Write("\nExitCode: {0}", exitCode);
 				}
 
