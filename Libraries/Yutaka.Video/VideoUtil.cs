@@ -9,16 +9,20 @@ namespace Yutaka.Video
 	{
 		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
 
-		public static void CreateAllBetween(string source, string destFolder, double start = 0, double end = -1)
+		public static void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(destFolder))
-				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 			if (start < 0)
 				start = 0;
 			if (end < 1)
 				end = start + 120;
+			if (interval < 1)
+				interval = 10;
+			if (length < 1)
+				length = 10;
 
 			try {
 				Console.Write("\nsource: {0}", source);
@@ -26,8 +30,8 @@ namespace Yutaka.Video
 				Console.Write("\nstart: {0}", start);
 				Console.Write("\nend: {0}", end);
 
-				for (var i = start; i < end; i += 10)
-					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder);
+				for (var i = start; i < end; i += interval)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), length, source, destFolder);
 			}
 
 			catch (Exception ex) {
@@ -101,7 +105,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps = 15, int width = 640)
+		public static void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps, int width).{0}{0}", Environment.NewLine));
