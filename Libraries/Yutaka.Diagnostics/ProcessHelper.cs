@@ -121,6 +121,42 @@ namespace Yutaka.Diagnostics
 			psi.UseShellExecute = false;
 			Process.Start(psi);
 		}
+
+		public static int StartProcess(string fileName, string args=null, bool redirectStandardOutput = true, bool redirectStandardError = true, bool useShellExecute = false, bool createNoWindow = true)
+		{
+			if (String.IsNullOrWhiteSpace(fileName))
+				throw new Exception(String.Format("<fileName> is required.{0}Exception thrown in ProcessHelper.StartProcess(string fileName, string args, bool redirectStandardOutput, bool redirectStandardError, bool useShellExecute, bool createNoWindow).{0}{0}", Environment.NewLine));
+
+			try {
+				using (var p = new Process()) {
+					p.StartInfo.FileName = fileName;
+					p.StartInfo.Arguments = args;
+					p.StartInfo.RedirectStandardOutput = redirectStandardOutput;
+					p.StartInfo.RedirectStandardError = redirectStandardError;
+					p.StartInfo.UseShellExecute = useShellExecute;
+					p.StartInfo.CreateNoWindow = createNoWindow;
+					//Console.Write("\nParent Name: {0}", Directory.GetParent(source).Name);
+					//Console.Write("\nParent FullName: {0}", Directory.GetParent(source).FullName);
+					//p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName;
+					p.Start();
+					p.WaitForExit();
+
+					try {
+						return p.ExitCode;
+					}
+					catch (Exception) {
+						return -1;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in ProcessHelper.StartProcess(string fileName='{3}', string args'{4}', bool redirectStandardOutput, bool redirectStandardError, bool useShellExecute, bool createNoWindow).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, fileName, args));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of ProcessHelper.StartProcess(string fileName='{3}', string args'{4}', bool redirectStandardOutput, bool redirectStandardError, bool useShellExecute, bool createNoWindow).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, fileName, args));
+			}
+		}
 		#endregion
 	}
 }
