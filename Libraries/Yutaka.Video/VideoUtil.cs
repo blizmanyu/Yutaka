@@ -12,7 +12,7 @@ namespace Yutaka.Video
 		public static void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(destFolder))
 				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 			if (start < 0)
@@ -45,9 +45,9 @@ namespace Yutaka.Video
 		public static void CreateGallery(string source, string destFolder, string extension = "jpg", double start = 0, double end = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(destFolder))
-				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<destFolder> is required.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (start < 0)
 				start = 0;
 			if (end < 1)
@@ -74,7 +74,7 @@ namespace Yutaka.Video
 		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension="jpg")
 		{
 			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
 			if (!File.Exists(source))
 				throw new Exception(String.Format("'{1}' doesn't exist.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine, source));
 
@@ -108,7 +108,7 @@ namespace Yutaka.Video
 		public static void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps, int width).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps, int width).{0}{0}", Environment.NewLine));
 			if (!File.Exists(source))
 				throw new Exception(String.Format("'{1}' doesn't exist.{0}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps, int width).{0}{0}", Environment.NewLine, source));
 
@@ -176,13 +176,47 @@ namespace Yutaka.Video
 			}
 		}
 
+		public static void CreateAnimatedGif(string source, double start=0, double end=-1)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateAnimatedGif(string source, double start, double end).{0}{0}", Environment.NewLine));
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = GetDuration(source);
+
+			try {
+				var destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+				var p1 = start + 120;
+				var p2 = p1 + 60;
+				var p4 = end - 120;
+				var p3 = p4 - 60;
+
+				for (var i = start; i < p1; i += 10)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
+
+				for (var i = p2; i < p3; i += 70)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
+
+				for (var i = p4; i < end; i += 10)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateAnimatedGif(string source='{3}', double start={4}, double end={5}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, source, start, end));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(string source='{3}', double start={4}, double end={5}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, source, start, end));
+			}
+		}
+
 		// Warning: this method name will most likely change once complete //
 		public static void CreateVersion1(string source, string destFolder, double start=0, double end=-1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(destFolder))
-				throw new Exception(String.Format("<destFolder> is NULL.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<destFolder> is required.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
 			if (start < 0)
 				start = 0;
 			if (end < 1)
@@ -212,7 +246,7 @@ namespace Yutaka.Video
 		public static double GetDuration(string file)
 		{
 			if (String.IsNullOrWhiteSpace(file))
-				throw new Exception(String.Format("<file> is NULL.{0}Exception thrown in VideoUtil.GetDuration(string file).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<file> is required.{0}Exception thrown in VideoUtil.GetDuration(string file).{0}{0}", Environment.NewLine));
 
 			try {
 				var media = new WindowsMediaPlayer().newMedia(file);
@@ -230,7 +264,7 @@ namespace Yutaka.Video
 }
 
 /*
- * ffmpeg -i "G:\Projects\FileCopier2\Videos\Jful\Angel Emily - Holy Holes Scene 3 anal dp 1080p.mp4" -filter_complex \
+ * ffmpeg -i "G:\Projects\asdfasdf.mp4" -filter_complex \
 "[0:v]trim=start=10:end=12,setpts=PTS-STARTPTS[a]; \
  [0:v]trim=start=72:end=74,setpts=PTS-STARTPTS[b]; \
  [a][b]concat[c]; \
