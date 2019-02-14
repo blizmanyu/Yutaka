@@ -38,7 +38,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateGallery(string source, string destFolder, string extension, double start = 0, double end = -1)
+		public static void CreateGallery(string source, string destFolder, string extension = "jpg", double start = 0, double end = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
@@ -67,7 +67,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension)
+		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension="jpg")
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is NULL.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
@@ -90,8 +90,6 @@ namespace Yutaka.Video
 					p.StartInfo.WorkingDirectory = Directory.GetParent(source).FullName + "\\";
 					p.Start();
 					p.WaitForExit();
-
-					Console.Write("\nExitCode: {0}", p.ExitCode);
 				}
 			}
 
