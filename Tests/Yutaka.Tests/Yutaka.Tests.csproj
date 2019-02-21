@@ -51,6 +51,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Yutaka.Diagnostics">
+      <HintPath>..\..\Libraries\Yutaka.Video\bin\Release\Yutaka.Diagnostics.dll</HintPath>
+    </Reference>
     <Reference Include="Yutaka.Images">
       <HintPath>..\..\Libraries\Yutaka.Images\bin\Debug\Yutaka.Images.dll</HintPath>
     </Reference>
