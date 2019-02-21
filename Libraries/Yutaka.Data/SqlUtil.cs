@@ -109,9 +109,9 @@ namespace Yutaka.Data
 				}
 
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in RcwEmailService.GetData(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.Message, ex.ToString(), Environment.NewLine, p, commandText, commandType));
+					throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in SqlUtil.GetData(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.Message, ex.ToString(), Environment.NewLine, p, commandText, commandType));
 
-				throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in INNER EXCEPTION of RcwEmailService.GetData(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, p, commandText, commandType));
+				throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in INNER EXCEPTION of SqlUtil.GetData(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, p, commandText, commandType));
 			}
 		}
 
@@ -125,6 +125,41 @@ namespace Yutaka.Data
 				catch (SqlException) {
 					return false;
 				}
+			}
+		}
+
+		public virtual void ToXls(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		{
+			var ds = new DataSet();
+
+			try {
+				using (var conn = new SqlConnection(connectionString)) {
+					using (var cmd = new SqlCommand(commandText, conn)) {
+						cmd.CommandType = commandType;
+						cmd.Parameters.AddRange(parameters);
+						using (var adapter = new SqlDataAdapter(cmd)) {
+							adapter.Fill(ds);
+						}
+
+						ds.WriteXml(String.Format(@"C:\TEMP\{0:yyyy MMdd HHmm ssff}.xls", DateTime.Now));
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				var p = "";
+
+				if (parameters != null && parameters.Length > 0) {
+					for (int i = 0; i < parameters.Length; i++)
+						p = String.Format("{0}{1}: {2}; ", p, parameters[i].ParameterName, parameters[i].Value);
+
+					p = String.Format("{0}{1}", p, Environment.NewLine);
+				}
+
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in SqlUtil.ToXls(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.Message, ex.ToString(), Environment.NewLine, p, commandText, commandType));
+
+				throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in INNER EXCEPTION of SqlUtil.ToXls(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, p, commandText, commandType));
 			}
 		}
 
