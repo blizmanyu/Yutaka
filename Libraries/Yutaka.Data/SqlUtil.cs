@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 
 namespace Yutaka.Data
 {
-	public abstract class SqlUtil
+	public class SqlUtil
 	{
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
 
-		public virtual void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public SqlUtil() { }
+
+		public void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
@@ -30,7 +33,7 @@ namespace Yutaka.Data
 
 		// This method should never actually be called. It is provided as an example only since the reader will get destroyed before returning. You
 		// may want to use the GetData method instead.
-		public virtual void ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public void ExecuteReader(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand(commandText, conn)) {
@@ -51,7 +54,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public virtual Object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public Object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
@@ -81,7 +84,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public virtual DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			var ds = new DataSet();
 
@@ -115,7 +118,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public virtual bool IsServerConnected(string connectionString)
+		public bool IsServerConnected(string connectionString)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				try {
@@ -128,20 +131,102 @@ namespace Yutaka.Data
 			}
 		}
 
-		public virtual void ToXls(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public void ToCsv(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
-			var ds = new DataSet();
-
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
 					using (var cmd = new SqlCommand(commandText, conn)) {
 						cmd.CommandType = commandType;
 						cmd.Parameters.AddRange(parameters);
-						using (var adapter = new SqlDataAdapter(cmd)) {
-							adapter.Fill(ds);
-						}
+						conn.Open();
+						using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
+							using (var fs = new StreamWriter(String.Format(@"C:\TEMP\{0:yyyy MMdd HHmm ssff}.csv", DateTime.Now))) {
+								// Loop through the fields and add headers
+								var line = "";
+								string name, value;
 
-						ds.WriteXml(String.Format(@"C:\TEMP\{0:yyyy MMdd HHmm ssff}.xls", DateTime.Now));
+								for (int i = 0; i < reader.FieldCount; i++) {
+									name = reader.GetName(i);
+
+									if (name.Contains("\""))
+										name = name.Replace("\"", "'");
+									if (name.Contains(","))
+										name = String.Format("\"{0}\"", name);
+
+									line = String.Format("{0}{1},", line, name);
+								}
+
+								fs.WriteLine(line);
+
+								// Loop through the rows and output the data
+								while (reader.Read()) {
+									line = "";
+
+									for (int i = 0; i < reader.FieldCount; i++) {
+										value = reader[i].ToString();
+
+										if (value.Contains("\""))
+											value = value.Replace("\"", "'");
+										if (value.Contains(","))
+											value = String.Format("\"{0}\"", value);
+
+										line = String.Format("{0}{1},", line, value);
+									}
+
+									fs.WriteLine(line);
+								}
+							}
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				var p = "";
+
+				if (parameters != null && parameters.Length > 0) {
+					for (int i = 0; i < parameters.Length; i++)
+						p = String.Format("{0}{1}: {2}; ", p, parameters[i].ParameterName, parameters[i].Value);
+
+					p = String.Format("{0}{1}", p, Environment.NewLine);
+				}
+
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in SqlUtil.ToCsv(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.Message, ex.ToString(), Environment.NewLine, p, commandText, commandType));
+
+				throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in INNER EXCEPTION of SqlUtil.ToCsv(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, p, commandText, commandType));
+			}
+		}
+
+		public void ToXls(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		{
+			try {
+				using (var conn = new SqlConnection(connectionString)) {
+					using (var cmd = new SqlCommand(commandText, conn)) {
+						cmd.CommandType = commandType;
+						cmd.Parameters.AddRange(parameters);
+						conn.Open();
+						using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
+							using (var fs = new StreamWriter(String.Format(@"C:\TEMP\{0:yyyy MMdd HHmm ssff}.xls", DateTime.Now))) {
+								// Loop through the fields and add headers
+								var line = "";
+
+								for (int i = 0; i < reader.FieldCount; i++)
+									line = String.Format("{0}{1}\t", line, reader.GetName(i));
+
+								fs.WriteLine(line);
+
+								// Loop through the rows and output the data
+								while (reader.Read()) {
+									line = "";
+
+									for (int i = 0; i < reader.FieldCount; i++)
+										line = String.Format("{0}{1}\t", line, reader[i]);
+
+									fs.WriteLine(line);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -164,7 +249,7 @@ namespace Yutaka.Data
 		}
 
 		#region Commented Out Jan, 10, 2019
-		//public virtual void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		//public void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		//{
 		//	using (var conn = new SqlConnection(connectionString)) {
 		//		using (var cmd = new SqlCommand(commandText, conn)) {

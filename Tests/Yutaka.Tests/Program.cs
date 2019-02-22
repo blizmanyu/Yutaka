@@ -5,6 +5,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using NLog;
+using Yutaka.Data;
 using Yutaka.Images;
 using Yutaka.IO;
 using Yutaka.Net;
@@ -32,6 +33,7 @@ namespace Yutaka.Tests
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static SqlUtil _sqlUtil = new SqlUtil();
 		private static bool consoleOut = true; // default = false //
 		private static int errorCount = 0;
 		private static int totalCount = 0;
@@ -43,9 +45,16 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateVersion1();
+			Test_SqlUtil_ToXls();
 			EndProgram();
 		}
+
+		#region Test SqlUtil.ToXls
+		private static void Test_SqlUtil_ToXls()
+		{
+
+		}
+		#endregion Test SqlUtil.ToXls
 
 		#region Test VideoUtil.CreateVersion1
 		private static void Test_VideoUtil_CreateVersion1()
