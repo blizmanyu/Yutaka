@@ -562,6 +562,27 @@ namespace Yutaka.IO
 			return GetMinTime(new FileInfo(path));
 		}
 
+		public static string GetNewestFile(string dirPath, string extension=null)
+		{
+			if (String.IsNullOrWhiteSpace(dirPath))
+				throw new Exception(String.Format("<dirPath> is required.{0}Exception thrown in FileUtil.GetNewestFile(string dirPath, string extension){0}{0}", Environment.NewLine));
+
+			try {
+				if (String.IsNullOrWhiteSpace(extension))
+					return new DirectoryInfo(dirPath).GetFiles().OrderByDescending(x => x.LastWriteTime).FirstOrDefault().FullName;
+
+				return new DirectoryInfo(dirPath).GetFiles().Where(x => x.Extension.ToUpper().Contains(extension.ToUpper()))
+																							 .OrderByDescending(y => y.LastWriteTime).FirstOrDefault().FullName;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in FileUtil.GetNewestFile(string dirPath='{3}', string extension='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, dirPath, extension));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.GetNewestFile(string dirPath='{3}', string extension='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dirPath, extension));
+			}
+		}
+
 		public static bool IsInIgnoreList(string str, string[] ignoreList)
 		{
 			if (String.IsNullOrWhiteSpace(str)) {
