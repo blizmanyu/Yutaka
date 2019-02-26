@@ -8,6 +8,18 @@ namespace Yutaka.Video
 	public class VideoUtil
 	{
 		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
+		public int Fps;
+		public int Width;
+		public string DestFolder;
+		public string FfmpegPath;
+
+		public VideoUtil()
+		{
+			Fps = 10;
+			Width = 640;
+			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+			FfmpegPath = @"ffmpeg.exe";
+		}
 
 		public void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
 		{
