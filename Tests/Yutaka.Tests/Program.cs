@@ -54,7 +54,11 @@ namespace Yutaka.Tests
 		{
 			VideoUtil _videoUtil;
 			var tests = new string[] {
-				@"F:\Videos\Jful\Alex Grey - Anal Savages Scene 4 JulesJordan 201605 Glamour Model Takes It Up The Ass anal 4k 2160p.mp4",
+				@"F:\Videos\Jful\Alex Grey - Slut Puppies 11 Scene Teen Ass Is Open For Business anal 4k 2160p.mp4",
+				@"F:\Videos\Jful\Alex Grey – Tushy 201605 Bratty Rich Girl Gets More Than She Bargained For anal 1080p.mp4",
+				@"F:\Videos\Jful\Katrina Jade GloryHole 201602 1080p.mp4",
+				@"F:\Videos\Jful\Princess Leia - Double Let Down [JulesJordan] (2015 anal dp 720p.mp4",
+				@"F:\Videos\Jful\Sheena Shaw - 201608 The Milk Enema anal 1080p.mp4",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {

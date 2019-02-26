@@ -7,7 +7,6 @@ namespace Yutaka.Video
 {
 	public class VideoUtil
 	{
-		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
 		public int Fps;
 		public int Width;
 		public string DestFolder;
@@ -31,7 +30,7 @@ namespace Yutaka.Video
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
 			Fps = 10;
-			Width = 640;
+			Width = 1000;
 			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 			DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
 			Source = source;
@@ -53,6 +52,31 @@ namespace Yutaka.Video
 					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, double length={3}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, length));
 
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(TimeSpan startTime, double length={3}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, length));
+			}
+		}
+
+		public void FirstXMin(double start = -1, int min = -1, int interval =-1)
+		{
+			if (start < 0)
+				start = 0;
+			if (min < 1)
+				min = 5;
+			if (interval < 2)
+				interval = 10;
+
+			try {
+				CreateDestFile();
+				var end = start + (60 * min);
+
+				for (var i = start; i < end; i += interval)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), interval);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.FirstXMin(double start={3}, int min={4}, int interval={5}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, min, interval));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.FirstXMin(double start={3}, int min={4}, int interval={5}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, min, interval));
 			}
 		}
 
