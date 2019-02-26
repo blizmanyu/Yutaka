@@ -60,7 +60,7 @@ namespace Yutaka.Tests
 			for (int i = 0; i < tests.Length; i++) {
 				totalCount++;
 				_videoUtil = new VideoUtil(tests[i]);
-				_videoUtil.CreateAnimatedGif(new TimeSpan(0), 10);
+				_videoUtil.CreateAnimatedGif();
 			}
 
 			Process.Start("explorer.exe", @"C:\Temp\");
