@@ -41,6 +41,9 @@
     <Reference Include="Yutaka.Diagnostics">
       <HintPath>..\Yutaka.Diagnostics\bin\Release\Yutaka.Diagnostics.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.IO">
+      <HintPath>..\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="VideoUtil.cs" />

@@ -5,11 +5,11 @@ using WMPLib;
 
 namespace Yutaka.Video
 {
-	public static class VideoUtil
+	public class VideoUtil
 	{
 		private const string FFMPEG_PATH = @"ffmpeg.exe"; // only change this is ffmpeg is NOT in your Environment Paths //
 
-		public static void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
+		public void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
@@ -42,7 +42,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateGallery(string source, string destFolder, string extension = "jpg", double start = 0, double end = -1)
+		public void CreateGallery(string source, string destFolder, string extension = "jpg", double start = 0, double end = -1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateGallery(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
@@ -71,7 +71,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension="jpg")
+		public void CreateSingleImage(TimeSpan startTime, string source, string destFolder, string extension="jpg")
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateSingleImage(TimeSpan startTime, string source, string destFolder).{0}{0}", Environment.NewLine));
@@ -105,7 +105,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
+		public void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, int length, string source, string destFolder, int fps, int width).{0}{0}", Environment.NewLine));
@@ -179,7 +179,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static void CreateAnimatedGif(string source, double start=0, double end=-1)
+		public void CreateAnimatedGif(string source, double start=0, double end=-1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateAnimatedGif(string source, double start, double end).{0}{0}", Environment.NewLine));
@@ -214,7 +214,7 @@ namespace Yutaka.Video
 		}
 
 		// Warning: this method name will most likely change once complete //
-		public static void CreateVersion1(string source, string destFolder, double start=0, double end=-1)
+		public void CreateVersion1(string source, string destFolder, double start=0, double end=-1)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.CreateVersion1(string source, string destFolder, double start, double end).{0}{0}", Environment.NewLine));
@@ -246,7 +246,7 @@ namespace Yutaka.Video
 			}
 		}
 
-		public static double GetDuration(string file)
+		public double GetDuration(string file)
 		{
 			if (String.IsNullOrWhiteSpace(file))
 				throw new Exception(String.Format("<file> is required.{0}Exception thrown in VideoUtil.GetDuration(string file).{0}{0}", Environment.NewLine));
