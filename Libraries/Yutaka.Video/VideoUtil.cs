@@ -134,16 +134,13 @@ namespace Yutaka.Video
 			}
 		}
 
-		// Do Not Use // Work in Progress //
 		public void CreateAnimatedGif(TimeSpan startTime, double length)
 		{
+			CreateDestFile();
 			var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", DestFolder, startTime);
-			Console.Write("\npng: {0}", dest);
 			var arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, Fps, Width, dest);
-			Console.Write("\narg: {0}", arg);
 			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
 			arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{3}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest, Fps, Width);
-			Console.Write("\narg: {0}", arg);
 			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
 		}
 

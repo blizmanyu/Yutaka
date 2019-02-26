@@ -45,9 +45,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_SqlUtil_ToXls();
+			Test_VideoUtil_CreateAnimatedGif();
 			EndProgram();
 		}
+
+		#region Test VideoUtil.CreateAnimatedGif
+		private static void Test_VideoUtil_CreateAnimatedGif()
+		{
+			VideoUtil _videoUtil;
+			var tests = new string[] {
+				@"F:\Videos\Jful\Alex Grey - Anal Savages Scene 4 JulesJordan 201605 Glamour Model Takes It Up The Ass anal 4k 2160p.mp4",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				_videoUtil = new VideoUtil(tests[i]);
+				_videoUtil.CreateAnimatedGif(new TimeSpan(0), 10);
+			}
+
+			Process.Start("explorer.exe", @"C:\Temp\");
+		}
+		#endregion Test Util.LocalTimeToGoogleInternalDate
 
 		#region Test SqlUtil.ToXls
 		private static void Test_SqlUtil_ToXls()
@@ -57,50 +75,50 @@ namespace Yutaka.Tests
 		#endregion Test SqlUtil.ToXls
 
 		#region Test VideoUtil.CreateVersion1
-		private static void Test_VideoUtil_CreateVersion1()
-		{
-			string destFolder;
-			var tests = new string[] {
-				//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 02-45-47.mp4",
-				@"F:\Videos\Jful\Alex Grey - Slut Puppies 11 Scene Teen Ass Is Open For Business anal 4k 2160p.mp4",
-				//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
-			};
+		//private static void Test_VideoUtil_CreateVersion1()
+		//{
+		//	string destFolder;
+		//	var tests = new string[] {
+		//		//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 02-45-47.mp4",
+		//		@"F:\Videos\Jful\Alex Grey - Slut Puppies 11 Scene Teen Ass Is Open For Business anal 4k 2160p.mp4",
+		//		//@"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4",
+		//	};
 
-			for (int i = 0; i < tests.Length; i++) {
-				destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
-				Directory.CreateDirectory(destFolder);
-				VideoUtil.CreateAnimatedGif(tests[i], 20);
-				Process.Start("explorer.exe", destFolder);
-			}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+		//		Directory.CreateDirectory(destFolder);
+		//		VideoUtil.CreateAnimatedGif(tests[i], 20);
+		//		Process.Start("explorer.exe", destFolder);
+		//	}
 
-			//for (int i = 0; i < tests.Length; i++) {
-			//	destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
-			//	Directory.CreateDirectory(destFolder);
-			//	//VideoUtil.CreateVersion1(tests[i], destFolder, 0, 7320);
-			//	VideoUtil.CreateAllBetween(tests[i], destFolder, 0);
-			//	Process.Start("explorer.exe", destFolder);
-			//}
-		}
+		//	//for (int i = 0; i < tests.Length; i++) {
+		//	//	destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+		//	//	Directory.CreateDirectory(destFolder);
+		//	//	//VideoUtil.CreateVersion1(tests[i], destFolder, 0, 7320);
+		//	//	VideoUtil.CreateAllBetween(tests[i], destFolder, 0);
+		//	//	Process.Start("explorer.exe", destFolder);
+		//	//}
+		//}
 		#endregion Test VideoUtil.CreateVersion1
 
 		#region Test VideoUtil.CreateAnimatedGif
-		private static void Test_VideoUtil_CreateAnimatedGif()
-		{
-			var source = @"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4";
-			var destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", startTime);
-			var tests = new TimeSpan[] {
-				new TimeSpan(0, 0, 0),
-			};
+		//private static void Test_VideoUtil_CreateAnimatedGif()
+		//{
+		//	var source = @"G:\Projects\FileCopier2\Videos\MFC\NaomiDee - MyFreeCams - Google Chrome 2019-02-10 03-06-50.mp4";
+		//	var destFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", startTime);
+		//	var tests = new TimeSpan[] {
+		//		new TimeSpan(0, 0, 0),
+		//	};
 
-			Directory.CreateDirectory(destFolder);
+		//	Directory.CreateDirectory(destFolder);
 
-			for (int i = 0; i < tests.Length; i++) {
-				totalCount++;
-				VideoUtil.CreateAnimatedGif(tests[i], 2, source, destFolder);
-			}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		totalCount++;
+		//		VideoUtil.CreateAnimatedGif(tests[i], 2, source, destFolder);
+		//	}
 
-			Process.Start("explorer.exe", destFolder);
-		}
+		//	Process.Start("explorer.exe", destFolder);
+		//}
 		#endregion Test Util.LocalTimeToGoogleInternalDate
 
 		#region Test Util.LocalTimeToGoogleInternalDate
