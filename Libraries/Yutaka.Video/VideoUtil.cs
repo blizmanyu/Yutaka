@@ -136,12 +136,21 @@ namespace Yutaka.Video
 
 		public void CreateAnimatedGif(TimeSpan startTime, double length)
 		{
-			CreateDestFile();
-			var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", DestFolder, startTime);
-			var arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, Fps, Width, dest);
-			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
-			arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{3}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest, Fps, Width);
-			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+			try {
+				CreateDestFile();
+				var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", DestFolder, startTime);
+				var arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, Fps, Width, dest);
+				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+				arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{3}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest, Fps, Width);
+				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateAnimatedGif(TimeSpan startTime, double length={3}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, length));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(TimeSpan startTime, double length={3}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, length));
+			}
 		}
 
 		public void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
@@ -215,6 +224,41 @@ namespace Yutaka.Video
 					Console.Write("{0}{2}{2}Exception thrown in VideoUtil.CreateAnimatedGif(){2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine);
 
 				Console.Write("{0}{2}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(){2}{2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+			}
+		}
+
+		// Do Not Use // Work in Progress //
+		public void CreateAnimatedGif(double start = 0, double end = -1)
+		{
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = GetDuration(Source);
+
+			try {
+				CreateDestFile();
+				var p1 = start + 300;
+				var p2 = p1 + 60;
+				var p3 = end - 120;
+
+				// First 5min // 30 GIFs //
+				for (var i = start; i < p1; i += 10)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+
+				// Middle // 21 GIFs //
+				//for (var i = p2; i < p3; i += 70)
+				//	CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+
+				// Last 2min // 12 GIFs //
+				for (var i = p3; i < end; i += 10)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateAnimatedGif(double start={3}, double end={4}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateAnimatedGif(double start={3}, double end={4}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, end));
 			}
 		}
 
