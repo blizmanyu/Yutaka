@@ -7,7 +7,9 @@ namespace Yutaka.Video
 {
 	public class VideoUtil
 	{
+		public int FirstXMin;
 		public int Fps;
+		public int NumMiddleSegments;
 		public int Width;
 		public string DestFolder;
 		public string DestFile;
@@ -29,7 +31,9 @@ namespace Yutaka.Video
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
+			FirstXMin = 5;
 			Fps = 10;
+			NumMiddleSegments = 21;
 			Width = 1000;
 			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
 			DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
@@ -55,12 +59,12 @@ namespace Yutaka.Video
 			}
 		}
 
-		public void FirstXMin(double start = -1, int min = -1, int interval =-1)
+		public void CreateFirstXMin(double start = -1, int min = -1, int interval =-1)
 		{
 			if (start < 0)
 				start = 0;
 			if (min < 1)
-				min = 5;
+				min = FirstXMin;
 			if (interval < 2)
 				interval = 10;
 
@@ -77,6 +81,31 @@ namespace Yutaka.Video
 					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.FirstXMin(double start={3}, int min={4}, int interval={5}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, min, interval));
 
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.FirstXMin(double start={3}, int min={4}, int interval={5}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, min, interval));
+			}
+		}
+
+		public void CreateEqualSegments(double start = -1, double end = -1, int numSegments=-1)
+		{
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = GetDuration(Source);
+			if (numSegments < 1)
+				numSegments = NumMiddleSegments;
+
+			try {
+				CreateDestFile();
+				var segment = (end - start) / numSegments;
+
+				for (var i = start; i < end; i += segment)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateEqualSegments(double start={3}, double end={4}, int numSegments={5}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end, numSegments));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateEqualSegments(double start={3}, double end={4}, int numSegments={5}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, end, numSegments));
 			}
 		}
 
