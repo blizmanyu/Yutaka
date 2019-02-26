@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using Yutaka.IO;
 using WMPLib;
 
 namespace Yutaka.Video
@@ -11,14 +12,30 @@ namespace Yutaka.Video
 		public int Fps;
 		public int Width;
 		public string DestFolder;
-		public string FfmpegPath;
+		public string DestFile;
+		public string Source;
 
-		public VideoUtil()
+		private void CreateDestFile()
 		{
+			Directory.CreateDirectory(DestFolder);
+			var dest = String.Format("{0}{1}", DestFolder, DestFile);
+
+			if (File.Exists(dest))
+				return;
+
+			FileUtil.Write(String.Format("@echo off{0}", Environment.NewLine), dest);
+		}
+
+		public VideoUtil(string source)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
+
 			Fps = 10;
 			Width = 640;
 			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
-			FfmpegPath = @"ffmpeg.exe";
+			DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
+			Source = source;
 		}
 
 		public void CreateAllBetween(string source, string destFolder=null, double start = 0, double end = -1, double interval=-1, double length = -1)
@@ -117,6 +134,19 @@ namespace Yutaka.Video
 			}
 		}
 
+		// Do Not Use // Work in Progress //
+		public void CreateAnimatedGif(TimeSpan startTime, double length)
+		{
+			var dest = String.Format("{0}{1:hh}h {1:mm}m {1:ss}s {1:fff}f", DestFolder, startTime);
+			Console.Write("\npng: {0}", dest);
+			var arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, Fps, Width, dest);
+			Console.Write("\narg: {0}", arg);
+			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+			arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{3}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest, Fps, Width);
+			Console.Write("\narg: {0}", arg);
+			FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+		}
+
 		public void CreateAnimatedGif(TimeSpan startTime, double length, string source, string destFolder, int fps = 15, int width = 640)
 		{
 			if (String.IsNullOrWhiteSpace(source))
@@ -207,12 +237,15 @@ namespace Yutaka.Video
 				var p4 = end - 120;
 				var p3 = p4 - 60;
 
+				// First 5min // 30 GIFs //
 				for (var i = start; i < p1; i += 10)
 					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
 
+				// Middle // 21 GIFs //
 				for (var i = p2; i < p3; i += 70)
 					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
 
+				// Last 2min // 12 GIFs //
 				for (var i = p4; i < end; i += 10)
 					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10, source, destFolder, 10, 1000);
 			}
