@@ -9,8 +9,10 @@ namespace Yutaka.Video
 	{
 		public int FirstXMin;
 		public int Fps;
+		public int GifLength;
 		public int NumMiddleSegments;
 		public int Width;
+		public double StartTime;
 		public string DestFolder;
 		public string DestFile;
 		public string Source;
@@ -26,13 +28,15 @@ namespace Yutaka.Video
 			FileUtil.Write(String.Format("@echo off{0}", Environment.NewLine), dest);
 		}
 
-		public VideoUtil(string source)
+		public VideoUtil(string source, double startTime=0)
 		{
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
+			StartTime = startTime;
 			FirstXMin = 5;
 			Fps = 10;
+			GifLength = 10;
 			NumMiddleSegments = 21;
 			Width = 1000;
 			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
@@ -66,7 +70,7 @@ namespace Yutaka.Video
 			if (min < 1)
 				min = FirstXMin;
 			if (interval < 2)
-				interval = 10;
+				interval = GifLength;
 
 			try {
 				CreateDestFile();
@@ -95,10 +99,10 @@ namespace Yutaka.Video
 
 			try {
 				CreateDestFile();
-				var segment = (end - start) / numSegments;
+				var segment = (end - start) / (numSegments+1);
 
-				for (var i = start; i < end; i += segment)
-					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+				for (var i = start+ segment; i < end; i += segment)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), GifLength);
 			}
 
 			catch (Exception ex) {
@@ -113,7 +117,7 @@ namespace Yutaka.Video
 		public void CreateAnimatedGif(double start = 0, double end = -1)
 		{
 			if (start < 0)
-				start = 0;
+				start = StartTime;
 			if (end < 1)
 				end = GetDuration(Source);
 
@@ -124,16 +128,14 @@ namespace Yutaka.Video
 				var p3 = end - 120;
 
 				// First 5min // 30 GIFs //
-				for (var i = start; i < p1; i += 10)
-					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+				CreateFirstXMin(start, FirstXMin, GifLength);
 
 				// Middle // 21 GIFs //
-				//for (var i = p2; i < p3; i += 70)
-				//	CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+				CreateEqualSegments(p1, p3, 21);
 
 				// Last 2min // 12 GIFs //
-				for (var i = p3; i < end; i += 10)
-					CreateAnimatedGif(TimeSpan.FromSeconds(i), 10);
+				for (var i = p3; i < end; i += GifLength)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), GifLength);
 			}
 
 			catch (Exception ex) {
