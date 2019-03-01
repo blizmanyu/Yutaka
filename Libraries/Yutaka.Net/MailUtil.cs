@@ -6,10 +6,10 @@ using System.Text;
 
 namespace Yutaka.Net
 {
-	public static class MailUtil
+	public class MailUtil
 	{
 		#region Methods
-		public static string Clean(string email)
+		public string Clean(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return "";
@@ -23,7 +23,7 @@ namespace Yutaka.Net
 			return email;
 		}
 
-		public static string DecodeEmail(string str)
+		public string DecodeEmail(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
@@ -45,7 +45,7 @@ namespace Yutaka.Net
 			}
 		}
 
-		public static string EncodeEmail(string email, bool cleanFirst = false)
+		public string EncodeEmail(string email, bool cleanFirst = false)
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return "";
@@ -70,7 +70,7 @@ namespace Yutaka.Net
 			}
 		}
 
-		public static bool IsValid(string email, bool cleanFirst = false)
+		public bool IsValid(string email, bool cleanFirst = false)
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return false;
@@ -88,7 +88,7 @@ namespace Yutaka.Net
 			}
 		}
 
-		public static bool TryParseEmail(string email, out MailAddress mailAddress)
+		public bool TryParseEmail(string email, out MailAddress mailAddress)
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				throw new Exception(String.Format("<email> is required.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddress(string email)", Environment.NewLine));
@@ -122,7 +122,7 @@ namespace Yutaka.Net
 		/// <param name="separator">Use this parameter if your list is semi-colon delimited. Comma and semi-colon are the only supported separators.</param>
 		/// <param name="maxEmails">Max # of emails to convert from the string in case your list is pulled from a Mailing List that contains hundreds (or even thousands) of emails that you want to limited. If you don't want to cap the list, use 0 or a negative number.</param>
 		/// <returns></returns>
-		public static List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',', int maxEmails=10)
+		public List<MailAddress> ConvertStringToMailAddresses(string emails, char separator=',', int maxEmails=10)
 		{
 			if (String.IsNullOrWhiteSpace(emails))
 				throw new Exception(String.Format("<emails> is required.{0}{0}Exception thrown in MailUtil.ConvertStringToMailAddresses(string emails, char separator)", Environment.NewLine));
@@ -280,7 +280,7 @@ namespace Yutaka.Net
 			return list;
 		}
 
-		public static Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
+		public Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
 		{
 			var result = new Result() {
 				Success = false,
@@ -307,7 +307,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
-		public static Result Send(SmtpClient client, MailMessage message)
+		public Result Send(SmtpClient client, MailMessage message)
 		{
 			var result = new Result() {
 				Success = false,
@@ -327,7 +327,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
-		public static Result Send(SmtpClient client, string from, string to, string subject, string body, AttachmentCollection attachments=null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
+		public Result Send(SmtpClient client, string from, string to, string subject, string body, AttachmentCollection attachments=null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
 		{
 			var result = new Result() {
 				Success = false,
@@ -368,7 +368,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
-		public static Result Send(string smtpHost, int smtpPort, string username, string password, string from, string to, string subject, string body, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false, AttachmentCollection attachments = null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
+		public Result Send(string smtpHost, int smtpPort, string username, string password, string from, string to, string subject, string body, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false, AttachmentCollection attachments = null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
 		{
 			var result = new Result() {
 				Success = false,
