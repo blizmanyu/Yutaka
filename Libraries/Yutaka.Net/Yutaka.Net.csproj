@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FtpUtil.cs" />
+    <Compile Include="MailUtil201902281957.cs" />
     <Compile Include="MailUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
