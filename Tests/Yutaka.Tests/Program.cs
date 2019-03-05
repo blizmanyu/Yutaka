@@ -76,11 +76,11 @@ namespace Yutaka.Tests
 				_videoUtil = new VideoUtil(tests[i]);
 				//_videoUtil.FirstXMin = 12;
 				//_videoUtil.Width = 640;
-				_videoUtil.CreateFirstXMin(0, 1);
+				//_videoUtil.CreateFirstXMin(0, 1);
 				//_videoUtil.CreateAnimatedGif();
 				//_videoUtil.CreateAnimatedGif(134, 135);
 				//_videoUtil.CreateAnimatedGif(134.5, 135);
-				_videoUtil.CreateHtml();
+				_videoUtil.CreateHtml(@"C:\TEMP\2019 0226 0329 5118\");
 			}
 
 			Process.Start("explorer.exe", @"C:\Temp\");

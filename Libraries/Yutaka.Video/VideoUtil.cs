@@ -153,13 +153,40 @@ namespace Yutaka.Video
 		public void CreateHtml()
 		{
 			var dest = String.Format("{0}{1}", DestFolder, DestFile);
-			var html = String.Format("<html>{0}<body>{0}<div>{0}REPLACE_ME</div>{0}</body>{0}</html>", Environment.NewLine);
+			var html = String.Format("<html style='margin:0 auto;text-align:center'>{0}<body>{0}<div>{0}REPLACE_ME</div>{0}</body>{0}</html>", Environment.NewLine);
 			
 			for (int i=0; i< Images.Count; i++)
-				html = html.Replace("REPLACE_ME", String.Format("<img src='{0}' style='width:33%;max-width:320px;height:auto' />{1}REPLACE_ME", Images[i], Environment.NewLine));
+				html = html.Replace("REPLACE_ME", String.Format("<img src='{0}' style='max-width:320px;height:auto' />{1}REPLACE_ME", Images[i], Environment.NewLine));
 
 			html = html.Replace("REPLACE_ME", "");
 			FileUtil.Write(html, String.Format("{0}html", dest.Substring(0, dest.Length-3)));
+		}
+
+		public void CreateHtml(string folder)
+		{
+			var maxImages = 16;
+
+			if (Directory.Exists(folder)) {
+				var files = FileUtil.GetFilesRecursive(folder, "*.gif");
+				var html = "";
+
+				for (int i = 0; i < files.Count; i++) {
+					if (i % maxImages == 0)
+						html = String.Format("<html style='margin:0 auto;text-align:center'>{0}<body>{0}<div>{0}REPLACE_ME</div>{0}</body>{0}</html>", Environment.NewLine);
+
+					html = html.Replace("REPLACE_ME", String.Format("<img src='{0}' style='max-width:320px;height:auto' />{1}REPLACE_ME", files[i], Environment.NewLine));
+
+					if (i % maxImages == maxImages - 1) {
+						html = html.Replace("REPLACE_ME", "");
+						FileUtil.Write(html, String.Format("{0}_gallery{1}.html", folder, i/maxImages));
+						html = "";
+					}
+				}
+
+				html = html.Replace("REPLACE_ME", "");
+				FileUtil.Write(html, String.Format("{0}_gallery99.html", folder));
+				html = "";
+			}
 		}
 
 		public double GetDuration(string file)
