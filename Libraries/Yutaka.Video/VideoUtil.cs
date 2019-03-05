@@ -78,14 +78,14 @@ namespace Yutaka.Video
 			try {
 				CreateDestFile();
 				var p1 = start + 300;
-				var p2 = p1 + 60;
+				var p2 = p1 + 50;
 				var p3 = end - 120;
 
 				// First 5min // 30 GIFs //
 				CreateFirstXMin(start, FirstXMin, GifLength);
 
-				// Middle // 21 GIFs //
-				CreateEqualSegments(p1, p3, 21);
+				// Middle //
+				CreateMiddle(p2, p3);
 
 				// Last 2min // 12 GIFs //
 				for (var i = p3; i < end; i += GifLength)
@@ -186,6 +186,28 @@ namespace Yutaka.Video
 				html = html.Replace("REPLACE_ME", "");
 				FileUtil.Write(html, String.Format("{0}_gallery99.html", folder));
 				html = "";
+			}
+		}
+
+		public void CreateMiddle(double start = -1, double end = -1)
+		{
+			if (start < 0)
+				start = 0;
+			if (end < 1)
+				end = GetDuration(Source);
+
+			try {
+				CreateDestFile();
+
+				for (var i = start; i < end-5; i+=60)
+					CreateAnimatedGif(TimeSpan.FromSeconds(i), GifLength);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateMiddle(double start={3}, double end={4}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateMiddle(double start={3}, double end={4}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, end));
 			}
 		}
 
