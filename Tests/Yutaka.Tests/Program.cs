@@ -33,6 +33,7 @@ namespace Yutaka.Tests
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
 		private static bool consoleOut = true; // default = false //
 		private static int errorCount = 0;
@@ -55,7 +56,7 @@ namespace Yutaka.Tests
 			VideoUtil _videoUtil;
 
 			var tests = new string[] {
-				@"G:\Projects\FileCopier2\Videos\MFC\Nicolette_Xo - MyFreeCams - Google Chrome 2019-02-27 00-34-02.mp4",
+				@"C:\Downloads\Videos\Kira Thorn - LegalPorno 201903 Slammed brides, No Pussy, Balls Deep Anal and DAP, Gapes, Swallow GIO889 dp 720p.mp4",
 				//@"F:\Videos\Jful\Alex Grey - Anal Savages Scene 4 JulesJordan 201605 Glamour Model Takes It Up The Ass anal 4k 2160p.mp4",
 				//@"F:\Videos\Jful\Alex Grey - Holed 201609 Babysitter Gets Raw Anal 4k 2160p.mp4",
 				//@"F:\Videos\Jful\Alex Grey - Slut Puppies 11 Scene Teen Ass Is Open For Business anal 4k 2160p.mp4",
@@ -73,9 +74,12 @@ namespace Yutaka.Tests
 			for (int i = 0; i < tests.Length; i++) {
 				totalCount++;
 				_videoUtil = new VideoUtil(tests[i]);
-				_videoUtil.FirstXMin = 12;
-				_videoUtil.Width = 640;
-				_videoUtil.CreateFirstXMin();
+				//_videoUtil.FirstXMin = 12;
+				//_videoUtil.Width = 640;
+				//_videoUtil.CreateFirstXMin();
+				_videoUtil.CreateAnimatedGif();
+				//_videoUtil.CreateAnimatedGif(134, 135);
+				//_videoUtil.CreateAnimatedGif(134.5, 135);
 			}
 
 			Process.Start("explorer.exe", @"C:\Temp\");
@@ -197,7 +201,7 @@ namespace Yutaka.Tests
 
 			for (int i = 0; i < tests.Length; i++) {
 				totalCount++;
-				var v = MailUtil.ConvertStringToMailAddresses(tests[i]);
+				var v = _mailUtil.ConvertStringToMailAddresses(tests[i]);
 				Console.Write("\n");
 				Console.Write("\n{0}) {1}", i + 1, tests[i]);
 				Console.Write("\n   DisplayName: {0}", v[0].DisplayName);

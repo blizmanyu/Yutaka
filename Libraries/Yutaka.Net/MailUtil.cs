@@ -8,7 +8,8 @@ namespace Yutaka.Net
 {
 	public class MailUtil
 	{
-		#region Methods
+		public MailUtil() { }
+
 		public string Clean(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
@@ -415,15 +416,12 @@ namespace Yutaka.Net
 
 			return result;
 		}
-		#endregion
 
-		#region Struct
 		public struct Result
 		{
 			public bool Success;
 			public string Message;
 			public string Exception;
 		}
-		#endregion
 	}
 }
