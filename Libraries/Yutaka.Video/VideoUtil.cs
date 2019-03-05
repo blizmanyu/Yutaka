@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
-using Yutaka.IO;
 using WMPLib;
+using Yutaka.IO;
 
 namespace Yutaka.Video
 {
 	public class VideoUtil
 	{
+		private List<string> Images;
 		public int FirstXMin;
 		public int Fps;
 		public int GifLength;
@@ -33,6 +35,7 @@ namespace Yutaka.Video
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
+			Images = new List<string>();
 			StartTime = startTime;
 			FirstXMin = 5;
 			Fps = 10;
@@ -53,6 +56,7 @@ namespace Yutaka.Video
 				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
 				arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{6}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest.Replace("REPLACE_ME", "z"), Fps, Width, dest.Replace("REPLACE_ME", ""));
 				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+				Images.Add(String.Format("{0}.gif", dest.Replace("REPLACE_ME", "")));
 			}
 
 			catch (Exception ex) {
@@ -144,6 +148,18 @@ namespace Yutaka.Video
 
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.FirstXMin(double start={3}, int min={4}, int interval={5}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, start, min, interval));
 			}
+		}
+
+		public void CreateHtml()
+		{
+			var dest = String.Format("{0}{1}", DestFolder, DestFile);
+			var html = String.Format("<html>{0}<body>{0}<div>{0}REPLACE_ME</div>{0}</body>{0}</html>", Environment.NewLine);
+			
+			for (int i=0; i< Images.Count; i++)
+				html = html.Replace("REPLACE_ME", String.Format("<img src='{0}' style='width:33%;max-width:320px;height:auto' />{1}REPLACE_ME", Images[i], Environment.NewLine));
+
+			html = html.Replace("REPLACE_ME", "");
+			FileUtil.Write(html, String.Format("{0}html", dest.Substring(0, dest.Length-3)));
 		}
 
 		public double GetDuration(string file)
