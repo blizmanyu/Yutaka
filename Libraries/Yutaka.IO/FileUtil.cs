@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Yutaka.IO
 {
-	public static class FileUtil
+	public class FileUtil
 	{
 		#region Fields
 		// Constants //
@@ -20,21 +20,23 @@ namespace Yutaka.IO
 		const int BUFFER = FIVE_TWELVE_KB;
 
 		// Config/Settings //
-		private static bool consoleOut = true;
-		private static string mode = "copy";
+		private bool consoleOut = true;
+		private string mode = "copy";
 
 		// PIVs //
-		private static DateTime dateThreshold = new DateTime(1982, 1, 1);
-		private static HashSet<string> audioExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".aiff", ".m4a", ".mp3", ".au", ".ogg", ".wav", ".wma" };
-		private static HashSet<string> applicationExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".asdf", ".asdf", ".asdf" };
-		private static HashSet<string> archiveExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".rar", ".zip", ".7z", ".ace", ".arj", ".bz2", ".cab", ".gz", ".iso", ".jar", ".lz", ".lzh", ".tar", ".uue", ".xz", ".z", ".zipx", ".001" };
-		private static HashSet<string> documentExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".doc", ".docx", ".xls", ".xlsx", ".pdf", ".ppt", ".pptx" };
-		private static HashSet<string> imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff" };
-		private static HashSet<string> videoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv" };
+		private DateTime dateThreshold = new DateTime(1982, 1, 1);
+		private HashSet<string> audioExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".aiff", ".m4a", ".mp3", ".au", ".ogg", ".wav", ".wma" };
+		private HashSet<string> applicationExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".asdf", ".asdf", ".asdf" };
+		private HashSet<string> archiveExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".rar", ".zip", ".7z", ".ace", ".arj", ".bz2", ".cab", ".gz", ".iso", ".jar", ".lz", ".lzh", ".tar", ".uue", ".xz", ".z", ".zipx", ".001" };
+		private HashSet<string> documentExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".doc", ".docx", ".xls", ".xlsx", ".pdf", ".ppt", ".pptx" };
+		private HashSet<string> imageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff" };
+		private HashSet<string> videoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv" };
 		#endregion Fields
 
+		public FileUtil() { }
+
 		#region Private Helpers
-		private static bool CopyFile(FileInfo source, string dest)
+		private bool CopyFile(FileInfo source, string dest)
 		{
 			try {
 				source.CopyTo(dest);
@@ -48,14 +50,14 @@ namespace Yutaka.IO
 			}
 		}
 
-		private static void DisplayException(Exception ex)
+		private void DisplayException(Exception ex)
 		{
 			Console.Write("\n{0}", ex.Message);
 			Console.Write("\n");
 			Console.Write("\n{0}", ex.ToString());
 		}
 
-		private static bool MoveFile(FileInfo source, string dest)
+		private bool MoveFile(FileInfo source, string dest)
 		{
 			try {
 				source.MoveTo(dest);
@@ -75,7 +77,7 @@ namespace Yutaka.IO
 		/// </summary>
 		/// <param name="source">Source file path</param> 
 		/// <param name="destination">Destination file path</param> 
-		public static void FastMove(string source, string destination, bool delete = true)
+		public void FastMove(string source, string destination, bool delete = true)
 		{
 			var array_length = BUFFER;
 			var dataArray = new byte[array_length];
@@ -103,7 +105,7 @@ namespace Yutaka.IO
 		/// </summary> 
 		/// <param name="source">Source file path</param> 
 		/// <param name="destination">Destination file path</param> 
-		public static void MoveTime(string source, string destination, bool delete = true)
+		public void MoveTime(string source, string destination, bool delete = true)
 		{
 			var start_time = DateTime.Now;
 			FastMove(source, destination, delete);
@@ -128,7 +130,7 @@ namespace Yutaka.IO
 		}
 
 		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(string sourceFilePath, string destFilePath) //
-		public static void Move(FileInfo source, string destFilePath)
+		public void Move(FileInfo source, string destFilePath)
 		{
 			if (source == null)
 				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<source> is NULL", Environment.NewLine));
@@ -146,7 +148,7 @@ namespace Yutaka.IO
 		}
 
 		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(FileInfo source, string destFilePath) //
-		public static void Move(string sourceFilePath, string destFilePath)
+		public void Move(string sourceFilePath, string destFilePath)
 		{
 			if (String.IsNullOrWhiteSpace(sourceFilePath))
 				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<sourceFilePath> is {1}", Environment.NewLine, sourceFilePath == null ? "NULL" : "Empty"));
@@ -165,7 +167,7 @@ namespace Yutaka.IO
 		#endregion Move
 
 		#region Public Methods
-		public static void CopyFile(FileInfo source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
+		public void CopyFile(FileInfo source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
 		{
 			if (source == null)
 				throw new ArgumentNullException("source");
@@ -214,12 +216,12 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static void CopyFile(string source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
+		public void CopyFile(string source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
 		{
 			CopyFile(new FileInfo(source), dest, overwrite, tOption);
 		}
 
-		public static void CopyFile(string source, string dest, bool delete = false)
+		public void CopyFile(string source, string dest, bool delete = false)
 		{
 			if (String.IsNullOrEmpty(source))
 				throw new Exception("<source> can't be empty");
@@ -262,7 +264,7 @@ namespace Yutaka.IO
 		/// <param name="searchPattern">The search string to match against the names of files. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions. The default pattern is "*", which returns all files.</param>
 		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or all subdirectories. The default value is TopDirectoryOnly.</param>
 		/// <returns></returns>
-		public static IEnumerable<FileInfo> EnumerateAudioFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		public IEnumerable<FileInfo> EnumerateAudioFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => audioExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
 		}
@@ -274,7 +276,7 @@ namespace Yutaka.IO
 		/// <param name="searchPattern">The search string to match against the names of files. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions. The default pattern is "*", which returns all files.</param>
 		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or all subdirectories. The default value is TopDirectoryOnly.</param>
 		/// <returns></returns>
-		public static IEnumerable<FileInfo> EnumerateImageFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		public IEnumerable<FileInfo> EnumerateImageFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => imageExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
 		}
@@ -286,12 +288,12 @@ namespace Yutaka.IO
 		/// <param name="searchPattern">The search string to match against the names of files. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters (see Remarks), but doesn't support regular expressions. The default pattern is "*", which returns all files.</param>
 		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or all subdirectories. The default value is TopDirectoryOnly.</param>
 		/// <returns></returns>
-		public static IEnumerable<FileInfo> EnumerateVideoFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		public IEnumerable<FileInfo> EnumerateVideoFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => videoExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
 		}
 
-		public static void FixCreationTime(string root, string searchPattern = "*", int initialCapacity = 1024)
+		public void FixCreationTime(string root, string searchPattern = "*", int initialCapacity = 1024)
 		{
 			if (String.IsNullOrWhiteSpace(root))
 				throw new Exception(String.Format("Exception thrown in FileUtil.FixCreationTime(string root, string searchPattern='*', int initialCapacity=1024){0}<root> is {1}", Environment.NewLine, root == null ? "NULL" : "Empty"));
@@ -352,7 +354,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static string[] GetAllLines(string filePath, int maxLines = -1)
+		public string[] GetAllLines(string filePath, int maxLines = -1)
 		{
 			if (String.IsNullOrEmpty(filePath))
 				throw new ArgumentNullException("filePath", "<filePath> is required.");
@@ -378,7 +380,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=200)
+		public List<string> GetAllAudioFiles(string rootFolder, string[] ignoreFolders=null, int initialStackCapacity=200)
 		{
 			if (String.IsNullOrWhiteSpace(rootFolder))
 				throw new Exception(String.Format("<rootFolder> is required.{0}Exception thrown in FileUtil.GetAllAudioFiles(string rootFolder, int initialStackCapacity)", Environment.NewLine));
@@ -442,7 +444,7 @@ namespace Yutaka.IO
 		}
 
 		// Retrieves the datetime WITHOUT loading the whole image //
-		public static DateTime GetDateTakenFromImage(string path)
+		public DateTime GetDateTakenFromImage(string path)
 		{
 			var r = new Regex(":");
 
@@ -461,7 +463,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static long GetDirectorySize(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.AllDirectories)
+		public long GetDirectorySize(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.AllDirectories)
 		{
 			try {
 				var files = Directory.EnumerateFiles(path, searchPattern, searchOption);
@@ -478,7 +480,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static List<string> GetFilesRecursive(string targetDirectory, string searchPattern = "*", int maxDepth = 7)
+		public List<string> GetFilesRecursive(string targetDirectory, string searchPattern = "*", int maxDepth = 7)
 		{
 			if (String.IsNullOrEmpty(targetDirectory))
 				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
@@ -528,7 +530,7 @@ namespace Yutaka.IO
 		/// </summary>
 		/// <param name="fi">The FileInfo object</param>
 		/// <returns></returns>
-		public static DateTime GetMinTime(FileInfo fi)
+		public DateTime GetMinTime(FileInfo fi)
 		{
 			if (fi == null)
 				throw new ArgumentNullException();
@@ -557,12 +559,12 @@ namespace Yutaka.IO
 		/// <remarks>This method calls GetMinTime(FileInfo fi), so if performance is crucial, you may want to refactor your code.</remarks>
 		/// <param name="fi">path to the File</param>
 		/// <returns></returns>
-		public static DateTime GetMinTime(string path)
+		public DateTime GetMinTime(string path)
 		{
 			return GetMinTime(new FileInfo(path));
 		}
 
-		public static string GetNewestFile(string dirPath, string extension=null)
+		public string GetNewestFile(string dirPath, string extension=null)
 		{
 			if (String.IsNullOrWhiteSpace(dirPath))
 				throw new Exception(String.Format("<dirPath> is required.{0}Exception thrown in FileUtil.GetNewestFile(string dirPath, string extension){0}{0}", Environment.NewLine));
@@ -583,7 +585,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static bool IsInIgnoreList(string str, string[] ignoreList)
+		public bool IsInIgnoreList(string str, string[] ignoreList)
 		{
 			if (String.IsNullOrWhiteSpace(str)) {
 				if (ignoreList == null || ignoreList.Length < 1)
@@ -603,7 +605,7 @@ namespace Yutaka.IO
 			return false;
 		}
 
-		public static bool IsSameDate(FileInfo fi1, FileInfo fi2)
+		public bool IsSameDate(FileInfo fi1, FileInfo fi2)
 		{
 			try {
 				if (fi1.LastWriteTimeUtc == fi2.LastWriteTimeUtc)
@@ -617,12 +619,12 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static bool IsSameDate(string path1, string path2)
+		public bool IsSameDate(string path1, string path2)
 		{
 			return IsSameDate(new FileInfo(path1), new FileInfo(path2));
 		}
 
-		public static bool IsSameFile(FileInfo fi1, FileInfo fi2)
+		public bool IsSameFile(FileInfo fi1, FileInfo fi2)
 		{
 			try {
 				if (IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2))
@@ -636,12 +638,12 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static bool IsSameFile(string path1, string path2)
+		public bool IsSameFile(string path1, string path2)
 		{
 			return IsSameFile(new FileInfo(path1), new FileInfo(path2));
 		}
 
-		public static bool IsSameSize(FileInfo fi1, FileInfo fi2)
+		public bool IsSameSize(FileInfo fi1, FileInfo fi2)
 		{
 			try {
 				if (fi1.Length == fi2.Length)
@@ -655,12 +657,12 @@ namespace Yutaka.IO
 			}
 		}
 
-		public static bool IsSameSize(string path1, string path2)
+		public bool IsSameSize(string path1, string path2)
 		{
 			return IsSameSize(new FileInfo(path1), new FileInfo(path2));
 		}
 
-		public static void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
+		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
 			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
@@ -696,7 +698,7 @@ namespace Yutaka.IO
 
 		#region Deprecated
 		[Obsolete("Deprecated on Nov 19, 2018. No alternate method exists.", true)]
-		public static List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int initialCapacity = 100)
+		public List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int initialCapacity = 100)
 		{
 			if (String.IsNullOrEmpty(targetDirectory))
 				throw new ArgumentNullException("targetDirectory", "<targetDirectory> is required.");
