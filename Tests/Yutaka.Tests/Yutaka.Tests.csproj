@@ -61,7 +61,7 @@
       <HintPath>..\..\Libraries\Yutaka.Images\bin\Debug\Yutaka.Images.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.IO">
-      <HintPath>..\..\Libraries\Yutaka.IO\bin\Debug\Yutaka.IO.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Net, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

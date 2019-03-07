@@ -32,6 +32,7 @@ namespace Yutaka.Tests
 
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
+		private static FileUtil _fileUtil = new FileUtil();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
@@ -46,9 +47,23 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_FileUtil_DeleteFiles();
 			EndProgram();
 		}
+
+		#region Test FileUtilStatic.DeleteFiles
+		private static void Test_FileUtil_DeleteFiles()
+		{
+			var tests = new string[] {
+				@"C:\TEMP\test1\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				_fileUtil.DeleteFiles(tests[i], "gif");
+			}
+		}
+		#endregion Test FileUtilStatic.DeleteFiles
 
 		#region Test VideoUtil.CreateAnimatedGif
 		private static void Test_VideoUtil_CreateAnimatedGif()
@@ -729,7 +744,7 @@ namespace Yutaka.Tests
 				Console.Write("\n=> {0}", TextUtil.BeautifyPhone(tests[i]));
 			}
 		}
-		#endregion Test FileUtil.FixCreationTime
+		#endregion Test FileUtilStatic.FixCreationTime
 
 		#region Test MailAddress
 		private static void Test_MailAddress()
@@ -749,7 +764,7 @@ namespace Yutaka.Tests
 		}
 		#endregion Test MailAddress
 
-		#region Test FileUtil.FixCreationTime
+		#region Test FileUtilStatic.FixCreationTime
 		//private static void Test_FileUtil_FixCreationTime()
 		//{
 		//	var searchPattern = @"*";
@@ -761,10 +776,10 @@ namespace Yutaka.Tests
 		//	for (int i = 0; i < tests.Length; i++) {
 		//		Console.Write("\n");
 		//		Console.Write("\nTest #{0}: {1}", i+1, tests[i]);
-		//		FileUtil.FixCreationTime(tests[i], searchPattern);
+		//		FileUtilStatic.FixCreationTime(tests[i], searchPattern);
 		//	}
 		//}
-		#endregion Test FileUtil.FixCreationTime
+		#endregion Test FileUtilStatic.FixCreationTime
 
 		#region Test Base36.EncodeIp/DecodeIp
 		//private static void Test_Base36_EncodeIp_DecodeIp()
@@ -872,14 +887,14 @@ namespace Yutaka.Tests
 		//}
 		#endregion Test Base36.GetUniqueIdByEmail()
 
-		//#region Test FileUtil.Write()
+		//#region Test FileUtilStatic.Write()
 		//private static void Test_FileUtil_Write()
 		//{
-		//	FileUtil.Write("delete me 2018 1023 0122", @"C:\TEMP\_DeleteMe 2018 1023 0122.txt");
+		//	FileUtilStatic.Write("delete me 2018 1023 0122", @"C:\TEMP\_DeleteMe 2018 1023 0122.txt");
 		//}
-		//#endregion Test FileUtil.Write()
+		//#endregion Test FileUtilStatic.Write()
 
-		#region Test FileUtil.GetDirectorySize()
+		#region Test FileUtilStatic.GetDirectorySize()
 		private static void Test_FileUtil_GetDirectorySize()
 		{
 			var tests = new string[] {
@@ -889,10 +904,10 @@ namespace Yutaka.Tests
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n\nTest: {0}\n  DirectorySize: {1}", tests[i], FileUtil.GetDirectorySize(tests[i]));
+				Console.Write("\n\nTest: {0}\n  DirectorySize: {1}", tests[i], FileUtilStatic.GetDirectorySize(tests[i]));
 			}
 		}
-		#endregion Test FileUtil.GetDirectorySize()
+		#endregion Test FileUtilStatic.GetDirectorySize()
 
 		#region Test ImageUtil.ExistsAndValidByUrl()
 		static void Test_ImageUtil_ExistsAndValidByUrl()

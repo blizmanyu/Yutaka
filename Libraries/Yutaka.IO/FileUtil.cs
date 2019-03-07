@@ -257,6 +257,33 @@ namespace Yutaka.IO
 			}
 		}
 
+		public void DeleteFiles(string folder, string extension)
+		{
+			if (String.IsNullOrEmpty(folder))
+				throw new Exception("<folder> is required.");
+			if (String.IsNullOrEmpty(extension))
+				throw new Exception("<extension> is required.");
+
+			try {
+				extension = extension.ToUpper();
+
+				if (!extension.StartsWith("."))
+					extension = String.Format(".{0}", extension);
+
+				var di = new DirectoryInfo(folder);
+				var files = di.GetFiles();
+
+				files.AsParallel().Where(f => f.Extension.ToUpper().Equals(extension)).ForAll((f) => f.Delete());
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in FileUtil.DeleteFiles(string folder='{3}', string extension='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, folder, extension));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.DeleteFiles(string folder='{3}', string extension='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, folder, extension));
+			}
+		}
+
 		/// <summary>
 		/// Returns an IEnumerable of audio FileInfos that matches a specified search patthern and search subdirectory option.
 		/// </summary>
