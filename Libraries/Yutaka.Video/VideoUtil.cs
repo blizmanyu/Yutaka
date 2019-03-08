@@ -90,6 +90,8 @@ namespace Yutaka.Video
 				// Last 2min // 12 GIFs //
 				for (var i = p3; i < end; i += GifLength)
 					CreateAnimatedGif(TimeSpan.FromSeconds(i), GifLength);
+
+				DeleteFiles(DestFolder, "png");
 			}
 
 			catch (Exception ex) {
@@ -162,6 +164,7 @@ namespace Yutaka.Video
 			Write(html, String.Format("{0}html", dest.Substring(0, dest.Length-3)));
 		}
 
+		// TODO: Move this to FileUtil class //
 		public void CreateHtml(string folder)
 		{
 			var maxImages = 16;
