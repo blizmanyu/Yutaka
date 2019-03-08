@@ -6,7 +6,7 @@ using Yutaka.IO;
 
 namespace Yutaka.Video
 {
-	public class VideoUtil
+	public class VideoUtil : FileUtil
 	{
 		private List<string> Images;
 		public int FirstXMin;
@@ -27,7 +27,7 @@ namespace Yutaka.Video
 			if (File.Exists(dest))
 				return;
 
-			FileUtil.Write(String.Format("@echo off{0}", Environment.NewLine), dest);
+			Write(String.Format("@echo off{0}", Environment.NewLine), dest);
 		}
 
 		public VideoUtil(string source, double startTime=0)
@@ -53,9 +53,9 @@ namespace Yutaka.Video
 				CreateDestFile();
 				var dest = String.Format("{0}REPLACE_ME{1:hh}h {1:mm}m {1:ss}s {1:fff}f", DestFolder, startTime);
 				var arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"{5}.png\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, Fps, Width, dest.Replace("REPLACE_ME", "z"));
-				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+				Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
 				arg = String.Format("ffmpeg -y -ss {0} -t {1} -i \"{2}\" -i \"{3}.png\" -filter_complex \"fps={4},scale={5}:-1:flags=lanczos[x];[x][1:v]paletteuse\" \"{6}.gif\"", startTime.ToString(@"hh\:mm\:ss\.fff"), length, Source, dest.Replace("REPLACE_ME", "z"), Fps, Width, dest.Replace("REPLACE_ME", ""));
-				FileUtil.Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
+				Write(String.Format("{0}{1}", arg, Environment.NewLine), String.Format("{0}{1}", DestFolder, DestFile));
 				Images.Add(String.Format("{0}.gif", dest.Replace("REPLACE_ME", "")));
 			}
 
@@ -159,7 +159,7 @@ namespace Yutaka.Video
 				html = html.Replace("REPLACE_ME", String.Format("<img src='{0}' style='max-width:320px;height:auto' />{1}REPLACE_ME", Images[i], Environment.NewLine));
 
 			html = html.Replace("REPLACE_ME", "");
-			FileUtil.Write(html, String.Format("{0}html", dest.Substring(0, dest.Length-3)));
+			Write(html, String.Format("{0}html", dest.Substring(0, dest.Length-3)));
 		}
 
 		public void CreateHtml(string folder)
@@ -167,7 +167,7 @@ namespace Yutaka.Video
 			var maxImages = 16;
 
 			if (Directory.Exists(folder)) {
-				var files = FileUtil.GetFilesRecursive(folder, "*.gif");
+				var files = GetFilesRecursive(folder, "*.gif");
 				var html = "";
 
 				for (int i = 0; i < files.Count; i++) {
@@ -178,13 +178,13 @@ namespace Yutaka.Video
 
 					if (i % maxImages == maxImages - 1) {
 						html = html.Replace("REPLACE_ME", "");
-						FileUtil.Write(html, String.Format("{0}_gallery{1}.html", folder, i/maxImages));
+						Write(html, String.Format("{0}_gallery{1}.html", folder, i/maxImages));
 						html = "";
 					}
 				}
 
 				html = html.Replace("REPLACE_ME", "");
-				FileUtil.Write(html, String.Format("{0}_gallery99.html", folder));
+				Write(html, String.Format("{0}_gallery99.html", folder));
 				html = "";
 			}
 		}
