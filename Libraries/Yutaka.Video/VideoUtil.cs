@@ -17,6 +17,7 @@ namespace Yutaka.Video
 		public double StartTime;
 		public string DestFolder;
 		public string DestFile;
+		public string FileNameWithoutExtension;
 		public string Source;
 
 		private void CreateDestFile()
@@ -36,6 +37,7 @@ namespace Yutaka.Video
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
 			try {
+				FileNameWithoutExtension = Path.GetFileNameWithoutExtension(source);
 				Images = new List<string>();
 				StartTime = startTime;
 				FirstXMin = 5;
@@ -43,8 +45,8 @@ namespace Yutaka.Video
 				GifLength = 10;
 				NumMiddleSegments = 21;
 				Width = 1000;
-				DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
-				DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
+				DestFolder = String.Format(@"C:\Temp\{0}\", FileNameWithoutExtension);
+				DestFile = String.Format(@"{0}.bat", FileNameWithoutExtension);
 				Source = source;
 			}
 
