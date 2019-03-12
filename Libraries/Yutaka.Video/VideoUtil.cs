@@ -35,16 +35,25 @@ namespace Yutaka.Video
 			if (String.IsNullOrWhiteSpace(source))
 				throw new Exception(String.Format("<source> is required.{0}Exception thrown in VideoUtil.VideoUtil(string source).{0}{0}", Environment.NewLine));
 
-			Images = new List<string>();
-			StartTime = startTime;
-			FirstXMin = 5;
-			Fps = 10;
-			GifLength = 10;
-			NumMiddleSegments = 21;
-			Width = 1000;
-			DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
-			DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
-			Source = source;
+			try {
+				Images = new List<string>();
+				StartTime = startTime;
+				FirstXMin = 5;
+				Fps = 10;
+				GifLength = 10;
+				NumMiddleSegments = 21;
+				Width = 1000;
+				DestFolder = String.Format(@"C:\Temp\{0:yyyy MMdd HHmm ssff}\", DateTime.Now);
+				DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
+				Source = source;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor VideoUtil(string source='{3}', double startTime={4}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, source, startTime));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor VideoUtil(string source='{3}', double startTime={4}).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, source, startTime));
+			}
 		}
 
 		public void CreateAnimatedGif(TimeSpan startTime, double length)
