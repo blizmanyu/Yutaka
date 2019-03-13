@@ -105,6 +105,11 @@ namespace Yutaka.Video
 				DeleteFiles(DestFolder, "png");
 			}
 
+			catch (PathTooLongException ex) {
+				Console.Write(String.Format("{2}{0}{2}Source: '{5}'{2}Dest: '{6}'{2}Exception thrown in VideoUtil.CreateAnimatedGif(double start={3}, double end={4}).{2}{1}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end, Source, DestFile));
+				return;
+			}
+
 			catch (Exception ex) {
 				if (ex.InnerException == null)
 					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateAnimatedGif(double start={3}, double end={4}).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end));

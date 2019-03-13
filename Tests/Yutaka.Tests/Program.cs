@@ -49,7 +49,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_WebUtil_IsBotUserAgent();
+			Test_VideoUtil_CreateAnimatedGif();
 			EndProgram();
 		}
 
@@ -106,7 +106,7 @@ namespace Yutaka.Tests
 				//@"G:\Projects\FileCopier2\Downloads\Nicole Black Dee Williams - LegalPorno 201903 Good afternoon miss Black #2 - Balls Deep Anal, Gapes, DAP, ATOGM, Cumswapping with Swallow GIO941 dp 4k 2160p.mp4",
 				//@"F:\Videos\Jful\Katrina Jade GloryHole 201602 1080p.mp4",
 				//@"F:\Videos\Jful\Princess Leia - Double Let Down [JulesJordan] (2015 anal dp 720p.mp4",
-				@"F:\Videos\Jful\Sheena Shaw - 201608 The Milk Enema anal 1080p.mp4",
+				@"G:\Projects\FileCopier2\Downloads\Natasha Teen - LegalPorno 201903 Total Dap Destruction 5on1 Balls Deep Anal, DAP, TP, Gapes, Airplane, Creampie & Swallow GIO862 dp 720p.mp4",
 				//@"C:\Downloads\Videos\Silvia Dellai - LegalPorno 201903 anal 3on1, DP, DVP & prone bone pounding SZ2085 swallow 4k 2160p.mp4",
 			};
 
@@ -116,7 +116,7 @@ namespace Yutaka.Tests
 				//_videoUtil.FirstXMin = 12;
 				//_videoUtil.Width = 640; // default is 1000 //
 				//_videoUtil.CreateFirstXMin(0, 1);
-				_videoUtil.CreateAnimatedGif();
+				_videoUtil.CreateAnimatedGif(.5);
 				//_videoUtil.CreateAnimatedGif(134, 135);
 				//_videoUtil.CreateAnimatedGif(134.5, 135);
 				//_videoUtil.CreateHtml(@"C:\TEMP\2019 0226 0329 5118\");
