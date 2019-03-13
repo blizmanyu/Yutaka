@@ -49,19 +49,41 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_WebUtil_IsBotEmail();
+			Test_WebUtil_IsBotUserAgent();
 			EndProgram();
 		}
+
+		#region Test WebUtil.IsBotUserAgent
+		private static void Test_WebUtil_IsBotUserAgent()
+		{
+			var tests = new string[] {
+				"LAKSDJFLSKADFJ@126.com",
+				"lkasdjlkdjf@alskdfjlaskdjf.com",
+				"LKASDJFLKASDJF@oncesex.com",
+				"lkasjdflksadjf@alskdfjdl.com",
+				"LASKDJLSDAKJF@alunos.eel.usp.br",
+			};
+
+			bool result;
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = _webUtil.IsBotUserAgent(tests[i]);
+				Console.Write("{0}", result);
+			}
+		}
+		#endregion Test WebUtil.IsBotUserAgent
 
 		#region Test WebUtil.IsBotEmail
 		private static void Test_WebUtil_IsBotEmail()
 		{
 			var tests = new string[] {
-				"laksdjlkdfj@126.com",
+				"LAKSDJFLSKADFJ@126.com",
 				"lkasdjlkdjf@alskdfjlaskdjf.com",
-				"lkasdjflksdjlksjf@oncesex.com",
+				"LKASDJFLKASDJF@oncesex.com",
 				"lkasjdflksadjf@alskdfjdl.com",
-				"laksdjdlfkj@alunos.eel.usp.br",
+				"LASKDJLSDAKJF@alunos.eel.usp.br",
 			};
 
 			bool result;
