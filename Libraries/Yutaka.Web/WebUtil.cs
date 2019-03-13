@@ -65,6 +65,34 @@ namespace Yutaka.Web
 			}
 		}
 
+		public bool IsBotUserAgent(string userAgent)
+		{
+			try {
+				var Request = HttpContext.Current.Request;
+
+				if (Request.Browser.Crawler)
+					return true;
+
+				if (String.IsNullOrWhiteSpace(userAgent))
+					userAgent = (Request.UserAgent ?? "").ToLower();
+
+				if (userAgent.Length < 50)
+					return true;
+
+				if (bots.Exists(b => userAgent.Contains(b)))
+					return true;
+
+				return false;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WebUtil.IsBotUserAgent(string userAgent='{3}'){2}{1}{2}", ex.Message, ex.ToString(), Environment.NewLine, userAgent));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WebUtil.IsBotUserAgent(string userAgent='{3}'){2}{1}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, userAgent));
+			}
+		}
+
 		public bool IsMobileDevice()
 		{
 			var Request = HttpContext.Current.Request;
