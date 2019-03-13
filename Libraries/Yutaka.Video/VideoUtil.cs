@@ -20,15 +20,25 @@ namespace Yutaka.Video
 		public string FileNameWithoutExtension;
 		public string Source;
 
-		private void CreateDestFile()
+		public void CreateDestFile()
 		{
-			Directory.CreateDirectory(DestFolder);
-			var dest = String.Format("{0}{1}", DestFolder, DestFile);
+			try {
+				Directory.CreateDirectory(DestFolder);
+				var dest = String.Format("{0}{1}", DestFolder, DestFile);
 
-			if (File.Exists(dest))
-				return;
+				if (File.Exists(dest))
+					return;
 
-			Write(String.Format("@echo off{0}", Environment.NewLine), dest);
+				Console.Write("\ndest: {0}", dest);
+				Write(String.Format("@echo off{0}", Environment.NewLine), dest);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in VideoUtil.CreateDestFile().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VideoUtil.CreateDestFile().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+			}
 		}
 
 		public VideoUtil(string source, double startTime=0)
@@ -46,7 +56,7 @@ namespace Yutaka.Video
 				NumMiddleSegments = 21;
 				Width = 1000;
 				DestFolder = String.Format(@"C:\Temp\{0}\", FileNameWithoutExtension);
-				DestFile = String.Format(@"{0}.bat", FileNameWithoutExtension);
+				DestFile = String.Format(@"{0:yyyy MMdd HHmm ssff}.bat", DateTime.Now);
 				Source = source;
 			}
 
@@ -88,6 +98,7 @@ namespace Yutaka.Video
 
 			try {
 				CreateDestFile();
+
 				var p1 = start + 300;
 				var p2 = p1 + 50;
 				var p3 = end - 120;
@@ -106,7 +117,7 @@ namespace Yutaka.Video
 			}
 
 			catch (PathTooLongException ex) {
-				Console.Write(String.Format("{2}{0}{2}Source: '{5}'{2}Dest: '{6}'{2}Exception thrown in VideoUtil.CreateAnimatedGif(double start={3}, double end={4}).{2}{1}{2}", ex.Message, ex.ToString(), Environment.NewLine, start, end, Source, DestFile));
+				Console.Write(String.Format("{0}<source> is too long. The fully qualified file name must be less than 260 characters, and the directory name must be less than 248 characters.{0}Length: {1}{0}Source: '{2}'{0}Exception thrown in Constructor.{0}", Environment.NewLine, Source.Length, Source));
 				return;
 			}
 
