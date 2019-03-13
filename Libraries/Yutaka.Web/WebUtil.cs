@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 using System.Web;
 using Yutaka.Utils;
 
@@ -35,6 +36,32 @@ namespace Yutaka.Web
 
 			catch (Exception ex) {
 				throw new Exception(String.Format("Exception thrown in WebUtil.IsBot(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+			}
+		}
+
+		public bool IsBotEmail(string email)
+		{
+			if (String.IsNullOrWhiteSpace(email))
+				return false;
+
+			try {
+				var emails = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+					"chenyingbinmingren@126.com",
+					"cjsomeadulttoys@oncesex.com",
+					"rodrquim@alunos.eel.usp.br",
+				};
+
+				if (emails.Contains(email, StringComparer.OrdinalIgnoreCase))
+					return true;
+
+				return false;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WebUtil.IsBotEmail(string email='{3}'){2}{1}{2}", ex.Message, ex.ToString(), Environment.NewLine, email));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WebUtil.IsBotEmail(string email='{3}'){2}{1}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
 			}
 		}
 
