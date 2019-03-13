@@ -47,10 +47,12 @@ namespace Yutaka.Web
 					return true;
 
 				if (String.IsNullOrWhiteSpace(userAgent))
-					userAgent = (Request.UserAgent ?? "").ToLower();
+					userAgent = Request.UserAgent ?? "";
 
 				if (userAgent.Length < 50)
 					return true;
+
+				userAgent = userAgent.ToLower();
 
 				if (BotUserAgents.Exists(b => userAgent.Contains(b)))
 					return true;

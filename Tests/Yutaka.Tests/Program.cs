@@ -12,6 +12,7 @@ using Yutaka.Net;
 using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
+using Yutaka.Web;
 
 namespace Yutaka.Tests
 {
@@ -36,6 +37,7 @@ namespace Yutaka.Tests
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
+		private static WebUtil _webUtil = new WebUtil();
 		private static bool consoleOut = true; // default = false //
 		private static int errorCount = 0;
 		private static int totalCount = 0;
@@ -47,9 +49,31 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_WebUtil_IsBotEmail();
 			EndProgram();
 		}
+
+		#region Test WebUtil.IsBotEmail
+		private static void Test_WebUtil_IsBotEmail()
+		{
+			var tests = new string[] {
+				"laksdjlkdfj@126.com",
+				"lkasdjlkdjf@alskdfjlaskdjf.com",
+				"lkasdjflksdjlksjf@oncesex.com",
+				"lkasjdflksadjf@alskdfjdl.com",
+				"laksdjdlfkj@alunos.eel.usp.br",
+			};
+
+			bool result;
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = _webUtil.IsBotEmail(tests[i]);
+				Console.Write("{0}", result);
+			}
+		}
+		#endregion Test WebUtil.IsBotEmail
 
 		#region Test VideoUtil.CreateAnimatedGif
 		private static void Test_VideoUtil_CreateAnimatedGif()
