@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
 using Yutaka.Utils;
@@ -67,32 +66,29 @@ namespace Yutaka.Web
 			}
 		}
 
-		public bool IsMobileDevice()
+		public bool IsMobileDevice(string userAgent=null)
 		{
-			var Request = HttpContext.Current.Request;
-
-			if (Request != null && Request.ServerVariables["HTTP_USER_AGENT"] != null) {
-				var userAgent = Request.ServerVariables["HTTP_USER_AGENT"].ToString();
+			try {
+				if (String.IsNullOrWhiteSpace(userAgent)) {
+					var Request = HttpContext.Current.Request;
+					userAgent = Request.UserAgent ?? "";
+				}
 
 				if (userAgent.Length < 4)
 					return false;
 
 				if (MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4)))
 					return true;
+
+				return false;
 			}
 
-			return false;
-		}
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WebUtil.IsMobileDevice(string userAgent='{3}'){2}{1}{2}", ex.Message, ex.ToString(), Environment.NewLine, userAgent));
 
-		public bool IsMobileDevice(string userAgent)
-		{
-			if (String.IsNullOrWhiteSpace(userAgent) || userAgent.Length < 4)
-				return false;
-
-			if (MobileCheck.IsMatch(userAgent) || MobileVersionCheck.IsMatch(userAgent.Substring(0, 4)))
-				return true;
-
-			return false;
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WebUtil.IsMobileDevice(string userAgent='{3}'){2}{1}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, userAgent));
+			}
 		}
 
 		// Work in progress: do NOT use yet //
