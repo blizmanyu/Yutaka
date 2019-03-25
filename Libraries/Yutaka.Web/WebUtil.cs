@@ -38,7 +38,7 @@ namespace Yutaka.Web
 			}
 		}
 
-		public bool IsBotUserAgent(string userAgent=null)
+		public bool IsBotUserAgent(string userAgent = null)
 		{
 			try {
 				var Request = HttpContext.Current.Request;
@@ -68,7 +68,7 @@ namespace Yutaka.Web
 			}
 		}
 
-		public bool IsMobileDevice(string userAgent=null)
+		public bool IsMobileDevice(string userAgent = null)
 		{
 			try {
 				if (String.IsNullOrWhiteSpace(userAgent)) {
@@ -136,31 +136,41 @@ namespace Yutaka.Web
 		public void SetSessionVariables()
 		{
 			try {
-				var Request = HttpContext.Current.Request;
 				var Session = HttpContext.Current.Session;
+				var Request = HttpContext.Current.Request;
+				var url = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
+				var referer = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+
+				if (url.Length > 2000)
+					url = url.Substring(0, 2000);
+				if (referer.Length > 2000)
+					referer = referer.Substring(0, 2000);
 
 				if (Session["Id"] == null || String.IsNullOrWhiteSpace(Session["Id"].ToString()))
 					Session["Id"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
 
 				if (Session["Source"] == null)
-					Session["Source"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+					Session["Source"] = referer;
 
 				if (Session["IsMobileDevice"] == null || String.IsNullOrWhiteSpace(Session["IsMobileDevice"].ToString()))
 					Session["IsMobileDevice"] = IsMobileDevice(Request.UserAgent ?? "");
 
 				if (Session["Url"] == null || String.IsNullOrWhiteSpace(Session["Url"].ToString())) {
-					Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
-					Session["Referer"] = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
+					Session["Url"] = url;
+					Session["Referer"] = referer;
 				}
 
 				else {
 					Session["Referer"] = Session["Url"].ToString();
-					Session["Url"] = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
+					Session["Url"] = url;
 				}
 			}
 
 			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in WebUtil.SetSessionVariables(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WebUtil.SetSessionVariables(){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WebUtil.SetSessionVariables(){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
 		}
 
