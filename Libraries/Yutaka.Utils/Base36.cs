@@ -63,25 +63,6 @@ namespace Yutaka.Utils
 			}
 		}
 
-		public static string EncodeIp(string ipAddress)
-		{
-			if (String.IsNullOrWhiteSpace(ipAddress))
-				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress){0}<ipAddress> is {1}", Environment.NewLine, ipAddress == null ? "NULL" : "Empty"));
-			if (ipAddress.Length < 7 || 16 < ipAddress.Length)
-				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress='{1}'){0}Only IPv4 address between 0.0.0.0 and 255.255.255.255 are allowed", Environment.NewLine, ipAddress));
-
-			try {
-				var sb = new StringBuilder();
-				ipAddress.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
-
-				return Encode(Int64.Parse(sb.ToString()));
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, ipAddress));
-			}
-		}
-
 		// Work in progress. Do NOT use yet //
 		public static string GetUniqueIdByEmail(string email)
 		{
@@ -107,6 +88,26 @@ namespace Yutaka.Utils
 		}
 
 		#region Deprecated
+		[Obsolete("Deprecated on Mar 25, 2019. Use WebUtil.EncodeIp(string ipAddress) instead.")]
+		public static string EncodeIp(string ipAddress)
+		{
+			if (String.IsNullOrWhiteSpace(ipAddress))
+				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress){0}<ipAddress> is {1}", Environment.NewLine, ipAddress == null ? "NULL" : "Empty"));
+			if (ipAddress.Length < 7 || 16 < ipAddress.Length)
+				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress='{1}'){0}Only IPv4 address between 0.0.0.0 and 255.255.255.255 are allowed", Environment.NewLine, ipAddress));
+
+			try {
+				var sb = new StringBuilder();
+				ipAddress.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
+
+				return Encode(Int64.Parse(sb.ToString()));
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in Base36.EncodeIp(string ipAddress='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, ipAddress));
+			}
+		}
+
 		[Obsolete("Deprecated on Nov 16, 2018. Use EncodeIp(string ipAddress) instead.")]
 		public static string GetUniqueIdByIP(string ipAddress)
 		{
