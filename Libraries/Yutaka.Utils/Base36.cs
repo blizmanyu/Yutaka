@@ -83,25 +83,6 @@ namespace Yutaka.Utils
 		}
 
 		// Work in progress. Do NOT use yet //
-		public static string DecodeIp(string str)
-		{
-			if (String.IsNullOrWhiteSpace(str))
-				return "";
-
-			try {
-				var decoded = Decode(str);
-
-				// https://stackoverflow.com/questions/461742/how-to-convert-an-ipv4-address-into-a-integer-in-c //
-
-				return String.Format("{0:d10}", decoded);
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in Base36.DecodeIp(string str='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, str));
-			}
-		}
-
-		// Work in progress. Do NOT use yet //
 		public static string GetUniqueIdByEmail(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
