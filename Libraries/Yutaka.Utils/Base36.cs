@@ -14,6 +14,8 @@ namespace Yutaka.Utils
 		{
 			if (input < 0)
 				throw new ArgumentOutOfRangeException("input", input, "input cannot be negative");
+			if (input == 0)
+				return "0";
 
 			string CharList;
 			if (lowerCase)
