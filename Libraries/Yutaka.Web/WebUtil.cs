@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
+using Yutaka.Net;
 using Yutaka.Utils;
 
 namespace Yutaka.Web
@@ -144,7 +145,6 @@ namespace Yutaka.Web
 			}
 		}
 
-		// Work in progress: do NOT use yet //
 		public void SetCookie(string name, string id = null, string ip = null, string email = null, string source = null)
 		{
 			try {
@@ -156,31 +156,47 @@ namespace Yutaka.Web
 				if (cookie == null)
 					cookie = new HttpCookie(name);
 
-				// ID - should never change unless obviously NULL or empty //
-				if (String.IsNullOrWhiteSpace(cookie["Id"])) {
-					cookie["Id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
-																 : id;
+				// ID - should never change unless obviously null or empty //
+				if (String.IsNullOrWhiteSpace(cookie["id"])) {
+					if (String.IsNullOrWhiteSpace(id))
+						id = Session["Id"] == null ? "" : Session["Id"].ToString();
+
+					cookie["id"] = id;
 				}
 
-				// IP - should never change unless obviously NULL or empty //
+				// IP - should never change unless null or empty //
 				if (String.IsNullOrWhiteSpace(cookie["i"])) {
 					if (String.IsNullOrWhiteSpace(ip))
 						ip = Request.UserHostAddress ?? "";
-					cookie["i"] = Base36.EncodeIp(ip);
+
+					cookie["i"] = EncodeIp(ip);
 				}
 
 				// Email - can change if the //
+				if (String.IsNullOrWhiteSpace(cookie["e"]))
+					if (!String.IsNullOrWhiteSpace(email))
+						cookie["e"] = new MailUtil().EncodeEmail(email);
 
-				// Source - laskdjf //
+				// Source - should never change unless null or empty //
+				if (String.IsNullOrWhiteSpace(cookie["s"])) {
+					if (String.IsNullOrWhiteSpace(source))
+						source = Request.UrlReferrer.AbsoluteUri ?? "";
 
+					if (source.Length > 2000)
+						source = source.Substring(0, 2000);
 
+					cookie["s"] = source;
+				}
 
 				cookie.Expires = now.AddYears(4);
 				HttpContext.Current.Response.Cookies.Add(cookie);
 			}
 
 			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in WebUtil.SetCookie(){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine));
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WebUtil.SetCookie(string name='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, name));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WebUtil.SetCookie(string name='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, name));
 			}
 		}
 

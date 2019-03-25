@@ -52,9 +52,29 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_WebUtil_EncodeIp();
+			Test_MailUtil_EncodeEmail();
 			EndProgram();
 		}
+
+		#region Test MailUtil.EncodeEmail
+		private static void Test_MailUtil_EncodeEmail()
+		{
+			var tests = new string[] {
+				"yblizman@rcw1.com",
+			};
+
+			string result;
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = _mailUtil.EncodeEmail(tests[i]);
+				Console.Write("\nencoded: {0}", result);
+				Console.Write("\ndecoded: {0}", _mailUtil.DecodeEmail(result));
+			}
+		}
+		#endregion Test MailUtil.EncodeEmail
 
 		#region Test WebUtil.EncodeIp
 		private static void Test_WebUtil_EncodeIp()
