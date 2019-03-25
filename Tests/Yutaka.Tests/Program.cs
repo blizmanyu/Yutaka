@@ -52,33 +52,37 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_NetUtil();
+			Test_WebUtil_EncodeIp();
 			EndProgram();
 		}
 
-		#region Test NetUtil
-		private static void Test_NetUtil()
+		#region Test WebUtil.EncodeIp
+		private static void Test_WebUtil_EncodeIp()
 		{
 			var tests = new string[] {
 				"0.0.0.0",
 				"10.0.0.0",
+				"98.98.98.98",
 				"98.189.176.208",
 				"172.16.0.0",
 				"192.168.0.0",
 				"255.255.255.255",
 			};
 
-			StringBuilder result = new StringBuilder();
+			string encoded, decoded;
+			Console.Write("\n\nEncode(0): {0}", Base36.Encode(0));
 
 			for (int i = 0; i < tests.Length; i++) {
 				totalCount++;
+				Console.Write("\n");
 				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
-				result = new StringBuilder();
-				tests[i].Split('.').ToList().ForEach(u => result.Append(u.ToString().PadLeft(3, '0')));
-				Console.Write("{0}", result);
+				encoded = _webUtil.EncodeIp(tests[i]);
+				Console.Write("\nencoded: {0}", encoded);
+				decoded = _webUtil.DecodeIp(encoded);
+				Console.Write("\ndecoded: {0}", decoded);
 			}
 		}
-		#endregion Test NetUtil
+		#endregion Test WebUtil.EncodeIp
 
 		#region Test WebUtil.IsBotUserAgent
 		private static void Test_WebUtil_IsBotUserAgent()

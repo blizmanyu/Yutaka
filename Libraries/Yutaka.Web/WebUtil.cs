@@ -39,18 +39,19 @@ namespace Yutaka.Web
 			}
 		}
 
-		// Work in progress. Do NOT use yet //
-		public static string DecodeIp(string str)
+		public string DecodeIp(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
 			try {
+				var sb = new StringBuilder();
 				var decoded = Base36.Decode(str);
+				var temp = String.Format("{0:##0-##0-##0-###}", decoded);
+				temp.Split('-').ToList().ForEach(u => sb.Append(String.Format("{0}.", int.Parse(u))));
+				sb.Length--; // removes the final '.' //
 
-				// https://stackoverflow.com/questions/461742/how-to-convert-an-ipv4-address-into-a-integer-in-c //
-
-				return String.Format("{0:d10}", decoded);
+				return sb.ToString();
 			}
 
 			catch (Exception ex) {
@@ -156,8 +157,8 @@ namespace Yutaka.Web
 					cookie = new HttpCookie(name);
 
 				// ID - should never change unless obviously NULL or empty //
-				if (String.IsNullOrWhiteSpace(cookie["id"])) {
-					cookie["id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
+				if (String.IsNullOrWhiteSpace(cookie["Id"])) {
+					cookie["Id"] = String.IsNullOrWhiteSpace(id) ? (Session["Id"] == null ? "" : Session["Id"].ToString())
 																 : id;
 				}
 
