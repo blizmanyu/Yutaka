@@ -61,6 +61,11 @@ namespace Yutaka.Web
 			}
 		}
 
+		public bool IsBot(string email, string userAgent = null)
+		{
+			return IsBotEmail(email) || IsBotUserAgent(userAgent);
+		}
+
 		public bool IsBotEmail(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
