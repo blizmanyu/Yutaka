@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.IO;
+using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
+using System.Text;
 using NLog;
 using Yutaka.Data;
 using Yutaka.Images;
@@ -49,9 +52,33 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_NetUtil();
 			EndProgram();
 		}
+
+		#region Test NetUtil
+		private static void Test_NetUtil()
+		{
+			var tests = new string[] {
+				"0.0.0.0",
+				"10.0.0.0",
+				"98.189.176.208",
+				"172.16.0.0",
+				"192.168.0.0",
+				"255.255.255.255",
+			};
+
+			StringBuilder result = new StringBuilder();
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = new StringBuilder();
+				tests[i].Split('.').ToList().ForEach(u => result.Append(u.ToString().PadLeft(3, '0')));
+				Console.Write("{0}", result);
+			}
+		}
+		#endregion Test NetUtil
 
 		#region Test WebUtil.IsBotUserAgent
 		private static void Test_WebUtil_IsBotUserAgent()
