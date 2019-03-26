@@ -281,6 +281,7 @@ namespace Yutaka.Web
 			try {
 				var Session = HttpContext.Current.Session;
 				var Request = HttpContext.Current.Request;
+				var ip = Request.UserHostAddress ?? "";
 				var url = Request.Url == null ? "" : Request.Url.AbsoluteUri ?? "";
 				var referer = Request.UrlReferrer == null ? "" : Request.UrlReferrer.AbsoluteUri ?? "";
 
@@ -290,7 +291,10 @@ namespace Yutaka.Web
 					referer = referer.Substring(0, 2000);
 
 				if (Session["Id"] == null || String.IsNullOrWhiteSpace(Session["Id"].ToString()))
-					Session["Id"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(Request.UserHostAddress));
+					Session["Id"] = String.Format("{0}-{1}", Base36.GetUniqueId(), Base36.GetUniqueIdByIP(ip));
+
+				if (Session["Ip"] == null || String.IsNullOrWhiteSpace(Session["Ip"].ToString()))
+					Session["Ip"] = ip;
 
 				if (Session["Source"] == null)
 					Session["Source"] = referer;
