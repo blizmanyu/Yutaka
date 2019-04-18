@@ -21,6 +21,8 @@ namespace Yutaka.Tests
 {
 	static class Program
 	{
+		private static bool consoleOut = false; // default = false //
+
 		#region Fields
 		#region Static Externs
 		[DllImport("kernel32.dll")]
@@ -41,7 +43,6 @@ namespace Yutaka.Tests
 		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
 		private static WebUtil _webUtil = new WebUtil();
-		private static bool consoleOut = true; // default = false //
 		private static int errorCount = 0;
 		private static int totalCount = 0;
 		private static int errorCountThreshold = 7;
@@ -52,7 +53,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_MailUtil_EncodeEmail();
+			Test_VideoUtil_CreateAnimatedGif();
 			EndProgram();
 		}
 
@@ -77,31 +78,31 @@ namespace Yutaka.Tests
 		#endregion Test MailUtil.EncodeEmail
 
 		#region Test WebUtil.EncodeIp
-		private static void Test_WebUtil_EncodeIp()
-		{
-			var tests = new string[] {
-				"0.0.0.0",
-				"10.0.0.0",
-				"98.98.98.98",
-				"98.189.176.208",
-				"172.16.0.0",
-				"192.168.0.0",
-				"255.255.255.255",
-			};
+		//private static void Test_WebUtil_EncodeIp()
+		//{
+		//	var tests = new string[] {
+		//		"0.0.0.0",
+		//		"10.0.0.0",
+		//		"98.98.98.98",
+		//		"98.189.176.208",
+		//		"172.16.0.0",
+		//		"192.168.0.0",
+		//		"255.255.255.255",
+		//	};
 
-			string encoded, decoded;
-			Console.Write("\n\nEncode(0): {0}", Base36.Encode(0));
+		//	string encoded, decoded;
+		//	Console.Write("\n\nEncode(0): {0}", Base36.Encode(0));
 
-			for (int i = 0; i < tests.Length; i++) {
-				totalCount++;
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
-				encoded = _webUtil.EncodeIp(tests[i]);
-				Console.Write("\nencoded: {0}", encoded);
-				decoded = _webUtil.DecodeIp(encoded);
-				Console.Write("\ndecoded: {0}", decoded);
-			}
-		}
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		totalCount++;
+		//		Console.Write("\n");
+		//		Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+		//		encoded = _webUtil.EncodeIp(tests[i]);
+		//		Console.Write("\nencoded: {0}", encoded);
+		//		decoded = _webUtil.DecodeIp(encoded);
+		//		Console.Write("\ndecoded: {0}", decoded);
+		//	}
+		//}
 		#endregion Test WebUtil.EncodeIp
 
 		#region Test WebUtil.IsBotUserAgent
@@ -154,11 +155,9 @@ namespace Yutaka.Tests
 			VideoUtil _videoUtil;
 
 			var tests = new string[] {
-				//@"G:\Projects\FileCopier2\Downloads\Nicole Black Dee Williams - LegalPorno 201903 Good afternoon miss Black #2 - Balls Deep Anal, Gapes, DAP, ATOGM, Cumswapping with Swallow GIO941 dp 4k 2160p.mp4",
-				//@"F:\Videos\Jful\Katrina Jade GloryHole 201602 1080p.mp4",
-				//@"F:\Videos\Jful\Princess Leia - Double Let Down [JulesJordan] (2015 anal dp 720p.mp4",
-				@"G:\TEMP\Natasha Teen - LegalPorno 201903 Total Dap Destruction 5on1 Balls Deep Anal, DAP, TP, Gapes, Airplane, Creampie & Swallow GIO862 dp 720p.mp4",
-				//@"C:\Downloads\Videos\Silvia Dellai - LegalPorno 201903 anal 3on1, DP, DVP & prone bone pounding SZ2085 swallow 4k 2160p.mp4",
+				@"G:\Projects\FileCopier2\Downloads\Lily Adams - TrueAnal 2019 04 anal 1080p.mp4",
+				@"G:\Projects\FileCopier2\Downloads\Riley Reyes - Dredd 6 Scene 2 anal 1080p.mp4",
+				@"G:\Projects\FileCopier2\Downloads\Jane Wilde - Dredd 6 Scene 2 anal 1080p",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
