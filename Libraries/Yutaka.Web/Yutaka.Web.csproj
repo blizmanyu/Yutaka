@@ -41,6 +41,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Yutaka.Net">
+      <HintPath>..\Yutaka.Net\bin\Release\Yutaka.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Yutaka.Utils">
       <HintPath>..\Yutaka.Utils\bin\Debug\Yutaka.Utils.dll</HintPath>
     </Reference>

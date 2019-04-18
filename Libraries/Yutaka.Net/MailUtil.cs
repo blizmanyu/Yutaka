@@ -34,7 +34,7 @@ namespace Yutaka.Net
 				int c;
 
 				for (int i = 0; i < str.Length; i++) {
-					c = str[i] - 2;
+					c = str[i] + 2;
 					sb.Append((char) c);
 				}
 
@@ -50,7 +50,6 @@ namespace Yutaka.Net
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return "";
-
 			if (cleanFirst)
 				email = Clean(email);
 
@@ -59,7 +58,7 @@ namespace Yutaka.Net
 				int c;
 
 				for (int i = 0; i < email.Length; i++) {
-					c = email[i] + 2;
+					c = email[i] - 2;
 					sb.Append((char) c);
 				}
 
@@ -75,7 +74,6 @@ namespace Yutaka.Net
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return false;
-
 			if (cleanFirst)
 				email = Clean(email);
 

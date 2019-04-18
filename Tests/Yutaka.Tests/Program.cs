@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.IO;
+using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
+using System.Text;
 using NLog;
 using Yutaka.Data;
 using Yutaka.Images;
@@ -49,9 +52,57 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_MailUtil_EncodeEmail();
 			EndProgram();
 		}
+
+		#region Test MailUtil.EncodeEmail
+		private static void Test_MailUtil_EncodeEmail()
+		{
+			var tests = new string[] {
+				"yblizman@rcw1.com",
+			};
+
+			string result;
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = _mailUtil.EncodeEmail(tests[i]);
+				Console.Write("\nencoded: {0}", result);
+				Console.Write("\ndecoded: {0}", _mailUtil.DecodeEmail(result));
+			}
+		}
+		#endregion Test MailUtil.EncodeEmail
+
+		#region Test WebUtil.EncodeIp
+		private static void Test_WebUtil_EncodeIp()
+		{
+			var tests = new string[] {
+				"0.0.0.0",
+				"10.0.0.0",
+				"98.98.98.98",
+				"98.189.176.208",
+				"172.16.0.0",
+				"192.168.0.0",
+				"255.255.255.255",
+			};
+
+			string encoded, decoded;
+			Console.Write("\n\nEncode(0): {0}", Base36.Encode(0));
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				encoded = _webUtil.EncodeIp(tests[i]);
+				Console.Write("\nencoded: {0}", encoded);
+				decoded = _webUtil.DecodeIp(encoded);
+				Console.Write("\ndecoded: {0}", decoded);
+			}
+		}
+		#endregion Test WebUtil.EncodeIp
 
 		#region Test WebUtil.IsBotUserAgent
 		private static void Test_WebUtil_IsBotUserAgent()
