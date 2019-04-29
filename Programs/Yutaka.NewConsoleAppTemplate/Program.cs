@@ -64,7 +64,10 @@ namespace Yutaka.NewConsoleAppTemplate
 
 			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
 				logger.Error("The number of errors is above the threshold.");
-				//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+
+				if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
+					//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+				}
 			}
 
 			var log = new string[4];
