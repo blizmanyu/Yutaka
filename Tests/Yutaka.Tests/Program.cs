@@ -155,9 +155,7 @@ namespace Yutaka.Tests
 			VideoUtil _videoUtil;
 
 			var tests = new string[] {
-				//@"G:\Projects\FileCopier2\Downloads\Lily Adams - TrueAnal 2019 04 anal 1080p.mp4",
-				//@"G:\Projects\FileCopier2\Downloads\Riley Reyes - Dredd 6 Scene 2 anal 1080p.mp4",
-				@"G:\Projects\FileCopier2\Downloads\Emily Willis Izzy Lush - Tushy 2019 04 A Proper Good Bye anal 4k 2160p.mp4",
+				@"G:\asdfsadf",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
