@@ -53,9 +53,18 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_2019_0503_2113();
+			Test_2019_0506_0102();
 			EndProgram();
 		}
+
+		#region Test_2019_0506_0102
+		private static void Test_2019_0506_0102()
+		{
+			consoleOut = true;
+			Console.Write("\nnew DateTime(): {0}", new DateTime());
+			Console.Write("\nDateTime.MinValue: {0}", DateTime.MinValue);
+		}
+		#endregion Test_2019_0506_0102
 
 		#region Test_2019_0503_2113
 		private static void Test_2019_0503_2113()
