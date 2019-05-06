@@ -21,7 +21,7 @@ namespace Yutaka.Tests
 {
 	static class Program
 	{
-		private static bool consoleOut = false; // default = false //
+		private static bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -53,9 +53,22 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_2019_0503_2113();
 			EndProgram();
 		}
+
+		#region Test_2019_0503_2113
+		private static void Test_2019_0503_2113()
+		{
+			consoleOut = true;
+			var IgnoreListFolders = new List<string> { @"\Album", @"\Classical", @"\J-Pop", @"\J-Rap", @"\Spanish", };
+			var files = Directory.EnumerateFiles(@"Z:\Music\00 Genres\", "*", SearchOption.AllDirectories);
+
+			foreach (var file in files) {
+				Console.Write("\n{0}", file);
+			}
+		}
+		#endregion Test_2019_0503_2113
 
 		#region Test MailUtil.EncodeEmail
 		private static void Test_MailUtil_EncodeEmail()
@@ -152,6 +165,7 @@ namespace Yutaka.Tests
 		#region Test VideoUtil.CreateAnimatedGif
 		private static void Test_VideoUtil_CreateAnimatedGif()
 		{
+			consoleOut = false;
 			VideoUtil _videoUtil;
 
 			var tests = new string[] {
