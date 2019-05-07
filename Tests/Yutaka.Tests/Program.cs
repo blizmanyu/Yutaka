@@ -53,7 +53,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_2019_0506_0102();
+			Test_VideoUtil_CreateAnimatedGif();
 			EndProgram();
 		}
 
@@ -178,7 +178,7 @@ namespace Yutaka.Tests
 			VideoUtil _videoUtil;
 
 			var tests = new string[] {
-				@"G:\asdfsadf",
+				@"asdfasdf",
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
