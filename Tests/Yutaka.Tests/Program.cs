@@ -60,30 +60,28 @@ namespace Yutaka.Tests
 		#region Test FileUtil.IsStringInArray
 		private static void Test_FileUtil_IsStringInArray()
 		{
+			consoleOut = true;
 			var tests = new string[] {
-				null,
 				"",
-				"test1",
-				"TEST2",
+				"asdf",
+				"ASDF",
 			};
 
 			var arrays = new List<string[]> {
-				null,
-				new string[] { },
 				new string[] { "", },
-				new string[] { "test1", },
-				new string[] { "TEST2", },
+				new string[] { "asdf", },
+				new string[] { "ASDF", },
 			};
 
-			string result;
+			bool result;
+			var _fileUtil = new FileUtil();
 
 			for (int i = 0; i < tests.Length; i++) {
-				totalCount++;
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
-				result = _mailUtil.EncodeEmail(tests[i]);
-				Console.Write("\nencoded: {0}", result);
-				Console.Write("\ndecoded: {0}", _mailUtil.DecodeEmail(result));
+				for (int j = 0; j < arrays.Count; j++) {
+					totalCount++;
+					Console.Write("\n");
+					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", arrays[j]), _fileUtil.IsStringInArray(tests[i], arrays[j]));
+				}
 			}
 		}
 		#endregion Test FileUtil.IsStringInArray
