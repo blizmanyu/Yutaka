@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUtilStatic.cs" />
+    <Compile Include="ImageUtil.cs" />
     <Compile Include="YuFileLogger.cs" />
     <Compile Include="YuLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
