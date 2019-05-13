@@ -688,6 +688,20 @@ namespace Yutaka.IO
 			return false;
 		}
 
+		public bool IsStringInList(string str, List<String> list)
+		{
+			if (str == null)
+				throw new Exception(String.Format("<str> is required.{0}Exception thrown in FileUtil.IsStringInList(string str, List<String> list).{0}", Environment.NewLine));
+
+			if (list == null || list.Count < 1)
+				throw new Exception(String.Format("<list> is required.{0}Exception thrown in FileUtil.IsStringInList(string str, List<String> list).{0}", Environment.NewLine));
+
+			if (list.Contains(str, StringComparer.OrdinalIgnoreCase))
+				return true;
+
+			return false;
+		}
+
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
