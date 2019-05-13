@@ -53,9 +53,29 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_VideoUtil_CreateAnimatedGif();
+			Test_FileUtil_IsStringInArray();
 			EndProgram();
 		}
+
+		#region Test FileUtil.IsStringInArray
+		private static void Test_FileUtil_IsStringInArray()
+		{
+			var tests = new string[] {
+				"yblizman@rcw1.com",
+			};
+
+			string result;
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}: ", i + 1, tests[i]);
+				result = _mailUtil.EncodeEmail(tests[i]);
+				Console.Write("\nencoded: {0}", result);
+				Console.Write("\ndecoded: {0}", _mailUtil.DecodeEmail(result));
+			}
+		}
+		#endregion Test FileUtil.IsStringInArray
 
 		#region Test_2019_0506_0102
 		private static void Test_2019_0506_0102()
