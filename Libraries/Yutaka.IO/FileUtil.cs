@@ -617,26 +617,6 @@ namespace Yutaka.IO
 			}
 		}
 
-		public bool IsInIgnoreList(string str, string[] ignoreList)
-		{
-			if (String.IsNullOrWhiteSpace(str)) {
-				if (ignoreList == null || ignoreList.Length < 1)
-					throw new Exception(String.Format("<str> and <ignoreList> can't BOTH be empty.{0}Exception thrown in FileUtil.IsInIgnoreList(string str, string[] ignoreList)", Environment.NewLine));
-
-				return false;
-			}
-
-			else {
-				str = str.ToUpper();
-
-				for (int i=0; i<ignoreList.Length; i++)
-					if (str.Contains(ignoreList[i].ToUpper()))
-						return true;
-			}
-
-			return false;
-		}
-
 		public bool IsSameDate(FileInfo fi1, FileInfo fi2)
 		{
 			try {
@@ -743,6 +723,27 @@ namespace Yutaka.IO
 		#endregion Enum
 
 		#region Deprecated
+		[Obsolete("Deprecated on May 13, 2019. Use IsStringInArray(string str, string[] array) instead.")]
+		public bool IsInIgnoreList(string str, string[] ignoreList)
+		{
+			if (String.IsNullOrWhiteSpace(str)) {
+				if (ignoreList == null || ignoreList.Length < 1)
+					throw new Exception(String.Format("<str> and <ignoreList> can't BOTH be empty.{0}Exception thrown in FileUtil.IsInIgnoreList(string str, string[] ignoreList)", Environment.NewLine));
+
+				return false;
+			}
+
+			else {
+				str = str.ToUpper();
+
+				for (int i = 0; i < ignoreList.Length; i++)
+					if (str.Contains(ignoreList[i].ToUpper()))
+						return true;
+			}
+
+			return false;
+		}
+
 		[Obsolete("Deprecated on Nov 19, 2018. No alternate method exists.", true)]
 		public List<string> EnumerateFilesStack(string targetDirectory, string searchPattern = "*", int initialCapacity = 100)
 		{
