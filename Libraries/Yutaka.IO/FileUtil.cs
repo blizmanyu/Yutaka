@@ -696,29 +696,16 @@ namespace Yutaka.IO
 
 		public bool IsStringInArray(string str, string[] array)
 		{
-			if (String.IsNullOrWhiteSpace(str)) {
-				if (array == null || array.Length < 1)
-					throw new Exception(String.Format("Either <str> OR <array> are required.{0}Exception thrown in FileUtil.IsStringInArray(string str, string[] array).{0}", Environment.NewLine));
+			if (str == null)
+				throw new Exception(String.Format("<str> is required.{0}Exception thrown in FileUtil.IsStringInArray(string str, string[] array).{0}", Environment.NewLine));
 
-				else {
-					if (array.Contains(str))
-						return true;
+			if (array == null || array.Length < 1)
+				throw new Exception(String.Format("<array> is required.{0}Exception thrown in FileUtil.IsStringInArray(string str, string[] array).{0}", Environment.NewLine));
 
-					return false;
-				}
-			}
+			if (array.Contains(str, StringComparer.OrdinalIgnoreCase))
+				return true;
 
-			else /* <str> is NOT null or whitespace */ {
-				if (array == null || array.Length < 1)
-					return false;
-
-				else {
-					if (array.Contains(str, StringComparer.OrdinalIgnoreCase))
-						return true;
-
-					return false;
-				}
-			}
+			return false;
 		}
 
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
