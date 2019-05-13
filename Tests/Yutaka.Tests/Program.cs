@@ -53,9 +53,38 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_IsStringInArray();
+			Test_FileUtil_IsStringInList();
 			EndProgram();
 		}
+
+		#region Test FileUtil.IsStringInList
+		private static void Test_FileUtil_IsStringInList()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				"",
+				"asdf",
+				"ASDF",
+			};
+
+			var lists = new List<String>[] {
+				new List<String> { "" },
+				new List<String> { "asdf" },
+				new List<String> { "ASDF" },
+			};
+
+			bool result;
+			var _fileUtil = new FileUtil();
+
+			for (int i = 0; i < tests.Length; i++) {
+				for (int j = 0; j < lists.Length; j++) {
+					totalCount++;
+					Console.Write("\n");
+					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", lists[j]), _fileUtil.IsStringInList(tests[i], lists[j]));
+				}
+			}
+		}
+		#endregion Test FileUtil.IsStringInList
 
 		#region Test FileUtil.IsStringInArray
 		private static void Test_FileUtil_IsStringInArray()
