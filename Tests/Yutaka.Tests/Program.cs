@@ -61,7 +61,18 @@ namespace Yutaka.Tests
 		private static void Test_FileUtil_IsStringInArray()
 		{
 			var tests = new string[] {
-				"yblizman@rcw1.com",
+				null,
+				"",
+				"test1",
+				"TEST2",
+			};
+
+			var arrays = new List<string[]> {
+				null,
+				new string[] { },
+				new string[] { "", },
+				new string[] { "test1", },
+				new string[] { "TEST2", },
 			};
 
 			string result;
@@ -1056,7 +1067,7 @@ namespace Yutaka.Tests
 			};
 
 			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n\nTest: {0}\n  ExistsAndValidByUrl: {1}", tests[i], ImageUtil.ExistsAndValidByUrl(tests[i]));
+				Console.Write("\n\nTest: {0}\n  ExistsAndValidByUrl: {1}", tests[i], Yutaka.Images.ImageUtil.ExistsAndValidByUrl(tests[i]));
 			}
 		}
 		#endregion Test ImageUtil.ExistsAndValidByUrl()
