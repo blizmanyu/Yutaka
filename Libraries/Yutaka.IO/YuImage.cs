@@ -26,15 +26,29 @@ namespace Yutaka.IO
 			CreationTime = fi.CreationTime;
 			LastAccessTime = fi.LastAccessTime;
 			LastWriteTime = fi.LastWriteTime;
-			//MinDateTime = fi.MinDateTime;
 			Length = fi.Length;
 			Extension = fi.Extension;
 			FullName = fi.FullName;
 			Name = fi.Name;
-			//NewPath = fi.NewPath;
-			//ParentDirectory = fi.ParentDirectory;
-
+			ParentDirectory = fi.Directory.Name;
 			fi = null;
+
+			MinDateTime = GetMinDateTime();
+			NewPath = GetNewPath();
+		}
+
+		public DateTime GetMinDateTime()
+		{
+			var minDateTime = new DateTime();
+
+			// TODO //
+
+			return minDateTime;
+		}
+
+		public string GetNewPath()
+		{
+			return null;
 		}
 	}
 }
