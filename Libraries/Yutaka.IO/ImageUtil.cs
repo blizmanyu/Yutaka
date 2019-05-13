@@ -8,5 +8,10 @@ namespace Yutaka.IO
 {
 	public class ImageUtil : FileUtil
 	{
+		public ImageUtil()
+		{
+			IgnoreListFolders = new List<string>();
+			IgnoreListFileMasks = new List<string>();
+		}
 	}
 }
