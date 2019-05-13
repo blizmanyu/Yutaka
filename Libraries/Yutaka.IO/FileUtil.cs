@@ -24,6 +24,8 @@ namespace Yutaka.IO
 		private string mode = "copy";
 
 		// PIVs //
+		public List<string> IgnoreListFolders;
+		public List<string> IgnoreListFileMasks;
 		private DateTime dateThreshold = new DateTime(1982, 1, 1);
 		private HashSet<string> audioExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".aiff", ".m4a", ".mp3", ".au", ".ogg", ".wav", ".wma" };
 		private HashSet<string> applicationExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".asdf", ".asdf", ".asdf" };
@@ -33,7 +35,10 @@ namespace Yutaka.IO
 		private HashSet<string> videoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv" };
 		#endregion Fields
 
-		public FileUtil() { }
+		public FileUtil() {
+			IgnoreListFolders = new List<string>();
+			IgnoreListFileMasks = new List<string>();
+		}
 
 		#region Private Helpers
 		private bool CopyFile(FileInfo source, string dest)
