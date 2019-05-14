@@ -17,7 +17,7 @@ namespace Yutaka.IO
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MinDateTime;
-		public DateTime NullDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
+		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
 		public long Length;
 		public string Extension;
 		public string FullName;
@@ -38,38 +38,46 @@ namespace Yutaka.IO
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
-			DateTaken = GetDateTaken(filename);
-			MinDateTime = GetMinDateTime();
+			SetDateTaken();
+			SetMinDateTime();
 			NewFolder = GetNewPath();
 		}
 
 		// Retrieves the datetime WITHOUT loading the whole image //
-		public DateTime GetDateTaken(string path)
+		private void SetDateTaken()
 		{
 			var r = new Regex(":");
 
 			try {
-				using (var fs = new FileStream(path, FileMode.Open, FileAccess.Read)) {
+				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
 					using (var myImage = Image.FromStream(fs, false, false)) {
 						var propItem = myImage.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
 						var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-						return DateTime.Parse(dateTaken);
+						DateTaken = DateTime.Parse(dateTaken);
 					}
 				}
 			}
 
 			catch (Exception) {
-				return new DateTime();
+				DateTaken = new DateTime();
 			}
 		}
 
-		public DateTime GetMinDateTime()
+		public void SetMinDateTime()
 		{
-			var minDateTime = new DateTime();
+			MinDateTime = DateTime.Now;
 
-			// TODO //
+			if (CreationTime != null && MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
+				MinDateTime = CreationTime;
 
-			return minDateTime;
+			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
+				MinDateTime = DateTaken;
+
+			if (LastAccessTime != null && MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
+				MinDateTime = LastAccessTime;
+
+			if (LastWriteTime != null && MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
+				MinDateTime = LastWriteTime;
 		}
 
 		public string GetNewPath()
