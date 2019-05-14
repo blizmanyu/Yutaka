@@ -53,7 +53,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_IsStringInList();
+			Test_NewDateTimeMinValue();
 			EndProgram();
 		}
 
@@ -115,14 +115,14 @@ namespace Yutaka.Tests
 		}
 		#endregion Test FileUtil.IsStringInArray
 
-		#region Test_2019_0506_0102
-		private static void Test_2019_0506_0102()
+		#region Test_NewDateTimeMinValue
+		private static void Test_NewDateTimeMinValue()
 		{
 			consoleOut = true;
 			Console.Write("\nnew DateTime(): {0}", new DateTime());
 			Console.Write("\nDateTime.MinValue: {0}", DateTime.MinValue);
 		}
-		#endregion Test_2019_0506_0102
+		#endregion Test_NewDateTimeMinValue
 
 		#region Test_2019_0503_2113
 		private static void Test_2019_0503_2113()
