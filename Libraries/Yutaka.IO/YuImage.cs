@@ -33,7 +33,7 @@ namespace Yutaka.IO
 			LastAccessTime = fi.LastAccessTime;
 			LastWriteTime = fi.LastWriteTime;
 			Length = fi.Length;
-			Extension = fi.Extension;
+			Extension = fi.Extension.ToLower();
 			FullName = fi.FullName;
 			Name = fi.Name;
 			ParentFolder = fi.Directory.Name;
