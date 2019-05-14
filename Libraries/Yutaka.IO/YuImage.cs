@@ -45,7 +45,7 @@ namespace Yutaka.IO
 
 			SetDateTaken();
 			SetMinDateTime();
-			SetNewFolder();
+			SetNewFolderAndFilename();
 		}
 
 		// Retrieves the datetime WITHOUT loading the whole image //
@@ -55,8 +55,8 @@ namespace Yutaka.IO
 
 			try {
 				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
-					using (var myImage = Image.FromStream(fs, false, false)) {
-						var propItem = myImage.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
+					using (var img = Image.FromStream(fs, false, false)) {
+						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
 						var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
 						DateTaken = DateTime.Parse(dateTaken);
 					}
@@ -85,7 +85,7 @@ namespace Yutaka.IO
 				MinDateTime = LastWriteTime;
 		}
 
-		public string SetNewFolder()
+		public string SetNewFolderAndFilename()
 		{
 			return null;
 		}
