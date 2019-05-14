@@ -53,9 +53,35 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_NewDateTimeMinValue();
+			Test_FileInfo_Properties();
 			EndProgram();
 		}
+
+		#region Test FileInfo Properties
+		private static void Test_FileInfo_Properties()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				@"C:\Pictures\2019\Window 2019 0227 0005 5300.jpg",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				totalCount++;
+				var fi = new FileInfo(tests[i]);
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", totalCount, tests[i]);
+				Console.Write("\nCreationTime: {0}", fi.CreationTime);
+				Console.Write("\nDirectory.Name: {0}", fi.Directory.Name);
+				Console.Write("\nDirectoryName: {0}", fi.DirectoryName);
+				Console.Write("\nExtension: {0}", fi.Extension);
+				Console.Write("\nFullName: {0}", fi.FullName);
+				Console.Write("\nLastAccessTime: {0}", fi.LastAccessTime);
+				Console.Write("\nLastWriteTime: {0}", fi.LastWriteTime);
+				Console.Write("\nLength: {0}", fi.Length);
+				Console.Write("\nName: {0}", fi.Name);
+			}
+		}
+		#endregion Test FileInfo Properties
 
 		#region Test FileUtil.IsStringInList
 		private static void Test_FileUtil_IsStringInList()
