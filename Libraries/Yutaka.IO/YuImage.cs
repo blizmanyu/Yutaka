@@ -18,10 +18,12 @@ namespace Yutaka.IO
 		public DateTime LastWriteTime;
 		public DateTime MinDateTime;
 		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
-		public long Length;
+		public long Size;
+		public string DirectoryName;
 		public string Extension;
 		public string FullName;
 		public string Name;
+		public string NameWithoutExtension;
 		public string NewFilename;
 		public string NewFolder;
 		public string ParentFolder;
@@ -32,10 +34,12 @@ namespace Yutaka.IO
 			CreationTime = fi.CreationTime;
 			LastAccessTime = fi.LastAccessTime;
 			LastWriteTime = fi.LastWriteTime;
-			Length = fi.Length;
+			Size = fi.Length;
+			DirectoryName = fi.DirectoryName;
 			Extension = fi.Extension.ToLower();
 			FullName = fi.FullName;
 			Name = fi.Name;
+			NameWithoutExtension = Name.Replace(fi.Extension, "");
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
