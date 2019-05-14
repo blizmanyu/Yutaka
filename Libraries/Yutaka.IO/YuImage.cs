@@ -22,6 +22,7 @@ namespace Yutaka.IO
 		public string Extension;
 		public string FullName;
 		public string Name;
+		public string NewFilename;
 		public string NewFolder;
 		public string ParentFolder;
 
@@ -40,7 +41,7 @@ namespace Yutaka.IO
 
 			SetDateTaken();
 			SetMinDateTime();
-			NewFolder = GetNewPath();
+			SetNewFolder();
 		}
 
 		// Retrieves the datetime WITHOUT loading the whole image //
@@ -80,7 +81,7 @@ namespace Yutaka.IO
 				MinDateTime = LastWriteTime;
 		}
 
-		public string GetNewPath()
+		public string SetNewFolder()
 		{
 			return null;
 		}
