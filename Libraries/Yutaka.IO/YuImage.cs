@@ -68,7 +68,7 @@ namespace Yutaka.IO
 			}
 		}
 
-		public void SetMinDateTime()
+		private void SetMinDateTime()
 		{
 			MinDateTime = DateTime.Now;
 
@@ -86,7 +86,7 @@ namespace Yutaka.IO
 		}
 
 		// WIP: do NOT use yet!! //
-		public void SetNewFolderAndFilename()
+		private void SetNewFolderAndFilename()
 		{
 			#region var specialFolders = new string[] {
 			var specialFolders = new string[] {
