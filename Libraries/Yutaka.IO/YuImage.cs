@@ -85,9 +85,53 @@ namespace Yutaka.IO
 				MinDateTime = LastWriteTime;
 		}
 
-		public string SetNewFolderAndFilename()
+		// WIP: do NOT use yet!! //
+		public void SetNewFolderAndFilename()
 		{
-			return null;
+			#region var specialFolders = new string[] {
+			var specialFolders = new string[] {
+				"Consumer Reports",
+				"Maximum PC",
+				"Mens Health",
+				"Patricia",
+				"PC Gamer",
+				"Screenshot",
+				"Womens Health",
+			};
+			#endregion var specialFolders
+
+			for (int i=0; i<specialFolders.Length; i++) {
+				if (FullName.Contains(specialFolders[i])) {
+					NewFolder = specialFolders[i];
+					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders[i], MinDateTime, Extension);
+					return; // only match one, then return //
+				}
+			}
+
+			#region var specialFolders2 = new string[] {
+			// Order these by string length, descending //
+			var specialFolders2 = new string[] {
+				"London",
+				"Nanami",
+				"Maxim",
+				"Poses",
+				"ztest",
+				"ETNT",
+				"Ikea",
+				"GQ",
+				"Me",
+			};
+			#endregion var specialFolders
+
+			for (int i = 0; i < specialFolders2.Length; i++) {
+				if (Name.StartsWith(String.Format("{0} ", specialFolders2[i])) || FullName.Contains(String.Format(@"\{0}\", specialFolders2[i]))) {
+					NewFolder = specialFolders2[i];
+					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders2[i], MinDateTime, Extension);
+					return; // only match one, then return //
+				}
+			}
+
+			// TODO: Default: by date //
 		}
 	}
 }
