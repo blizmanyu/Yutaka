@@ -82,111 +82,89 @@ namespace Yutaka.IO
 				MinDateTime = LastWriteTime;
 		}
 
-		// WIP: do NOT use yet!! //
 		private void SetNewFolderAndFilename()
 		{
 			#region Case: 7 or more characters
-			#region Case: 7 or more characters > Default
-			var specialFolders = new string[] {
-				"2018 06 Cancun",
-				"2018 06 Napa",
-				"Apartment",
-				"Consumer Reports",
-				"Facebook",
-				"Grooming",
-				"Maximum PC",
-				"Mens Health",
-				"OC Fair",
-				"OkCupid",
-				"Patricia",
-				"PC Gamer",
-				"Philips Hue",
-				"Snapchat",
-				"Unsplash",
-				"Womens Health",
+			var specialFolders1 = new string[,] {
+				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
+				{ "Philips Hue", @"Philips Hue\", "" },
+				{ "Michael Contursi", @"Michael Contursi\", "" },
+				{ "Unsplash", @"Unsplash\", "" },
+				{ "Receipt", @"Receipts\", "" },
+				{ "Apartment", @"Apartment\", "Apartment" },
+				{ "Consumer Reports", @"Consumer Reports\", "Consumer Reports" },
+				{ "Facebook", @"Facebook\", "" },
+				{ "Grooming", @"Grooming\", "" },
+				{ "Magazine", @"Magazines\", "Magazine" },
+				{ "Maximum PC", @"Maximum PC\", "Maximum PC" },
+				{ "Mens Health", @"Mens Health\", "Mens Health" },
+				{ "OC Fair", @"yyyy\OC Fair\", "" },
+				{ "OkCupid", @"OkCupid\", "OkCupid" },
+				{ "Patricia", @"Patricia\", "Patricia" },
+				{ "PC Gamer", @"PC Gamer\", "PC Gamer" },
+				{ "Screenshot", @"yyyy\Screenshots\", "Screenshot" },
+				{ "Snapchat", @"Snapchat\", "Snapchat" },
+				{ "Womens Health", @"Womens Health\", "Womens Health" },
 			};
 
-			for (int i = 0; i < specialFolders.Length; i++) {
-				if (FullName.Contains(specialFolders[i])) {
-					if (specialFolders[i].Equals("OC Fair") || specialFolders[i].Equals("2018 06 Napa") || specialFolders[i].Equals("2018 06 Cancun")) // special case for Screenshots //
-						NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, specialFolders[i]);
+			for (int i = 0; i < specialFolders1.Length; i++) {
+				if (FullName.Contains(specialFolders1[i,0])) {
+					if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
+						NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
 					else
-						NewFolder = specialFolders[i];
+						NewFolder = specialFolders1[i, 1];
 
-					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders[i], MinDateTime, Extension);
+					if (String.IsNullOrWhiteSpace(specialFolders1[i, 2]))
+						NewFilename = Name;
+					else
+						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders1[i,2], MinDateTime, Extension);
+
 					return; // only match one, then return //
 				}
 			}
-			#endregion Case: 7 or more characters > Default
-
-			#region Case: 7 or more characters > Plural folder, Singular filename
-			var pluralSingular1 = new string[] {
-				"Magazine",
-				"Receipt",
-				"Screenshot",
-				"Tattoo",
-			};
-
-			for (int i = 0; i < pluralSingular1.Length; i++) {
-				if (FullName.Contains(pluralSingular1[i])) {
-					NewFolder = String.Format("{0}s", pluralSingular1[i]);
-					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", pluralSingular1[i], MinDateTime, Extension);
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: 7 or more characters > Plural folder, Singular filename
 			#endregion Case: 7 or more characters
 
 			#region Case: Less than 7 characters
-			#region Case: Less than 7 characters > Default
 			// Order these by string length, descending //
-			var specialFolders2 = new string[] {
-				"Bumble",
-				"Cancun",
-				"Design",
-				"London",
-				"Nanami",
-				"TikTok",
-				"Tinder",
-				"Maxim",
-				"ztest",
-				"ETNT",
-				"Ikea",
-				"Napa",
-				"Woot",
-				"GQ",
-				"Me",
+			var specialFolders2 = new string[,] {
+				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
+				{ "Bumble", @"Bumble\", "Bumble" },
+				{ "Cancun", @"yyyy\Cancun\", "" },
+				{ "Design", @"Design\", "" },
+				{ "London", @"London\", "London" },
+				{ "Nanami", @"Nanami\", "Nanami" },
+				{ "Tattoo", @"Tattoos\", "" },
+				{ "TikTok", @"TikTok\", "TikTok" },
+				{ "Tinder", @"Tinder\", "Tinder" },
+				{ "Maxim", @"Maxim\", "Maxim" },
+				{ "Shirt", @"Shirts\", "" },
+				{ "ztest", @"ztest\", "" },
+				{ "ETNT", @"ETNT\", "ETNT" },
+				{ "Game", @"Games\", "" },
+				{ "Ikea", @"Ikea\", "Ikea" },
+				{ "Napa", @"yyyy\Napa\", "" },
+				{ "Pose", @"Poses\", "" },
+				{ "Woot", @"Woot\", "" },
+				{ "Ga", @"Ga\", "" },
+				{ "GQ", @"GQ\", "GQ" },
+				{ "Me", @"Me\", "Me" },
 			};
 
 			for (int i = 0; i < specialFolders2.Length; i++) {
-				if (Name.StartsWith(String.Format("{0} ", specialFolders2[i])) || FullName.Contains(String.Format(@"\{0}\", specialFolders2[i]))) {
-					if (specialFolders2[i].Equals("Cancun") || specialFolders2[i].Equals("Napa")) // special cases //
-						NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, specialFolders2[i]);
+				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i,0]))) {
+					if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
+						NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
 					else
-						NewFolder = specialFolders2[i];
+						NewFolder = specialFolders2[i, 1];
 
-					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders2[i], MinDateTime, Extension);
+					if (String.IsNullOrWhiteSpace(specialFolders2[i, 2]))
+						NewFilename = Name;
+					else
+						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders2[i, 2], MinDateTime, Extension);
+
 					return; // only match one, then return //
 				}
 			}
-			#endregion Case: Less than 7 characters > Default
-
-			#region Case: Less than 7 characters > Plural folder, Singular filename
-			var pluralSingular2 = new string[] {
-				"Tattoo",
-				"Shirt",
-				"Game",
-				"Pose",
-			};
-
-			for (int i = 0; i < pluralSingular2.Length; i++) {
-				if (FullName.Contains(pluralSingular2[i])) {
-					NewFolder = String.Format("{0}s", pluralSingular2[i]);
-					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", pluralSingular2[i], MinDateTime, Extension);
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: Less than 7 characters > Plural folder, Singular filename
 			#endregion Case: Less than 7 characters
 
 			#region Default: Everything else
