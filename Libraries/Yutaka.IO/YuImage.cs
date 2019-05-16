@@ -90,19 +90,36 @@ namespace Yutaka.IO
 		{
 			#region var specialFolders = new string[] {
 			var specialFolders = new string[] {
-				"Consumer Reports",
-				"Maximum PC",
-				"Mens Health",
-				"Patricia",
-				"PC Gamer",
-				"Screenshot",
-				"Womens Health",
+				@"2018 06 Cancun",
+				@"2018 06 Napa",
+				@"Apartment",
+				@"Consumer Reports",
+				@"Facebook",
+				@"Grooming",
+				@"Magazines",
+				@"Maximum PC",
+				@"Mens Health",
+				@"OC Fair",
+				@"OkCupid",
+				@"Patricia",
+				@"PC Gamer",
+				@"Philips Hue",
+				@"Receipt",
+				@"Screenshot",
+				@"Snapchat",
+				@"Tattoos",
+				@"Unsplash",
+				@"Womens Health",
 			};
 			#endregion var specialFolders
 
 			for (int i=0; i<specialFolders.Length; i++) {
 				if (FullName.Contains(specialFolders[i])) {
-					NewFolder = specialFolders[i];
+					if (specialFolders[i].Equals("OC Fair") || specialFolders[i].Equals("Screenshot") || specialFolders[i].Equals("2018 06 Napa") || specialFolders[i].Equals("2018 06 Cancun")) // special case for Screenshots //
+						NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, specialFolders[i]);
+					else
+						NewFolder = specialFolders[i];
+
 					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders[i], MinDateTime, Extension);
 					return; // only match one, then return //
 				}
@@ -111,13 +128,22 @@ namespace Yutaka.IO
 			#region var specialFolders2 = new string[] {
 			// Order these by string length, descending //
 			var specialFolders2 = new string[] {
+				"Bumble",
+				"Cancun",
+				"Design",
 				"London",
 				"Nanami",
+				"Shirts",
+				"TikTok",
+				"Tinder",
+				"Games",
 				"Maxim",
 				"Poses",
 				"ztest",
 				"ETNT",
 				"Ikea",
+				"Napa",
+				"Woot",
 				"GQ",
 				"Me",
 			};
@@ -125,7 +151,11 @@ namespace Yutaka.IO
 
 			for (int i = 0; i < specialFolders2.Length; i++) {
 				if (Name.StartsWith(String.Format("{0} ", specialFolders2[i])) || FullName.Contains(String.Format(@"\{0}\", specialFolders2[i]))) {
-					NewFolder = specialFolders2[i];
+					if (specialFolders2[i].Equals("Cancun") || specialFolders2[i].Equals("Napa")) // special cases //
+						NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, specialFolders2[i]);
+					else
+						NewFolder = specialFolders2[i];
+
 					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders2[i], MinDateTime, Extension);
 					return; // only match one, then return //
 				}
