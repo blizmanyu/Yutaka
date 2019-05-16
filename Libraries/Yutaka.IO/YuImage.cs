@@ -161,7 +161,9 @@ namespace Yutaka.IO
 				}
 			}
 
-			// TODO: Default: by date //
+			// Everything else //
+			NewFolder = MinDateTime.ToString("yyyy");
+			NewFilename = Name;
 		}
 	}
 }
