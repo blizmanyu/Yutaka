@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace Yutaka.IO
 {
@@ -88,34 +85,30 @@ namespace Yutaka.IO
 		// WIP: do NOT use yet!! //
 		private void SetNewFolderAndFilename()
 		{
-			#region var specialFolders = new string[] {
+			#region Case: 7 or more characters
+			#region Case: 7 or more characters > Default
 			var specialFolders = new string[] {
-				@"2018 06 Cancun",
-				@"2018 06 Napa",
-				@"Apartment",
-				@"Consumer Reports",
-				@"Facebook",
-				@"Grooming",
-				@"Magazines",
-				@"Maximum PC",
-				@"Mens Health",
-				@"OC Fair",
-				@"OkCupid",
-				@"Patricia",
-				@"PC Gamer",
-				@"Philips Hue",
-				@"Receipt",
-				@"Screenshot",
-				@"Snapchat",
-				@"Tattoos",
-				@"Unsplash",
-				@"Womens Health",
+				"2018 06 Cancun",
+				"2018 06 Napa",
+				"Apartment",
+				"Consumer Reports",
+				"Facebook",
+				"Grooming",
+				"Maximum PC",
+				"Mens Health",
+				"OC Fair",
+				"OkCupid",
+				"Patricia",
+				"PC Gamer",
+				"Philips Hue",
+				"Snapchat",
+				"Unsplash",
+				"Womens Health",
 			};
-			#endregion var specialFolders
 
-			for (int i=0; i<specialFolders.Length; i++) {
+			for (int i = 0; i < specialFolders.Length; i++) {
 				if (FullName.Contains(specialFolders[i])) {
-					if (specialFolders[i].Equals("OC Fair") || specialFolders[i].Equals("Screenshot") || specialFolders[i].Equals("2018 06 Napa") || specialFolders[i].Equals("2018 06 Cancun")) // special case for Screenshots //
+					if (specialFolders[i].Equals("OC Fair") || specialFolders[i].Equals("2018 06 Napa") || specialFolders[i].Equals("2018 06 Cancun")) // special case for Screenshots //
 						NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, specialFolders[i]);
 					else
 						NewFolder = specialFolders[i];
@@ -124,8 +117,28 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
+			#endregion Case: 7 or more characters > Default
 
-			#region var specialFolders2 = new string[] {
+			#region Case: 7 or more characters > Plural folder, Singular filename
+			var pluralSingular1 = new string[] {
+				"Magazine",
+				"Receipt",
+				"Screenshot",
+				"Tattoo",
+			};
+
+			for (int i = 0; i < pluralSingular1.Length; i++) {
+				if (FullName.Contains(pluralSingular1[i])) {
+					NewFolder = String.Format("{0}s", pluralSingular1[i]);
+					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", pluralSingular1[i], MinDateTime, Extension);
+					return; // only match one, then return //
+				}
+			}
+			#endregion Case: 7 or more characters > Plural folder, Singular filename
+			#endregion Case: 7 or more characters
+
+			#region Case: Less than 7 characters
+			#region Case: Less than 7 characters > Default
 			// Order these by string length, descending //
 			var specialFolders2 = new string[] {
 				"Bumble",
@@ -133,12 +146,9 @@ namespace Yutaka.IO
 				"Design",
 				"London",
 				"Nanami",
-				"Shirts",
 				"TikTok",
 				"Tinder",
-				"Games",
 				"Maxim",
-				"Poses",
 				"ztest",
 				"ETNT",
 				"Ikea",
@@ -147,7 +157,6 @@ namespace Yutaka.IO
 				"GQ",
 				"Me",
 			};
-			#endregion var specialFolders
 
 			for (int i = 0; i < specialFolders2.Length; i++) {
 				if (Name.StartsWith(String.Format("{0} ", specialFolders2[i])) || FullName.Contains(String.Format(@"\{0}\", specialFolders2[i]))) {
@@ -160,10 +169,30 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
+			#endregion Case: Less than 7 characters > Default
 
-			// Everything else //
+			#region Case: Less than 7 characters > Plural folder, Singular filename
+			var pluralSingular2 = new string[] {
+				"Tattoo",
+				"Shirt",
+				"Game",
+				"Pose",
+			};
+
+			for (int i = 0; i < pluralSingular2.Length; i++) {
+				if (FullName.Contains(pluralSingular2[i])) {
+					NewFolder = String.Format("{0}s", pluralSingular2[i]);
+					NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", pluralSingular2[i], MinDateTime, Extension);
+					return; // only match one, then return //
+				}
+			}
+			#endregion Case: Less than 7 characters > Plural folder, Singular filename
+			#endregion Case: Less than 7 characters
+
+			#region Default: Everything else
 			NewFolder = MinDateTime.ToString("yyyy");
 			NewFilename = Name;
+			#endregion Default: Everything else
 		}
 	}
 }
