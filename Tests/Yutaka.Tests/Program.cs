@@ -53,9 +53,38 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileInfo_Properties();
+			Test_YuImage();
 			EndProgram();
 		}
+
+		#region Test YuImage
+		private static void Test_YuImage()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				@"C:\Pictures\",
+			};
+
+			var files = Directory.EnumerateFiles(tests[0]).Where(x => x.EndsWith(".jpg"));
+
+			for (int i = 0; i < tests.Length; i++) {
+				var fi = new FileInfo(tests[i]);
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, tests[i]);
+				Console.Write("\n  CreationTime: {0}", fi.CreationTime);
+				Console.Write("\nLastAccessTime: {0}", fi.LastAccessTime);
+				Console.Write("\n LastWriteTime: {0}", fi.LastWriteTime);
+				Console.Write("\n");
+				Console.Write("\nLength: {0}", fi.Length);
+				Console.Write("\n");
+				Console.Write("\nDirectory.Name: {0}", fi.Directory.Name);
+				Console.Write("\nDirectoryName: {0}", fi.DirectoryName);
+				Console.Write("\nExtension: {0}", fi.Extension);
+				Console.Write("\nFullName: {0}", fi.FullName);
+				Console.Write("\nName: {0}", fi.Name);
+			}
+		}
+		#endregion Test YuImage
 
 		#region Test FileInfo Properties
 		private static void Test_FileInfo_Properties()
