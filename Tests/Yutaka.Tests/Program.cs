@@ -16,6 +16,7 @@ using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
 using Yutaka.Web;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.Tests
 {
@@ -65,23 +66,23 @@ namespace Yutaka.Tests
 				@"C:\Pictures\",
 			};
 
-			var files = Directory.EnumerateFiles(tests[0]).Where(x => x.EndsWith(".jpg"));
+			YuImage img;
+			var imageExtensions = new Regex(".jpg|.jpeg", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var images = Directory.EnumerateFiles(tests[0]).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
-			for (int i = 0; i < tests.Length; i++) {
-				var fi = new FileInfo(tests[i]);
+			for (int i = 0; i < images.Count; i++) {
+				img = new YuImage(images[i]);
 				Console.Write("\n");
-				Console.Write("\n{0}) {1}", ++totalCount, tests[i]);
-				Console.Write("\n  CreationTime: {0}", fi.CreationTime);
-				Console.Write("\nLastAccessTime: {0}", fi.LastAccessTime);
-				Console.Write("\n LastWriteTime: {0}", fi.LastWriteTime);
+				Console.Write("\n{0}) {1}", ++totalCount, images[i]);
+				Console.Write("\n     CreationTime: {0}", img.CreationTime);
+				Console.Write("\n        DateTaken: {0}", img.DateTaken);
+				Console.Write("\n   LastAccessTime: {0}", img.LastAccessTime);
+				Console.Write("\n    LastWriteTime: {0}", img.LastWriteTime);
+				Console.Write("\n      MinDateTime: {0}", img.MinDateTime);
 				Console.Write("\n");
-				Console.Write("\nLength: {0}", fi.Length);
-				Console.Write("\n");
-				Console.Write("\nDirectory.Name: {0}", fi.Directory.Name);
-				Console.Write("\nDirectoryName: {0}", fi.DirectoryName);
-				Console.Write("\nExtension: {0}", fi.Extension);
-				Console.Write("\nFullName: {0}", fi.FullName);
-				Console.Write("\nName: {0}", fi.Name);
+				Console.Write("\n   ParentFolder: {0}", img.ParentFolder);
+				Console.Write("\n   NewFolder: {0}", img.NewFolder);
+				Console.Write("\n   NewFilename: {0}", img.NewFilename);
 			}
 		}
 		#endregion Test YuImage
