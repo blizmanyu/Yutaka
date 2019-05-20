@@ -83,7 +83,9 @@ namespace Yutaka.Tests
 				Console.Write("\n   NewFolder: {0}", img.NewFolder);
 				Console.Write("\n   NewFilename: {0}", img.NewFilename);
 
+				Directory.CreateDirectory(String.Format("{0}{1}", dest, img.NewFolder));
 				_fileUtil.FastMove(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), false);
+				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), img.MinDateTime);
 			}
 		}
 		#endregion Test YuImage
