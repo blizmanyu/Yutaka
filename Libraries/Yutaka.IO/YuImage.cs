@@ -169,7 +169,7 @@ namespace Yutaka.IO
 
 			#region Default: Everything else
 			int year;
-			if (ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || (int.TryParse(ParentFolder, out year) && (1970 <= year && year <= DateTime.Now.Year)))
+			if (ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
 				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
 			else
 				NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, ParentFolder);
