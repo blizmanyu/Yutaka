@@ -87,28 +87,28 @@ namespace Yutaka.IO
 			#region Case: 7 or more characters
 			var specialFolders1 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "Philips Hue", @"Philips Hue\", "" },
-				{ "Michael Contursi", @"Michael Contursi\", "" },
-				{ "Unsplash", @"Unsplash\", "" },
-				{ "Receipt", @"Receipts\", "" },
-				{ "Apartment", @"Apartment\", "Apartment" },
-				{ "Consumer Reports", @"Consumer Reports\", "Consumer Reports" },
-				{ "Facebook", @"Facebook\", "" },
-				{ "Grooming", @"Grooming\", "" },
-				{ "Magazine", @"Magazines\", "Magazine" },
-				{ "Maximum PC", @"Maximum PC\", "Maximum PC" },
-				{ "Mens Health", @"Mens Health\", "Mens Health" },
-				{ "OC Fair", @"yyyy\OC Fair\", "" },
-				{ "OkCupid", @"OkCupid\", "OkCupid" },
-				{ "Patricia", @"Patricia\", "Patricia" },
-				{ "PC Gamer", @"PC Gamer\", "PC Gamer" },
-				{ "Screenshot", @"yyyy\Screenshots\", "Screenshot" },
-				{ "Snapchat", @"Snapchat\", "Snapchat" },
-				{ "Womens Health", @"Womens Health\", "Womens Health" },
+				{ "PHILIPS HUE", @"Philips Hue\", "" },
+				{ "MICHAEL CONTURSI", @"Michael Contursi\", "" },
+				{ "UNSPLASH", @"Unsplash\", "" },
+				{ "RECEIPT", @"Receipts\", "" },
+				{ "APARTMENT", @"Apartment\", "Apartment" },
+				{ "CONSUMER REPORTS", @"Consumer Reports\", "Consumer Reports" },
+				{ "FACEBOOK", @"Facebook\", "" },
+				{ "GROOMING", @"Grooming\", "" },
+				{ "MAGAZINE", @"Magazines\", "Magazine" },
+				{ "MAXIMUM PC", @"Maximum PC\", "Maximum PC" },
+				{ "MENS HEALTH", @"Mens Health\", "Mens Health" },
+				{ "OC FAIR", @"yyyy\OC Fair\", "" },
+				{ "OKCUPID", @"OkCupid\", "OkCupid" },
+				{ "PATRICIA", @"Patricia\", "Patricia" },
+				{ "PC GAMER", @"PC Gamer\", "PC Gamer" },
+				{ "SCREENSHOT", @"yyyy\Screenshots\", "Screenshot" },
+				{ "SNAPCHAT", @"Snapchat\", "Snapchat" },
+				{ "WOMENS HEALTH", @"Womens Health\", "Womens Health" },
 			};
 
-			for (int i = 0; i < specialFolders1.Length; i++) {
-				if (FullName.Contains(specialFolders1[i,0])) {
+			for (int i = 0; i < specialFolders1.Length/3; i++) {
+				if (FullName.ToUpper().Contains(specialFolders1[i,0])) {
 					if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
 						NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
 					else
@@ -117,7 +117,7 @@ namespace Yutaka.IO
 					if (String.IsNullOrWhiteSpace(specialFolders1[i, 2]))
 						NewFilename = Name;
 					else
-						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders1[i,2], MinDateTime, Extension);
+						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}{2}", specialFolders1[i,2], MinDateTime, Extension);
 
 					return; // only match one, then return //
 				}
@@ -150,7 +150,7 @@ namespace Yutaka.IO
 				{ "Me", @"Me\", "Me" },
 			};
 
-			for (int i = 0; i < specialFolders2.Length; i++) {
+			for (int i = 0; i < specialFolders2.Length / 3; i++) {
 				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i,0]))) {
 					if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
 						NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
@@ -160,7 +160,7 @@ namespace Yutaka.IO
 					if (String.IsNullOrWhiteSpace(specialFolders2[i, 2]))
 						NewFilename = Name;
 					else
-						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}.{2}", specialFolders2[i, 2], MinDateTime, Extension);
+						NewFilename = String.Format("{0} {1:yyyy MMdd HHmm ssff}{2}", specialFolders2[i, 2], MinDateTime, Extension);
 
 					return; // only match one, then return //
 				}
@@ -168,7 +168,12 @@ namespace Yutaka.IO
 			#endregion Case: Less than 7 characters
 
 			#region Default: Everything else
-			NewFolder = MinDateTime.ToString("yyyy");
+			int year;
+			if (ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || (int.TryParse(ParentFolder, out year) && (1970 <= year && year <= DateTime.Now.Year)))
+				NewFolder = MinDateTime.ToString("yyyy");
+			else
+				NewFolder = String.Format(@"{0:yyyy}\{1}", MinDateTime, ParentFolder);
+
 			NewFilename = Name;
 			#endregion Default: Everything else
 		}
