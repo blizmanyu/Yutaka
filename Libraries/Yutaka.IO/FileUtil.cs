@@ -702,6 +702,20 @@ namespace Yutaka.IO
 			return false;
 		}
 
+		public void Redate(string filename, DateTime dt)
+		{
+			if (String.IsNullOrWhiteSpace(filename))
+				return;
+			if (dt < dateThreshold)
+				return;
+
+			var fi = new FileInfo(filename);
+			fi.CreationTime = dt;
+			fi.LastAccessTime = dt;
+			fi.LastWriteTime = dt;
+			fi = null;
+		}
+
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
