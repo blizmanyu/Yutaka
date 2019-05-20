@@ -62,13 +62,12 @@ namespace Yutaka.Tests
 		private static void Test_YuImage()
 		{
 			consoleOut = true;
-			var tests = new string[] {
-				@"C:\Pictures\",
-			};
+			var source = @"C:\Pictures\";
+			var dest = @"C:\Tests\";
 
 			YuImage img;
-			var imageExtensions = new Regex(".jpg|.jpeg", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-			var images = Directory.EnumerateFiles(tests[0]).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
+			var imageExtensions = new Regex(".gif|.png|.jpg|.jpeg", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var images = Directory.EnumerateFiles(source).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
 			for (int i = 0; i < images.Count; i++) {
 				img = new YuImage(images[i]);
@@ -83,6 +82,8 @@ namespace Yutaka.Tests
 				Console.Write("\n   ParentFolder: {0}", img.ParentFolder);
 				Console.Write("\n   NewFolder: {0}", img.NewFolder);
 				Console.Write("\n   NewFilename: {0}", img.NewFilename);
+
+				_fileUtil.FastMove(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), false);
 			}
 		}
 		#endregion Test YuImage
