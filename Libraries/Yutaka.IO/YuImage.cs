@@ -85,7 +85,7 @@ namespace Yutaka.IO
 
 		private void SetNewFolderAndFilename()
 		{
-			#region Case: 7 or more characters
+			#region Case: 4 or more characters
 			var specialFolders1 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
 				{ @"APARTMENT", @"Apartment\", "" },
@@ -107,10 +107,25 @@ namespace Yutaka.IO
 				{ @"PHILIPS HUE", @"Philips Hue\", "" },
 				{ @"RECEIPT", @"Receipts\", "" },
 				{ @"SNAPCHAT", @"Snapchat\", "" },
-				{ @"TATTOOS", @"Tattoos\", "" },
 				{ @"UNSPLASH", @"Unsplash\", "" },
 				{ @"WOMENS HEALTH", @"Womens Health\", "" },
-				{ @"SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
+				// Less than 4 characters // Order these by string length, descending //
+				{ @"BUMBLE", @"Bumble\", "" },
+				{ @"DESIGN", @"Design\", "" },
+				{ @"LONDON", @"London\", "" },
+				{ @"NANAMI", @"Nanami\", "" },
+				{ @"TATTOO", @"Tattoos\", "" },
+				{ @"TIKTOK", @"TikTok\", "" },
+				{ @"TINDER", @"Tinder\", "" },
+				{ @"MAXIM", @"Maxim\", "" },
+				{ @"SHIRT", @"Shirts\", "" },
+				{ @"ETNT", @"ETNT\", "" },
+				{ @"GAME", @"Games\", "" },
+				{ @"IKEA", @"Ikea\", "" },
+				{ @"POSE", @"Poses\", "" },
+				{ @"WOOT", @"Woot\", "" },
+				// leave screenshots last //
+				{ @"SCREENSHOT", @"yyyy\Screenshots\", "" },
 			};
 
 			for (int i = 0; i < specialFolders1.Length/3; i++) {
@@ -128,26 +143,12 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
-			#endregion Case: 7 or more characters
+			#endregion Case: 4 or more characters
 
-			#region Case: Less than 7 characters
+			#region Case: Less than 4 characters
 			// Order these by string length, descending //
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "Bumble", @"Bumble\", "" },
-				{ "Design", @"Design\", "" },
-				{ "London", @"London\", "" },
-				{ "Nanami", @"Nanami\", "" },
-				{ "TikTok", @"TikTok\", "" },
-				{ "Tinder", @"Tinder\", "" },
-				{ "Maxim", @"Maxim\", "" },
-				{ "Shirt", @"Shirts\", "" },
-				{ "ztest", @"ztest\", "" },
-				{ "ETNT", @"ETNT\", "" },
-				{ "Game", @"Games\", "" },
-				{ "Ikea", @"Ikea\", "" },
-				{ "Pose", @"Poses\", "" },
-				{ "Woot", @"Woot\", "" },
 				{ "Ga", @"Ga\", "" },
 				{ "GQ", @"GQ\", "" },
 				{ "Me", @"Me\", "" },
@@ -168,7 +169,7 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
-			#endregion Case: Less than 7 characters
+			#endregion Case: Less than 4 characters
 
 			#region Default: Everything else
 			int year;
