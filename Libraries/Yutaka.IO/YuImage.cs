@@ -135,7 +135,6 @@ namespace Yutaka.IO
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
 				{ "Bumble", @"Bumble\", "" },
-				{ "Cancun", @"yyyy\Cancun\", "" },
 				{ "Design", @"Design\", "" },
 				{ "London", @"London\", "" },
 				{ "Nanami", @"Nanami\", "" },
@@ -147,7 +146,6 @@ namespace Yutaka.IO
 				{ "ETNT", @"ETNT\", "" },
 				{ "Game", @"Games\", "" },
 				{ "Ikea", @"Ikea\", "" },
-				{ "Napa", @"yyyy\Napa\", "" },
 				{ "Pose", @"Poses\", "" },
 				{ "Woot", @"Woot\", "" },
 				{ "Ga", @"Ga\", "" },
