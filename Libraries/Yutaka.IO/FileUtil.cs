@@ -169,6 +169,29 @@ namespace Yutaka.IO
 				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath='{3}', string destFilePath='{4}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, sourceFilePath, destFilePath));
 			}
 		}
+
+		public void Move(string source, string destination, bool deleteSource = true)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception("<source> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
+			if (String.IsNullOrWhiteSpace(destination))
+				throw new Exception("<destination> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
+
+			Directory.CreateDirectory(Path.GetDirectoryName(destination));
+
+			if (File.Exists(destination)) {
+				if (IsSameSize(source, destination)) {
+					if (deleteSource)
+						File.Delete(source);
+					return;
+				}
+
+				var extension = Path.GetExtension(source);
+				source = source.Replace(extension, String.Format("(2){0}", extension));
+			}
+
+			FastMove(source, destination, deleteSource);
+		}
 		#endregion Move
 
 		#region Public Methods
