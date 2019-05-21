@@ -104,7 +104,7 @@ namespace Yutaka.IO
 			}
 
 			if (deleteSource)
-				File.Delete(source);
+				TryDelete(source);
 		}
 
 		/// <summary> Time the Move
@@ -183,7 +183,7 @@ namespace Yutaka.IO
 			if (File.Exists(destination)) {
 				if (IsSameSize(source, destination)) {
 					if (deleteSource)
-						File.Delete(source);
+						TryDelete(source);
 					return;
 				}
 
