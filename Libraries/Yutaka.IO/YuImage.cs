@@ -149,6 +149,7 @@ namespace Yutaka.IO
 			// Order these by string length, descending //
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
+				{ "zMe", @"Me\", "" },
 				{ "Ga", @"Ga\", "" },
 				{ "GQ", @"GQ\", "" },
 				{ "Me", @"Me\", "" },
