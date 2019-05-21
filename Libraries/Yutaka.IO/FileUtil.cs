@@ -681,10 +681,7 @@ namespace Yutaka.IO
 		public bool IsSameSize(FileInfo fi1, FileInfo fi2)
 		{
 			try {
-				if (fi1.Length == fi2.Length)
-					return true;
-
-				return false;
+				return fi1.Length == fi2.Length;
 			}
 
 			catch (Exception ex) {
