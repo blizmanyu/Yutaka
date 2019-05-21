@@ -728,11 +728,24 @@ namespace Yutaka.IO
 			if (dt < dateThreshold)
 				return;
 
-			var fi = new FileInfo(filename);
-			fi.CreationTime = dt;
-			fi.LastAccessTime = dt;
-			fi.LastWriteTime = dt;
-			fi = null;
+			try {
+				var fi = new FileInfo(filename);
+				fi.CreationTime = dt;
+				fi.LastAccessTime = dt;
+				fi.LastWriteTime = dt;
+				fi = null;
+			}
+
+			catch (Exception ex) {
+				string msg;
+
+				if (ex.InnerException == null)
+					msg = String.Format("{0}{2}Exception thrown in FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
+				else
+					msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
+
+				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", DateTime.Now.ToString("yyyy MMdd")));
+			}
 		}
 
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
