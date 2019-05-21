@@ -64,15 +64,15 @@ namespace Yutaka.Tests
 			consoleOut = true;
 
 			var deleteFile = false; // false //
-			var source = @"C:\Pictures\Magazines\";
+			var source = @"C:\Pictures\2015\";
 			var dest = @"C:\Images\";
 			//var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
 			YuImage img;
-			var imageExtensions = new Regex(".bmp|.exif|.gif|.jpg|.jpeg|.nef|.png|.tiff", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
-			var images = Directory.EnumerateFiles(source).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
+			var imageExtensions = new Regex(".bmp|.exif|.gif|.jpg|.jpeg|.nef|.png|.svg|.tiff", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var images = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
 			for (int i = 0; i < images.Count; i++) {
 				img = new YuImage(images[i]);

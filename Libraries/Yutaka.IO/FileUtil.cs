@@ -27,6 +27,7 @@ namespace Yutaka.IO
 		public List<string> IgnoreListFolders;
 		public List<string> IgnoreListFileMasks;
 		private DateTime dateThreshold = new DateTime(1982, 1, 1);
+		private DateTime startTime = DateTime.Now;
 		private HashSet<string> audioExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".aiff", ".m4a", ".mp3", ".au", ".ogg", ".wav", ".wma" };
 		private HashSet<string> applicationExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".asdf", ".asdf", ".asdf" };
 		private HashSet<string> archiveExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".rar", ".zip", ".7z", ".ace", ".arj", ".bz2", ".cab", ".gz", ".iso", ".jar", ".lz", ".lzh", ".tar", ".uue", ".xz", ".z", ".zipx", ".001" };
@@ -739,14 +740,18 @@ namespace Yutaka.IO
 			catch (Exception ex) {
 				string msg;
 
-				if (ex.InnerException == null)
-					msg = String.Format("{0}{2}Exception thrown in FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
-				else
-					msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
+				if (ex.Message.StartsWith("The process cannot access the file "))
+					msg = String.Format("{0}\n", filename);
+				else {
+					if (ex.InnerException == null)
+						msg = String.Format("{0}{2}Exception thrown in FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
+					else
+						msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
+				}
 
 				Directory.CreateDirectory(@"C:\Logs\");
 				Directory.CreateDirectory(@"C:\Logs\FileUtil\");
-				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", DateTime.Now.ToString("yyyy MMdd")));
+				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", startTime.ToString("yyyy MMdd HHmm ssff")));
 			}
 		}
 
