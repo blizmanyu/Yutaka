@@ -98,6 +98,7 @@ namespace Yutaka.IO
 				{ "MAGAZINE", @"Magazines\", "Magazine" },
 				{ "MAXIMUM PC", @"Maximum PC\", "Maximum PC" },
 				{ "MENS HEALTH", @"Mens Health\", "Mens Health" },
+				{ @"ME\TEST", @"Me\Test\", "" },
 				{ "OC FAIR", @"yyyy\OC Fair\", "" },
 				{ "OKCUPID", @"OkCupid\", "OkCupid" },
 				{ "PATRICIA", @"Patricia\", "Patricia" },
