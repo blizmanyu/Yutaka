@@ -89,25 +89,28 @@ namespace Yutaka.IO
 			#region Case: 7 or more characters
 			var specialFolders1 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "PHILIPS HUE", @"Philips Hue\", "" },
-				{ "MICHAEL CONTURSI", @"Michael Contursi\", "" },
-				{ "UNSPLASH", @"Unsplash\", "" },
-				{ "RECEIPT", @"Receipts\", "" },
-				{ "APARTMENT", @"Apartment\", "" },
-				{ "CONSUMER REPORTS", @"Consumer Reports\", "" },
-				{ "FACEBOOK", @"Facebook\", "" },
-				{ "GROOMING", @"Grooming\", "" },
-				{ "MAXIMUMPC", @"Maximum PC\", "" },
-				{ "MAXIMUM PC", @"Maximum PC\", "" },
-				{ "MENS HEALTH", @"Mens Health\", "" },
+				{ @"APARTMENT", @"Apartment\", "" },
+				{ @"CONFIRMATION", @"Receipts\", "" },
+				{ @"CONSUMER REPORTS", @"Consumer Reports\", "" },
+				{ @"FACEBOOK", @"Facebook\", "" },
+				{ @"GROOMING", @"Grooming\", "" },
+				{ @"INVOICE", @"Invoice\", "" },
+				{ @"ITINERARY", @"Itinerary\", "" },
+				{ @"MAXIMUMPC", @"Maximum PC\", "" },
+				{ @"MAXIMUM PC", @"Maximum PC\", "" },
+				{ @"MENS HEALTH", @"Mens Health\", "" },
 				{ @"ME\TEST", @"Me\Test\", "" },
-				{ "OC FAIR", @"yyyy\OC Fair\", "" },
-				{ "OKCUPID", @"OkCupid\", "" },
-				{ "PATRICIA", @"Patricia\", "" },
-				{ "PC GAMER", @"PC Gamer\", "" },
-				{ "SNAPCHAT", @"Snapchat\", "" },
-				{ "WOMENS HEALTH", @"Womens Health\", "" },
-				{ "SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
+				{ @"MICHAEL CONTURSI", @"Michael Contursi\", "" },
+				{ @"OC FAIR", @"yyyy\OC Fair\", "" },
+				{ @"OKCUPID", @"OkCupid\", "" },
+				{ @"PATRICIA", @"Patricia\", "" },
+				{ @"PC GAMER", @"PC Gamer\", "" },
+				{ @"PHILIPS HUE", @"Philips Hue\", "" },
+				{ @"RECEIPT", @"Receipts\", "" },
+				{ @"SNAPCHAT", @"Snapchat\", "" },
+				{ @"UNSPLASH", @"Unsplash\", "" },
+				{ @"WOMENS HEALTH", @"Womens Health\", "" },
+				{ @"SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
 			};
 
 			for (int i = 0; i < specialFolders1.Length/3; i++) {

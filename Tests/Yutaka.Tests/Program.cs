@@ -61,12 +61,11 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			consoleOut = true;
-
-			var deleteFile = false; // false //
-			var source = @"C:\Pictures\2015\";
-			var dest = @"C:\Images\";
-			//var dest = @"G:\Pictures\";
+			var deleteFile = true; // false //
+			consoleOut = !deleteFile;
+			var source = @"C:\Pictures\2017\";
+			//var dest = @"C:\Images\";
+			var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
@@ -76,17 +75,19 @@ namespace Yutaka.Tests
 
 			for (int i = 0; i < images.Count; i++) {
 				img = new YuImage(images[i]);
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", ++totalCount, images[i]);
-				Console.Write("\n     CreationTime: {0}", img.CreationTime);
-				Console.Write("\n        DateTaken: {0}", img.DateTaken);
-				Console.Write("\n   LastAccessTime: {0}", img.LastAccessTime);
-				Console.Write("\n    LastWriteTime: {0}", img.LastWriteTime);
-				Console.Write("\n      MinDateTime: {0}", img.MinDateTime);
-				Console.Write("\n");
-				Console.Write("\n   ParentFolder: {0}", img.ParentFolder);
-				Console.Write("\n   NewFolder: {0}", img.NewFolder);
-				Console.Write("\n   NewFilename: {0}", img.NewFilename);
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}) {1}", ++totalCount, images[i]);
+					Console.Write("\n     CreationTime: {0}", img.CreationTime);
+					Console.Write("\n        DateTaken: {0}", img.DateTaken);
+					Console.Write("\n   LastAccessTime: {0}", img.LastAccessTime);
+					Console.Write("\n    LastWriteTime: {0}", img.LastWriteTime);
+					Console.Write("\n      MinDateTime: {0}", img.MinDateTime);
+					Console.Write("\n");
+					Console.Write("\n   ParentFolder: {0}", img.ParentFolder);
+					Console.Write("\n   NewFolder: {0}", img.NewFolder);
+					Console.Write("\n   NewFilename: {0}", img.NewFilename);
+				}
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, img.NewFolder));
 				_fileUtil.Move(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), deleteFile);
