@@ -62,8 +62,12 @@ namespace Yutaka.Tests
 		private static void Test_YuImage()
 		{
 			consoleOut = true;
-			var source = @"C:\Images\";
+
+			var deleteFile = false; // false //
+			var source = @"C:\Pictures\2009\";
 			var dest = @"C:\Images\";
+			//var dest = @"G:\Pictures\";
+
 			Directory.CreateDirectory(dest);
 
 			YuImage img;
@@ -85,8 +89,7 @@ namespace Yutaka.Tests
 				Console.Write("\n   NewFilename: {0}", img.NewFilename);
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, img.NewFolder));
-				var deleteFile = false;
-				_fileUtil.FastMove(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), deleteFile);
+				_fileUtil.Move(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), deleteFile);
 				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), img.MinDateTime);
 			}
 		}
