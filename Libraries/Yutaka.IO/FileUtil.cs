@@ -662,10 +662,7 @@ namespace Yutaka.IO
 		public bool IsSameFile(FileInfo fi1, FileInfo fi2)
 		{
 			try {
-				if (IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2))
-					return true;
-
-				return false;
+				return IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2);
 			}
 
 			catch (Exception ex) {
