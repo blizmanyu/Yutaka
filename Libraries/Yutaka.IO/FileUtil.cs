@@ -187,7 +187,9 @@ namespace Yutaka.IO
 				}
 
 				var extension = Path.GetExtension(source);
-				source = source.Replace(extension, String.Format("(2){0}", extension));
+				destination = destination.Replace(extension, String.Format("(2){0}", extension));
+				Move(source, destination, deleteSource);
+				return;
 			}
 
 			FastMove(source, destination, deleteSource);
