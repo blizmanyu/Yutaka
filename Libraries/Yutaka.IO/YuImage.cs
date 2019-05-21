@@ -71,17 +71,16 @@ namespace Yutaka.IO
 		{
 			MinDateTime = DateTime.Now;
 
-			if (CreationTime != null && MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
-				MinDateTime = CreationTime;
-
 			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
-				MinDateTime = DateTaken;
+				MinDateTime = DateTaken; // prioritize DateTaken //
 
-			if (LastAccessTime != null && MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
-				MinDateTime = LastAccessTime;
+			else {
+				if (CreationTime != null && MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
+					MinDateTime = CreationTime;
 
-			if (LastWriteTime != null && MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
-				MinDateTime = LastWriteTime;
+				if (LastWriteTime != null && MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
+					MinDateTime = LastWriteTime;
+			}
 		}
 
 		private void SetNewFolderAndFilename()
