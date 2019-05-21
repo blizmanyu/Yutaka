@@ -8,6 +8,7 @@ namespace Yutaka.IO
 {
 	public class YuImage
 	{
+		#region Fields
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		public DateTime CreationTime;
 		public DateTime DateTaken;
@@ -24,6 +25,7 @@ namespace Yutaka.IO
 		public string NewFilename;
 		public string NewFolder;
 		public string ParentFolder;
+		#endregion Fields
 
 		public YuImage(string filename)
 		{
@@ -91,21 +93,21 @@ namespace Yutaka.IO
 				{ "MICHAEL CONTURSI", @"Michael Contursi\", "" },
 				{ "UNSPLASH", @"Unsplash\", "" },
 				{ "RECEIPT", @"Receipts\", "" },
-				{ "APARTMENT", @"Apartment\", "Apartment" },
-				{ "CONSUMER REPORTS", @"Consumer Reports\", "Consumer Reports" },
+				{ "APARTMENT", @"Apartment\", "" },
+				{ "CONSUMER REPORTS", @"Consumer Reports\", "" },
 				{ "FACEBOOK", @"Facebook\", "" },
 				{ "GROOMING", @"Grooming\", "" },
-				{ "MAGAZINE", @"Magazines\", "Magazine" },
-				{ "MAXIMUM PC", @"Maximum PC\", "Maximum PC" },
-				{ "MENS HEALTH", @"Mens Health\", "Mens Health" },
+				{ "MAGAZINE", @"Magazines\", "" },
+				{ "MAXIMUM PC", @"Maximum PC\", "" },
+				{ "MENS HEALTH", @"Mens Health\", "" },
 				{ @"ME\TEST", @"Me\Test\", "" },
 				{ "OC FAIR", @"yyyy\OC Fair\", "" },
-				{ "OKCUPID", @"OkCupid\", "OkCupid" },
-				{ "PATRICIA", @"Patricia\", "Patricia" },
-				{ "PC GAMER", @"PC Gamer\", "PC Gamer" },
-				{ "SNAPCHAT", @"Snapchat\", "Snapchat" },
-				{ "WOMENS HEALTH", @"Womens Health\", "Womens Health" },
-				{ "SCREENSHOT", @"yyyy\Screenshots\", "Screenshot" }, // leave screenshots last //
+				{ "OKCUPID", @"OkCupid\", "" },
+				{ "PATRICIA", @"Patricia\", "" },
+				{ "PC GAMER", @"PC Gamer\", "" },
+				{ "SNAPCHAT", @"Snapchat\", "" },
+				{ "WOMENS HEALTH", @"Womens Health\", "" },
+				{ "SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
 			};
 
 			for (int i = 0; i < specialFolders1.Length/3; i++) {
@@ -129,26 +131,26 @@ namespace Yutaka.IO
 			// Order these by string length, descending //
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "Bumble", @"Bumble\", "Bumble" },
+				{ "Bumble", @"Bumble\", "" },
 				{ "Cancun", @"yyyy\Cancun\", "" },
 				{ "Design", @"Design\", "" },
-				{ "London", @"London\", "London" },
-				{ "Nanami", @"Nanami\", "Nanami" },
+				{ "London", @"London\", "" },
+				{ "Nanami", @"Nanami\", "" },
 				{ "Tattoo", @"Tattoos\", "" },
-				{ "TikTok", @"TikTok\", "TikTok" },
-				{ "Tinder", @"Tinder\", "Tinder" },
-				{ "Maxim", @"Maxim\", "Maxim" },
+				{ "TikTok", @"TikTok\", "" },
+				{ "Tinder", @"Tinder\", "" },
+				{ "Maxim", @"Maxim\", "" },
 				{ "Shirt", @"Shirts\", "" },
 				{ "ztest", @"ztest\", "" },
-				{ "ETNT", @"ETNT\", "ETNT" },
+				{ "ETNT", @"ETNT\", "" },
 				{ "Game", @"Games\", "" },
-				{ "Ikea", @"Ikea\", "Ikea" },
+				{ "Ikea", @"Ikea\", "" },
 				{ "Napa", @"yyyy\Napa\", "" },
 				{ "Pose", @"Poses\", "" },
 				{ "Woot", @"Woot\", "" },
 				{ "Ga", @"Ga\", "" },
-				{ "GQ", @"GQ\", "GQ" },
-				{ "Me", @"Me\", "Me" },
+				{ "GQ", @"GQ\", "" },
+				{ "Me", @"Me\", "" },
 			};
 
 			for (int i = 0; i < specialFolders2.Length / 3; i++) {
