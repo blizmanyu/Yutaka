@@ -744,6 +744,8 @@ namespace Yutaka.IO
 				else
 					msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Redate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename, dt.ToString("yyyy.MMdd.HHmm.ssff"));
 
+				Directory.CreateDirectory(@"C:\Logs\");
+				Directory.CreateDirectory(@"C:\Logs\FileUtil\");
 				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", DateTime.Now.ToString("yyyy MMdd")));
 			}
 		}
