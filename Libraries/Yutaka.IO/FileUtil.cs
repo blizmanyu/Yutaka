@@ -82,7 +82,7 @@ namespace Yutaka.IO
 		/// </summary>
 		/// <param name="source">Source file path</param> 
 		/// <param name="destination">Destination file path</param> 
-		public void FastMove(string source, string destination, bool delete = true)
+		public void FastMove(string source, string destination, bool deleteSource = true)
 		{
 			var array_length = BUFFER;
 			var dataArray = new byte[array_length];
@@ -102,7 +102,7 @@ namespace Yutaka.IO
 				}
 			}
 
-			if (delete)
+			if (deleteSource)
 				File.Delete(source);
 		}
 
