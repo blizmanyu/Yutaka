@@ -92,6 +92,7 @@ namespace Yutaka.IO
 				{ @"CHECKOUT", @"Receipts\", "" },
 				{ @"CONFIRMATION", @"Receipts\", "" },
 				{ @"CONSUMER REPORTS", @"Consumer Reports\", "" },
+				{ @"DRAGONFRUIT", @"DragonFruit\", "" },
 				{ @"FACEBOOK", @"Facebook\", "" },
 				{ @"GROOMING", @"Grooming\", "" },
 				{ @"INVOICE", @"Invoices\", "" },
