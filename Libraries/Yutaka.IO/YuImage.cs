@@ -90,6 +90,7 @@ namespace Yutaka.IO
 			var specialFolders1 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
 				{ @"APARTMENT", @"Apartment\", "" },
+				{ @"CHECKOUT", @"Receipts\", "" },
 				{ @"CONFIRMATION", @"Receipts\", "" },
 				{ @"CONSUMER REPORTS", @"Consumer Reports\", "" },
 				{ @"FACEBOOK", @"Facebook\", "" },
