@@ -102,9 +102,9 @@ namespace Yutaka.IO
 				{ "OKCUPID", @"OkCupid\", "OkCupid" },
 				{ "PATRICIA", @"Patricia\", "Patricia" },
 				{ "PC GAMER", @"PC Gamer\", "PC Gamer" },
-				{ "SCREENSHOT", @"yyyy\Screenshots\", "Screenshot" },
 				{ "SNAPCHAT", @"Snapchat\", "Snapchat" },
 				{ "WOMENS HEALTH", @"Womens Health\", "Womens Health" },
+				{ "SCREENSHOT", @"yyyy\Screenshots\", "Screenshot" }, // leave screenshots last //
 			};
 
 			for (int i = 0; i < specialFolders1.Length/3; i++) {
