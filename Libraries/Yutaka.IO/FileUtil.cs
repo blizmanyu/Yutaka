@@ -755,6 +755,21 @@ namespace Yutaka.IO
 			}
 		}
 
+		public bool TryDelete(string path)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				return true;
+
+			try {
+				File.Delete(path);
+				return true;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
+
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
