@@ -97,7 +97,6 @@ namespace Yutaka.IO
 				{ "CONSUMER REPORTS", @"Consumer Reports\", "" },
 				{ "FACEBOOK", @"Facebook\", "" },
 				{ "GROOMING", @"Grooming\", "" },
-				{ "MAGAZINE", @"Magazines\", "" },
 				{ "MAXIMUM PC", @"Maximum PC\", "" },
 				{ "MENS HEALTH", @"Mens Health\", "" },
 				{ @"ME\TEST", @"Me\Test\", "" },
@@ -107,6 +106,7 @@ namespace Yutaka.IO
 				{ "PC GAMER", @"PC Gamer\", "" },
 				{ "SNAPCHAT", @"Snapchat\", "" },
 				{ "WOMENS HEALTH", @"Womens Health\", "" },
+				{ "MAGAZINE", @"Magazines\", "" },
 				{ "SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
 			};
 
