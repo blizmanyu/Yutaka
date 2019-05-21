@@ -751,7 +751,7 @@ namespace Yutaka.IO
 
 				Directory.CreateDirectory(@"C:\Logs\");
 				Directory.CreateDirectory(@"C:\Logs\FileUtil\");
-				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", startTime.ToString("yyyy MMdd HHmm ssff")));
+				Write(msg, String.Format(@"C:\Logs\FileUtil\{0}.txt", startTime.ToString("yyyy MM")));
 			}
 		}
 

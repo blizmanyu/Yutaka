@@ -63,7 +63,7 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"C:\Pictures\Woot\";
+			var source = @"C:\Pictures\zMe\";
 			var dest = @"C:\Images\";
 			//var dest = @"G:\Pictures\";
 
