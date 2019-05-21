@@ -107,6 +107,7 @@ namespace Yutaka.IO
 				{ @"PHILIPS HUE", @"Philips Hue\", "" },
 				{ @"RECEIPT", @"Receipts\", "" },
 				{ @"SNAPCHAT", @"Snapchat\", "" },
+				{ @"TATTOOS", @"Tattoos\", "" },
 				{ @"UNSPLASH", @"Unsplash\", "" },
 				{ @"WOMENS HEALTH", @"Womens Health\", "" },
 				{ @"SCREENSHOT", @"yyyy\Screenshots\", "" }, // leave screenshots last //
@@ -138,7 +139,6 @@ namespace Yutaka.IO
 				{ "Design", @"Design\", "" },
 				{ "London", @"London\", "" },
 				{ "Nanami", @"Nanami\", "" },
-				{ "Tattoo", @"Tattoos\", "" },
 				{ "TikTok", @"TikTok\", "" },
 				{ "Tinder", @"Tinder\", "" },
 				{ "Maxim", @"Maxim\", "" },
