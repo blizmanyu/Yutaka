@@ -62,11 +62,12 @@ namespace Yutaka.Tests
 		private static void Test_YuImage()
 		{
 			consoleOut = true;
-			var source = @"C:\Pictures\";
-			var dest = @"C:\Tests\";
+			var source = @"C:\Images\";
+			var dest = @"C:\Images\";
+			Directory.CreateDirectory(dest);
 
 			YuImage img;
-			var imageExtensions = new Regex(".gif|.png|.jpg|.jpeg", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var imageExtensions = new Regex(".bmp|.exif|.gif|.jpg|.jpeg|.png|.tiff", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 			var images = Directory.EnumerateFiles(source).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
 			for (int i = 0; i < images.Count; i++) {
@@ -84,7 +85,8 @@ namespace Yutaka.Tests
 				Console.Write("\n   NewFilename: {0}", img.NewFilename);
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, img.NewFolder));
-				_fileUtil.FastMove(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), false);
+				var deleteFile = false;
+				_fileUtil.FastMove(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), deleteFile);
 				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), img.MinDateTime);
 			}
 		}
