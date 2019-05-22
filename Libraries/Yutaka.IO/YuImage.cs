@@ -90,10 +90,8 @@ namespace Yutaka.IO
 				// search term,			new folder name //
 				{ @"CONSUMER REPORTS", @"Consumer Reports\", },
 				{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
-				{ @"WOMEN'S HEALTH", @"Womens Health\", },
 				{ @"WOMENS HEALTH", @"Womens Health\", },
 				{ @"CONFIRMATION", @"Receipts\", },
-				{ @"MEN'S HEALTH", @"Mens Health\", },
 				{ @"DRAGONFRUIT", @"DragonFruit\", },
 				{ @"ITINERARIES", @"Itineraries\", },
 				{ @"MENS HEALTH", @"Mens Health\", },
