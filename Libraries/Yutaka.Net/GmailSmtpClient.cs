@@ -13,11 +13,11 @@ namespace Yutaka.Net
 			if (String.IsNullOrWhiteSpace(password))
 				throw new Exception(String.Format("<password> is required. Exception thrown in GmailSmtpClient Constructor.{0}", Environment.NewLine));
 
+			UseDefaultCredentials = false; // always set this BEFORE setting Credentials //
 			Credentials = new NetworkCredential(username, password);
 			EnableSsl = true;
 			Host = "smtp.gmail.com";
 			Port = 587;
-			UseDefaultCredentials = false;
 		}
 	}
 }
