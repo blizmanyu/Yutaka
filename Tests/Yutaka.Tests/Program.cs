@@ -61,16 +61,16 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = false; // true/false //
+			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"C:\Pictures\2017\";
-			var dest = @"C:\Images\";
-			//var dest = @"G:\Pictures\";
+			var source = @"C:\Pictures\";
+			//var dest = @"C:\Images\";
+			var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
 			YuImage img;
-			var imageExtensions = new Regex(".bmp|.exif|.gif|.jpg|.jpeg|.nef|.png|.svg|.tiff", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var imageExtensions = new Regex(".ai|.bmp|.exif|.gif|.jpg|.jpeg|.nef|.png|.psd|.svg|.tiff", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 			var images = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
 			for (int i = 0; i < images.Count; i++) {
