@@ -43,8 +43,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Yutaka.IO">
       <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
     </Reference>
   </ItemGroup>

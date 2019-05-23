@@ -29,6 +29,7 @@ namespace Yutaka.IO.Tests
 
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
+		private static FileUtil _fileUtil = new FileUtil();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
@@ -80,7 +81,7 @@ namespace Yutaka.IO.Tests
 							fi.CreationTime = fi.LastWriteTime;
 
 						var year = fi.CreationTime.Year;
-						FileUtil.Move(fi, String.Format("{0}{1}\\{2}", DEST_FOLDER, year, fi.Name));
+						_fileUtil.Move(fi, String.Format("{0}{1}\\{2}", DEST_FOLDER, year, fi.Name));
 					}
 				}
 

@@ -55,10 +55,10 @@
       <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Diagnostics">
-      <HintPath>..\..\Libraries\Yutaka.Video\bin\Release\Yutaka.Diagnostics.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Diagnostics\bin\Release\Yutaka.Diagnostics.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Images">
-      <HintPath>..\..\Libraries\Yutaka.Images\bin\Debug\Yutaka.Images.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Images\bin\Release\Yutaka.Images.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

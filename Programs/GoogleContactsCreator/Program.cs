@@ -21,6 +21,7 @@ namespace GoogleContactsCreator
 
 		const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static DateTime startTime = DateTime.Now;
+		private static FileUtil _fileUtil = new FileUtil();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
 		private static int errorCountThreshold = 7;
@@ -37,18 +38,18 @@ namespace GoogleContactsCreator
 			var path = String.Format(@"C:\TEMP\Contacts {0}.csv", now.ToString("yyyy MMdd HHmm ssff"));
 
 			// Headers //
-			FileUtil.Write("Name,Given Name,Family Name,Group Membership,Phone 1 - Type,Phone 1 - Value", path);
+			_fileUtil.Write("Name,Given Name,Family Name,Group Membership,Phone 1 - Type,Phone 1 - Value", path);
 
 			var givenName = "RoboCall";
 			var phonePrefix = "(408) 717-";
 
 			for (int i = 0; i < 10000; i++) {
 				if (i % 477 == 0)
-					FileUtil.Write(String.Format("\n{1} {0:d4},{1},{0:d4},* myContacts,,{2}{0:d4}", i, givenName, phonePrefix), path);
+					_fileUtil.Write(String.Format("\n{1} {0:d4},{1},{0:d4},* myContacts,,{2}{0:d4}", i, givenName, phonePrefix), path);
 				else if (i == 860)
 					continue;
 				else
-					FileUtil.Write(String.Format(" ::: {1}{0:d4}", i, phonePrefix), path);
+					_fileUtil.Write(String.Format(" ::: {1}{0:d4}", i, phonePrefix), path);
 			}
 		}
 
