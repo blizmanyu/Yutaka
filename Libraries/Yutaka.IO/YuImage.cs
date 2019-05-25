@@ -92,7 +92,6 @@ namespace Yutaka.IO
 				{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
 				{ @"CONFIRMATION", @"Receipts\", },
 				{ @"DRAGONFRUIT", @"DragonFruit\", },
-				{ @"ITINERARIES", @"Itineraries\", },
 				{ @"GROOMING", @"Grooming\", },
 				{ @"WOMENS HEALTH", @"Womens Health\", },
 				{ @"MENS HEALTH", @"Mens Health\", },
@@ -103,6 +102,7 @@ namespace Yutaka.IO
 				{ @"THANK YOU", @"Receipts\", },
 				{ @"CHECKOUT", @"Receipts\", },
 				{ @"FACEBOOK", @"Facebook\", },
+				{ @"ITINERAR", @"Itineraries\", },
 				{ @"PATRICIA", @"Patricia\", },
 				{ @"PC GAMER", @"PC Gamer\", },
 				{ @"SNAPCHAT", @"Snapchat\", },
@@ -170,7 +170,7 @@ namespace Yutaka.IO
 
 			#region Default: Everything else
 			int year;
-			if (ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
+			if (ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || ParentFolder.Equals("_Unprocessed") || ParentFolder.Equals("_Process These") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
 				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
 			else
 				NewFolder = String.Format(@"{0:yyyy}\{1}\", MinDateTime, ParentFolder);
