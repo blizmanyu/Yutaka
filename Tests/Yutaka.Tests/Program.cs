@@ -61,11 +61,11 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = false; // true/false //
+			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
 			var source = @"G:\Pictures\_Unprocessed\_Process These\";
-			var dest = @"C:\Images\";
-			//var dest = @"G:\Pictures\";
+			//var dest = @"C:\Images\";
+			var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
@@ -95,6 +95,14 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test YuImage
+
+		#region Test CreateDirectory
+		private static void Test_CreateDirectory()
+		{
+			var path = @"C:\1\2\3\";
+			Directory.CreateDirectory(path);
+		}
+		#endregion Test CreateDirectory
 
 		#region Test FileInfo Properties
 		private static void Test_FileInfo_Properties()
