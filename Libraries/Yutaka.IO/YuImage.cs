@@ -114,7 +114,6 @@ namespace Yutaka.IO
 				{ @"WELCOME", @"Receipts\", },
 				// Less than 7 characters //
 				{ @"BUMBLE", @"z\Bumble\", },
-				{ @"DESIGN", @"Design\", },
 				{ @"LONDON", @"z\London\", },
 				{ @"NANAMI", @"Nanami\", },
 				{ @"TATTOO", @"Tattoos\", },
