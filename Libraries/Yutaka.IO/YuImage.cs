@@ -121,6 +121,7 @@ namespace Yutaka.IO
 				{ @"THANKS", @"Receipts\", },
 				{ @"TIKTOK", @"TikTok\", },
 				{ @"TINDER", @"Tinder\", },
+				{ @"HAPPN", @"Happn\", },
 				{ @"MAXIM", @"Maxim\", },
 				{ @"SHIRT", @"Shirts\", },
 				{ @"ETNT", @"ETNT\", },
