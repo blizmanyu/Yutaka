@@ -88,9 +88,12 @@ namespace Yutaka.IO
 			#region Case: 4 or more characters
 			var specialFolders1 = new string[,] {
 				// search term,			new folder name //
-				{ @"CONSUMER REPORTS", @"Magazines\Consumer Reports\", },
 				{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
+				{ @"CONSUMER REPORT", @"Magazines\Consumer Reports\", },
+				{ @"UNITED AIRLINES", @"yyyy\United Airlines\", },
+				{ @"CLASH ROYALE", @"Games\Clash Royale\", },
 				{ @"CONFIRMATION", @"Receipts\", },
+				{ @"VIDEO PLAYER", @"yyyy\Video Player\", },
 				{ @"DRAGONFRUIT", @"z\DragonFruit\", },
 				{ @"GROOMING", @"Grooming\", },
 				{ @"WOMENS HEALTH", @"Magazines\Womens Health\", },
@@ -101,8 +104,8 @@ namespace Yutaka.IO
 				{ @"MAXIMUMPC", @"Magazines\Maximum PC\", },
 				{ @"THANK YOU", @"Receipts\", },
 				{ @"CHECKOUT", @"Receipts\", },
-				{ @"FACEBOOK", @"Facebook\", },
 				{ @"ITINERAR", @"Itineraries\", },
+				{ @"MESSAGES", @"yyyy\Messsages\", },
 				{ @"PATRICIA", @"z\Patricia\", },
 				{ @"PC GAMER", @"Magazines\PC Gamer\", },
 				{ @"SNAPCHAT", @"z\Snapchat\", },
@@ -115,19 +118,27 @@ namespace Yutaka.IO
 				{ @"WELCOME", @"Receipts\", },
 				// Less than 7 characters //
 				{ @"BUMBLE", @"z\Bumble\", },
+				{ @"CHROME", @"yyyy\Chrome\", },
 				{ @"LONDON", @"z\London\", },
 				{ @"NANAMI", @"Nanami\", },
 				{ @"TATTOO", @"Tattoos\", },
 				{ @"THANKS", @"Receipts\", },
 				{ @"TIKTOK", @"z\TikTok\", },
 				{ @"TINDER", @"z\Tinder\", },
+				{ @"DELTA", @"yyyy\Delta\", },
+				{ @"GMAIL", @"yyyy\Gmail\", },
 				{ @"HAPPN", @"z\Happn\", },
 				{ @"MAXIM", @"Magazines\Maxim\", },
+				{ @"SARAH", @"z\Sarah\", },
 				{ @"SHIRT", @"Shirts\", },
+				{ @"SLEEP", @"yyyy\Sleep\", },
 				{ @"ETNT", @"Magazines\ETNT\", },
 				{ @"GAME", @"Games\", },
 				{ @"IKEA", @"Ikea\", },
-				{ @"WOOT", @"Woot\", },
+				{ @"LEAH", @"z\Leah\", },
+				{ @"LINE", @"yyyy\Line\", },
+				{ @"MAPS", @"yyyy\Maps\", },
+				{ @"TURO", @"yyyy\Turo\", },
 				// leave screenshots last //
 				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
 			};
@@ -149,7 +160,6 @@ namespace Yutaka.IO
 			// Order these by string length, descending //
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "zMe", @"z\Me\", },
 				{ "GQ", @"Magazines\GQ\", },
 				{ "Me", @"z\Me\", },
 			};
