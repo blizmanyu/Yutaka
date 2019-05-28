@@ -111,7 +111,7 @@ namespace Yutaka.IO
 				{ @"SNAPCHAT", @"z\Snapchat\", },
 				{ @"UNSPLASH", @"Unsplash\", },
 				{ @"INVOICE", @"Invoices\", },
-				{ @"ME\TEST", @"z\Me\Test\", },
+				{ @"ME\TEST", @"zMe\Test\", },
 				{ @"POSE", @"Poses\", },
 				{ @"OKCUPID", @"z\OkCupid\", },
 				{ @"RECEIPT", @"Receipts\", },
