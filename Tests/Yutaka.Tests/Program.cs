@@ -61,9 +61,9 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = false; // true/false //
+			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"D:\Poses\";
+			var source = @"D:\DCIM\Camera\";
 			var dest = @"C:\Images\";
 
 			//var source = @"C:\Images\";
