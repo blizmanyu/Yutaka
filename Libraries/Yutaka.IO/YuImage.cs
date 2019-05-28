@@ -161,7 +161,7 @@ namespace Yutaka.IO
 			var specialFolders2 = new string[,] {
 				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
 				{ "GQ", @"Magazines\GQ\", },
-				{ "Me", @"z\Me\", },
+				{ "Me", @"zMe\", },
 			};
 
 			for (int i = 0; i < specialFolders2.Length / 2; i++) {
