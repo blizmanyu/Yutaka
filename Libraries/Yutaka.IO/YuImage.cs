@@ -93,7 +93,7 @@ namespace Yutaka.IO
 				{ @"UNITED AIRLINES", @"yyyy\United Airlines\", },
 				{ @"CLASH ROYALE", @"Games\Clash Royale\", },
 				{ @"CONFIRMATION", @"Receipts\", },
-				{ @"VIDEO PLAYER", @"yyyy\Video Player\", },
+				{ @"VIDEO PLAYER", @"z\Video Player\", },
 				{ @"DRAGONFRUIT", @"z\DragonFruit\", },
 				{ @"GROOMING", @"Grooming\", },
 				{ @"WOMENS HEALTH", @"Magazines\Womens Health\", },

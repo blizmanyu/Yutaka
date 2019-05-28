@@ -61,7 +61,7 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = false; // true/false //
+			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
 			var source = @"G:\Pictures\_Unprocessed\Screenshots\";
 			var dest = @"G:\Pictures\";
