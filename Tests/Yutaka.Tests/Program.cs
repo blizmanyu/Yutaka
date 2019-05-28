@@ -63,8 +63,8 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"C:\Pictures\z\Me\";
-			var dest = @"D:\Pictures\";
+			var source = @"G:\Pictures\_Unprocessed\Screenshots\";
+			var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
