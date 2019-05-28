@@ -61,11 +61,13 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = true; // true/false //
+			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"C:\Pictures\2019\";
-			//var dest = @"C:\Images\";
-			var dest = @"G:\Pictures\";
+			var source = @"D:\Poses\";
+			var dest = @"C:\Images\";
+
+			//var source = @"C:\Images\";
+			//var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 

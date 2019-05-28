@@ -109,6 +109,7 @@ namespace Yutaka.IO
 				{ @"UNSPLASH", @"Unsplash\", },
 				{ @"INVOICE", @"Invoices\", },
 				{ @"ME\TEST", @"z\Me\Test\", },
+				{ @"POSE", @"Poses\", },
 				{ @"OKCUPID", @"z\OkCupid\", },
 				{ @"RECEIPT", @"Receipts\", },
 				{ @"WELCOME", @"Receipts\", },
@@ -126,7 +127,6 @@ namespace Yutaka.IO
 				{ @"ETNT", @"Magazines\ETNT\", },
 				{ @"GAME", @"Games\", },
 				{ @"IKEA", @"Ikea\", },
-				{ @"POSE", @"Poses\", },
 				{ @"WOOT", @"Woot\", },
 				// leave screenshots last //
 				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
