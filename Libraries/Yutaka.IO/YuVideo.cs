@@ -134,67 +134,10 @@ namespace Yutaka.IO
 
 		private void SetNewFolderAndFilename()
 		{
-			#region Case: 4 or more characters
+			#region Special Cases
 			var specialFolders1 = new string[,] {
-				// search term,			new folder name //
-				{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
-				{ @"CONSUMER REPORT", @"Magazines\Consumer Reports\", },
-				{ @"UNITED AIRLINES", @"yyyy\United Airlines\", },
-				{ @"CLASH ROYALE", @"Games\Clash Royale\", },
-				{ @"CONFIRMATION", @"Receipts\", },
-				{ @"VIDEO PLAYER", @"z\Video Player\", },
-				{ @"DRAGONFRUIT", @"z\DragonFruit\", },
-				{ @"GROOMING", @"Grooming\", },
-				{ @"WOMENS HEALTH", @"Magazines\Womens Health\", },
-				{ @"MENS HEALTH", @"Magazines\Mens Health\", },
-				{ @"PHILIPS HUE", @"Philips Hue\", },
-				{ @"MAXIMUM PC", @"Magazines\Maximum PC\", },
-				{ @"APARTMENT", @"Apartment\", },
-				{ @"INSTAGRAM", @"z\Instagram\", },
-				{ @"MAXIMUMPC", @"Magazines\Maximum PC\", },
-				{ @"THANK YOU", @"Receipts\", },
-				{ @"CHECKOUT", @"Receipts\", },
-				{ @"ITINERAR", @"Itineraries\", },
-				{ @"ME\USING", @"zMe\Using\", },
-				{ @"MESSAGES", @"yyyy\Messsages\", },
-				{ @"PATRICIA", @"z\Patricia\", },
-				{ @"PC GAMER", @"Magazines\PC Gamer\", },
-				{ @"SNAPCHAT", @"z\Snapchat\", },
-				{ @"UNSPLASH", @"Unsplash\", },
-				{ @"INVOICE", @"Invoices\", },
-				{ @"ME\TEST", @"zMe\Test\", },
-				{ @"SAMSUNG", @"yyyy\Samsung\", },
-				{ @"POSE", @"Poses\", },
-				{ @"OKCUPID", @"z\OkCupid\", },
-				{ @"RECEIPT", @"Receipts\", },
-				{ @"WELCOME", @"Receipts\", },
-				// Less than 7 characters //
-				{ @"BUMBLE", @"z\Bumble\", },
-				{ @"CHROME", @"yyyy\Chrome\", },
-				{ @"LONDON", @"z\London\", },
-				{ @"NANAMI", @"Nanami\", },
-				{ @"TATTOO", @"Tattoos\", },
-				{ @"THANKS", @"Receipts\", },
-				{ @"TIKTOK", @"z\TikTok\", },
-				{ @"TINDER", @"z\Tinder\", },
-				{ @"BIXBY", @"yyyy\Bixby\", },
-				{ @"CHASE", @"yyyy\Chase\", },
-				{ @"DELTA", @"yyyy\Delta\", },
-				{ @"GMAIL", @"yyyy\Gmail\", },
-				{ @"HAPPN", @"z\Happn\", },
-				{ @"MAXIM", @"Magazines\Maxim\", },
-				{ @"SARAH", @"z\Sarah\", },
-				{ @"SHIRT", @"Shirts\", },
-				{ @"SLEEP", @"yyyy\Sleep\", },
-				{ @"ETNT", @"Magazines\ETNT\", },
-				{ @"GAME", @"Games\", },
-				{ @"IKEA", @"Ikea\", },
-				{ @"LEAH", @"z\Leah\", },
-				{ @"LINE", @"yyyy\Line\", },
-				{ @"MAPS", @"yyyy\Maps\", },
-				{ @"TURO", @"yyyy\Turo\", },
-				// leave screenshots last //
-				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
+				// search term, new folder name //
+				{ @"JFUL", @"Jful\", },
 			};
 
 			for (int i = 0; i < specialFolders1.Length / 2; i++) {
@@ -208,28 +151,7 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
-			#endregion Case: 4 or more characters
-
-			#region Case: Less than 4 characters
-			// Order these by string length, descending //
-			var specialFolders2 = new string[,] {
-				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "GQ", @"Magazines\GQ\", },
-				{ "Me", @"zMe\", },
-			};
-
-			for (int i = 0; i < specialFolders2.Length / 2; i++) {
-				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i, 0]))) {
-					if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
-						NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
-					else
-						NewFolder = specialFolders2[i, 1];
-
-					NewFilename = Name;
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: Less than 4 characters
+			#endregion Special Cases
 
 			#region Default: Everything else
 			int year;

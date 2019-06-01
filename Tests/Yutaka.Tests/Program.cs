@@ -63,13 +63,13 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"C:\Videos\";
-			var dest = @"G:\Pictures\";
+			var source = @"E:\Office\Processed\2009\";
+			var dest = @"E:\Office\Processed 2019 0601 0113\";
 
 			Directory.CreateDirectory(dest);
 
 			YuVideo vid;
-			var videoExtensions = new Regex(".3gp|.asf|.avi|.f4a|.f4b|.f4v|.flv|.m4a|.m4b|.m4r|.m4v|.mov|.mp4|.mpeg|.mpg|.webm|.wma|.wmv", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var videoExtensions = new Regex(".3gp|.asf|.avi|.f4a|.f4b|.f4v|.flv|.m4a|.m4b|.m4r|.m4v|.mkv|.mov|.mp4|.mpeg|.mpg|.webm|.wma|.wmv", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 			var videos = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => videoExtensions.IsMatch(Path.GetExtension(x))).ToList();
 
 			for (int i = 0; i < videos.Count; i++) {
@@ -89,9 +89,9 @@ namespace Yutaka.Tests
 					Console.Write("\n   NewFilename: {0}", vid.NewFilename);
 				}
 
-				//Directory.CreateDirectory(String.Format("{0}{1}", dest, vid.NewFolder));
-				//_fileUtil.Move(videos[i], String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), deleteFile);
-				//_fileUtil.Redate(String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), vid.MinDateTime);
+				Directory.CreateDirectory(String.Format("{0}{1}", dest, vid.NewFolder));
+				_fileUtil.Move(videos[i], String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), deleteFile);
+				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), vid.MinDateTime);
 			}
 		}
 		#endregion Test YuVideo
