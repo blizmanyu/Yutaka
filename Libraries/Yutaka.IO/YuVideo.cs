@@ -1,19 +1,19 @@
 ﻿using System;
-using System.Drawing;
 using System.IO;
-using System.Text;
-using System.Text.RegularExpressions;
+using Shell32;
 
 namespace Yutaka.IO
 {
 	public class YuVideo
 	{
 		#region Fields
-		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		private const int MEDIA_CREATED_FIELD = 208;
+		private const int DATE_RELEASED_FIELD = 209;
 		public DateTime CreationTime;
-		public DateTime DateTaken;
+		public DateTime DateReleased;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
+		public DateTime MediaCreated;
 		public DateTime MinDateTime;
 		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
 		public long Size;
@@ -42,28 +42,75 @@ namespace Yutaka.IO
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
-			SetDateTaken();
+			SetMediaCreated();
+			SetDateReleased();
 			SetMinDateTime();
 			SetNewFolderAndFilename();
 		}
 
-		// Retrieves the datetime WITHOUT loading the whole image //
-		private void SetDateTaken()
+		private void SetMediaCreated()
 		{
-			var r = new Regex(":");
-
 			try {
-				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
-					using (var img = Image.FromStream(fs, false, false)) {
-						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
-						var dateTaken = r.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-						DateTaken = DateTime.Parse(dateTaken);
-					}
+				var shell = new Shell();
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
+				var label = folder.GetDetailsOf(null, MEDIA_CREATED_FIELD);
+
+				if (label.ToUpper().Equals("MEDIA CREATED")) {
+					var value = folder.GetDetailsOf(file, MEDIA_CREATED_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
+					MediaCreated = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Media Created field", MEDIA_CREATED_FIELD);
+					Console.Write("\n**********");
+					MediaCreated = new DateTime();
 				}
 			}
 
 			catch (Exception) {
-				DateTaken = new DateTime();
+				MediaCreated = new DateTime();
+			}
+		}
+
+		private void SetDateReleased()
+		{
+			try {
+				var shell = new Shell();
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
+				var label = folder.GetDetailsOf(null, DATE_RELEASED_FIELD);
+
+				if (label.ToUpper().Equals("DATE RELEASED")) {
+					var value = folder.GetDetailsOf(file, DATE_RELEASED_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
+					DateReleased = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Date Released field", DATE_RELEASED_FIELD);
+					Console.Write("\n**********");
+					DateReleased = new DateTime();
+				}
+			}
+
+			catch (Exception) {
+				DateReleased = new DateTime();
 			}
 		}
 
@@ -71,8 +118,11 @@ namespace Yutaka.IO
 		{
 			MinDateTime = DateTime.Now;
 
-			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
-				MinDateTime = DateTaken; // prioritize DateTaken //
+			if (MediaCreated != null && MinDateTimeThreshold < MediaCreated && MediaCreated < MinDateTime)
+				MinDateTime = MediaCreated; // prioritize MediaCreated //
+
+			else if (DateReleased != null && MinDateTimeThreshold < DateReleased && DateReleased < MinDateTime)
+				MinDateTime = DateReleased; // prioritize DateReleased //
 
 			else {
 				if (CreationTime != null && MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
@@ -148,8 +198,8 @@ namespace Yutaka.IO
 				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
 			};
 
-			for (int i = 0; i < specialFolders1.Length/2; i++) {
-				if (FullName.ToUpper().Contains(specialFolders1[i,0])) {
+			for (int i = 0; i < specialFolders1.Length / 2; i++) {
+				if (FullName.ToUpper().Contains(specialFolders1[i, 0])) {
 					if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
 						NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
 					else
@@ -170,7 +220,7 @@ namespace Yutaka.IO
 			};
 
 			for (int i = 0; i < specialFolders2.Length / 2; i++) {
-				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i,0]))) {
+				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i, 0]))) {
 					if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
 						NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
 					else
@@ -184,7 +234,7 @@ namespace Yutaka.IO
 
 			#region Default: Everything else
 			int year;
-			if (ParentFolder.Equals("Camera") || ParentFolder.Equals("Images") || ParentFolder.Equals("Pictures") || ParentFolder.Equals("_Unprocessed") || ParentFolder.Equals("_Process These") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
+			if (ParentFolder.Equals("Videos") || ParentFolder.Equals("Anime") || ParentFolder.Equals("Movies") || ParentFolder.Equals("Music Videos") || ParentFolder.Equals("TV") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
 				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
 			else
 				NewFolder = String.Format(@"{0:yyyy}\{1}\", MinDateTime, ParentFolder);
