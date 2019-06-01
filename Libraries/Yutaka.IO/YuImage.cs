@@ -106,6 +106,7 @@ namespace Yutaka.IO
 				{ @"THANK YOU", @"Receipts\", },
 				{ @"CHECKOUT", @"Receipts\", },
 				{ @"ITINERAR", @"Itineraries\", },
+				{ @"ME\USING", @"zMe\Using\", },
 				{ @"MESSAGES", @"yyyy\Messsages\", },
 				{ @"PATRICIA", @"z\Patricia\", },
 				{ @"PC GAMER", @"Magazines\PC Gamer\", },
