@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Shell32;
 
 namespace Yutaka.IO
 {
@@ -51,7 +50,8 @@ namespace Yutaka.IO
 		private void SetMediaCreated()
 		{
 			try {
-				var shell = new Shell();
+				var CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
 				var folder = shell.NameSpace(DirectoryName);
 				var file = folder.ParseName(Name);
 				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
@@ -84,7 +84,8 @@ namespace Yutaka.IO
 		private void SetDateReleased()
 		{
 			try {
-				var shell = new Shell();
+				var CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
 				var folder = shell.NameSpace(DirectoryName);
 				var file = folder.ParseName(Name);
 				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
@@ -103,7 +104,7 @@ namespace Yutaka.IO
 
 				else {
 					Console.Write("\n**********");
-					Console.Write("\n{0} is NOT the Date Released field", DATE_RELEASED_FIELD);
+					Console.Write("\n{0} is NOT the Date Relased field", DATE_RELEASED_FIELD);
 					Console.Write("\n**********");
 					DateReleased = new DateTime();
 				}

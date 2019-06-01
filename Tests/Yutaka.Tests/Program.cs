@@ -54,9 +54,47 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuImage();
+			Test_YuVideo();
 			EndProgram();
 		}
+
+		#region Test YuVideo
+		private static void Test_YuVideo()
+		{
+			var deleteFile = false; // true/false //
+			consoleOut = !deleteFile;
+			var source = @"C:\Videos\";
+			var dest = @"G:\Pictures\";
+
+			Directory.CreateDirectory(dest);
+
+			YuVideo vid;
+			var videoExtensions = new Regex(".3gp|.asf|.avi|.f4a|.f4b|.f4v|.flv|.m4a|.m4b|.m4r|.m4v|.mov|.mp4|.mpeg|.mpg|.webm|.wma|.wmv", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+			var videos = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => videoExtensions.IsMatch(Path.GetExtension(x))).ToList();
+
+			for (int i = 0; i < videos.Count; i++) {
+				vid = new YuVideo(videos[i]);
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}) {1}", ++totalCount, videos[i]);
+					Console.Write("\n     CreationTime: {0}", vid.CreationTime);
+					Console.Write("\n   LastAccessTime: {0}", vid.LastAccessTime);
+					Console.Write("\n    LastWriteTime: {0}", vid.LastWriteTime);
+					Console.Write("\n     MediaCreated: {0}", vid.MediaCreated);
+					Console.Write("\n     DateReleased: {0}", vid.DateReleased);
+					Console.Write("\n      MinDateTime: {0}", vid.MinDateTime);
+					Console.Write("\n");
+					Console.Write("\n   ParentFolder: {0}", vid.ParentFolder);
+					Console.Write("\n   NewFolder: {0}", vid.NewFolder);
+					Console.Write("\n   NewFilename: {0}", vid.NewFilename);
+				}
+
+				//Directory.CreateDirectory(String.Format("{0}{1}", dest, vid.NewFolder));
+				//_fileUtil.Move(videos[i], String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), deleteFile);
+				//_fileUtil.Redate(String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), vid.MinDateTime);
+			}
+		}
+		#endregion Test YuVideo
 
 		#region Test YuImage
 		private static void Test_YuImage()
