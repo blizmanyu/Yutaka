@@ -8,6 +8,8 @@ namespace Yutaka.IO
 		#region Fields
 		private const int MEDIA_CREATED_FIELD = 208;
 		private const int DATE_RELEASED_FIELD = 209;
+		private readonly Guid CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
+		private char[] charactersToRemove = new char[] { (char) 8206, (char) 8207 };
 		public DateTime CreationTime;
 		public DateTime DateReleased;
 		public DateTime LastAccessTime;
@@ -50,11 +52,9 @@ namespace Yutaka.IO
 		private void SetMediaCreated()
 		{
 			try {
-				var CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
 				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
 				var folder = shell.NameSpace(DirectoryName);
 				var file = folder.ParseName(Name);
-				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
 				var label = folder.GetDetailsOf(null, MEDIA_CREATED_FIELD);
 
 				if (label.ToUpper().Equals("MEDIA CREATED")) {
@@ -84,11 +84,9 @@ namespace Yutaka.IO
 		private void SetDateReleased()
 		{
 			try {
-				var CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
 				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
 				var folder = shell.NameSpace(DirectoryName);
 				var file = folder.ParseName(Name);
-				var charactersToRemove = new char[] { (char) 8206, (char) 8207 };
 				var label = folder.GetDetailsOf(null, DATE_RELEASED_FIELD);
 
 				if (label.ToUpper().Equals("DATE RELEASED")) {
