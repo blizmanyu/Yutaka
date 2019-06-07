@@ -63,8 +63,8 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Office\Vids\Videos\_Test\";
-			var dest = @"E:\Office\Processed 2019 0601 0113\";
+			var source = @"G:\asdfasdf\";
+			var dest = @"G:\asdfasdf\";
 
 			Directory.CreateDirectory(dest);
 
