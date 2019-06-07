@@ -193,7 +193,15 @@ namespace Yutaka.IO
 				return;
 			}
 
-			FastMove(source, destination, deleteSource);
+			if (deleteSource) { // Move, not copy //
+				if (source.Substring(0, 1).ToUpper().Equals(destination.Substring(0, 1).ToUpper()))
+					new FileInfo(source).MoveTo(destination);
+				else
+					FastMove(source, destination, deleteSource);
+			}
+
+			else // Copy, not move //
+				FastMove(source, destination, deleteSource);
 		}
 		#endregion Move
 
