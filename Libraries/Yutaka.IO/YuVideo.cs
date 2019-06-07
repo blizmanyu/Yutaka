@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace Yutaka.IO
@@ -155,7 +156,8 @@ namespace Yutaka.IO
 
 			#region Default: Everything else
 			int year;
-			if (ParentFolder.Equals("Videos") || ParentFolder.Equals("Anime") || ParentFolder.Equals("Movies") || ParentFolder.Equals("Music Videos") || ParentFolder.Equals("TV") || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
+			var ignoreList = new List<string> { "TV", "VIDEOS", "ANIME", "MOVIES", "MUSIC VIDEOS", "TEST", "_TEST", };
+			if (ignoreList.Exists(x => ParentFolder.ToUpper().Equals(x)) || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
 				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
 			else
 				NewFolder = String.Format(@"{0:yyyy}\{1}\", MinDateTime, ParentFolder);

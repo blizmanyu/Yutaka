@@ -61,9 +61,9 @@ namespace Yutaka.Tests
 		#region Test YuVideo
 		private static void Test_YuVideo()
 		{
-			var deleteFile = false; // true/false //
+			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Office\Processed\2009\";
+			var source = @"E:\Office\Vids\Videos\_Test\";
 			var dest = @"E:\Office\Processed 2019 0601 0113\";
 
 			Directory.CreateDirectory(dest);
