@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Text;
@@ -30,6 +31,7 @@ namespace Yutaka.IO
 		public YuImage(string filename)
 		{
 			var fi = new FileInfo(filename);
+			fi.IsReadOnly = false;
 			try {
 				CreationTime = fi.CreationTime;
 			}
@@ -45,10 +47,10 @@ namespace Yutaka.IO
 			}
 			Size = fi.Length;
 			DirectoryName = fi.DirectoryName;
-			Extension = fi.Extension.ToLower();
-			FullName = fi.FullName;
-			Name = fi.Name;
-			NameWithoutExtension = Name.Replace(fi.Extension, "");
+			Extension = fi.Extension;
+			FullName = fi.FullName.Replace(Extension, Extension.ToLower());
+			Name = fi.Name.Replace(Extension, Extension.ToLower());
+			NameWithoutExtension = fi.Name.Replace(Extension, "");
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
