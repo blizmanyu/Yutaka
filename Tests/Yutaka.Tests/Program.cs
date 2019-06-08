@@ -58,13 +58,24 @@ namespace Yutaka.Tests
 			EndProgram();
 		}
 
+		#region Test FileUtil.DeleteAllThumbsDb()
+		private static void Test_FileUtil_DeleteAllThumbsDb()
+		{
+			consoleOut = true;
+			var folder = @"E:\Backups\From Sony Vaio 2015 1225 1532\PhotoFucket\preciouso23_Bucket\Olga\";
+			var count = _fileUtil.DeleteAllThumbsDb(folder);
+			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
+		}
+		#endregion Test FileUtil.DeleteAllThumbsDb()
+
 		#region Test YuVideo
 		private static void Test_YuVideo()
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\asdfasdf\";
-			var dest = @"E:\asdfasdf\";
+			var source = @"E:\Backups\From Sony Vaio 2015 1225 1532\from Xperia Arc 20120123\handcent\download\";
+			var dest = @"G:\Pictures\";
+			//var dest = @"E:\Office\Processed\";
 
 			Directory.CreateDirectory(dest);
 
@@ -101,7 +112,7 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Backups\From Acer Aspire 2015 1113 0019\Mm\SteamGirl\";
+			var source = @"E:\Backups\From Sony Vaio 2015 1225 1532\PhotoFucket\preciouso23_Bucket\Olga\";
 			var dest = @"G:\Images\";
 
 			Directory.CreateDirectory(dest);
@@ -130,6 +141,9 @@ namespace Yutaka.Tests
 				_fileUtil.Move(images[i], String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), deleteFile);
 				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, img.NewFolder, img.NewFilename), img.MinDateTime);
 			}
+
+			var count = _fileUtil.DeleteAllThumbsDb(source);
+			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
 		#endregion Test YuImage
 

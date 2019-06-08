@@ -296,6 +296,28 @@ namespace Yutaka.IO
 			}
 		}
 
+		public int DeleteAllThumbsDb(string folderPath, SearchOption searchOption=SearchOption.AllDirectories)
+		{
+			var deletedCount = 0;
+			var files = Directory.EnumerateFiles(folderPath, "Thumbs.db", searchOption).ToList();
+			
+			try {
+				for (int i = 0; i < files.Count; i++) {
+					File.Delete(files[i]);
+					deletedCount++;
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in FileUtil.DeleteAllThumbsDb(string folderPath='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, folderPath, searchOption));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.DeleteAllThumbsDb(string folderPath='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, folderPath, searchOption));
+			}
+
+			return deletedCount;
+		}
+
 		public void DeleteFiles(string folder, string extension)
 		{
 			if (String.IsNullOrEmpty(folder))
