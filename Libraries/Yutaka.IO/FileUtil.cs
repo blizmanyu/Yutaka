@@ -177,6 +177,8 @@ namespace Yutaka.IO
 				throw new Exception("<source> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
 			if (String.IsNullOrWhiteSpace(destination))
 				throw new Exception("<destination> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
+			if (source.ToUpper().Equals(destination.ToUpper()))
+				return;
 
 			Directory.CreateDirectory(Path.GetDirectoryName(destination));
 
