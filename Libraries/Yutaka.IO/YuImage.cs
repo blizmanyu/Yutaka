@@ -103,6 +103,7 @@ namespace Yutaka.IO
 				{ @"APARTMENT", @"Apartment\", },
 				{ @"INSTAGRAM", @"z\Instagram\", },
 				{ @"MAXIMUMPC", @"Magazines\Maximum PC\", },
+				{ @"STEAMGIRL", @"z\Steamgirl\PARENTFOLDER\", },
 				{ @"THANK YOU", @"Receipts\", },
 				{ @"CHECKOUT", @"Receipts\", },
 				{ @"ITINERAR", @"Itineraries\", },
@@ -152,6 +153,8 @@ namespace Yutaka.IO
 				if (FullName.ToUpper().Contains(specialFolders1[i,0])) {
 					if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
 						NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
+					else if (specialFolders1[i, 1].Contains("PARENTFOLDER"))
+						NewFolder = specialFolders1[i, 1].Replace("PARENTFOLDER", ParentFolder);
 					else
 						NewFolder = specialFolders1[i, 1];
 

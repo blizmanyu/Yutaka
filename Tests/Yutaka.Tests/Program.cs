@@ -54,7 +54,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuVideo();
+			Test_YuImage();
 			EndProgram();
 		}
 
@@ -63,8 +63,8 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"G:\asdfasdf\";
-			var dest = @"G:\asdfasdf\";
+			var source = @"E:\asdfasdf\";
+			var dest = @"E:\asdfasdf\";
 
 			Directory.CreateDirectory(dest);
 
@@ -99,10 +99,10 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = true; // true/false //
+			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"G:\Pictures\_Unprocessed\";
-			var dest = @"G:\Pictures\";
+			var source = @"E:\Backups\From Acer 2015 1222 1857\Mm\";
+			var dest = @"G:\Images\";
 
 			Directory.CreateDirectory(dest);
 
