@@ -101,7 +101,7 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Backups\From Acer 2015 1222 1857\Mm\";
+			var source = @"E:\Backups\From Acer Aspire 2015 1113 0019\Mm\SteamGirl\";
 			var dest = @"G:\Images\";
 
 			Directory.CreateDirectory(dest);

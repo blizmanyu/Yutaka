@@ -30,9 +30,19 @@ namespace Yutaka.IO
 		public YuImage(string filename)
 		{
 			var fi = new FileInfo(filename);
-			CreationTime = fi.CreationTime;
+			try {
+				CreationTime = fi.CreationTime;
+			}
+			catch (Exception) {
+				CreationTime = new DateTime();
+			}
 			LastAccessTime = fi.LastAccessTime;
-			LastWriteTime = fi.LastWriteTime;
+			try {
+				LastWriteTime = fi.LastWriteTime;
+			}
+			catch (Exception) {
+				LastWriteTime = new DateTime();
+			}
 			Size = fi.Length;
 			DirectoryName = fi.DirectoryName;
 			Extension = fi.Extension.ToLower();
