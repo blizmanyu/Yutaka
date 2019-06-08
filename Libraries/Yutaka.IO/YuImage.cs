@@ -154,6 +154,7 @@ namespace Yutaka.IO
 				{ @"LEAH", @"z\Leah\", },
 				{ @"LINE", @"yyyy\Line\", },
 				{ @"MAPS", @"yyyy\Maps\", },
+				{ @"OLGA", @"z\Olga\", },
 				{ @"TURO", @"yyyy\Turo\", },
 				// leave screenshots last //
 				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
