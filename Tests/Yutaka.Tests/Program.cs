@@ -112,8 +112,10 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Backups\From Sony Vaio 2015 1225 1532\PhotoFucket\preciouso23_Bucket\Olga\";
+			var source = @"E:\Backups\From Sony Vaio 2015 1225 1532\Pictures\";
 			var dest = @"G:\Images\";
+			//var source = @"G:\Images\";
+			//var dest = @"G:\Pictures\";
 
 			Directory.CreateDirectory(dest);
 
