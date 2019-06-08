@@ -191,7 +191,7 @@ namespace Yutaka.IO
 			var nameWithoutExtensionUpper = NameWithoutExtension.ToUpper();
 			for (int i = 0; i < Top1000GirlNamesLessThan5Chars.Length; i++) {
 				girlName = Top1000GirlNamesLessThan5Chars[i];
-				if (directoryNameUpper.Contains(String.Format(@"\{0}\", girlName.ToUpper())) || nameWithoutExtensionUpper.Contains(girlName.ToUpper())) {
+				if (directoryNameUpper.Contains(String.Format(@"\{0}\", girlName.ToUpper())) || Regex.IsMatch(NameWithoutExtension, String.Format(@"\b{0}\b", girlName), RegexOptions.IgnoreCase)) {
 					NewFolder = String.Format(@"z\{0}\", girlName);
 					NewFilename = Name;
 					return; // only match one, then return //
@@ -223,8 +223,8 @@ namespace Yutaka.IO
 			#region Default: Everything else
 			int year;
 			var parentFolderUppoer = ParentFolder.ToUpper();
-			var ignoreList = new List<string> { "CAMERA", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", };
-			if (ignoreList.Exists(x => parentFolderUppoer.Equals(x)) || (int.TryParse(ParentFolder, out year) && (MinDateTimeThreshold.Year <= year && year <= DateTime.Now.Year)))
+			var ignoreList = new List<string> { "CAMERA", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", };
+			if (ignoreList.Exists(x => parentFolderUppoer.Equals(x)) || int.TryParse(ParentFolder, out year))
 				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
 			else
 				NewFolder = String.Format(@"{0:yyyy}\{1}\", MinDateTime, ParentFolder);
