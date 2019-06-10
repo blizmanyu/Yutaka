@@ -43,6 +43,7 @@ namespace Yutaka.Tests
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
+		private static Stopwatch stopwatch = new Stopwatch();
 		private static WebUtil _webUtil = new WebUtil();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
@@ -89,24 +90,50 @@ namespace Yutaka.Tests
 		#region Test YuVideo
 		private static void Test_YuVideo()
 		{
-			var deleteFile = true; // true/false //
+			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Office\Processed\2018\";
-			var dest = @"G:\Projects\FileCopier2\Videos\";
+			var source = @"asdfasdf\";
+			var dest = @"asdfasdf\";
 			//var source = @"G:\Images\";
 			//var dest = @"G:\Pictures\z\";
 
 			Directory.CreateDirectory(dest);
 
+			TimeSpan ts, timeRemaining;
 			YuVideo vid;
 			var videoExtensions = new Regex(".3gp|.asf|.avi|.f4a|.f4b|.f4v|.flv|.m4a|.m4b|.m4r|.m4v|.mkv|.mov|.mp4|.mpeg|.mpg|.webm|.wma|.wmv", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 			var videos = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => videoExtensions.IsMatch(Path.GetExtension(x))).ToList();
+			var videosCount = videos.Count;
+			long thisSize = 0;
+			long totalSize = 0;
+			long processedSize = 0;
+			long unprocessedSize = 0;
+			var bytesPerSec = 0.0;
+			var totalSizeStr = "";
+			var processedSizeStr = "";
+			var unprocessedSizeStr = "";
 
-			for (int i = 0; i < videos.Count; i++) {
+			for (int i = 0; i < videosCount; i++) {
+				totalSize += new FileInfo(videos[i]).Length;
+				totalSizeStr = String.Format("{0:n2} GB", totalSize / 1073741824.0);
+			}
+
+			if (consoleOut)
+				Console.Write("\ntotalSize: {0}", totalSizeStr);
+
+			if (totalSize > 107374182400) {
+				Console.Write("\n******* totalSize > 100 GB. Press any key if you're sure you want to continue *******");
+				Console.ReadKey(true);
+			}
+
+			stopwatch.Restart();
+
+			for (int i = 0; i < videosCount; i++) {
 				vid = new YuVideo(videos[i]);
+				thisSize = vid.Size;
 				if (consoleOut) {
 					Console.Write("\n");
-					Console.Write("\n{0}) {1}", ++totalCount, videos[i]);
+					Console.Write("\n{0}/{1}) {2}", ++totalCount, videosCount, videos[i]);
 					Console.Write("\n     CreationTime: {0}", vid.CreationTime);
 					Console.Write("\n   LastAccessTime: {0}", vid.LastAccessTime);
 					Console.Write("\n    LastWriteTime: {0}", vid.LastWriteTime);
@@ -117,11 +144,26 @@ namespace Yutaka.Tests
 					Console.Write("\n   ParentFolder: {0}", vid.ParentFolder);
 					Console.Write("\n   NewFolder: {0}", vid.NewFolder);
 					Console.Write("\n   NewFilename: {0}", vid.NewFilename);
+					Console.Write("\n   Size: {0:n2} GB", thisSize / 1073741824.0);
 				}
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, vid.NewFolder));
 				_fileUtil.Move(videos[i], String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), deleteFile);
 				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, vid.NewFolder, vid.NewFilename), vid.MinDateTime);
+
+				if (consoleOut) {
+					ts = stopwatch.Elapsed;
+					processedSize += thisSize;
+					processedSizeStr = String.Format("{0:n2}", processedSize / 1073741824.0);
+					unprocessedSize = totalSize - processedSize;
+					unprocessedSizeStr = String.Format("{0:n2} GB", unprocessedSize / 1073741824.0);
+					bytesPerSec = processedSize / ts.TotalSeconds;
+					timeRemaining = TimeSpan.FromSeconds(unprocessedSize / bytesPerSec);
+					Console.Write("\n");
+					Console.Write("\n[{0:00}:{1:00}:{2:00}] Processed {3}/{4} ({5:p2})", ts.Hours, ts.Minutes, ts.Seconds, processedSizeStr, totalSizeStr, ((double) processedSize / totalSize));
+					Console.Write("\n  MB per second: {0:n2}", bytesPerSec / 1024.0 / 1024.0);
+					Console.Write("\n  Approx time remaining: {0:00}:{1:00}:{2:00}", timeRemaining.Hours, timeRemaining.Minutes, timeRemaining.Seconds);
+				}
 			}
 		}
 		#endregion Test YuVideo
@@ -129,22 +171,24 @@ namespace Yutaka.Tests
 		#region Test YuImage
 		private static void Test_YuImage()
 		{
-			var deleteFile = true; // true/false //
+			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Office\Vids\";
-			var dest = @"G:\Images\";
+			var source = @"asdfasdf\";
+			var dest = @"asdfsadf\";
 
 			Directory.CreateDirectory(dest);
 
 			YuImage img;
 			var imageExtensions = new Regex(".ai|.bmp|.exif|.gif|.jpg|.jpeg|.nef|.png|.psd|.svg|.tiff|.webp", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
 			var images = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).Where(x => imageExtensions.IsMatch(Path.GetExtension(x))).ToList();
+			var imagesCount = images.Count;
 
-			for (int i = 0; i < images.Count; i++) {
+			for (int i = 0; i < imagesCount; i++) {
 				img = new YuImage(images[i]);
 				if (consoleOut) {
 					Console.Write("\n");
-					Console.Write("\n{0}) {1}", ++totalCount, images[i]);
+					Console.Write("\n{0}/{1} ({2})", ++totalCount, imagesCount, ((double) totalCount / imagesCount).ToString("p2"));
+					Console.Write("\n{0}", images[i]);
 					Console.Write("\n     CreationTime: {0}", img.CreationTime);
 					Console.Write("\n        DateTaken: {0}", img.DateTaken);
 					Console.Write("\n   LastAccessTime: {0}", img.LastAccessTime);
@@ -1253,6 +1297,7 @@ namespace Yutaka.Tests
 			if (consoleOut) {
 				Console.Clear();
 				Console.Write("{0}{1}", DateTime.Now.ToString(TIMESTAMP), log);
+				stopwatch.Start();
 			}
 
 			else {
