@@ -91,8 +91,8 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Office\Vids\";
-			var dest = @"E:\Office\Processed\";
+			var source = @"E:\Office\Processed\2018\";
+			var dest = @"G:\Projects\FileCopier2\Videos\";
 			//var source = @"G:\Images\";
 			//var dest = @"G:\Pictures\z\";
 

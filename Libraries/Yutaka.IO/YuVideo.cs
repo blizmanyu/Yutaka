@@ -32,6 +32,7 @@ namespace Yutaka.IO
 		public YuVideo(string filename)
 		{
 			var fi = new FileInfo(filename);
+			fi.IsReadOnly = false;
 			CreationTime = fi.CreationTime;
 			LastAccessTime = fi.LastAccessTime;
 			LastWriteTime = fi.LastWriteTime;
