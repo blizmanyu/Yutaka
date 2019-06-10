@@ -91,9 +91,10 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"E:\Backups\From Sony Vaio 2015 1225 1532\from Xperia Arc 20120123\handcent\download\";
-			var dest = @"G:\Pictures\";
-			//var dest = @"E:\Office\Processed\";
+			//var source = @"E:\Backups\From Acer Aspire 2015 1113 0019\Pictures\";
+			//var dest = @"G:\Images\";
+			var source = @"G:\Images\";
+			var dest = @"G:\Pictures\z\";
 
 			Directory.CreateDirectory(dest);
 
@@ -130,8 +131,8 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = true; // true/false //
 			consoleOut = !deleteFile;
-			var source = @"G:\Pictures\_Unprocessed\_PROCESS THESE\";
-			var dest = @"G:\Pictures\";
+			var source = @"E:\Office\Vids\";
+			var dest = @"G:\Images\";
 
 			Directory.CreateDirectory(dest);
 

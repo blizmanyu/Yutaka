@@ -138,7 +138,8 @@ namespace Yutaka.IO
 			#region Special Cases
 			var specialFolders1 = new string[,] {
 				// search term, new folder name //
-				{ @"JFUL", @"Jful\", },
+				{ @"_JFUL", @"_Jful\", },
+				{ @"JFUL", @"_Jful\", },
 			};
 
 			for (int i = 0; i < specialFolders1.Length / 2; i++) {
