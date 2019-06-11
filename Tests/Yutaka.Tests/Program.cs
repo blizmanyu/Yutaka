@@ -55,7 +55,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuVideo();
+			Test_YuImage();
 			EndProgram();
 		}
 
@@ -174,7 +174,7 @@ namespace Yutaka.Tests
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
 			var source = @"asdfasdf\";
-			var dest = @"asdfsadf\";
+			var dest = @"asdfasdf\";
 
 			Directory.CreateDirectory(dest);
 
