@@ -55,7 +55,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuImage();
+			Test_YuVideo();
 			EndProgram();
 		}
 
@@ -1326,7 +1326,7 @@ namespace Yutaka.Tests
 			}
 
 			if (consoleOut) {
-				Console.Write("\n");
+				Console.Write("\n\n\n\n\n\n\n****************************");
 				for (int i = 0; i < log.Length; i++) {
 					Console.Write("\n{0}{1}", DateTime.Now.ToString(TIMESTAMP), log[i]);
 				}
