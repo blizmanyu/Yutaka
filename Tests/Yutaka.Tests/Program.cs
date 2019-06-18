@@ -63,8 +63,10 @@ namespace Yutaka.Tests
 		private static void GetMostCommonWordsInString()
 		{
 			consoleOut = true;
+			List<KeyValuePair<string, int>> list;
 			FileInfo fi;
 			StringBuilder sb;
+			int value;
 			string nameWithoutExtension, newName;
 			string[] words;
 			var dict = new Dictionary<string, int>();
@@ -73,52 +75,58 @@ namespace Yutaka.Tests
 
 			for (int i = 0; i < filesCount; i++) {
 				if (consoleOut) {
-					Console.Write("\n");
-					Console.Write("\n{0}/{1}) {2}", ++totalCount, filesCount, files[i]);
+					//Console.Write("\n");
+					//Console.Write("\n{0}/{1}) {2}", ++totalCount, filesCount, files[i]);
 				}
 
 				fi = new FileInfo(files[i]);
 				nameWithoutExtension = fi.Name.Replace(fi.Extension, "");
-				if (consoleOut) { Console.Write("\n  nameWithoutExtension: {0}", nameWithoutExtension); }
 				sb = new StringBuilder();
 
 				foreach (char c in nameWithoutExtension) {
 					if (char.IsLetter(c))
 						sb.Append(c);
 					else
-						sb.Append(" ");
+						sb.Append("_");
 				}
 
 				newName = sb.ToString().Trim();
-				if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
 
-				while (newName.Contains("  "))
-					newName = newName.Replace("  ", " ");
+				while (newName.Contains("__"))
+					newName = newName.Replace("__", "_");
 
-				newName = newName.Trim();
-				if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
-				words = newName.Split(' ');
+				newName = newName.Trim().ToLower();
+				//if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
 
-				foreach (var w in words) {
-					if (dict.Keys.Contains(w))
-						dict[w] = dict[w]++;
-					else
-						dict.Add(w, 1);
+				if (newName.Length > 1) {
+					words = newName.Split('_');
+
+					foreach (var w in words) {
+						if (w.Length > 1) {
+							//Console.Write("\n  w: {0}", w);
+							if (dict.Keys.Contains(w)) {
+								dict[w] += 1;
+							}
+							else
+								dict.Add(w, 1);
+						}
+					}
 				}
 			}
 
-			var list = dict.Where(x => x.Value > 7).OrderByDescending(x => x.Value).ThenBy(y => y.Key).ToList();
+			list = dict.Where(x => x.Value > 7).OrderByDescending(x => x.Value).ThenBy(y => y.Key).ToList();
 			var listCount = list.Count;
 			Console.Write("\n  listCount: {0}", listCount);
+			Console.Write("\n\n");
 
 			if (listCount > 100) {
-				for (int i=0; i< 100; i++)
-					Console.Write("\n  {0}: {1}", list[i].Key, list[i].Value);
+				foreach (KeyValuePair<string, int> kvp in list)
+					Console.Write("\n  {0}: {1}", kvp.Key, kvp.Value);
 			}
 
 			else {
-				for (int i = 0; i < listCount; i++)
-					Console.Write("\n  {0}: {1}", list[i].Key, list[i].Value);
+				foreach (KeyValuePair<string, int> kvp in list)
+					Console.Write("\n  {0}: {1}", kvp.Key, kvp.Value);
 			}
 		}
 		#endregion Test GetMostCommonWordsInString()
