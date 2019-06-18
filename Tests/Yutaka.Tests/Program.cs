@@ -55,9 +55,73 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuVideo();
+			GetMostCommonWordsInString();
 			EndProgram();
 		}
+
+		#region Test GetMostCommonWordsInString()
+		private static void GetMostCommonWordsInString()
+		{
+			consoleOut = true;
+			FileInfo fi;
+			StringBuilder sb;
+			string nameWithoutExtension, newName;
+			string[] words;
+			var dict = new Dictionary<string, int>();
+			var files = Directory.EnumerateFiles(@"G:\Pictures\", "*", SearchOption.AllDirectories).ToList();
+			var filesCount = files.Count;
+
+			for (int i = 0; i < filesCount; i++) {
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}/{1}) {2}", ++totalCount, filesCount, files[i]);
+				}
+
+				fi = new FileInfo(files[i]);
+				nameWithoutExtension = fi.Name.Replace(fi.Extension, "");
+				if (consoleOut) { Console.Write("\n  nameWithoutExtension: {0}", nameWithoutExtension); }
+				sb = new StringBuilder();
+
+				foreach (char c in nameWithoutExtension) {
+					if (char.IsLetter(c))
+						sb.Append(c);
+					else
+						sb.Append(" ");
+				}
+
+				newName = sb.ToString().Trim();
+				if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
+
+				while (newName.Contains("  "))
+					newName = newName.Replace("  ", " ");
+
+				newName = newName.Trim();
+				if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
+				words = newName.Split(' ');
+
+				foreach (var w in words) {
+					if (dict.Keys.Contains(w))
+						dict[w] = dict[w]++;
+					else
+						dict.Add(w, 1);
+				}
+			}
+
+			var list = dict.Where(x => x.Value > 7).OrderByDescending(x => x.Value).ThenBy(y => y.Key).ToList();
+			var listCount = list.Count;
+			Console.Write("\n  listCount: {0}", listCount);
+
+			if (listCount > 100) {
+				for (int i=0; i< 100; i++)
+					Console.Write("\n  {0}: {1}", list[i].Key, list[i].Value);
+			}
+
+			else {
+				for (int i = 0; i < listCount; i++)
+					Console.Write("\n  {0}: {1}", list[i].Key, list[i].Value);
+			}
+		}
+		#endregion Test GetMostCommonWordsInString()
 
 		#region Test Top1000GirlNames()
 		private static void Test_Top1000GirlNames()
