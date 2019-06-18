@@ -66,7 +66,6 @@ namespace Yutaka.Tests
 			List<KeyValuePair<string, int>> list;
 			FileInfo fi;
 			StringBuilder sb;
-			int value;
 			string nameWithoutExtension, newName;
 			string[] words;
 			var dict = new Dictionary<string, int>();
@@ -96,17 +95,14 @@ namespace Yutaka.Tests
 					newName = newName.Replace("__", "_");
 
 				newName = newName.Trim().ToLower();
-				//if (consoleOut) { Console.Write("\n  newName: {0}", newName); }
 
 				if (newName.Length > 1) {
 					words = newName.Split('_');
 
 					foreach (var w in words) {
 						if (w.Length > 1) {
-							//Console.Write("\n  w: {0}", w);
-							if (dict.Keys.Contains(w)) {
+							if (dict.Keys.Contains(w))
 								dict[w] += 1;
-							}
 							else
 								dict.Add(w, 1);
 						}
