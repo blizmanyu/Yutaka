@@ -55,7 +55,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//GetMostCommonWordsInString();
+			EnumerableSorter();
 			EndProgram();
 		}
 
