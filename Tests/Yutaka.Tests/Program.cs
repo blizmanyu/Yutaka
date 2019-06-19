@@ -55,9 +55,18 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			GetMostCommonWordsInString();
+			//GetMostCommonWordsInString();
 			EndProgram();
 		}
+
+		#region private static void EnumerableSorter() - Jun 19, 2019
+		private static void EnumerableSorter()
+		{
+			var array = new string[] { "asdfasdf", "asdfasdf", "asdfasdf", };
+			var list = array.OrderByDescending(x => x.Length).ThenBy(x => x).ToList();
+			Console.Write("\n\n{0}", String.Join("\", \"", list));
+		}
+		#endregion private static void EnumerableSorter()
 
 		#region Test GetMostCommonWordsInString()
 		private static void GetMostCommonWordsInString()
