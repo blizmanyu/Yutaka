@@ -170,7 +170,6 @@ namespace Yutaka.Tests
 			EndProgram();
 		}
 
-		#region private static void EnumerableSorter() - Jun 19, 2019
 		private static void EnumerableSorter()
 		{
 			//var array = new string[] { "asdfasdf", "asdfasdf", "asdfasdf", };
@@ -184,9 +183,7 @@ namespace Yutaka.Tests
 			//foreach (var v in Apps)
 			//	Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"Apps\\{0}\\\", }},", v);
 		}
-		#endregion private static void EnumerableSorter()
 
-		#region Test GetMostCommonWordsInString()
 		private static void GetMostCommonWordsInString()
 		{
 			consoleOut = true;
@@ -253,9 +250,7 @@ namespace Yutaka.Tests
 					Console.Write("\n  {0}: {1}", kvp.Key, kvp.Value);
 			}
 		}
-		#endregion Test GetMostCommonWordsInString()
 
-		#region Test Top1000GirlNames()
 		private static void Test_Top1000GirlNames()
 		{
 			consoleOut = true;
@@ -271,9 +266,7 @@ namespace Yutaka.Tests
 			//Console.Write("\n\n\"{0}\"", String.Join("\", \"", Top1000GirlNamesFalsePositives));
 			Console.Write("\n\nCount: {0}", Top1000GirlNamesFalsePositives.Count);
 		}
-		#endregion Test Top1000GirlNames()
 
-		#region Test FileUtil.DeleteAllThumbsDb()
 		private static void Test_FileUtil_DeleteAllThumbsDb()
 		{
 			consoleOut = true;
@@ -281,9 +274,7 @@ namespace Yutaka.Tests
 			var count = _fileUtil.DeleteAllThumbsDb(folder);
 			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
-		#endregion Test FileUtil.DeleteAllThumbsDb()
 
-		#region Test YuVideo
 		private static void Test_YuVideo()
 		{
 			var deleteFile = false; // true/false //
@@ -362,9 +353,7 @@ namespace Yutaka.Tests
 				}
 			}
 		}
-		#endregion Test YuVideo
 
-		#region Test YuImage
 		private static void Test_YuImage()
 		{
 			var deleteFile = false; // true/false //
@@ -405,7 +394,6 @@ namespace Yutaka.Tests
 			var count = _fileUtil.DeleteAllThumbsDb(source);
 			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
-		#endregion Test YuImage
 
 		#region Test CreateDirectory
 		private static void Test_CreateDirectory()
