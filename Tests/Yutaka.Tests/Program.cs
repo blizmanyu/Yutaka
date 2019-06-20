@@ -40,6 +40,7 @@ namespace Yutaka.Tests
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
 		private static FileUtil _fileUtil = new FileUtil();
+		private static List<string> bots = new List<string> { "bot", "crawler", "spider", "80legs", "baidu", "yahoo! slurp", "ia_archiver", "mediapartners-google", "lwp-trivial", "nederland.zoek", "ahoy", "anthill", "appie", "arale", "araneo", "ariadne", "atn_worldwide", "atomz", "bjaaland", "ukonline", "calif", "combine", "cosmos", "cusco", "cyberspyder", "digger", "grabber", "downloadexpress", "ecollector", "ebiness", "esculapio", "esther", "felix ide", "hamahakki", "kit-fireball", "fouineur", "freecrawl", "desertrealm", "gcreep", "golem", "griffon", "gromit", "gulliver", "gulper", "whowhere", "havindex", "hotwired", "htdig", "ingrid", "informant", "inspectorwww", "iron33", "teoma", "ask jeeves", "jeeves", "image.kapsi.net", "kdd-explorer", "label-grabber", "larbin", "linkidator", "linkwalker", "lockon", "marvin", "mattie", "mediafox", "merzscope", "nec-meshexplorer", "udmsearch", "moget", "motor", "muncher", "muninn", "muscatferret", "mwdsearch", "sharp-info-agent", "webmechanic", "netscoop", "newscan-online", "objectssearch", "orbsearch", "packrat", "pageboy", "parasite", "patric", "pegasus", "phpdig", "piltdownman", "pimptrain", "plumtreewebaccessor", "getterrobo-plus", "raven", "roadrunner", "robbie", "robocrawl", "robofox", "webbandit", "scooter", "search-au", "searchprocess", "senrigan", "shagseeker", "site valet", "skymob", "slurp", "snooper", "speedy", "curl_image_client", "suke", "www.sygol.com", "tach_bw", "templeton", "titin", "topiclink", "udmsearch", "urlck", "valkyrie libwww-perl", "verticrawl", "victoria", "webscout", "voyager", "crawlpaper", "webcatcher", "t-h-u-n-d-e-r-s-t-o-n-e", "webmoose", "pagesinventory", "webquest", "weborama", "fetcher", "webreaper", "webwalker", "winona", "occam", "robi", "fdse", "jobo", "rhcs", "gazz", "dwcp", "yeti", "fido", "wlm", "wolp", "wwwc", "xget", "legs", "curl", "webs", "wget", "sift", "cmc" };
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
 		private static SqlUtil _sqlUtil = new SqlUtil();
@@ -49,22 +50,139 @@ namespace Yutaka.Tests
 		private static int totalCount = 0;
 		private static int errorCountThreshold = 7;
 		private static double errorPerThreshold = 0.07;
-		private static List<string> bots = new List<string> { "bot","crawler","spider","80legs","baidu","yahoo! slurp","ia_archiver","mediapartners-google","lwp-trivial","nederland.zoek","ahoy","anthill","appie","arale","araneo","ariadne","atn_worldwide","atomz","bjaaland","ukonline","calif","combine","cosmos","cusco","cyberspyder","digger","grabber","downloadexpress","ecollector","ebiness","esculapio","esther","felix ide","hamahakki","kit-fireball","fouineur","freecrawl","desertrealm","gcreep","golem","griffon","gromit","gulliver","gulper","whowhere","havindex","hotwired","htdig","ingrid","informant","inspectorwww","iron33","teoma","ask jeeves","jeeves","image.kapsi.net","kdd-explorer","label-grabber","larbin","linkidator","linkwalker","lockon","marvin","mattie","mediafox","merzscope","nec-meshexplorer","udmsearch","moget","motor","muncher","muninn","muscatferret","mwdsearch","sharp-info-agent","webmechanic","netscoop","newscan-online","objectssearch","orbsearch","packrat","pageboy","parasite","patric","pegasus","phpdig","piltdownman","pimptrain","plumtreewebaccessor","getterrobo-plus","raven","roadrunner","robbie","robocrawl","robofox","webbandit","scooter","search-au","searchprocess","senrigan","shagseeker","site valet","skymob","slurp","snooper","speedy","curl_image_client","suke","www.sygol.com","tach_bw","templeton","titin","topiclink","udmsearch","urlck","valkyrie libwww-perl","verticrawl","victoria","webscout","voyager","crawlpaper","webcatcher","t-h-u-n-d-e-r-s-t-o-n-e","webmoose","pagesinventory","webquest", "weborama","fetcher","webreaper","webwalker","winona","occam","robi","fdse","jobo","rhcs","gazz","dwcp","yeti","fido","wlm","wolp","wwwc","xget","legs","curl","webs","wget","sift","cmc" };
+		#region private static string[][] Apps = new string[][] {
+		private static string[][] Apps = new string[][] {
+			new string[] { "Messenger", @"Apps\Messenger\", },
+			new string[] { "Cash App", @"Apps\Cash App\", },
+			new string[] { "Facebook", @"Apps\Facebook\", },
+			new string[] { "Messages", @"Apps\Messages\", },
+			new string[] { "WhatsApp", @"Apps\WhatsApp\", },
+			new string[] { "Bitmoji", @"Apps\Bitmoji\", },
+			new string[] { "CashApp", @"Apps\Cash App\", },
+			new string[] { "Netflix", @"Apps\Netflix\", },
+			new string[] { "Pandora", @"Apps\Pandora\", },
+			new string[] { "Samsung", @"Apps\Samsung\", },
+			new string[] { "Spotify", @"Apps\Spotify\", },
+			new string[] { "Twitter", @"Apps\Twitter\", },
+			new string[] { "YouTube", @"Apps\YouTube\", },
+			new string[] { "Amazon", @"Apps\Amazon\", },
+			new string[] { "Chrome", @"Apps\Chrome\", },
+			new string[] { "TikTok", @"Apps\TikTok\", },
+			new string[] { "Bixby", @"Apps\Bixby\", },
+			new string[] { "Gmail", @"Apps\Gmail\", },
+			new string[] { "Sleep", @"Apps\Sleep\", },
+			new string[] { "Line", @"Apps\Line\", },
+			new string[] { "Maps", @"Apps\Maps\", },
+			new string[] { "Turo", @"Apps\Turo\", },
+			new string[] { "Uber", @"Apps\Uber\", },
+			new string[] { "Consumer Reports", @"Documents\Consumer Reports\", },
+			new string[] { "ConsumerReports", @"Documents\Consumer Reports\", },
+			new string[] { "United Airlines", @"Documents\United Airlines\", },
+			new string[] { "UnitedAirlines", @"Documents\United Airlines\", },
+			new string[] { "Womens Health", @"Documents\Womens Health\", },
+			new string[] { "Confirmation", @"Documents\Receipts\", },
+			new string[] { "Registration", @"Documents\Receipts\", },
+			new string[] { "WomensHealth", @"Documents\Womens Health\", },
+			new string[] { "Itineraries", @"Documents\Receipts\", },
+			new string[] { "Mens Health", @"Documents\Mens Health\", },
+			new string[] { "Green Card", @"Documents\Green Card\", },
+			new string[] { "Maximum PC", @"Documents\Maximum PC\", },
+			new string[] { "MensHealth", @"Documents\Mens Health\", },
+			new string[] { "GreenCard", @"Documents\GreenCard\", },
+			new string[] { "Itinerary", @"Documents\Receipts\", },
+			new string[] { "MaximumPC", @"Documents\Maximum PC\", },
+			new string[] { "Thank You", @"Documents\Receipts\", },
+			new string[] { "Checkout", @"Documents\Receipts\", },
+			new string[] { "Invoices", @"Documents\Invoices\", },
+			new string[] { "Passport", @"Documents\Passport\", },
+			new string[] { "PC Gamer", @"Documents\PC Gamer\", },
+			new string[] { "Receipts", @"Documents\Receipts\", },
+			new string[] { "ThankYou", @"Documents\Receipts\", },
+			new string[] { "Invoice", @"Documents\Invoices\", },
+			new string[] { "License", @"Documents\License\", },
+			new string[] { "PCGamer", @"Documents\PC Gamer\", },
+			new string[] { "Receipt", @"Documents\Receipts\", },
+			new string[] { "Welcome", @"Documents\Receipts\", },
+			new string[] { "Thanks", @"Documents\Receipts\", },
+			new string[] { "Chase", @"Documents\Chase\", },
+			new string[] { "Delta", @"Documents\Delta\", },
+			new string[] { "Maxim", @"Documents\Maxim\", },
+			new string[] { "Scans", @"Documents\Scans\", },
+			new string[] { "ETNT", @"Documents\ETNT\", },
+			new string[] { "FICO", @"Documents\FICO\", },
+			new string[] { "Ikea", @"Documents\Ikea\", },
+			new string[] { "Scan", @"Documents\Scans\", },
+			new string[] { "Car", @"Documents\Car\", },
+			new string[] { "GQ", @"Documents\GQ\", },
+			new string[] { "Clash of Clans", @"Games\Clash of Clans\", },
+			new string[] { "Clash Royale", @"Games\Clash Royale\", },
+			new string[] { "ClashOfClans", @"Games\Clash of Clans\", },
+			new string[] { "ClashRoyale", @"Games\Clash Royale\", },
+			new string[] { "Castle Age", @"Games\Castle Age\", },
+			new string[] { "CastleAge", @"Games\Castle Age\", },
+			new string[] { "Fantasica", @"Games\Fantasica\", },
+			new string[] { "zMe", @"zMe\", },
+			new string[] { "Me", @"zMe\", },
+			new string[] { "Philips Hue", @"Philips Hue\", },
+			new string[] { "PhilipsHue", @"Philips Hue\", },
+			new string[] { "Grooming", @"Grooming\", },
+			new string[] { "Unsplash", @"Unsplash\", },
+			new string[] { "Tattoos", @"Tattoos\", },
+			new string[] { "Nanami", @"Nanami\", },
+			new string[] { "Shirts", @"Shirts\", },
+			new string[] { "Tattoo", @"Tattoos\", },
+			new string[] { "Poses", @"Poses\", },
+			new string[] { "Shirt", @"Shirts\", },
+			new string[] { "Pose", @"Poses\", },
+			new string[] { "PreciousO23_Bucket", @"zz\Olga\", },
+			new string[] { "Video Player", @"zz\Video Player\", },
+			new string[] { "DragonFruit", @"zz\DragonFruit\", },
+			new string[] { "Instagram", @"zz\Instagram\", },
+			new string[] { "Steamgirl", @"zz\Steamgirl\", },
+			new string[] { "Patricia", @"zz\Patricia\", },
+			new string[] { "Snapchat", @"zz\Snapchat\", },
+			new string[] { "OkCupid", @"zz\OkCupid\", },
+			new string[] { "P Shots", @"zz\P Shots\", },
+			new string[] { "Vanessa", @"zz\Vanessa\", },
+			new string[] { "Bumble", @"zz\Bumble\", },
+			new string[] { "London", @"zz\London\", },
+			new string[] { "Tinder", @"zz\Tinder\", },
+			new string[] { "Happn", @"zz\Happn\", },
+			new string[] { "Sarah", @"zz\Sarah\", },
+			new string[] { "Leah", @"zz\Leah\", },
+			new string[] { "Mely", @"zz\Mely\", },
+			new string[] { "Olga", @"zz\Olga\", },
+
+
+
+			//new string[] { "zz", @"zz\", },
+			//new string[] { "Documents", @"Documents\", },
+			//new string[] { "Games", @"Games\", },
+			//new string[] { "Apps", @"Apps\", },
+		};
+		#endregion public string[][] Apps
 		#endregion
 
 		static void Main(string[] args)
 		{
 			StartProgram();
-			EnumerableSorter();
+			Test_YuImage();
 			EndProgram();
 		}
 
 		#region private static void EnumerableSorter() - Jun 19, 2019
 		private static void EnumerableSorter()
 		{
-			var array = new string[] { "asdfasdf", "asdfasdf", "asdfasdf", };
-			var list = array.OrderByDescending(x => x.Length).ThenBy(x => x).ToList();
-			Console.Write("\n\n{0}", String.Join("\", \"", list));
+			//var array = new string[] { "asdfasdf", "asdfasdf", "asdfasdf", };
+			var list = Apps.OrderByDescending(x => x[0].Length).ThenBy(x => x[0]).ToList();
+			Console.Write("\n");
+			//Console.Write("\n{0}", String.Join("\", \"", list));
+
+			foreach (var v in list)
+				Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"{1}\", }},", v[0], v[1]);
+
+			//foreach (var v in Apps)
+			//	Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"Apps\\{0}\\\", }},", v);
 		}
 		#endregion private static void EnumerableSorter()
 
@@ -75,7 +193,7 @@ namespace Yutaka.Tests
 			List<KeyValuePair<string, int>> list;
 			FileInfo fi;
 			StringBuilder sb;
-			string nameWithoutExtension, newName;
+			string nameWithoutExtension, newName, temp;
 			string[] words;
 			var dict = new Dictionary<string, int>();
 			var files = Directory.EnumerateFiles(@"G:\Pictures\", "*", SearchOption.AllDirectories).ToList();
@@ -89,9 +207,10 @@ namespace Yutaka.Tests
 
 				fi = new FileInfo(files[i]);
 				nameWithoutExtension = fi.Name.Replace(fi.Extension, "");
+				temp = fi.FullName.Replace(@"G:\Pictures\", "").Replace(fi.Extension, "");
 				sb = new StringBuilder();
 
-				foreach (char c in nameWithoutExtension) {
+				foreach (char c in temp) {
 					if (char.IsLetter(c))
 						sb.Append(c);
 					else
@@ -119,7 +238,7 @@ namespace Yutaka.Tests
 				}
 			}
 
-			list = dict.Where(x => x.Value > 7).OrderByDescending(x => x.Value).ThenBy(y => y.Key).ToList();
+			list = dict.Where(x => x.Value > 70).OrderByDescending(x => x.Value).ThenBy(y => y.Key).ToList();
 			var listCount = list.Count;
 			Console.Write("\n  listCount: {0}", listCount);
 			Console.Write("\n\n");
@@ -158,7 +277,7 @@ namespace Yutaka.Tests
 		private static void Test_FileUtil_DeleteAllThumbsDb()
 		{
 			consoleOut = true;
-			var folder = @"E:\Backups\From Sony Vaio 2015 1225 1532\PhotoFucket\preciouso23_Bucket\Olga\";
+			var folder = @"asfdasdf\";
 			var count = _fileUtil.DeleteAllThumbsDb(folder);
 			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
