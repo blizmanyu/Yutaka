@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using NLog;
 using Yutaka.Data;
 using Yutaka.Images;
@@ -16,7 +17,6 @@ using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
 using Yutaka.Web;
-using System.Text.RegularExpressions;
 
 namespace Yutaka.Tests
 {
