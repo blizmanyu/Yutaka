@@ -131,6 +131,26 @@ namespace Yutaka.Data
 			}
 		}
 
+		public void StartJob(string connectionString, string jobId)
+		{
+			using (var conn = new SqlConnection(connectionString)) {
+				using (var cmd = new SqlCommand()) {
+					try {
+						cmd.Connection = conn;
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.CommandText = "msdb.dbo.sp_start_job";
+						cmd.Parameters.AddWithValue("@job_id", jobId);
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+
+					catch (Exception ex) {
+						throw ex;
+					}
+				}
+			}
+		}
+
 		public void ToCsv(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			try {
