@@ -187,13 +187,14 @@ namespace Yutaka.Tests
 		private static void GetMostCommonWordsInString()
 		{
 			consoleOut = true;
+			var source = @"asdfasdf\";
 			List<KeyValuePair<string, int>> list;
 			FileInfo fi;
 			StringBuilder sb;
 			string nameWithoutExtension, newName, temp;
 			string[] words;
 			var dict = new Dictionary<string, int>();
-			var files = Directory.EnumerateFiles(@"G:\Pictures\", "*", SearchOption.AllDirectories).ToList();
+			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
 			var filesCount = files.Count;
 
 			for (int i = 0; i < filesCount; i++) {
@@ -204,7 +205,7 @@ namespace Yutaka.Tests
 
 				fi = new FileInfo(files[i]);
 				nameWithoutExtension = fi.Name.Replace(fi.Extension, "");
-				temp = fi.FullName.Replace(@"G:\Pictures\", "").Replace(fi.Extension, "");
+				temp = fi.FullName.Replace(source, "").Replace(fi.Extension, "");
 				sb = new StringBuilder();
 
 				foreach (char c in temp) {
@@ -357,7 +358,8 @@ namespace Yutaka.Tests
 		private static void Test_YuImage()
 		{
 			var deleteFile = false; // true/false //
-			consoleOut = !deleteFile;
+			//consoleOut = !deleteFile;
+			consoleOut = false;
 			var source = @"asdfasdf\";
 			var dest = @"asdfasdf\";
 
