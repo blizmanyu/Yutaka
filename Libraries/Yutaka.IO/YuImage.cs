@@ -18,25 +18,27 @@ namespace Yutaka.IO
 		public DateTime MinDateTime;
 		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
 		public DateTime OldThreshold = DateTime.Now.AddYears(-7);
-		#region public string[][] Apps = new string[][] {
+		#region public string[][] Special = new string[][] {
 		public string[][] Special = new string[][] {
 			new string[] { "PreciousO23_Bucket", @"zz\Olga\", },
 			new string[] { "Consumer Reports", @"Documents\Consumer Reports\", },
 			new string[] { "ConsumerReports", @"Documents\Consumer Reports\", },
-			new string[] { "United Airlines", @"Documents\United Airlines\", },
+			new string[] { "United Airlines", @"Documents\Itineraries\", },
 			new string[] { "Clash of Clans", @"Games\Clash of Clans\", },
-			new string[] { "UnitedAirlines", @"Documents\United Airlines\", },
+			new string[] { "UnitedAirlines", @"Documents\Itineraries\", },
+			new string[] { "Brian Viveros", @"Brian Viveros\", },
 			new string[] { "Clash Royale", @"Games\Clash Royale\", },
 			new string[] { "ClashOfClans", @"Games\Clash of Clans\", },
 			new string[] { "Confirmation", @"Documents\Receipts\", },
-			new string[] { "Registration", @"Documents\Receipts\", },
+			new string[] { "Registration", @"Documents\Registrations\", },
 			new string[] { "Video Player", @"zz\Video Player\", },
 			new string[] { "ClashRoyale", @"Games\Clash Royale\", },
 			new string[] { "DragonFruit", @"zz\DragonFruit\", },
-			new string[] { "Itineraries", @"Documents\Receipts\", },
-			new string[] { "Grooming", @"Grooming\", },
+			new string[] { "Itineraries", @"Documents\Itineraries\", },
+			new string[] { "Grooming", @"Grooming\", }, // higher priority //
 			new string[] { "Womens Health", @"Documents\Womens Health\", },
 			new string[] { "WomensHealth", @"Documents\Womens Health\", },
+			new string[] { "Men's Health", @"Documents\Mens Health\", },
 			new string[] { "Mens Health", @"Documents\Mens Health\", },
 			new string[] { "MensHealth", @"Documents\Mens Health\", },
 			new string[] { "Philips Hue", @"Philips Hue\", },
@@ -44,15 +46,17 @@ namespace Yutaka.IO
 			new string[] { "Green Card", @"Documents\Green Card\", },
 			new string[] { "Maximum PC", @"Documents\Maximum PC\", },
 			new string[] { "PhilipsHue", @"Philips Hue\", },
+			new string[] { "US Airways", @"Documents\Itineraries\", },
 			new string[] { "CastleAge", @"Games\Castle Age\", },
 			new string[] { "Fantasica", @"Games\Fantasica\", },
 			new string[] { "GreenCard", @"Documents\GreenCard\", },
 			new string[] { "Instagram", @"zz\Instagram\", },
-			new string[] { "Itinerary", @"Documents\Receipts\", },
+			new string[] { "Itinerary", @"Documents\Itineraries\", },
 			new string[] { "MaximumPC", @"Documents\Maximum PC\", },
 			new string[] { "Messenger", @"Apps\Messenger\", },
 			new string[] { "Steamgirl", @"zz\Steamgirl\", },
 			new string[] { "Thank You", @"Documents\Receipts\", },
+			new string[] { "USAirways", @"Documents\Itineraries\", },
 			new string[] { "Cash App", @"Apps\Cash App\", },
 			new string[] { "Checkout", @"Documents\Receipts\", },
 			new string[] { "Facebook", @"Apps\Facebook\", },
@@ -83,7 +87,8 @@ namespace Yutaka.IO
 			new string[] { "Vanessa", @"zz\Vanessa\", },
 			new string[] { "Welcome", @"Documents\Receipts\", },
 			new string[] { "YouTube", @"Apps\YouTube\", },
-			new string[] { "Amazon", @"Apps\Amazon\", },
+			new string[] { "Amazon", @"Documents\Amazon\", },
+			new string[] { "Poses", @"Poses\", }, // higher priority //
 			new string[] { "Bumble", @"zz\Bumble\", },
 			new string[] { "Chrome", @"Apps\Chrome\", },
 			new string[] { "London", @"zz\London\", },
@@ -93,23 +98,26 @@ namespace Yutaka.IO
 			new string[] { "Thanks", @"Documents\Receipts\", },
 			new string[] { "TikTok", @"Apps\TikTok\", },
 			new string[] { "Tinder", @"zz\Tinder\", },
+			new string[] { "Alekz", @"zz\Alekz\", },
 			new string[] { "Bixby", @"Apps\Bixby\", },
 			new string[] { "Chase", @"Documents\Chase\", },
 			new string[] { "Delta", @"Documents\Delta\", },
 			new string[] { "Gmail", @"Apps\Gmail\", },
 			new string[] { "Happn", @"zz\Happn\", },
 			new string[] { "Maxim", @"Documents\Maxim\", },
-			new string[] { "Poses", @"Poses\", },
 			new string[] { "Sarah", @"zz\Sarah\", },
 			new string[] { "Scans", @"Documents\Scans\", },
 			new string[] { "Shirt", @"Shirts\", },
 			new string[] { "Sleep", @"Apps\Sleep\", },
+			new string[] { "Alex", @"zz\Alekz\", },
+			new string[] { "Arpy", @"zz\Arpy\", },
 			new string[] { "ETNT", @"Documents\ETNT\", },
 			new string[] { "FICO", @"Documents\FICO\", },
 			new string[] { "Ikea", @"Documents\Ikea\", },
 			new string[] { "Leah", @"zz\Leah\", },
 			new string[] { "Line", @"Apps\Line\", },
 			new string[] { "Maps", @"Apps\Maps\", },
+			new string[] { "Marc", @"zz\Olga\", },
 			new string[] { "Mely", @"zz\Mely\", },
 			new string[] { "Olga", @"zz\Olga\", },
 			new string[] { "Pose", @"Poses\", },
@@ -120,10 +128,11 @@ namespace Yutaka.IO
 			new string[] { "zMe", @"zMe\", },
 			new string[] { "GQ", @"Documents\GQ\", },
 			new string[] { "Me", @"zMe\", },
+			new string[] { "MH", @"Documents\Mens Health\", },
 			// Keep these last //
 			new string[] { "zz", @"zz\", },
-			new string[] { "Screenshots", @"Screenshots\", },
-			new string[] { "Screenshot", @"Screenshots\", },
+			new string[] { "Screenshots", @"Documents\Screenshots\", },
+			new string[] { "Screenshot", @"Documents\Screenshots\", },
 			new string[] { "Documents", @"Documents\", },
 			new string[] { "Games", @"Games\", },
 			new string[] { "Apps", @"Apps\", },
@@ -166,6 +175,8 @@ namespace Yutaka.IO
 			FullName = fi.FullName.Replace(Extension, Extension.ToLower());
 			Name = fi.Name.Replace(Extension, Extension.ToLower());
 			NameWithoutExtension = fi.Name.Replace(Extension, "");
+			NewFilename = Name;
+			NewFolder = "";
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
@@ -212,172 +223,183 @@ namespace Yutaka.IO
 
 		private void SetNewFolderAndFilename()
 		{
+			int result;
 			var fullnameUpper = FullName.ToUpper();
-			NewFilename = Name;
-			var regexBackslash = new Regex(@"\\");
+			var parentFolderUpper = ParentFolder.ToUpper();
+			var bypassList = new List<string> { "CAMERA", "100ANDRO", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", "APPS", "GAMES", "DOCUMENTS", "SCREENSHOT", "SCREENSHOTS", };
 
 			#region Special
 			for (int i = 0; i < Special.Length; i++) {
 				if (Regex.IsMatch(FullName, String.Format(@"[^a-zA-Z]{0}[^a-zA-Z]", Special[i][0]), RegexOptions.IgnoreCase)) {
-					if (Special[i][1].ToUpper().Contains(ParentFolder.ToUpper()))
+					if (Special[i][1].ToUpper().Contains(parentFolderUpper))
+						NewFolder = Special[i][1];
+					else if (bypassList.Exists(x => x.Equals(parentFolderUpper) || int.TryParse(ParentFolder, out result)))
 						NewFolder = Special[i][1];
 					else
 						NewFolder = String.Format(@"{0}{1}\", Special[i][1], ParentFolder);
 
-					if (MinDateTime < OldThreshold)
-						NewFolder = regexBackslash.Replace(NewFolder, @"\Old\", 1);
+					if (MinDateTime < OldThreshold) {
+						if (NewFolder.StartsWith(@"Apps\"))
+							NewFolder = NewFolder.Replace(@"Apps\", @"Apps\Old\");
+						else if (NewFolder.StartsWith(@"zMe\"))
+							NewFolder = NewFolder.Replace(@"zMe\", @"zMe\Old\");
+						else if (NewFolder.StartsWith(@"Games\"))
+							NewFolder = NewFolder.Replace(@"Games\", @"Games\Old\");
+						else if (NewFolder.StartsWith(@"Documents\"))
+							NewFolder = NewFolder.Replace(@"Documents\", @"Documents\Old\");
+					}
 
 					return; // only match one, then return //
 				}
 			}
 			#endregion Special
 
-			#region Case: 4 or more characters
-			var specialFolders1 = new string[,] {
-				// search term,			new folder name //
-				{ @"PRECIOUSO23_BUCKET", @"z\Olga\", },
-				{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
-				{ @"CONSUMER REPORT", @"Magazines\Consumer Reports\", },
-				{ @"UNITED AIRLINES", @"yyyy\United Airlines\", },
-				{ @"CLASH OF CLANS", @"Games\Clash of Clans\", },
-				{ @"CLASH ROYALE", @"Games\Clash Royale\", },
-				{ @"CONFIRMATION", @"Receipts\", },
-				{ @"VIDEO PLAYER", @"z\Video Player\", },
-				{ @"DRAGONFRUIT", @"z\DragonFruit\", },
-				{ @"GROOMING", @"Grooming\", },
-				{ @"WOMENS HEALTH", @"Magazines\Womens Health\", },
-				{ @"MENS HEALTH", @"Magazines\Mens Health\", },
-				{ @"PHILIPS HUE", @"Philips Hue\", },
-				{ @"CASTLE AGE", @"Games\Castle Age\", },
-				{ @"MAXIMUM PC", @"Magazines\Maximum PC\", },
-				{ @"APARTMENT", @"Apartment\", },
-				{ @"FANTASICA", @"Games\Fantasica\", },
-				{ @"INSTAGRAM", @"z\Instagram\", },
-				{ @"MAXIMUMPC", @"Magazines\Maximum PC\", },
-				{ @"STEAMGIRL", @"z\Steamgirl\PARENTFOLDER\", },
-				{ @"THANK YOU", @"Receipts\", },
-				{ @"CHECKOUT", @"Receipts\", },
-				{ @"ITINERAR", @"Itineraries\", },
-				{ @"MESSAGES", @"yyyy\Messsages\", },
-				{ @"PC GAMER", @"Magazines\PC Gamer\", },
-				{ @"SNAPCHAT", @"z\Snapchat\", },
-				{ @"UNSPLASH", @"Unsplash\", },
-				{ @"INVOICE", @"Invoices\", },
-				{ @"SAMSUNG", @"yyyy\Samsung\", },
-				{ @"POSE", @"Poses\", },
-				{ @"OKCUPID", @"z\OkCupid\", },
-				{ @"P SHOTS", @"z\p shots\", },
-				{ @"RECEIPT", @"Receipts\", },
-				{ @"WELCOME", @"Receipts\", },
-				// Less than 7 characters //
-				{ @"BUMBLE", @"z\Bumble\", },
-				{ @"CHROME", @"yyyy\Chrome\", },
-				{ @"NANAMI", @"Nanami\", },
-				{ @"TATTOO", @"Tattoos\", },
-				{ @"THANKS", @"Receipts\", },
-				{ @"TIKTOK", @"z\TikTok\", },
-				{ @"TINDER", @"z\Tinder\", },
-				{ @"BIXBY", @"yyyy\Bixby\", },
-				{ @"CHASE", @"yyyy\Chase\", },
-				{ @"DELTA", @"yyyy\Delta\", },
-				{ @"GMAIL", @"yyyy\Gmail\", },
-				{ @"HAPPN", @"z\Happn\", },
-				{ @"MAXIM", @"Magazines\Maxim\", },
-				{ @"SHIRT", @"Shirts\", },
-				{ @"SLEEP", @"yyyy\Sleep\", },
-				{ @"ETNT", @"Magazines\ETNT\", },
-				{ @"GAME", @"Games\", },
-				{ @"IKEA", @"Ikea\", },
-				{ @"LINE", @"yyyy\Line\", },
-				{ @"MAPS", @"yyyy\Maps\", },
-				{ @"TURO", @"yyyy\Turo\", },
-				// leave screenshots last //
-				{ @"SCREENSHOT", @"yyyy\Screenshots\", },
-			};
+			#region Commented out Jun 21, 2019
+			//#region Case: 4 or more characters
+			//var specialFolders1 = new string[,] {
+			//	// search term,			new folder name //
+			//	{ @"PRECIOUSO23_BUCKET", @"z\Olga\", },
+			//	{ @"MICHAEL CONTURSI", @"Michael Contursi\", },
+			//	{ @"CONSUMER REPORT", @"Magazines\Consumer Reports\", },
+			//	{ @"UNITED AIRLINES", @"yyyy\United Airlines\", },
+			//	{ @"CLASH OF CLANS", @"Games\Clash of Clans\", },
+			//	{ @"CLASH ROYALE", @"Games\Clash Royale\", },
+			//	{ @"CONFIRMATION", @"Receipts\", },
+			//	{ @"VIDEO PLAYER", @"z\Video Player\", },
+			//	{ @"DRAGONFRUIT", @"z\DragonFruit\", },
+			//	{ @"GROOMING", @"Grooming\", },
+			//	{ @"WOMENS HEALTH", @"Magazines\Womens Health\", },
+			//	{ @"MENS HEALTH", @"Magazines\Mens Health\", },
+			//	{ @"PHILIPS HUE", @"Philips Hue\", },
+			//	{ @"CASTLE AGE", @"Games\Castle Age\", },
+			//	{ @"MAXIMUM PC", @"Magazines\Maximum PC\", },
+			//	{ @"APARTMENT", @"Apartment\", },
+			//	{ @"FANTASICA", @"Games\Fantasica\", },
+			//	{ @"INSTAGRAM", @"z\Instagram\", },
+			//	{ @"MAXIMUMPC", @"Magazines\Maximum PC\", },
+			//	{ @"STEAMGIRL", @"z\Steamgirl\PARENTFOLDER\", },
+			//	{ @"THANK YOU", @"Receipts\", },
+			//	{ @"CHECKOUT", @"Receipts\", },
+			//	{ @"ITINERAR", @"Itineraries\", },
+			//	{ @"MESSAGES", @"yyyy\Messsages\", },
+			//	{ @"PC GAMER", @"Magazines\PC Gamer\", },
+			//	{ @"SNAPCHAT", @"z\Snapchat\", },
+			//	{ @"UNSPLASH", @"Unsplash\", },
+			//	{ @"INVOICE", @"Invoices\", },
+			//	{ @"SAMSUNG", @"yyyy\Samsung\", },
+			//	{ @"POSE", @"Poses\", },
+			//	{ @"OKCUPID", @"z\OkCupid\", },
+			//	{ @"P SHOTS", @"z\p shots\", },
+			//	{ @"RECEIPT", @"Receipts\", },
+			//	{ @"WELCOME", @"Receipts\", },
+			//	// Less than 7 characters //
+			//	{ @"BUMBLE", @"z\Bumble\", },
+			//	{ @"CHROME", @"yyyy\Chrome\", },
+			//	{ @"NANAMI", @"Nanami\", },
+			//	{ @"TATTOO", @"Tattoos\", },
+			//	{ @"THANKS", @"Receipts\", },
+			//	{ @"TIKTOK", @"z\TikTok\", },
+			//	{ @"TINDER", @"z\Tinder\", },
+			//	{ @"BIXBY", @"yyyy\Bixby\", },
+			//	{ @"CHASE", @"yyyy\Chase\", },
+			//	{ @"DELTA", @"yyyy\Delta\", },
+			//	{ @"GMAIL", @"yyyy\Gmail\", },
+			//	{ @"HAPPN", @"z\Happn\", },
+			//	{ @"MAXIM", @"Magazines\Maxim\", },
+			//	{ @"SHIRT", @"Shirts\", },
+			//	{ @"SLEEP", @"yyyy\Sleep\", },
+			//	{ @"ETNT", @"Magazines\ETNT\", },
+			//	{ @"GAME", @"Games\", },
+			//	{ @"IKEA", @"Ikea\", },
+			//	{ @"LINE", @"yyyy\Line\", },
+			//	{ @"MAPS", @"yyyy\Maps\", },
+			//	{ @"TURO", @"yyyy\Turo\", },
+			//	// leave screenshots last //
+			//	{ @"SCREENSHOT", @"yyyy\Screenshots\", },
+			//};
 
-			for (int i = 0; i < specialFolders1.Length/2; i++) {
-				if (fullnameUpper.Contains(specialFolders1[i,0])) {
-					if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
-						NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
-					else if (specialFolders1[i, 1].Contains("PARENTFOLDER"))
-						NewFolder = specialFolders1[i, 1].Replace("PARENTFOLDER", ParentFolder);
-					else
-						NewFolder = specialFolders1[i, 1];
+			//for (int i = 0; i < specialFolders1.Length/2; i++) {
+			//	if (fullnameUpper.Contains(specialFolders1[i,0])) {
+			//		if (specialFolders1[i, 1].StartsWith(@"yyyy\"))
+			//			NewFolder = specialFolders1[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
+			//		else if (specialFolders1[i, 1].Contains("PARENTFOLDER"))
+			//			NewFolder = specialFolders1[i, 1].Replace("PARENTFOLDER", ParentFolder);
+			//		else
+			//			NewFolder = specialFolders1[i, 1];
 
-					NewFilename = Name;
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: 4 or more characters
+			//		NewFilename = Name;
+			//		return; // only match one, then return //
+			//	}
+			//}
+			//#endregion Case: 4 or more characters
 
-			#region Case: Top 1000 Girl Names
-			for (int i = 0; i < Top1000GirlNames.Length; i++) {
-				if (fullnameUpper.Contains(Top1000GirlNames[i].ToUpper())) {
-					NewFolder = String.Format(@"z\{0}\", Top1000GirlNames[i]);
-					NewFilename = Name;
-					return; // only match one, then return //
-				}
-			}
+			//#region Case: Top 1000 Girl Names
+			//for (int i = 0; i < Top1000GirlNames.Length; i++) {
+			//	if (fullnameUpper.Contains(Top1000GirlNames[i].ToUpper())) {
+			//		NewFolder = String.Format(@"z\{0}\", Top1000GirlNames[i]);
+			//		NewFilename = Name;
+			//		return; // only match one, then return //
+			//	}
+			//}
 
-			string girlName;
-			var nameWithoutExtensionUpper = NameWithoutExtension.ToUpper();
-			for (int i = 0; i < Top1000GirlNamesFalsePositives.Length; i++) {
-				girlName = Top1000GirlNamesFalsePositives[i];
-				if (fullnameUpper.Contains(String.Format(@"\{0}\", girlName.ToUpper())) || Regex.IsMatch(NameWithoutExtension, String.Format(@"\b{0}\b", girlName), RegexOptions.IgnoreCase)) {
-					NewFolder = String.Format(@"z\{0}\", girlName);
-					NewFilename = Name;
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: Top 1000 Girl Names
+			//string girlName;
+			//var nameWithoutExtensionUpper = NameWithoutExtension.ToUpper();
+			//for (int i = 0; i < Top1000GirlNamesFalsePositives.Length; i++) {
+			//	girlName = Top1000GirlNamesFalsePositives[i];
+			//	if (fullnameUpper.Contains(String.Format(@"\{0}\", girlName.ToUpper())) || Regex.IsMatch(NameWithoutExtension, String.Format(@"\b{0}\b", girlName), RegexOptions.IgnoreCase)) {
+			//		NewFolder = String.Format(@"z\{0}\", girlName);
+			//		NewFilename = Name;
+			//		return; // only match one, then return //
+			//	}
+			//}
+			//#endregion Case: Top 1000 Girl Names
 
-			#region Case: Me
-			for (int i = 0; i < MeList.Length; i++) {
-				if (Regex.IsMatch(FullName, String.Format(@"\b{0}\b", MeList[i]), RegexOptions.IgnoreCase)) {
-					if (MinDateTime < OldThreshold)
-						NewFolder = @"zMe\Old\";
-					else {
-						if (MeList[i].Equals(ParentFolder))
-							NewFolder = @"zMe\";
-						else
-							NewFolder = String.Format(@"zMe\{0}\", ParentFolder);
-					}
+			//#region Case: Me
+			//for (int i = 0; i < MeList.Length; i++) {
+			//	if (Regex.IsMatch(FullName, String.Format(@"\b{0}\b", MeList[i]), RegexOptions.IgnoreCase)) {
+			//		if (MinDateTime < OldThreshold)
+			//			NewFolder = @"zMe\Old\";
+			//		else {
+			//			if (MeList[i].Equals(ParentFolder))
+			//				NewFolder = @"zMe\";
+			//			else
+			//				NewFolder = String.Format(@"zMe\{0}\", ParentFolder);
+			//		}
 
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: Me
+			//		return; // only match one, then return //
+			//	}
+			//}
+			//#endregion Case: Me
 
-			#region Case: Less than 4 characters
-			// Order these by string length, descending //
-			var specialFolders2 = new string[,] {
-				// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
-				{ "GQ", @"Magazines\GQ\", },
-			};
+			//#region Case: Less than 4 characters
+			//// Order these by string length, descending //
+			//var specialFolders2 = new string[,] {
+			//	// search term, new folder name, new filename // null or empty filename will keep the original name (won't rename it) //
+			//	{ "GQ", @"Magazines\GQ\", },
+			//};
 
-			for (int i = 0; i < specialFolders2.Length / 2; i++) {
-				if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i,0]))) {
-					if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
-						NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
-					else
-						NewFolder = specialFolders2[i, 1];
+			//for (int i = 0; i < specialFolders2.Length / 2; i++) {
+			//	if (FullName.Contains(String.Format(@"\{0}\", specialFolders2[i, 0])) || Name.StartsWith(String.Format("{0} ", specialFolders2[i,0]))) {
+			//		if (specialFolders2[i, 1].StartsWith(@"yyyy\"))
+			//			NewFolder = specialFolders2[i, 1].Replace("yyyy", MinDateTime.ToString("yyyy"));
+			//		else
+			//			NewFolder = specialFolders2[i, 1];
 
-					NewFilename = Name;
-					return; // only match one, then return //
-				}
-			}
-			#endregion Case: Less than 4 characters
+			//		NewFilename = Name;
+			//		return; // only match one, then return //
+			//	}
+			//}
+			//#endregion Case: Less than 4 characters
+			#endregion Commented out Jun 21, 2019
 
 			#region Default: Everything else
-			int year;
-			var parentFolderUppoer = ParentFolder.ToUpper();
-			var ignoreList = new List<string> { "CAMERA", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", };
-			if (ignoreList.Exists(x => parentFolderUppoer.Equals(x)) || int.TryParse(ParentFolder, out year))
-				NewFolder = String.Format(@"{0:yyyy}\", MinDateTime);
-			else
-				NewFolder = String.Format(@"{0:yyyy}\{1}\", MinDateTime, ParentFolder);
+			if (MinDateTime < OldThreshold)
+				NewFolder = @"Old\";
 
-			NewFilename = Name;
+			if (bypassList.Exists(x => x.Equals(parentFolderUpper)) || int.TryParse(ParentFolder, out result))
+				NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+			else
+				NewFolder = String.Format(@"{0}{1}\{2}\", NewFolder, MinDateTime.Year, ParentFolder);
 			#endregion Default: Everything else
 		}
 	}
