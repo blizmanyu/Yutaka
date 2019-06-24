@@ -166,19 +166,20 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuVideo();
+			Test_YuImage();
 			EndProgram();
 		}
 
 		private static void EnumerableSorter()
 		{
-			//var array = new string[] { "asdfasdf", "asdfasdf", "asdfasdf", };
-			var list = Apps.OrderByDescending(x => x[0].Length).ThenBy(x => x[0]).ToList();
+			var bypassList = new List<string> { "CAMERA", "101_PANA", "102_PANA", "103_PANA", "100ANDRO", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", "APPS", "GAMES", "DOCUMENTS", "SCREENSHOT", "SCREENSHOTS", };
+			//var list = Apps.OrderByDescending(x => x[0].Length).ThenBy(x => x[0]).ToList();
+			var list = bypassList.OrderBy(x => x).ToList();
 			Console.Write("\n");
-			//Console.Write("\n{0}", String.Join("\", \"", list));
+			Console.Write("\n{0}", String.Join("\", \"", list));
 
-			foreach (var v in list)
-				Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"{1}\", }},", v[0], v[1]);
+			//foreach (var v in list)
+			//	Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"{1}\", }},", v[0], v[1]);
 
 			//foreach (var v in Apps)
 			//	Console.Write("\n\t\t\tnew string[] {{ \"{0}\", @\"Apps\\{0}\\\", }},", v);

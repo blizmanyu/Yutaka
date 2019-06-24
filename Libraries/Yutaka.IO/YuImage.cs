@@ -226,7 +226,7 @@ namespace Yutaka.IO
 			int result;
 			var fullnameUpper = FullName.ToUpper();
 			var parentFolderUpper = ParentFolder.ToUpper();
-			var bypassList = new List<string> { "CAMERA", "100ANDRO", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", "APPS", "GAMES", "DOCUMENTS", "SCREENSHOT", "SCREENSHOTS", };
+			var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "GAMES", "IMAGES", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
 
 			#region Special
 			for (int i = 0; i < Special.Length; i++) {
