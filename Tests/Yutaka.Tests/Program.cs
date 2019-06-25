@@ -166,13 +166,13 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuImage();
+			Test_YuVideo();
 			EndProgram();
 		}
 
 		private static void EnumerableSorter()
 		{
-			var bypassList = new List<string> { "CAMERA", "101_PANA", "102_PANA", "103_PANA", "100ANDRO", "XPERIA TL", "CAMERA ROLL", "IMAGES", "PICTURES", "_UNPROCESSED", "_PROCESS THESE", "TEST", "_TEST", "APPS", "GAMES", "DOCUMENTS", "SCREENSHOT", "SCREENSHOTS", };
+			var bypassList = new List<string> { "TV", "VIDEOS", "ANIME", "MOVIES", "MUSIC VIDEOS", "TEST", "_TEST", };
 			//var list = Apps.OrderByDescending(x => x[0].Length).ThenBy(x => x[0]).ToList();
 			var list = bypassList.OrderBy(x => x).ToList();
 			Console.Write("\n");
