@@ -166,7 +166,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuVideo();
+			Test_YuImage();
 			EndProgram();
 		}
 
