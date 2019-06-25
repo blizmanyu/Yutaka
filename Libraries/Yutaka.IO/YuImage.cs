@@ -18,8 +18,8 @@ namespace Yutaka.IO
 		public DateTime MinDateTime;
 		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
 		public DateTime OldThreshold = DateTime.Now.AddYears(-7);
-		#region public string[][] Special = new string[][] {
-		public string[][] Special = new string[][] {
+		#region public string[][] SpecialFolders = new string[][] {
+		public string[][] SpecialFolders = new string[][] {
 			new string[] { "babystepsanddownwarddogs", @"zz\BareSolesBearSoul\", },
 			new string[] { "PreciousO23_Bucket", @"zz\Olga\", },
 			new string[] { "BareSolesBearSoul", @"zz\BareSolesBearSoul\", },
@@ -140,7 +140,7 @@ namespace Yutaka.IO
 			new string[] { "Games", @"Games\", },
 			new string[] { "Apps", @"Apps\", },
 		};
-		#endregion public string[][] Special
+		#endregion public string[][] SpecialFolders
 		public long Size;
 		public string DirectoryName;
 		public string Extension;
@@ -228,15 +228,15 @@ namespace Yutaka.IO
 			var parentFolderUpper = ParentFolder.ToUpper();
 			var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "GAMES", "IMAGES", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
 
-			#region Special
-			for (int i = 0; i < Special.Length; i++) {
-				if (Regex.IsMatch(FullName, String.Format(@"[^a-zA-Z]{0}[^a-zA-Z]", Special[i][0]), RegexOptions.IgnoreCase)) {
-					if (Special[i][1].ToUpper().Contains(parentFolderUpper))
-						NewFolder = Special[i][1];
+			#region Special Folders
+			for (int i = 0; i < SpecialFolders.Length; i++) {
+				if (Regex.IsMatch(FullName, String.Format(@"[^a-zA-Z]{0}[^a-zA-Z]", SpecialFolders[i][0]), RegexOptions.IgnoreCase)) {
+					if (SpecialFolders[i][1].ToUpper().Contains(parentFolderUpper))
+						NewFolder = SpecialFolders[i][1];
 					else if (bypassList.Exists(x => x.Equals(parentFolderUpper) || int.TryParse(ParentFolder, out result)))
-						NewFolder = Special[i][1];
+						NewFolder = SpecialFolders[i][1];
 					else
-						NewFolder = String.Format(@"{0}{1}\", Special[i][1], ParentFolder);
+						NewFolder = String.Format(@"{0}{1}\", SpecialFolders[i][1], ParentFolder);
 
 					if (MinDateTime < OldThreshold) {
 						if (NewFolder.StartsWith(@"Apps\"))
@@ -252,7 +252,7 @@ namespace Yutaka.IO
 					return; // only match one, then return //
 				}
 			}
-			#endregion Special
+			#endregion Special Folders
 
 			#region Default: Everything else
 			if (MinDateTime < OldThreshold)
