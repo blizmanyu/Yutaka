@@ -166,7 +166,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuImage();
+			Test_YuVideo();
 			EndProgram();
 		}
 
@@ -281,6 +281,7 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
+			consoleOut = false;
 			var source = @"asdfasdf\";
 			var dest = @"asdfasdf\";
 
