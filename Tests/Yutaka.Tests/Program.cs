@@ -281,7 +281,6 @@ namespace Yutaka.Tests
 		{
 			var deleteFile = false; // true/false //
 			consoleOut = !deleteFile;
-			consoleOut = false;
 			var source = @"asdfasdf\";
 			var dest = @"asdfasdf\";
 
@@ -358,8 +357,7 @@ namespace Yutaka.Tests
 		private static void Test_YuImage()
 		{
 			var deleteFile = false; // true/false //
-			//consoleOut = !deleteFile;
-			consoleOut = false;
+			consoleOut = !deleteFile;
 			var source = @"asdfasdf\";
 			var dest = @"asdfasdf\";
 
