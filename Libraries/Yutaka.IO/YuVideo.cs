@@ -249,12 +249,12 @@ namespace Yutaka.IO
 			if (MediaCreated != null && MinDateTimeThreshold < MediaCreated && MediaCreated < MinDateTime)
 				MinDateTime = MediaCreated; // prioritize MediaCreated //
 
-			else if (DateReleased != null && MinDateTimeThreshold < DateReleased && DateReleased < MinDateTime)
-				MinDateTime = DateReleased; // prioritize DateReleased //
-
 			else {
 				if (CreationTime != null && MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
 					MinDateTime = CreationTime;
+
+				if (DateReleased != null && MinDateTimeThreshold < DateReleased && DateReleased < MinDateTime)
+					MinDateTime = DateReleased;
 
 				if (LastWriteTime != null && MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
 					MinDateTime = LastWriteTime;
