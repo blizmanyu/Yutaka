@@ -266,7 +266,7 @@ namespace Yutaka.IO
 			int result;
 			var fullnameUpper = FullName.ToUpper();
 			var parentFolderUpper = ParentFolder.ToUpper();
-			var bypassList = new List<string> { "_TEST", "ANIME", "CAMERA", "MOVIES", "MUSIC VIDEOS", "OLD", "TEST", "TV", "VIDEOS", };
+			var bypassList = new List<string> { "_TEST", "ANIME", "CAMERA", "DOWNLOAD", "DOWNLOADS", "MOVIES", "MUSIC VIDEOS", "OLD", "TEST", "TV", "VIDEOS", };
 
 			#region Special Folders
 			for (int i = 0; i < SpecialFolders.Length; i++) {
