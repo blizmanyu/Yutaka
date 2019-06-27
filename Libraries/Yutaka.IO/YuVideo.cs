@@ -117,7 +117,7 @@ namespace Yutaka.IO
 			new string[] { "ETNT", @"Documents\ETNT\", },
 			new string[] { "FICO", @"Documents\FICO\", },
 			new string[] { "Ikea", @"Documents\Ikea\", },
-			new string[] { "JFul", @"!JFul\", },
+			new string[] { "Jful", @"!Jful\", },
 			new string[] { "Leah", @"zz\Leah\", },
 			new string[] { "Line", @"Apps\Line\", },
 			new string[] { "Maps", @"Apps\Maps\", },
