@@ -280,7 +280,7 @@ namespace Yutaka.Tests
 		private static void Test_YuVideo()
 		{
 			var deleteFile = false; // true/false //
-			consoleOut = !deleteFile;
+			consoleOut = true;
 			var source = @"asdfasdf\";
 			var dest = @"asdfasdf\";
 
