@@ -1424,7 +1424,7 @@ namespace Yutaka.Tests
 		#endregion Start & EndProgram
 
 		#region Deprecated
-		[Obsolete("Deprecated June 28, 2019. Use FileManager.Test_YuVideo instead.", true)]
+		[Obsolete("Deprecated June 28, 2019. Use FileManager.Test_YuVideo() instead.", true)]
 		private static void Test_YuVideo()
 		{
 			var deleteFile = false; // true/false //
@@ -1502,7 +1502,7 @@ namespace Yutaka.Tests
 			}
 		}
 
-		[Obsolete("Deprecated June 28, 2019. Use FileManager.Test_YuVideo instead.", true)]
+		[Obsolete("Deprecated June 28, 2019. Use FileManager.Test_YuImage() instead.", true)]
 		private static void Test_YuImage()
 		{
 			var deleteFile = false; // true/false //
