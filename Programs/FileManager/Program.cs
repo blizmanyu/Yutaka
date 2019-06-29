@@ -39,7 +39,8 @@ namespace FileManager
 		{
 			StartProgram();
 
-			var dest = @"asdfasdf";
+			var dest = @"G:\Pictures\";
+			Test_YuVideo(@"W:\Videos\", dest, false);
 
 			EndProgram();
 		}
