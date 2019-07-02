@@ -39,10 +39,11 @@ namespace FileManager
 		{
 			StartProgram();
 
-			var source = @"G:\Pictures\Apps\TikTok\";
-			var dest = @"D:\Pictures\";
-			Test_YuImage(source, dest, false);
-			Test_YuVideo(source, dest, false);
+			var source = @"E:\Pictures\";
+			var dest = @"G:\Pictures\";
+			var deleteFile = false;
+			Test_YuImage(source, dest, deleteFile);
+			Test_YuVideo(source, dest, deleteFile);
 
 			EndProgram();
 		}
