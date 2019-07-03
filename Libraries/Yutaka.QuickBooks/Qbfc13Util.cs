@@ -6,16 +6,19 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using Interop.QBFC13;
+using Interop.QBXMLRP2Lib;
 
 namespace Yutaka.QuickBooks
 {
 	public class Qbfc13Util
 	{
+		#region Fields
 		const string TIMESTAMP = @"HH:mm:ss.fff";
-		private LogLevel logLevel;
-		private QBSessionManager sessionManager;
-		private bool connectionOpen;
-		private bool sessionBegun;
+		private LogLevel _logLevel;
+		private QBSessionManager _sessionManager;
+		private bool _connectionOpen;
+		private bool _sessionBegun;
+		private string _appName;
 		/// <summary>
 		/// Trace - very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development. Ex: begin method X, end method X
 		/// Debug - debugging information, less detailed than trace, typically not enabled in production environment. Ex: executed query, user authenticated, session expired
@@ -25,6 +28,7 @@ namespace Yutaka.QuickBooks
 		/// Fatal - very serious errors! Ex: application is going down
 		/// Off - disables logging when used as the minimum log level.
 		/// </summary>
+		#region public enum LogLevel {
 		public enum LogLevel {
 			Trace = 0,
 			Debug = 1,
@@ -34,64 +38,81 @@ namespace Yutaka.QuickBooks
 			Fatal = 5,
 			Off = 6,
 		};
+		#endregion public enum LogLevel
+		#endregion Fields
 
-		public Qbfc13Util(LogLevel loglevel = LogLevel.Info)
+		public Qbfc13Util(string appName, LogLevel loglevel = LogLevel.Info)
 		{
-			logLevel = LogLevel.Info;
-			sessionManager = null;
-			sessionBegun = false;
-			connectionOpen = false;
+			if (String.IsNullOrWhiteSpace(appName))
+				appName = "Yutaka.Qbfc13Util";
+
+			_logLevel = loglevel;
+			_sessionManager = null;
+			_connectionOpen = false;
+			_sessionBegun = false;
+			_appName = appName;
 		}
 
 		public void DoItemNonInventoryQuery()
 		{
-			if (logLevel < LogLevel.Debug)
+			if (_logLevel < LogLevel.Debug)
 				Console.Write("\n[{0}] Begin method DoItemNonInventoryQuery().", DateTime.Now.ToString(TIMESTAMP));
 
 			try {
 				//Create the session Manager object
-				sessionManager = new QBSessionManager();
+				_sessionManager = new QBSessionManager();
 
 				//Create the message set request object to hold our request
-				IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US",13,0);
+				var requestMsgSet = _sessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
 				BuildItemNonInventoryQueryRq(requestMsgSet);
 
 				//Connect to QuickBooks and begin a session
-				sessionManager.OpenConnection("", "Sample Code from OSR");
-				connectionOpen = true;
-				sessionManager.BeginSession("", ENOpenMode.omDontCare);
-				sessionBegun = true;
+				_sessionManager.OpenConnection(_appName, _appName);
+				_connectionOpen = true;
+				_sessionManager.BeginSession("", ENOpenMode.omDontCare);
+				_sessionBegun = true;
 
 				//Send the request and get the response from QuickBooks
-				IMsgSetResponse responseMsgSet = sessionManager.DoRequests(requestMsgSet);
+				IMsgSetResponse responseMsgSet = _sessionManager.DoRequests(requestMsgSet);
 
 				//End the session and close the connection to QuickBooks
-				sessionManager.EndSession();
-				sessionBegun = false;
-				sessionManager.CloseConnection();
-				connectionOpen = false;
+				_sessionManager.EndSession();
+				_sessionBegun = false;
+				_sessionManager.CloseConnection();
+				_connectionOpen = false;
 
 				WalkItemNonInventoryQueryRs(responseMsgSet);
 			}
 
-			catch (Exception e) {
-				MessageBox.Show(e.Message, "Error");
-				if (sessionBegun) {
-					sessionManager.EndSession();
+			catch (Exception ex) {
+				if (_logLevel < LogLevel.Fatal) {
+					string msg;
+
+					if (ex.InnerException == null)
+						msg = String.Format("{0}{2}Exception thrown in Qbfc13UtilDoItemNonInventoryQuery().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					else
+						msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Qbfc13UtilDoItemNonInventoryQuery().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+					Console.Write("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), msg);
 				}
-				if (connectionOpen) {
-					sessionManager.CloseConnection();
-				}
+
+				if (_sessionBegun)
+					_sessionManager.EndSession();
+				if (_connectionOpen)
+					_sessionManager.CloseConnection();
 			}
 
-			if (logLevel < LogLevel.Debug)
+			if (_logLevel < LogLevel.Debug)
 				Console.Write("\n[{0}] End method DoItemNonInventoryQuery().", DateTime.Now.ToString(TIMESTAMP));
 		}
 
 		void BuildItemNonInventoryQueryRq(IMsgSetRequest requestMsgSet)
 		{
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] Begin method BuildItemNonInventoryQueryRq(IMsgSetRequest requestMsgSet).", DateTime.Now.ToString(TIMESTAMP));
+
 			IItemNonInventoryQuery ItemNonInventoryQueryRq= requestMsgSet.AppendItemNonInventoryQueryRq();
 			//Set attributes
 			//Set field value for metaData
@@ -159,10 +180,16 @@ namespace Yutaka.QuickBooks
 			//Set field value for OwnerIDList
 			//May create more than one of these if needed
 			ItemNonInventoryQueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
+
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] End method BuildItemNonInventoryQueryRq(IMsgSetRequest requestMsgSet).", DateTime.Now.ToString(TIMESTAMP));
 		}
 
 		void WalkItemNonInventoryQueryRs(IMsgSetResponse responseMsgSet)
 		{
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] Begin method WalkItemNonInventoryQueryRs(IMsgSetResponse responseMsgSet).", DateTime.Now.ToString(TIMESTAMP));
+
 			if (responseMsgSet == null) return;
 			IResponseList responseList = responseMsgSet.ResponseList;
 			if (responseList == null) return;
@@ -183,10 +210,16 @@ namespace Yutaka.QuickBooks
 					}
 				}
 			}
+
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] End method WalkItemNonInventoryQueryRs(IMsgSetResponse responseMsgSet).", DateTime.Now.ToString(TIMESTAMP));
 		}
 
 		void WalkItemNonInventoryRet(IItemNonInventoryRetList ItemNonInventoryRet)
 		{
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] Begin method WalkItemNonInventoryRet(IItemNonInventoryRetList ItemNonInventoryRet).", DateTime.Now.ToString(TIMESTAMP));
+
 			if (ItemNonInventoryRet == null) return;
 			//Go through all the elements of IItemNonInventoryRetList
 			//Get value of ListID
@@ -372,6 +405,9 @@ namespace Yutaka.QuickBooks
 					string DataExtValue13599 = (string)DataExtRet.DataExtValue.GetValue();
 				}
 			}
+
+			if (_logLevel < LogLevel.Debug)
+				Console.Write("\n[{0}] End method WalkItemNonInventoryRet(IItemNonInventoryRetList ItemNonInventoryRet).", DateTime.Now.ToString(TIMESTAMP));
 		}
 	}
 }
