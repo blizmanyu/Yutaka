@@ -50,7 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\SubClasses.cs" />
+    <Compile Include="HelperClasses.cs" />
     <Compile Include="Data\ItemNonInventoryRet.cs" />
     <Compile Include="Qbfc13Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
