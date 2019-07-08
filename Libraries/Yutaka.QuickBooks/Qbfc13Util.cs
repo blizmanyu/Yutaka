@@ -42,6 +42,18 @@ namespace Yutaka.QuickBooks
 		#endregion public enum LogLevel
 		#endregion Fields
 
+		#region Constructors
+		[Obsolete("Deprecated. This is only here for legacy support. Should NOT be used for new development.")]
+		public Qbfc13Util()
+		{
+			_logLevel = LogLevel.Info;
+			_sessionManager = null;
+			_connectionOpen = false;
+			_sessionBegun = false;
+			_appName = "Yutaka.Qbfc13Util";
+		}
+		#endregion Constructors
+
 		public Qbfc13Util(string appName, LogLevel loglevel = LogLevel.Info)
 		{
 			if (String.IsNullOrWhiteSpace(appName))
