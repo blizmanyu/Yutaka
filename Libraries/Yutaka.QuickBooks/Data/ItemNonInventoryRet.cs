@@ -22,5 +22,15 @@ namespace Yutaka.QuickBooks
 		public SalesOrPurchase SalesOrPurchase;
 		public SalesAndPurchase SalesAndPurchase;
 		public string ExternalGUID;
+
+		public ItemNonInventoryRet()
+		{
+			ClassRef = new ClassRef();
+			ParentRef = new ParentRef();
+			UnitOfMeasureSetRef = new UnitOfMeasureSetRef();
+			SalesTaxCodeRef = new SalesTaxCodeRef();
+			SalesOrPurchase = new SalesOrPurchase();
+			SalesAndPurchase = new SalesAndPurchase();
+		}
 	}
 }
