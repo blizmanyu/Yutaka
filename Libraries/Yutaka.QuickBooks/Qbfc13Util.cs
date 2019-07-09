@@ -115,8 +115,8 @@ namespace Yutaka.QuickBooks
 
 				if (node != null) {
 					salesOrPurchase.Desc = node.SelectSingleNode("Desc") == null ? "" : node.SelectSingleNode("Desc").InnerText;
-					salesOrPurchase.Price = node.SelectSingleNode("Price") == null ? 0 : decimal.Parse(node.SelectSingleNode("Price").InnerText);
-					salesOrPurchase.PricePercent = node.SelectSingleNode("PricePercent") == null ? 0 : decimal.Parse(node.SelectSingleNode("PricePercent").InnerText);
+					salesOrPurchase.Price = node.SelectSingleNode("Price") == null ? (decimal?) null : decimal.Parse(node.SelectSingleNode("Price").InnerText);
+					salesOrPurchase.PricePercent = node.SelectSingleNode("PricePercent") == null ? (decimal?) null : decimal.Parse(node.SelectSingleNode("PricePercent").InnerText);
 					subNode = node.SelectSingleNode("AccountRef");
 
 					if (subNode != null) {
@@ -129,9 +129,9 @@ namespace Yutaka.QuickBooks
 
 				if (node != null) {
 					salesAndPurchase.SalesDesc = node.SelectSingleNode("SalesDesc") == null ? "" : node.SelectSingleNode("SalesDesc").InnerText;
-					salesAndPurchase.SalesPrice = node.SelectSingleNode("SalesPrice") == null ? 0 : decimal.Parse(node.SelectSingleNode("SalesPrice").InnerText);
+					salesAndPurchase.SalesPrice = node.SelectSingleNode("SalesPrice") == null ? (decimal?) null : decimal.Parse(node.SelectSingleNode("SalesPrice").InnerText);
 					salesAndPurchase.PurchaseDesc = node.SelectSingleNode("PurchaseDesc") == null ? "" : node.SelectSingleNode("PurchaseDesc").InnerText;
-					salesAndPurchase.PurchaseCost = node.SelectSingleNode("PurchaseCost") == null ? 0 : decimal.Parse(node.SelectSingleNode("PurchaseCost").InnerText);
+					salesAndPurchase.PurchaseCost = node.SelectSingleNode("PurchaseCost") == null ? (decimal?) null : decimal.Parse(node.SelectSingleNode("PurchaseCost").InnerText);
 					subNode = node.SelectSingleNode("IncomeAccountRef");
 
 					if (subNode != null) {
@@ -170,13 +170,13 @@ namespace Yutaka.QuickBooks
 					Name = xml.SelectNodes("Name")[0] == null ? "" : xml.SelectNodes("Name")[0].InnerText,
 					FullName = xml.SelectNodes("FullName")[0] == null ? "" : xml.SelectNodes("FullName")[0].InnerText,
 					BarCodeValue = xml.SelectNodes("BarCodeValue")[0] == null ? "" : xml.SelectNodes("BarCodeValue")[0].InnerText,
-					IsActive = xml.SelectNodes("IsActive")[0] == null ? false : bool.Parse(xml.SelectNodes("IsActive")[0].InnerText),
+					IsActive = xml.SelectNodes("IsActive")[0] == null ? (bool?) null : bool.Parse(xml.SelectNodes("IsActive")[0].InnerText),
 					ClassRef = classRef,
 					ParentRef = parentRef,
-					Sublevel = xml.SelectNodes("Sublevel")[0] == null ? 0 : int.Parse(xml.SelectNodes("Sublevel")[0].InnerText),
+					Sublevel = xml.SelectNodes("Sublevel")[0] == null ? (int?) null : int.Parse(xml.SelectNodes("Sublevel")[0].InnerText),
 					ManufacturerPartNumber = xml.SelectNodes("ManufacturerPartNumber")[0] == null ? "" : xml.SelectNodes("ManufacturerPartNumber")[0].InnerText,
 					UnitOfMeasureSetRef = unitOfMeasureSetRef,
-					IsTaxIncluded = xml.SelectNodes("IsTaxIncluded")[0] == null ? false : bool.Parse(xml.SelectNodes("IsTaxIncluded")[0].InnerText),
+					IsTaxIncluded = xml.SelectNodes("IsTaxIncluded")[0] == null ? (bool?) null : bool.Parse(xml.SelectNodes("IsTaxIncluded")[0].InnerText),
 					SalesTaxCodeRef = salesTaxCodeRef,
 					SalesOrPurchase = salesOrPurchase,
 					SalesAndPurchase = salesAndPurchase,
