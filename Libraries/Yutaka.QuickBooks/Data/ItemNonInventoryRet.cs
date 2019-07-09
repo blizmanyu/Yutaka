@@ -11,13 +11,13 @@ namespace Yutaka.QuickBooks
 		public string Name;
 		public string FullName;
 		public string BarCodeValue;
-		public bool IsActive;
+		public bool? IsActive;
 		public ClassRef ClassRef;
 		public ParentRef ParentRef;
-		public int Sublevel;
+		public int? Sublevel;
 		public string ManufacturerPartNumber;
 		public UnitOfMeasureSetRef UnitOfMeasureSetRef;
-		public bool IsTaxIncluded;
+		public bool? IsTaxIncluded;
 		public SalesTaxCodeRef SalesTaxCodeRef;
 		public SalesOrPurchase SalesOrPurchase;
 		public SalesAndPurchase SalesAndPurchase;

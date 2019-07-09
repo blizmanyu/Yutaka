@@ -59,24 +59,37 @@
 	#region public class SalesAndPurchase
 	public class SalesAndPurchase
 	{
-		public IncomeAccountRef IncomeAccountRef = new IncomeAccountRef();
-		public PurchaseTaxCodeRef PurchaseTaxCodeRef = new PurchaseTaxCodeRef();
-		public ExpenseAccountRef ExpenseAccountRef = new ExpenseAccountRef();
-		public PrefVendorRef PrefVendorRef = new PrefVendorRef();
 		public string SalesDesc;
+		public decimal? SalesPrice;
+		public IncomeAccountRef IncomeAccountRef;
 		public string PurchaseDesc;
-		public decimal SalesPrice;
-		public decimal PurchaseCost;
+		public decimal? PurchaseCost;
+		public PurchaseTaxCodeRef PurchaseTaxCodeRef;
+		public ExpenseAccountRef ExpenseAccountRef;
+		public PrefVendorRef PrefVendorRef;
+
+		public SalesAndPurchase()
+		{
+			IncomeAccountRef = new IncomeAccountRef();
+			PurchaseTaxCodeRef = new PurchaseTaxCodeRef();
+			ExpenseAccountRef = new ExpenseAccountRef();
+			PrefVendorRef = new PrefVendorRef();
+		}
 	}
 	#endregion SalesAndPurchase
 
 	#region public class SalesOrPurchase
 	public class SalesOrPurchase
 	{
-		public AccountRef AccountRef = new AccountRef();
 		public string Desc;
-		public decimal Price;
-		public decimal PricePercent;
+		public decimal? Price;
+		public decimal? PricePercent;
+		public AccountRef AccountRef;
+
+		public SalesOrPurchase()
+		{
+			AccountRef = new AccountRef();
+		}
 	}
 	#endregion SalesOrPurchase
 
