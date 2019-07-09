@@ -52,7 +52,6 @@ namespace Yutaka.QuickBooks
 			_sessionBegun = false;
 			_appName = "Yutaka.Qbfc13Util";
 		}
-		#endregion Constructors
 
 		public Qbfc13Util(string appName, LogLevel loglevel = LogLevel.Info)
 		{
@@ -65,6 +64,7 @@ namespace Yutaka.QuickBooks
 			_sessionBegun = false;
 			_appName = appName;
 		}
+		#endregion Constructors
 
 		public ItemNonInventoryRet XmlNodeToItemNonInventoryRet(XmlNode xml)
 		{
