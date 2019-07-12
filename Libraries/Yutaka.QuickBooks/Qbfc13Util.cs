@@ -14,6 +14,7 @@ namespace Yutaka.QuickBooks
 	public class Qbfc13Util
 	{
 		#region Fields
+		const string QB_FORMAT = @"yyyy-MM-ddTHH:mm:ssK";
 		const string TIMESTAMP = @"HH:mm:ss.fff";
 		private QBSessionManager _sessionManager;
 		private bool _connectionOpen;
@@ -65,6 +66,14 @@ namespace Yutaka.QuickBooks
 			_appName = appName;
 		}
 		#endregion Constructors
+
+		protected string DateTimeToQbFormat(DateTime? dt)
+		{
+			if (dt == null)
+				return "";
+
+			return dt.Value.ToString(QB_FORMAT);
+		} 
 
 		public ItemNonInventoryRet XmlNodeToItemNonInventoryRet(XmlNode xml)
 		{
