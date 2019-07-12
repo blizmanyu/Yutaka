@@ -14,8 +14,8 @@ namespace Yutaka.QuickBooks
 	public class Qbfc13Util
 	{
 		#region Fields
-		const string QB_FORMAT = @"yyyy-MM-ddTHH:mm:ssK";
-		const string TIMESTAMP = @"HH:mm:ss.fff";
+		protected const string QB_FORMAT = @"yyyy-MM-ddTHH:mm:ssK";
+		protected const string TIMESTAMP = @"HH:mm:ss.fff";
 		private QBSessionManager _sessionManager;
 		private bool _connectionOpen;
 		private bool _sessionBegun;
