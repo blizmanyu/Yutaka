@@ -52,7 +52,7 @@
   <ItemGroup>
     <Compile Include="Data\BillRet.cs" />
     <Compile Include="Data\Bill_ExpenseLineRet.cs" />
-    <Compile Include="HelperClasses.cs" />
+    <Compile Include="Data\HelperClasses.cs" />
     <Compile Include="Data\ItemNonInventoryRet.cs" />
     <Compile Include="Qbfc13Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
