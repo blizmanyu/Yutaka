@@ -32,6 +32,14 @@
 	}
 	#endregion CurrencyRef
 
+	#region public class CustomerRef
+	public class CustomerRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion CustomerRef
+
 	#region public class ExpenseAccountRef
 	public class ExpenseAccountRef
 	{
@@ -108,6 +116,14 @@
 		}
 	}
 	#endregion SalesOrPurchase
+
+	#region public class SalesRepRef
+	public class SalesRepRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion SalesRepRef
 
 	#region public class SalesTaxCodeRef
 	public class SalesTaxCodeRef
