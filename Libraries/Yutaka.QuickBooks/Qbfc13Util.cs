@@ -21,6 +21,9 @@ namespace Yutaka.QuickBooks
 		private bool _sessionBegun;
 		private string _appName;
 		public LogLevel _logLevel;
+		#region public enum QueryType {
+		public enum QueryType { Bill = 0, ItemNonInventory = 1, };
+		#endregion public enum QueryType
 		/// <summary>
 		/// Trace - very detailed logs, which may include high-volume information such as protocol payloads. This log level is typically only enabled during development. Ex: begin method X, end method X
 		/// Debug - debugging information, less detailed than trace, typically not enabled in production environment. Ex: executed query, user authenticated, session expired
@@ -67,7 +70,93 @@ namespace Yutaka.QuickBooks
 		}
 		#endregion Constructors
 
-		protected string DateTimeToQbFormat(DateTime? dt)
+		private XmlElement MakeSimpleElem(XmlDocument doc, string tagName, string tagVal)
+		{
+			var elem = doc.CreateElement(tagName);
+			elem.InnerText = tagVal;
+			return elem;
+		}
+
+		public XmlDocument BuildQueryRequest(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+			var maxDate = now.AddYears(1);
+
+			#region Input Validation
+			if (fromDate == null || fromDate < minDate || maxDate < fromDate)
+				fromDate = minDate;
+			if (toDate == null || toDate < minDate || maxDate < toDate)
+				toDate = maxDate;
+			#endregion Input Validation
+
+			try {
+				string elem1Name, elem2Name;
+				var doc = new XmlDocument();
+
+				// Add the prolog processing instructions
+				doc.AppendChild(doc.CreateXmlDeclaration("1.0", "UTF-8", null));
+				doc.AppendChild(doc.CreateProcessingInstruction("qbxml", "version=\"13.0\""));
+
+				// Create the outer request envelope tag
+				var outer = doc.CreateElement("QBXML");
+				doc.AppendChild(outer);
+
+				// Create the inner request envelope & any needed attributes
+				var inner = doc.CreateElement("QBXMLMsgsRq");
+				outer.AppendChild(inner);
+				inner.SetAttribute("onError", "stopOnError");
+
+				switch (queryType) {
+					case QueryType.Bill:
+						elem1Name = "BillQueryRq";
+						elem2Name = "ModifiedDateRangeFilter";
+						break;
+					case QueryType.ItemNonInventory:
+						elem1Name = "ItemNonInventoryQueryRq";
+						elem2Name = "";
+						break;
+					default:
+						elem1Name = "";
+						elem2Name = "";
+						break;
+				}
+
+				var ItemQueryRq = doc.CreateElement(elem1Name);
+				inner.AppendChild(ItemQueryRq);
+
+				if (String.IsNullOrWhiteSpace(elem2Name)) {
+					ItemQueryRq.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", fromDate.Value.ToString(QB_FORMAT)));
+					ItemQueryRq.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", toDate.Value.ToString(QB_FORMAT)));
+				}
+
+				else {
+					var ModifiedDateRangeFilter = doc.CreateElement(elem2Name);
+					ItemQueryRq.AppendChild(ModifiedDateRangeFilter);
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", fromDate.Value.ToString(QB_FORMAT)));
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", toDate.Value.ToString(QB_FORMAT)));
+					ItemQueryRq.AppendChild(MakeSimpleElem(doc, "IncludeLineItems", "1"));
+				}
+
+				return doc;
+			}
+
+			catch (Exception ex) {
+				string msg;
+
+				if (ex.InnerException == null)
+					msg = String.Format("{0}{2}Exception thrown in Qbfc13Util.BuildQueryRequest(QueryType queryType={3}, DateTime? fromDate='{4}', DateTime? toDate='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, queryType, fromDate, toDate);
+				else
+					msg = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Qbfc13Util.BuildQueryRequest(QueryType queryType={3}, DateTime? fromDate='{4}', DateTime? toDate='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, queryType, fromDate, toDate);
+
+				if (_logLevel <= LogLevel.Error)
+					Console.Write("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), msg);
+
+				throw new Exception(msg);
+			}
+		}
+
+		public string DateTimeToQbFormat(DateTime? dt)
 		{
 			if (dt == null)
 				return "";
