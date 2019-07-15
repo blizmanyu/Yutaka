@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Yutaka.QuickBooks
 {
@@ -25,17 +26,18 @@ namespace Yutaka.QuickBooks
 		public SalesTaxCodeRef SalesTaxCodeRef;
 		public bool? IsPaid;
 		public string ExternalGUID;
-		public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
-		//public object laskfjdlskdjf;
+		public decimal? OpenAmount;
+		public List<Bill_ExpenseLineRet> ExpenseLines;
 
 		public BillRet()
 		{
-
+			VendorRef = new VendorRef();
+			VendorAddress = new VendorAddress();
+			APAccountRef = new APAccountRef();
+			CurrencyRef = new CurrencyRef();
+			TermsRef = new TermsRef();
+			SalesTaxCodeRef = new SalesTaxCodeRef();
+			ExpenseLines = new List<Bill_ExpenseLineRet>();
 		}
 	}
 }
