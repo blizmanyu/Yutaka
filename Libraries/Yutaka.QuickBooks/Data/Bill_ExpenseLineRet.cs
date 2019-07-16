@@ -5,6 +5,7 @@
 		public string TxnID; // required
 		public string TxnLineID; // required
 		public AccountRef AccountRef;
+		public decimal? Amount;
 		public string Memo;
 		public CustomerRef CustomerRef;
 		public ClassRef ClassRef;
