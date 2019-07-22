@@ -33,6 +33,7 @@ namespace Yutaka.QuickBooks
 
 		// Public Properties //
 		public LogLevel logLevel;
+		public string CompanyFilePath;
 		public string LogFolder;
 		#endregion Constants, Fields, Properties
 
@@ -46,6 +47,7 @@ namespace Yutaka.QuickBooks
 			_sessionBegun = false;
 			_appName = "Yutaka.QB13Util";
 			_fileUtil = new FileUtil();
+			CompanyFilePath = "";
 			LogFolder = @"C:\Logs\Rcw.QuickBooks\";
 		}
 
@@ -60,6 +62,7 @@ namespace Yutaka.QuickBooks
 			_sessionBegun = false;
 			_appName = appName;
 			_fileUtil = new FileUtil();
+			CompanyFilePath = "";
 			LogFolder = @"C:\Logs\Rcw.QuickBooks\";
 		}
 		#endregion Constructors
@@ -106,7 +109,7 @@ namespace Yutaka.QuickBooks
 				//Connect to QuickBooks and begin a session
 				_sessionManager.OpenConnection(_appName, _appName);
 				_connectionOpen = true;
-				_sessionManager.BeginSession("", ENOpenMode.omDontCare);
+				_sessionManager.BeginSession(CompanyFilePath, ENOpenMode.omDontCare);
 				_sessionBegun = true;
 
 				#region Log
