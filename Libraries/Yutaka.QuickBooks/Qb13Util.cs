@@ -210,7 +210,7 @@ namespace Yutaka.QuickBooks
 			BillQueryRq.IncludeLineItems.SetValue(true);
 		}
 
-		protected object GetQueryResponse(IMsgSetResponse responseMsgSet)
+		protected IResponse GetQueryResponse(IMsgSetResponse responseMsgSet)
 		{
 			#region Log
 			if (logLevel <= LogLevel.Trace) {
@@ -228,46 +228,34 @@ namespace Yutaka.QuickBooks
 			if (responseList == null)
 				return null;
 
-			ENResponseType responseType;
 			IResponse response;
 			//if we sent only one request, there is only one response, we'll walk the list for this sample
-			for (int i = 0; i < responseList.Count; i++) {
-				response = responseList.GetAt(i);
-				//check the status code of the response, 0=ok, >0 is warning
-				if (response.StatusCode < 0) {
+			response = responseList.GetAt(0);
+			//check the status code of the response, 0=ok, >0 is warning
+			if (response.StatusCode < 0) {
+				#region Log
+				if (logLevel <= LogLevel.Error) {
+					var log = String.Format("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), response.StatusMessage);
+					Console.Write(log);
+					_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+				}
+				#endregion Log
+			}
+
+			else {
+				//the request-specific response is in the details, make sure we have some
+				if (response.Detail == null) {
 					#region Log
-					if (logLevel <= LogLevel.Error) {
-						var log = String.Format("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), response.StatusMessage);
+					if (logLevel <= LogLevel.Warn) {
+						var log = String.Format("\n[{0}] <response> is empty.", DateTime.Now.ToString(TIMESTAMP));
 						Console.Write(log);
 						_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
 					}
 					#endregion Log
 				}
 
-				else {
-					//the request-specific response is in the details, make sure we have some
-					if (response.Detail == null) {
-						#region Log
-						if (logLevel <= LogLevel.Warn) {
-							var log = String.Format("\n[{0}] <response> is empty.", DateTime.Now.ToString(TIMESTAMP));
-							Console.Write(log);
-							_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
-						}
-						#endregion Log
-					}
-
-					else {
-						//make sure the response is the type we're expecting
-						responseType = (ENResponseType) response.Type.GetValue();
-
-						switch (responseType) {
-							case ENResponseType.rtBillQueryRs:
-								return (IBillRetList) response.Detail;
-							default:
-								return null;
-						}
-					}
-				}
+				else
+					return response;
 			}
 
 			return null;
