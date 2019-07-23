@@ -10,13 +10,20 @@ namespace Yutaka.IO
 	public class YuFile
 	{
 		#region Fields
+		const int DATE_RELEASED_FIELD = 209;
+		const int MEDIA_CREATED_FIELD = 208;
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		private static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
+		private static readonly Guid CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
+		private static readonly char[] charactersToRemove = new char[] { (char) 8206, (char) 8207 };
 		public DateTime CreationTime;
+		public DateTime DateReleased;
 		public DateTime DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
+		public DateTime MediaCreated;
 		public DateTime MinDateTime;
-		public DateTime MinDateTimeThreshold = new DateTime(1970, 1, 1); // based on Unix time //
+		public DateTime MinDateTimeThreshold = UNIX_TIME;
 		public DateTime OldThreshold = DateTime.Now.AddYears(-7);
 		#region public string[][] SpecialFolders = new string[][] {
 		public string[][] SpecialFolders = new string[][] {
@@ -156,19 +163,24 @@ namespace Yutaka.IO
 		{
 			var fi = new FileInfo(filename);
 			fi.IsReadOnly = false;
+			#region CreationTime = fi.CreationTime;
 			try {
 				CreationTime = fi.CreationTime;
 			}
 			catch (Exception) {
 				CreationTime = new DateTime();
 			}
+			#endregion CreationTime = fi.CreationTime;
 			LastAccessTime = fi.LastAccessTime;
+			#region LastWriteTime = fi.LastWriteTime;
 			try {
 				LastWriteTime = fi.LastWriteTime;
 			}
 			catch (Exception) {
 				LastWriteTime = new DateTime();
 			}
+			#endregion LastWriteTime = fi.LastWriteTime;
+			MinDateTimeThreshold = UNIX_TIME;
 			Size = fi.Length;
 			DirectoryName = fi.DirectoryName;
 			Extension = fi.Extension;
@@ -180,7 +192,9 @@ namespace Yutaka.IO
 			ParentFolder = fi.Directory.Name;
 			fi = null;
 
+			SetDateReleased();
 			SetDateTaken();
+			SetMediaCreated();
 			SetMinDateTime();
 			SetNewFolderAndFilename();
 		}
@@ -202,6 +216,70 @@ namespace Yutaka.IO
 
 			catch (Exception) {
 				DateTaken = new DateTime();
+			}
+		}
+
+		private void SetMediaCreated()
+		{
+			try {
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var label = folder.GetDetailsOf(null, MEDIA_CREATED_FIELD);
+
+				if (label.ToUpper().Equals("MEDIA CREATED")) {
+					var value = folder.GetDetailsOf(file, MEDIA_CREATED_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
+					MediaCreated = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Media Created field", MEDIA_CREATED_FIELD);
+					Console.Write("\n**********");
+					MediaCreated = new DateTime();
+				}
+			}
+
+			catch (Exception) {
+				MediaCreated = new DateTime();
+			}
+		}
+
+		private void SetDateReleased()
+		{
+			try {
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var label = folder.GetDetailsOf(null, DATE_RELEASED_FIELD);
+
+				if (label.ToUpper().Equals("DATE RELEASED")) {
+					var value = folder.GetDetailsOf(file, DATE_RELEASED_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
+					DateReleased = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Date Relased field", DATE_RELEASED_FIELD);
+					Console.Write("\n**********");
+					DateReleased = new DateTime();
+				}
+			}
+
+			catch (Exception) {
+				DateReleased = new DateTime();
 			}
 		}
 
