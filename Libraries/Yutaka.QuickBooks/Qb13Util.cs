@@ -8,7 +8,7 @@ namespace Yutaka.QuickBooks
 {
 	public class Qb13Util
 	{
-		#region Constants, Fields, Properties
+		#region Fields
 		// Constants & Enums //
 		public const string QB_FORMAT = @"yyyy-MM-ddTHH:mm:ssK";
 		protected const string TIMESTAMP = @"HH:mm:ss.fff";
@@ -35,7 +35,7 @@ namespace Yutaka.QuickBooks
 		public LogLevel logLevel;
 		public string CompanyFilePath;
 		public string LogFolder;
-		#endregion Constants, Fields, Properties
+		#endregion Fields
 
 		#region Constructors
 		[Obsolete("Deprecated. This is only here for legacy support. Should NOT be used for new development.")]
@@ -67,7 +67,7 @@ namespace Yutaka.QuickBooks
 		}
 		#endregion Constructors
 
-		public object Query(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
+		public IResponse Query(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
 		{
 			#region Log
 			if (logLevel <= LogLevel.Trace) {
