@@ -260,5 +260,84 @@ namespace Yutaka.QuickBooks
 
 			return null;
 		}
+
+		protected void ProcessQueryResponseTemplate(IMsgSetResponse responseMsgSet)
+		{
+			#region Log & Input Validation
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method ProcessQueryResponseTemplate(IMsgSetResponse responseMsgSet).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+
+			if (responseMsgSet == null) {
+				if (logLevel <= LogLevel.Debug) {
+					var log = String.Format("\n[{0}] <responseMsgSet> is empty.", DateTime.Now.ToString(TIMESTAMP));
+					Console.Write(log);
+					_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+				}
+
+				return;
+			}
+
+			var responseList = responseMsgSet.ResponseList;
+
+			if (responseList == null) {
+				if (logLevel <= LogLevel.Debug) {
+					var log = String.Format("\n[{0}] responseMsgSet.ResponseList is empty.", DateTime.Now.ToString(TIMESTAMP));
+					Console.Write(log);
+					_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+				}
+
+				return;
+			}
+			#endregion Log & Input Validation
+
+			IResponse response;
+			ENResponseType responseType;
+
+			// if we sent only one request, there is only one response, we'll walk the list for this sample
+			for (int i = 0; i < responseList.Count; i++) {
+				response = responseList.GetAt(i);
+				// check the status code of the response, 0=ok, >0 is warning
+				if (response.StatusCode < 0) {
+					#region Log
+					if (logLevel <= LogLevel.Error) {
+						var log = String.Format("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), response.StatusMessage);
+						Console.Write(log);
+						_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+					}
+					#endregion Log
+				}
+
+				else {
+					// the request-specific response is in the details, make sure we have some
+					if (response.Detail == null) {
+						#region Log
+						if (logLevel <= LogLevel.Warn) {
+							var log = String.Format("\n[{0}] response.Detail is empty.", DateTime.Now.ToString(TIMESTAMP));
+							Console.Write(log);
+							_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+						}
+						#endregion Log
+					}
+
+					else {
+						// make sure the response is the type we're expecting
+						responseType = (ENResponseType) response.Type.GetValue();
+
+						switch (responseType) {
+							case ENResponseType.rtBillQueryRs:
+								// upcast to more specific type here, this is safe because we checked with response.Type check above
+								var BillRet = (IBillRetList) response.Detail;
+								// Do what you want to do here //
+								break;
+							default:
+								break;
+						}
+					}
+				}
+			}
+		}
 	}
 }
