@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Xml;
 using Interop.QBFC13;
 using Yutaka.IO;
 
@@ -208,57 +207,6 @@ namespace Yutaka.QuickBooks
 			BillQueryRq.ORBillQuery.BillFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
 			//Set field value for IncludeLineItems
 			BillQueryRq.IncludeLineItems.SetValue(true);
-		}
-
-		protected IResponse GetQueryResponse(IMsgSetResponse responseMsgSet)
-		{
-			#region Log
-			if (logLevel <= LogLevel.Trace) {
-				var log = String.Format("\n[{0}] Begin method GetQueryResponse(IMsgSetResponse responseMsgSet).", DateTime.Now.ToString(TIMESTAMP));
-				Console.Write(log);
-				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
-			}
-			#endregion Log
-
-			if (responseMsgSet == null)
-				return null;
-
-			var responseList = responseMsgSet.ResponseList;
-
-			if (responseList == null)
-				return null;
-
-			IResponse response;
-			//if we sent only one request, there is only one response, we'll walk the list for this sample
-			response = responseList.GetAt(0);
-			//check the status code of the response, 0=ok, >0 is warning
-			if (response.StatusCode < 0) {
-				#region Log
-				if (logLevel <= LogLevel.Error) {
-					var log = String.Format("\n[{0}] {1}", DateTime.Now.ToString(TIMESTAMP), response.StatusMessage);
-					Console.Write(log);
-					_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
-				}
-				#endregion Log
-			}
-
-			else {
-				//the request-specific response is in the details, make sure we have some
-				if (response.Detail == null) {
-					#region Log
-					if (logLevel <= LogLevel.Warn) {
-						var log = String.Format("\n[{0}] <response> is empty.", DateTime.Now.ToString(TIMESTAMP));
-						Console.Write(log);
-						_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
-					}
-					#endregion Log
-				}
-
-				else
-					return response;
-			}
-
-			return null;
 		}
 
 		protected void ProcessQueryResponseTemplate(IMsgSetResponse responseMsgSet)
