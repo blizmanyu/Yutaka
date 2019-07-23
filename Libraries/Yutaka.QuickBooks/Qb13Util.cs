@@ -67,7 +67,7 @@ namespace Yutaka.QuickBooks
 		}
 		#endregion Constructors
 
-		public IResponse Query(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
+		public IMsgSetResponse Query(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
 		{
 			#region Log
 			if (logLevel <= LogLevel.Trace) {
@@ -139,7 +139,7 @@ namespace Yutaka.QuickBooks
 				}
 				#endregion Log
 
-				return GetQueryResponse(responseMsgSet);
+				return responseMsgSet;
 			}
 
 			catch (Exception ex) {
