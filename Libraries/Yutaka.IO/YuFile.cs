@@ -199,6 +199,38 @@ namespace Yutaka.IO
 			SetNewFolderAndFilename();
 		}
 
+		private void SetDateReleased()
+		{
+			try {
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var label = folder.GetDetailsOf(null, DATE_RELEASED_FIELD);
+
+				if (label.ToUpper().Equals("DATE RELEASED")) {
+					var value = folder.GetDetailsOf(file, DATE_RELEASED_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
+					DateReleased = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Date Relased field", DATE_RELEASED_FIELD);
+					Console.Write("\n**********");
+					DateReleased = new DateTime();
+				}
+			}
+
+			catch (Exception) {
+				DateReleased = new DateTime();
+			}
+		}
+
 		// Retrieves the datetime WITHOUT loading the whole image //
 		private void SetDateTaken()
 		{
@@ -248,38 +280,6 @@ namespace Yutaka.IO
 
 			catch (Exception) {
 				MediaCreated = new DateTime();
-			}
-		}
-
-		private void SetDateReleased()
-		{
-			try {
-				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
-				var folder = shell.NameSpace(DirectoryName);
-				var file = folder.ParseName(Name);
-				var label = folder.GetDetailsOf(null, DATE_RELEASED_FIELD);
-
-				if (label.ToUpper().Equals("DATE RELEASED")) {
-					var value = folder.GetDetailsOf(file, DATE_RELEASED_FIELD).Trim();
-
-					// Removing the suspect characters
-					foreach (char c in charactersToRemove)
-						value = value.Replace((c).ToString(), "").Trim();
-
-					// If the value string is empty, return DateTime.MinValue, otherwise return the "Media Created" date
-					DateReleased = String.IsNullOrWhiteSpace(value) ? DateTime.MinValue : DateTime.Parse(value);
-				}
-
-				else {
-					Console.Write("\n**********");
-					Console.Write("\n{0} is NOT the Date Relased field", DATE_RELEASED_FIELD);
-					Console.Write("\n**********");
-					DateReleased = new DateTime();
-				}
-			}
-
-			catch (Exception) {
-				DateReleased = new DateTime();
 			}
 		}
 
