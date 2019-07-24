@@ -77,10 +77,11 @@ namespace Yutaka.QuickBooks
 			#endregion Log
 
 			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
 
 			#region Input Validation
-			if (fromDate == null)
-				fromDate = now.AddYears(-10);
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
 			if (toDate == null)
 				toDate = now.AddYears(1);
 			#endregion Input Validation
@@ -190,12 +191,13 @@ namespace Yutaka.QuickBooks
 			#endregion Log
 
 			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
 
 			#region Input Validation
 			if (requestMsgSet == null)
 				return;
-			if (fromDate == null)
-				fromDate = now.AddYears(-10);
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
 			if (toDate == null)
 				toDate = now.AddYears(1);
 			#endregion Input Validation
