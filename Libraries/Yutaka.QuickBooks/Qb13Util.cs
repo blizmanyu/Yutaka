@@ -21,7 +21,7 @@ namespace Yutaka.QuickBooks
 		/// Off - disables logging when used as the minimum log level.
 		/// </summary>
 		public enum LogLevel { Trace = 0, Debug = 1, Info = 2, Warn = 3, Error = 4, Fatal = 5, Off = 6, };
-		public enum QueryType { Bill = 0, };
+		public enum QueryType { Bill = 0, BillPaymentCheck = 1, BillPaymentCreditCard = 2, CreditCardCharge = 3, CreditCardCredit = 4, };
 
 		// Private Fields //
 		private FileUtil _fileUtil;
@@ -96,11 +96,41 @@ namespace Yutaka.QuickBooks
 
 				#region switch (queryType) {
 				switch (queryType) {
+					#region case QueryType.Bill:
 					case QueryType.Bill:
 						BuildBillQueryRq(requestMsgSet, fromDate, toDate);
 						if (logLevel <= LogLevel.Debug)
 							File.WriteAllText(@"C:\TEMP\BillRequest.xml", requestMsgSet.ToXMLString());
 						break;
+					#endregion case QueryType.Bill:
+					#region case QueryType.BillPaymentCheck:
+					case QueryType.BillPaymentCheck:
+						BuildBillPaymentCheckQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\BillPaymentCheckRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.BillPaymentCheck:
+					#region case QueryType.BillPaymentCreditCard:
+					case QueryType.BillPaymentCreditCard:
+						BuildBillPaymentCreditCardQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\BillPaymentCreditCardRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.BillPaymentCreditCard:
+					#region case QueryType.CreditCardCharge:
+					case QueryType.CreditCardCharge:
+						BuildCreditCardChargeQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\CreditCardChargeRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.CreditCardCharge:
+					#region case QueryType.CreditCardCredit:
+					case QueryType.CreditCardCredit:
+						BuildCreditCardCreditQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\CreditCardCreditRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.CreditCardCredit:
 					default:
 						return null;
 				}
@@ -122,8 +152,9 @@ namespace Yutaka.QuickBooks
 
 				//Send the request and get the response from QuickBooks
 				var responseMsgSet = _sessionManager.DoRequests(requestMsgSet);
+
 				if (logLevel <= LogLevel.Debug)
-					File.WriteAllText(@"C:\TEMP\BillResponse.xml", responseMsgSet.ToXMLString());
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", queryType.ToString()), responseMsgSet.ToXMLString());
 
 				//End the session and close the connection to QuickBooks
 				_sessionManager.EndSession();
@@ -209,6 +240,130 @@ namespace Yutaka.QuickBooks
 			BillQueryRq.ORBillQuery.BillFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
 			//Set field value for IncludeLineItems
 			BillQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildBillPaymentCheckQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildBillPaymentCheckQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var BillPaymentCheckQueryRq = requestMsgSet.AppendBillPaymentCheckQueryRq();
+			//Set field value for FromModifiedDate
+			BillPaymentCheckQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			BillPaymentCheckQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			BillPaymentCheckQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildBillPaymentCreditCardQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildBillPaymentCreditCardQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var BillPaymentCreditCardQueryRq = requestMsgSet.AppendBillPaymentCreditCardQueryRq();
+			//Set field value for FromModifiedDate
+			BillPaymentCreditCardQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			BillPaymentCreditCardQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			BillPaymentCreditCardQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildCreditCardChargeQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildCreditCardChargeQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var CreditCardChargeQueryRq = requestMsgSet.AppendCreditCardChargeQueryRq();
+			//Set field value for FromModifiedDate
+			CreditCardChargeQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			CreditCardChargeQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			CreditCardChargeQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildCreditCardCreditQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildCreditCardCreditQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var CreditCardCreditQueryRq = requestMsgSet.AppendCreditCardCreditQueryRq();
+			//Set field value for FromModifiedDate
+			CreditCardCreditQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			CreditCardCreditQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			CreditCardCreditQueryRq.IncludeLineItems.SetValue(true);
 		}
 
 		protected void ProcessQueryResponseTemplate(IMsgSetResponse responseMsgSet)
