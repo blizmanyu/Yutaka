@@ -66,6 +66,7 @@ namespace Yutaka.QuickBooks
 		}
 		#endregion Constructors
 
+		#region Methods
 		public IMsgSetResponse Query(QueryType queryType, DateTime? fromDate = null, DateTime? toDate = null)
 		{
 			#region Log
@@ -670,5 +671,6 @@ namespace Yutaka.QuickBooks
 				}
 			}
 		}
+		#endregion Methods
 	}
 }

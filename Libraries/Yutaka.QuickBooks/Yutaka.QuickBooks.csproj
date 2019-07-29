@@ -62,11 +62,17 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="XMLOps\ARRefundCreditCardQuery.xml" />
     <Content Include="XMLOps\BillPaymentCheckQuery.xml" />
     <Content Include="XMLOps\BillPaymentCreditCardQuery.xml" />
     <Content Include="XMLOps\BillQuery.xml" />
+    <Content Include="XMLOps\ChargeQuery.xml" />
+    <Content Include="XMLOps\CheckQuery.xml" />
     <Content Include="XMLOps\CreditCardChargeQuery.xml" />
     <Content Include="XMLOps\CreditCardCreditQuery.xml" />
+    <Content Include="XMLOps\DepositQuery.xml" />
+    <Content Include="XMLOps\ReceivePaymentQuery.xml" />
+    <Content Include="XMLOps\SalesReceiptQuery.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
