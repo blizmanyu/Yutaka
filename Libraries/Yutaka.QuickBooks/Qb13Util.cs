@@ -21,7 +21,7 @@ namespace Yutaka.QuickBooks
 		/// Off - disables logging when used as the minimum log level.
 		/// </summary>
 		public enum LogLevel { Trace = 0, Debug = 1, Info = 2, Warn = 3, Error = 4, Fatal = 5, Off = 6, };
-		public enum QueryType { Bill = 0, BillPaymentCheck = 1, BillPaymentCreditCard = 2, CreditCardCharge = 3, CreditCardCredit = 4, };
+		public enum QueryType { ARRefundCreditCard, Bill, BillPaymentCheck, BillPaymentCreditCard, Charge, Check, CreditCardCharge, CreditCardCredit, Deposit, ReceivePayment, SalesReceipt, };
 
 		// Private Fields //
 		private FileUtil _fileUtil;
@@ -96,6 +96,13 @@ namespace Yutaka.QuickBooks
 
 				#region switch (queryType) {
 				switch (queryType) {
+					#region case QueryType.ARRefundCreditCard:
+					case QueryType.ARRefundCreditCard:
+						BuildARRefundCreditCardQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\ARRefundCreditCardRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.ARRefundCreditCard
 					#region case QueryType.Bill:
 					case QueryType.Bill:
 						BuildBillQueryRq(requestMsgSet, fromDate, toDate);
@@ -117,6 +124,20 @@ namespace Yutaka.QuickBooks
 							File.WriteAllText(@"C:\TEMP\BillPaymentCreditCardRequest.xml", requestMsgSet.ToXMLString());
 						break;
 					#endregion case QueryType.BillPaymentCreditCard:
+					#region case QueryType.Charge:
+					case QueryType.Charge:
+						BuildChargeQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\ChargeRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.Charge
+					#region case QueryType.Check:
+					case QueryType.Check:
+						BuildCheckQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\CheckRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.Check
 					#region case QueryType.CreditCardCharge:
 					case QueryType.CreditCardCharge:
 						BuildCreditCardChargeQueryRq(requestMsgSet, fromDate, toDate);
@@ -131,6 +152,27 @@ namespace Yutaka.QuickBooks
 							File.WriteAllText(@"C:\TEMP\CreditCardCreditRequest.xml", requestMsgSet.ToXMLString());
 						break;
 					#endregion case QueryType.CreditCardCredit:
+					#region case QueryType.Deposit:
+					case QueryType.Deposit:
+						BuildDepositQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\DepositRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.Deposit
+					#region case QueryType.ReceivePayment:
+					case QueryType.ReceivePayment:
+						BuildReceivePaymentQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\ReceivePaymentRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.ReceivePayment
+					#region case QueryType.SalesReceipt:
+					case QueryType.SalesReceipt:
+						BuildSalesReceiptQueryRq(requestMsgSet, fromDate, toDate);
+						if (logLevel <= LogLevel.Debug)
+							File.WriteAllText(@"C:\TEMP\SalesReceiptRequest.xml", requestMsgSet.ToXMLString());
+						break;
+					#endregion case QueryType.SalesReceipt
 					default:
 						return null;
 				}
@@ -209,6 +251,37 @@ namespace Yutaka.QuickBooks
 
 				throw new Exception(msg);
 			}
+		}
+
+		protected void BuildARRefundCreditCardQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildARRefundCreditCardQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var ARRefundCreditCardQueryRq = requestMsgSet.AppendARRefundCreditCardQueryRq();
+			//Set field value for FromModifiedDate
+			ARRefundCreditCardQueryRq.ORARRefundCreditCardQuery.ARRefundCreditCardFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			ARRefundCreditCardQueryRq.ORARRefundCreditCardQuery.ARRefundCreditCardFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			ARRefundCreditCardQueryRq.IncludeLineItems.SetValue(true);
 		}
 
 		protected void BuildBillQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
@@ -304,6 +377,66 @@ namespace Yutaka.QuickBooks
 			BillPaymentCreditCardQueryRq.IncludeLineItems.SetValue(true);
 		}
 
+		protected void BuildChargeQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildChargeQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var ChargeQueryRq = requestMsgSet.AppendChargeQueryRq();
+			//Set field value for FromModifiedDate
+			ChargeQueryRq.ORChargeTxnQuery.ChargeFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			ChargeQueryRq.ORChargeTxnQuery.ChargeFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+		}
+
+		protected void BuildCheckQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildCheckQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var CheckQueryRq = requestMsgSet.AppendCheckQueryRq();
+			//Set field value for FromModifiedDate
+			CheckQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			CheckQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			CheckQueryRq.IncludeLineItems.SetValue(true);
+		}
+
 		protected void BuildCreditCardChargeQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
 		{
 			#region Log
@@ -364,6 +497,99 @@ namespace Yutaka.QuickBooks
 			CreditCardCreditQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
 			//Set field value for IncludeLineItems
 			CreditCardCreditQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildDepositQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildDepositQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var DepositQueryRq = requestMsgSet.AppendDepositQueryRq();
+			//Set field value for FromModifiedDate
+			DepositQueryRq.ORDepositQuery.DepositFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			DepositQueryRq.ORDepositQuery.DepositFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			DepositQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildReceivePaymentQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildReceivePaymentQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var ReceivePaymentQueryRq = requestMsgSet.AppendReceivePaymentQueryRq();
+			//Set field value for FromModifiedDate
+			ReceivePaymentQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			ReceivePaymentQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			ReceivePaymentQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildSalesReceiptQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildSalesReceiptQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var SalesReceiptQueryRq = requestMsgSet.AppendSalesReceiptQueryRq();
+			//Set field value for FromModifiedDate
+			SalesReceiptQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			SalesReceiptQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
+			//Set field value for IncludeLineItems
+			SalesReceiptQueryRq.IncludeLineItems.SetValue(true);
 		}
 
 		protected void ProcessQueryResponseTemplate(IMsgSetResponse responseMsgSet)
