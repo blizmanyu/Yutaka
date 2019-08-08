@@ -70,6 +70,7 @@
     <Content Include="XMLOps\CheckQuery.xml" />
     <Content Include="XMLOps\CreditCardChargeQuery.xml" />
     <Content Include="XMLOps\CreditCardCreditQuery.xml" />
+    <Content Include="XMLOps\CustomerQuery.xml" />
     <Content Include="XMLOps\DepositQuery.xml" />
     <Content Include="XMLOps\ReceivePaymentQuery.xml" />
     <Content Include="XMLOps\SalesReceiptQuery.xml" />

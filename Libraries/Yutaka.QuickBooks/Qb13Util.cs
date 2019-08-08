@@ -21,7 +21,7 @@ namespace Yutaka.QuickBooks
 		/// Off - disables logging when used as the minimum log level.
 		/// </summary>
 		public enum LogLevel { Trace = 0, Debug = 1, Info = 2, Warn = 3, Error = 4, Fatal = 5, Off = 6, };
-		public enum QueryType { ARRefundCreditCard, Bill, BillPaymentCheck, BillPaymentCreditCard, Charge, Check, CreditCardCharge, CreditCardCredit, Deposit, ReceivePayment, SalesReceipt, };
+		public enum QueryType { ARRefundCreditCard, Bill, BillPaymentCheck, BillPaymentCreditCard, Charge, Check, CreditCardCharge, CreditCardCredit, Customer, Deposit, ReceivePayment, SalesReceipt, };
 
 		// Private Fields //
 		private FileUtil _fileUtil;
@@ -125,13 +125,9 @@ namespace Yutaka.QuickBooks
 							File.WriteAllText(@"C:\TEMP\BillPaymentCreditCardRequest.xml", requestMsgSet.ToXMLString());
 						break;
 					#endregion case QueryType.BillPaymentCreditCard:
-					#region case QueryType.Charge:
 					case QueryType.Charge:
 						BuildChargeQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\ChargeRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.Charge
 					#region case QueryType.Check:
 					case QueryType.Check:
 						BuildCheckQueryRq(requestMsgSet, fromDate, toDate);
@@ -153,6 +149,9 @@ namespace Yutaka.QuickBooks
 							File.WriteAllText(@"C:\TEMP\CreditCardCreditRequest.xml", requestMsgSet.ToXMLString());
 						break;
 					#endregion case QueryType.CreditCardCredit:
+					case QueryType.Customer:
+						BuildCustomerQueryRq(requestMsgSet, fromDate, toDate);
+						break;
 					#region case QueryType.Deposit:
 					case QueryType.Deposit:
 						BuildDepositQueryRq(requestMsgSet, fromDate, toDate);
@@ -178,6 +177,11 @@ namespace Yutaka.QuickBooks
 						return null;
 				}
 				#endregion switch (queryType)
+
+				#region Log
+				if (logLevel <= LogLevel.Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", queryType.ToString()), requestMsgSet.ToXMLString());
+				#endregion Log
 
 				//Connect to QuickBooks and begin a session
 				_sessionManager.OpenConnection(_appName, _appName);
@@ -498,6 +502,35 @@ namespace Yutaka.QuickBooks
 			CreditCardCreditQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(toDate.Value, false);
 			//Set field value for IncludeLineItems
 			CreditCardCreditQueryRq.IncludeLineItems.SetValue(true);
+		}
+
+		protected void BuildCustomerQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
+		{
+			#region Log
+			if (logLevel <= LogLevel.Trace) {
+				var log = String.Format("\n[{0}] Begin method BuildCustomerQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate=null, DateTime? toDate=null).", DateTime.Now.ToString(TIMESTAMP));
+				Console.Write(log);
+				_fileUtil.Write(log, String.Format("{0}{1}.txt", LogFolder, DateTime.Now.ToString("yyyy MMdd HH30")));
+			}
+			#endregion Log
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+
+			#region Input Validation
+			if (requestMsgSet == null)
+				return;
+			if (fromDate == null || fromDate < minDate)
+				fromDate = minDate;
+			if (toDate == null)
+				toDate = now.AddYears(1);
+			#endregion Input Validation
+
+			var CustomerQueryRq = requestMsgSet.AppendCustomerQueryRq();
+			//Set field value for FromModifiedDate
+			CustomerQueryRq.ORCustomerListQuery.CustomerListFilter.FromModifiedDate.SetValue(fromDate.Value, false);
+			//Set field value for ToModifiedDate
+			CustomerQueryRq.ORCustomerListQuery.CustomerListFilter.ToModifiedDate.SetValue(toDate.Value, false);
 		}
 
 		protected void BuildDepositQueryRq(IMsgSetRequest requestMsgSet, DateTime? fromDate = null, DateTime? toDate = null)
