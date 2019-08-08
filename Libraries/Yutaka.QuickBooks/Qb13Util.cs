@@ -97,82 +97,42 @@ namespace Yutaka.QuickBooks
 
 				#region switch (queryType) {
 				switch (queryType) {
-					#region case QueryType.ARRefundCreditCard:
 					case QueryType.ARRefundCreditCard:
 						BuildARRefundCreditCardQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\ARRefundCreditCardRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.ARRefundCreditCard
-					#region case QueryType.Bill:
 					case QueryType.Bill:
 						BuildBillQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\BillRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.Bill:
-					#region case QueryType.BillPaymentCheck:
 					case QueryType.BillPaymentCheck:
 						BuildBillPaymentCheckQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\BillPaymentCheckRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.BillPaymentCheck:
-					#region case QueryType.BillPaymentCreditCard:
 					case QueryType.BillPaymentCreditCard:
 						BuildBillPaymentCreditCardQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\BillPaymentCreditCardRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.BillPaymentCreditCard:
 					case QueryType.Charge:
 						BuildChargeQueryRq(requestMsgSet, fromDate, toDate);
 						break;
-					#region case QueryType.Check:
 					case QueryType.Check:
 						BuildCheckQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\CheckRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.Check
-					#region case QueryType.CreditCardCharge:
 					case QueryType.CreditCardCharge:
 						BuildCreditCardChargeQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\CreditCardChargeRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.CreditCardCharge:
-					#region case QueryType.CreditCardCredit:
 					case QueryType.CreditCardCredit:
 						BuildCreditCardCreditQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\CreditCardCreditRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.CreditCardCredit:
 					case QueryType.Customer:
 						BuildCustomerQueryRq(requestMsgSet, fromDate, toDate);
 						break;
-					#region case QueryType.Deposit:
 					case QueryType.Deposit:
 						BuildDepositQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\DepositRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.Deposit
-					#region case QueryType.ReceivePayment:
 					case QueryType.ReceivePayment:
 						BuildReceivePaymentQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\ReceivePaymentRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.ReceivePayment
-					#region case QueryType.SalesReceipt:
 					case QueryType.SalesReceipt:
 						BuildSalesReceiptQueryRq(requestMsgSet, fromDate, toDate);
-						if (logLevel <= LogLevel.Debug)
-							File.WriteAllText(@"C:\TEMP\SalesReceiptRequest.xml", requestMsgSet.ToXMLString());
 						break;
-					#endregion case QueryType.SalesReceipt
 					default:
 						return null;
 				}
