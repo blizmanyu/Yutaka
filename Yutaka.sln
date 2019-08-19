@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "Programs\Fil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.QuickBooks", "Libraries\Yutaka.QuickBooks\Yutaka.QuickBooks.csproj", "{1954C736-342D-4927-9881-7CB2129BAB11}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpringV3", "Libraries\Yutaka.VineSpringV3\Yutaka.VineSpringV3.csproj", "{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,10 @@ Global
 		{1954C736-342D-4927-9881-7CB2129BAB11}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1954C736-342D-4927-9881-7CB2129BAB11}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1954C736-342D-4927-9881-7CB2129BAB11}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -132,6 +138,7 @@ Global
 		{44C155CE-2FAE-4977-A3E5-591583B080D8} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{B422F202-35A1-4745-8542-E6132EF83DD7} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
 		{1954C736-342D-4927-9881-7CB2129BAB11} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
