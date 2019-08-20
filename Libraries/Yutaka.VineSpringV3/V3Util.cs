@@ -50,7 +50,7 @@ namespace Yutaka.VineSpringV3
 						str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
 					if (!String.IsNullOrWhiteSpace(customer.Company))
 						str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
-					if (customer.DoB != null /*&& customer.DoB > UNIX_TIME*/)
+					if (customer.DoB != null && customer.DoB > UNIX_TIME)
 						str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
 					if (customer.IsTaxExempt != null)
 						str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
