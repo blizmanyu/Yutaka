@@ -8,6 +8,7 @@ using System.Net.Mail;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using NLog;
 using Yutaka.Data;
 using Yutaka.Images;
@@ -16,6 +17,7 @@ using Yutaka.Net;
 using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
+using Yutaka.VineSpringV3;
 using Yutaka.Web;
 
 namespace Yutaka.Tests
@@ -166,8 +168,23 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			TestDriveInfo();
+			Test_V3Util_CreateCustomer();
 			EndProgram();
+		}
+
+		private static void Test_V3Util_CreateCustomer()
+		{
+			var apiKey = "QxDguLZfTa9efG7hxHD3hhgXFyUVUdbek4CxvBt8_55e743f3123e3b057094768a";
+			var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
+			var customer = new Customer {
+				Email = "test@test.com",
+			};
+
+			var response = _v3Util.CreateCustomer(customer);
+
+			response.Wait();
+
+			Console.Write("\n{0}", response.Result);
 		}
 
 		private static void TestDriveInfo()
