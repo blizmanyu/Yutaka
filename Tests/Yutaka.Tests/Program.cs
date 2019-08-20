@@ -178,6 +178,7 @@ namespace Yutaka.Tests
 			var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
 			var customer = new Customer {
 				Email = "test@test.com",
+				DoB = new DateTime(1982, 7, 2),
 			};
 
 			var response = _v3Util.CreateCustomer(customer);

@@ -11,7 +11,7 @@ namespace Yutaka.VineSpringV3
 		public const string MOCK_SERVER_URL	= @"https://private-anon-ba1d162474-vinespring.apiary-mock.com/";
 		public const string DEBUGGIN_PROXY_URL	= @"https://private-anon-ba1d162474-vinespring.apiary-proxy.com/";
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
-		public const string TIME_FORMAT = @"K\Z";
+		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00.000Z";
 
 		public Uri BaseAddress;
 		public string ApiKey;
