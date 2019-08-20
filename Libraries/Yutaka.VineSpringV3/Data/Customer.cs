@@ -12,6 +12,8 @@ namespace Yutaka.VineSpringV3
 		public DateTime DoB;
 		public string Email;
 		public string FullName;
+		public string AltEmail;
+		public string Company;
 		public bool IsTaxExempt;
 		public string UpdatedBy;
 		public DateTime UpdatedOn;
