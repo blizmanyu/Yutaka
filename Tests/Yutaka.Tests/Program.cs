@@ -175,10 +175,10 @@ namespace Yutaka.Tests
 		private static void Test_V3Util_CreateCustomer()
 		{
 			var apiKey = "QxDguLZfTa9efG7hxHD3hhgXFyUVUdbek4CxvBt8_55e743f3123e3b057094768a";
-			var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
+			var _v3Util = new V3Util(apiKey, V3Util.PRODUCTION_URL);
+			//var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
 			var customer = new Customer {
 				Email = "test@test.com",
-				DoB = new DateTime(1982, 7, 2),
 			};
 
 			var response = _v3Util.CreateCustomer(customer);

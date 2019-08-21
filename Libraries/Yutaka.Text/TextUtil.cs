@@ -183,6 +183,14 @@ namespace Yutaka.Text
 		}
 		#endregion Phone Utils
 
+		public static string BeautifyJson(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			return str.Replace("{", "{\n  ").Replace("\",\"", "\",\n  \"").Replace("}", "\n}");
+		}
+
 		public static Int64 ConvertIpToInt64(string ip)
 		{
 			if (String.IsNullOrEmpty(ip))
