@@ -168,8 +168,16 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_V3Util_CreateCustomer();
+			Test_TextUtil_BeautifyJson();
 			EndProgram();
+		}
+
+		private static void Test_TextUtil_BeautifyJson()
+		{
+			var str = "{\"email\":\"test@test.com\",\"accountId\":\"acct_55e743f3123e3b057094768a\",\"updatedBy\":\"api - Key2019-0819-1603\",\"id\":\"cust_5d5c94136607c400012685cc\",\"authToken\":\"f992c1681c2dcf9da10ec591cd9b8f0a5b1d011aae9200ef9b2fc5e15334392d\",\"updatedOn\":\"2019-08-21T00:45:07.543Z\",\"createdOn\":\"2019-08-21T00:45:07.543Z\",\"customerSince\":\"2019-08-21T00:45:07.543Z\",\"newPassword\":\"53ed1982b33a0385390a\"}";
+			Console.Write("\n");
+			Console.Write("\n{0}", str);
+			Console.Write("\n{0}", TextUtil.BeautifyJson(str));
 		}
 
 		private static void Test_V3Util_CreateCustomer()

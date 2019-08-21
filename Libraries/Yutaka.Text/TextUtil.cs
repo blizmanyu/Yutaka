@@ -188,7 +188,7 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
-			return str.Replace("{", "{\n  ").Replace("\",\"", "\",\n  \"").Replace("}", "\n}");
+			return str.Replace("{", "{\n  ").Replace("\":\"", "\": \"").Replace("\",\"", "\",\n  \"").Replace("}", "\n}");
 		}
 
 		public static Int64 ConvertIpToInt64(string ip)
