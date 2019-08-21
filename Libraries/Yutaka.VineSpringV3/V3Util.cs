@@ -39,28 +39,29 @@ namespace Yutaka.VineSpringV3
 				throw new Exception(String.Format("<customer.Email> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
 
 			try {
+				var str = String.Format("{{ \"email\": \"{0}\"", customer.Email);
+
+				if (!String.IsNullOrWhiteSpace(customer.FullName))
+					str = String.Format("{0}, \"fullName\": \"{1}\"", str, customer.FullName);
+				if (!String.IsNullOrWhiteSpace(customer.AltEmail))
+					str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
+				if (!String.IsNullOrWhiteSpace(customer.Company))
+					str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
+				if (customer.DoB != null && customer.DoB > UNIX_TIME)
+					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
+				if (customer.IsTaxExempt != null)
+					str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
+				if (!String.IsNullOrWhiteSpace(customer.Phone))
+					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
+				if (!String.IsNullOrWhiteSpace(customer.Source))
+					str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
+
+				str = String.Format("{0} }}", str);
+				Console.Write("\n{0}", str);
+
 				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
-					var str = String.Format("{{ \"email\": \"{0}\"", customer.Email);
-
-					if (!String.IsNullOrWhiteSpace(customer.FullName))
-						str = String.Format("{0}, \"fullName\": \"{1}\"", str, customer.FullName);
-					if (!String.IsNullOrWhiteSpace(customer.AltEmail))
-						str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
-					if (!String.IsNullOrWhiteSpace(customer.Company))
-						str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
-					if (customer.DoB != null && customer.DoB > UNIX_TIME)
-						str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
-					if (customer.IsTaxExempt != null)
-						str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
-					if (!String.IsNullOrWhiteSpace(customer.Phone))
-						str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
-					if (!String.IsNullOrWhiteSpace(customer.Source))
-						str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
-
-					str = String.Format("{0} }}", str);
-					Console.Write("\n{0}", str);
 					using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
 						using (var response = await httpClient.PostAsync("customers", content)) {
 							var responseData = await response.Content.ReadAsStringAsync();
@@ -75,6 +76,33 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V3Util.CreateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Email));
 				else
 					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.CreateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Email));
+			}
+		}
+
+		public async Task<string> GetCustomer(string customerId)
+		{
+			if (String.IsNullOrWhiteSpace(customerId))
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.GetCustomer(string customerId).{0}", Environment.NewLine));
+
+			try {
+				var str = String.Format("customers/{0}", customerId);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(str)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 		#endregion Customers
