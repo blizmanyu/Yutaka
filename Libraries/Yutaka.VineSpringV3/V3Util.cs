@@ -213,6 +213,13 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Id));
 			}
 		}
+
+		#region Address
+		//public async Task<string> CreateAddress(Customer customer)
+		//{
+
+		//}
+		#endregion Address
 		#endregion Customers
 
 		#region Orders

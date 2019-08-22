@@ -9,7 +9,7 @@ namespace Yutaka.VineSpringV3
 		public string Country;
 		public DateTime CreatedOn;
 		public string CustomerId;
-		public bool IsInternational;
+		public bool? IsInternational;
 		public string Line1;
 		public string Line2;
 		public string Name;
