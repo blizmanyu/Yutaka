@@ -55,6 +55,8 @@ namespace Yutaka.VineSpringV3
 					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
 				if (!String.IsNullOrWhiteSpace(customer.Source))
 					str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
+				//if (!String.IsNullOrWhiteSpace(customer.UpdatedBy))
+				//	str = String.Format("{0}, \"updatedBy\": \"{1}\"", str, customer.UpdatedBy);
 
 				str = String.Format("{0} }}", str);
 				Console.Write("\n{0}", str);
@@ -103,6 +105,35 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
 					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+			}
+		}
+
+		public async Task<string> ResetPassword(string email)
+		{
+			if (String.IsNullOrWhiteSpace(email))
+				throw new Exception(String.Format("<email> is required. Exception thrown in V3Util.ResetPassword(string email).{0}", Environment.NewLine));
+
+			try {
+				var str = String.Format("{{ \"email\": \"{0}\" }}", email);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+						using (var response = await httpClient.PostAsync("customers/passwordReset", content)) {
+							var responseData = await response.Content.ReadAsStringAsync();
+							return responseData;
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V3Util.ResetPassword(string email)", ex.Message, ex.ToString(), Environment.NewLine, email));
+				else
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.ResetPassword(string email)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
 			}
 		}
 		#endregion Customers

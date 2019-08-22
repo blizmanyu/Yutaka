@@ -9,6 +9,8 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using NLog;
 using Yutaka.Data;
 using Yutaka.Images;
@@ -168,8 +170,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_TextUtil_BeautifyJson();
+			Test_V3Util_CreateCustomer();
 			EndProgram();
+		}
+
+		private static void Test_V3Util_CreateCustomer()
+		{
+			var apiKey = "asdfasdf";
+			//var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
+			var _v3Util = new V3Util(apiKey, V3Util.PRODUCTION_URL);
+			var customer = new Customer {
+				Email = "test@test.com",
+			};
+
+			var response = _v3Util.CreateCustomer(customer);
+			response.Wait();
+			var json = JObject.Parse(response.Result);
+
+			if (json["message"] == null || String.IsNullOrWhiteSpace(json["message"].ToString()))
+				Console.Write("\n{0}", json.ToString());
+			else
+				Console.Write("\n{0}: {1}", json["type"], json["message"]);
 		}
 
 		private static void Test_TextUtil_BeautifyJson()
@@ -177,23 +198,8 @@ namespace Yutaka.Tests
 			var str = "{\"email\":\"test@test.com\",\"accountId\":\"acct_55e743f3123e3b057094768a\",\"updatedBy\":\"api - Key2019-0819-1603\",\"id\":\"cust_5d5c94136607c400012685cc\",\"authToken\":\"f992c1681c2dcf9da10ec591cd9b8f0a5b1d011aae9200ef9b2fc5e15334392d\",\"updatedOn\":\"2019-08-21T00:45:07.543Z\",\"createdOn\":\"2019-08-21T00:45:07.543Z\",\"customerSince\":\"2019-08-21T00:45:07.543Z\",\"newPassword\":\"53ed1982b33a0385390a\"}";
 			Console.Write("\n");
 			Console.Write("\n{0}", str);
+			Console.Write("\n");
 			Console.Write("\n{0}", TextUtil.BeautifyJson(str));
-		}
-
-		private static void Test_V3Util_CreateCustomer()
-		{
-			var apiKey = "QxDguLZfTa9efG7hxHD3hhgXFyUVUdbek4CxvBt8_55e743f3123e3b057094768a";
-			var _v3Util = new V3Util(apiKey, V3Util.PRODUCTION_URL);
-			//var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
-			var customer = new Customer {
-				Email = "test@test.com",
-			};
-
-			var response = _v3Util.CreateCustomer(customer);
-
-			response.Wait();
-
-			Console.Write("\n{0}", response.Result);
 		}
 
 		private static void TestDriveInfo()
