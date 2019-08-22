@@ -7,11 +7,11 @@ namespace Yutaka.VineSpringV3
 	public class V3Util
 	{
 		#region Fields
-		private readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
-		public const string MOCK_SERVER_URL	= @"https://private-anon-ba1d162474-vinespring.apiary-mock.com/";
-		public const string DEBUGGIN_PROXY_URL	= @"https://private-anon-ba1d162474-vinespring.apiary-proxy.com/";
+		public const string MOCK_SERVER_URL = @"https://private-anon-ba1d162474-vinespring.apiary-mock.com/";
+		public const string DEBUGGIN_PROXY_URL  = @"https://private-anon-ba1d162474-vinespring.apiary-proxy.com/";
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
 		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00.000Z";
+		private readonly DateTime DOB_THRESHOLD;
 
 		public Uri BaseAddress;
 		public string ApiKey;
@@ -27,6 +27,7 @@ namespace Yutaka.VineSpringV3
 
 			ApiKey = apiKey;
 			BaseAddress = new Uri(baseAddress);
+			DOB_THRESHOLD = DateTime.Now.AddYears(-100);
 		}
 		#endregion Constructor
 
@@ -34,7 +35,7 @@ namespace Yutaka.VineSpringV3
 		public async Task<string> CreateCustomer(Customer customer)
 		{
 			if (customer == null)
-				throw new Exception(String.Format("<apiKey> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customer.Email))
 				throw new Exception(String.Format("<customer.Email> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
 
@@ -47,7 +48,7 @@ namespace Yutaka.VineSpringV3
 					str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
 				if (!String.IsNullOrWhiteSpace(customer.Company))
 					str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
-				if (customer.DoB != null && customer.DoB > UNIX_TIME)
+				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
 					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
 				if (customer.IsTaxExempt != null)
 					str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
@@ -161,6 +162,61 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.ResetPassword(string email)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
 			}
 		}
+
+		public async Task<string> UpdateCustomer(Customer customer)
+		{
+			if (customer == null)
+				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(customer.Id))
+				throw new Exception(String.Format("<customer.Id> is required. Exception thrown in V3Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
+
+			try {
+				var str = String.Format("{{ \"fullName\": \"{0}\"", customer.FullName);
+
+				if (!String.IsNullOrWhiteSpace(customer.AltEmail))
+					str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
+				if (!String.IsNullOrWhiteSpace(customer.Company))
+					str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
+				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
+					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
+				if (customer.IsTaxExempt != null)
+					str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
+				if (!String.IsNullOrWhiteSpace(customer.Phone))
+					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
+				if (!String.IsNullOrWhiteSpace(customer.Source))
+					str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
+
+				str = String.Format("{0} }}", str);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+						var requestUri = new Uri(BaseAddress, String.Format("customers/{0}", customer.Id));
+						using (var request = new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = requestUri, Content = content }) {
+							using (var response = await httpClient.SendAsync(request)) {
+								var responseData = await response.Content.ReadAsStringAsync();
+								return responseData;
+							}
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in V3Util.UpdateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Id));
+				else
+					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Id));
+			}
+		}
 		#endregion Customers
+
+		#region Orders
+		#endregion Orders
+
+		#region Products
+		#endregion Products
 	}
 }
