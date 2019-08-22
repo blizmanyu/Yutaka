@@ -55,8 +55,6 @@ namespace Yutaka.VineSpringV3
 					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
 				if (!String.IsNullOrWhiteSpace(customer.Source))
 					str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
-				if (!String.IsNullOrWhiteSpace(customer.UpdatedBy))
-					str = String.Format("{0}, \"updatedBy\": \"{1}\"", str, customer.UpdatedBy);
 
 				str = String.Format("{0} }}", str);
 				Console.Write("\n{0}", str);
