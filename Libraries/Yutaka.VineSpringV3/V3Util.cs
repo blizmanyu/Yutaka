@@ -10,7 +10,7 @@ namespace Yutaka.VineSpringV3
 		public const string MOCK_SERVER_URL = @"https://private-anon-ba1d162474-vinespring.apiary-mock.com/";
 		public const string DEBUGGIN_PROXY_URL  = @"https://private-anon-ba1d162474-vinespring.apiary-proxy.com/";
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
-		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00.000Z";
+		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00:00.000Z";
 		private readonly DateTime DOB_THRESHOLD;
 
 		public Uri BaseAddress;
@@ -51,7 +51,7 @@ namespace Yutaka.VineSpringV3
 				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
 					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
 				if (customer.IsTaxExempt != null)
-					str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
+					str = String.Format("{0}, \"isTaxExempt\": {1}", str, customer.IsTaxExempt.ToString().ToLower());
 				if (!String.IsNullOrWhiteSpace(customer.Phone))
 					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
 				if (!String.IsNullOrWhiteSpace(customer.Source))
@@ -180,11 +180,13 @@ namespace Yutaka.VineSpringV3
 				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
 					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
 				if (customer.IsTaxExempt != null)
-					str = String.Format("{0}, \"isTaxExempt\": \"{1}\"", str, customer.IsTaxExempt);
+					str = String.Format("{0}, \"isTaxExempt\": {1}", str, customer.IsTaxExempt.ToString().ToLower());
 				if (!String.IsNullOrWhiteSpace(customer.Phone))
 					str = String.Format("{0}, \"phone\": \"{1}\"", str, customer.Phone);
 				if (!String.IsNullOrWhiteSpace(customer.Source))
 					str = String.Format("{0}, \"source\": \"{1}\"", str, customer.Source);
+				if (!String.IsNullOrWhiteSpace(customer.UpdatedBy))
+					str = String.Format("{0}, \"updatedBy\": \"{1}\"", str, customer.UpdatedBy);
 
 				str = String.Format("{0} }}", str);
 				Console.Write("\n{0}", str);
