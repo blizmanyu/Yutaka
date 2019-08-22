@@ -215,10 +215,55 @@ namespace Yutaka.VineSpringV3
 		}
 
 		#region Address
-		//public async Task<string> CreateAddress(Customer customer)
-		//{
+		public async Task<string> CreateAddress(Address address, string customerId)
+		{
+			if (address == null)
+				throw new Exception(String.Format("<address> is required. Exception thrown in V3Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(customerId))
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
 
-		//}
+			try {
+				var str = "{  \"address\": { ";
+
+				if (!String.IsNullOrWhiteSpace(address.City))
+					str = String.Format("{0} \"city\": \"{1}\"", str, address.City);
+				if (address.IsInternational != null)
+					str = String.Format("{0}, \"isInternational\": {1}", str, address.IsInternational.ToString().ToLower());
+				if (!String.IsNullOrWhiteSpace(address.Line1))
+					str = String.Format("{0}, \"line1\": \"{1}\"", str, address.Line1);
+				if (!String.IsNullOrWhiteSpace(address.Line2))
+					str = String.Format("{0}, \"line2\": \"{1}\"", str, address.Line2);
+				if (!String.IsNullOrWhiteSpace(address.Country))
+					str = String.Format("{0}, \"country\": \"{1}\"", str, address.Country);
+				if (!String.IsNullOrWhiteSpace(address.PostalCode))
+					str = String.Format("{0}, \"postalCode\": \"{1}\"", str, address.PostalCode);
+				if (!String.IsNullOrWhiteSpace(address.Name))
+					str = String.Format("{0}, \"name\": \"{1}\"", str, address.Name);
+				if (!String.IsNullOrWhiteSpace(address.State))
+					str = String.Format("{0}, \"state\": \"{1}\"", str, address.State);
+
+				str = String.Format("{0} }}}}", str);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+						using (var response = await httpClient.PostAsync(String.Format("customers/{0}/addresses", customerId), content)) {
+							var responseData = await response.Content.ReadAsStringAsync();
+							return responseData;
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V3Util.CreateAddress(Address address, string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+				else
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.CreateAddress(Address address, string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+			}
+		}
 		#endregion Address
 		#endregion Customers
 
