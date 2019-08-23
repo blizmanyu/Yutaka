@@ -265,6 +265,35 @@ namespace Yutaka.VineSpringV3
 			}
 		}
 
+		public async Task<string> DeleteAddress(string addressId, string customerId)
+		{
+			if (String.IsNullOrWhiteSpace(addressId))
+				throw new Exception(String.Format("<addressId> is required. Exception thrown in V3Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(customerId))
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
+
+			try {
+				var str = String.Format("customers/{0}/addresses/{1}", customerId, addressId);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.DeleteAsync(str)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.Message, ex.ToString(), Environment.NewLine, addressId, customerId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, addressId, customerId));
+			}
+		}
+
 		public async Task<string> ListAllAddresses(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
@@ -313,7 +342,7 @@ namespace Yutaka.VineSpringV3
 				str = String.Format("{0}, \"postalCode\": \"{1}\"", str, address.PostalCode ?? "");
 				str = String.Format("{0}, \"name\": \"{1}\"", str, address.Name ?? "");
 				str = String.Format("{0}, \"state\": \"{1}\"", str, address.State ?? "");
-
+				str = String.Format("{0}, \"country\": \"{1}\"", str, address.Country ?? "");
 				str = String.Format("{0} }}}}", str);
 				Console.Write("\n{0}", str);
 
