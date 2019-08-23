@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 
 namespace Yutaka.VineSpringV3
 {
@@ -30,6 +31,20 @@ namespace Yutaka.VineSpringV3
 			DOB_THRESHOLD = DateTime.Now.AddYears(-100);
 		}
 		#endregion Constructor
+
+		public void DisplayResponse(Task<string> response)
+		{
+			if (response == null || String.IsNullOrWhiteSpace(response.Result))
+				return;
+
+			if (response.Result.Length > 7) {
+				var json = JObject.Parse(response.Result.Replace("[", "").Replace("]", ""));
+				Console.Write("\n{0}", json.ToString());
+			}
+
+			else
+				Console.Write("\n{0}", response.Result);
+		}
 
 		#region Customers
 		public async Task<string> CreateCustomer(Customer customer)
