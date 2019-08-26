@@ -33,21 +33,19 @@ namespace Yutaka.VineSpringV3
 		}
 		#endregion Constructor
 
-		public void DisplayResponse(Task<string> response)
+		public void DisplayResponse(Task<string> response, bool pretty=true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
 				return;
 
-			dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
-			var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-			Console.Write("\n{0}", formatted);
-			//if (response.Result.Length > 7) {
-			//	var json = JObject.Parse(response.Result.Replace("[", "").Replace("]", ""));
-			//	Console.Write("\n{0}", json.ToString());
-			//}
+			if (pretty) {
+				dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
+				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+				Console.Write("\n{0}", formatted);
+			}
 
-			//else
-			//	Console.Write("\n{0}", response.Result);
+			else
+				Console.Write("\n{0}", response.Result);
 		}
 
 		#region Customers
