@@ -387,6 +387,33 @@ namespace Yutaka.VineSpringV3
 		}
 		#endregion Address
 
+		public async Task<string> ListAllAllocations(string customerId)
+		{
+			if (String.IsNullOrWhiteSpace(customerId))
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.ListAllAllocations(string customerId).{0}", Environment.NewLine));
+
+			try {
+				var str = String.Format("customers/{0}/allocations", customerId);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(str)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllAllocations(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllAllocations(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+			}
+		}
+
 		public async Task<string> ListAllNotes(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
