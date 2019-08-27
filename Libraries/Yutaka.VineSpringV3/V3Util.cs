@@ -618,6 +618,33 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.id));
 			}
 		}
+
+		public async Task<string> ListAllTransactionsByOrderId(string orderId)
+		{
+			if (String.IsNullOrWhiteSpace(orderId))
+				throw new Exception(String.Format("<orderId> is required. Exception thrown in V3Util.ListAllTransactionsByOrderId(string orderId).{0}", Environment.NewLine));
+
+			try {
+				var endpoint = String.Format("orders/{0}/transactions", orderId);
+				Console.Write("\n{0}", endpoint);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
+			}
+		}
 		#endregion Orders
 
 		#region Products
