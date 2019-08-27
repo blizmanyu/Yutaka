@@ -50,7 +50,7 @@ namespace Yutaka.VineSpringV3
 
 	public class Dimensions
 	{
-		public int weight { get; set; }
+		public decimal? weight { get; set; }
 	}
 
 	public class Sku
