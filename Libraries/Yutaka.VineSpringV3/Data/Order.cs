@@ -82,7 +82,7 @@ namespace Yutaka.VineSpringV3
 		public bool isCommitted { get; set; }
 		public string id { get; set; }
 		public List<object> tags { get; set; }
-		public DateTime shipDate { get; set; }
+		public DateTime? shipDate { get; set; }
 		public bool isCompliant { get; set; }
 		public string accountId { get; set; }
 		public string shipCompliantStatus { get; set; }
