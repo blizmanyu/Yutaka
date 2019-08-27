@@ -472,6 +472,78 @@ namespace Yutaka.VineSpringV3
 		#endregion Customers
 
 		#region Orders
+		public async Task<string> ListAllOrdersByIds(string commaSeparatedIds, string paginationKey=null)
+		{
+			if (String.IsNullOrWhiteSpace(commaSeparatedIds))
+				throw new Exception(String.Format("<commaSeparatedIds> is required. Exception thrown in V3Util.ListAllOrdersByIds(string commaSeparatedIds, string paginationKey).{0}", Environment.NewLine));
+
+			try {
+				var endpoint = String.Format("orders?ids={0}", commaSeparatedIds.Replace(",", "%2C"));
+				if (!String.IsNullOrWhiteSpace(paginationKey))
+					endpoint = String.Format("{0}&paginationKey={1}", endpoint, paginationKey);
+				Console.Write("\n{0}", endpoint);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.Message, ex.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
+			}
+		}
+
+		public async Task<string> ListAllOrdersByDate(DateTime startDate, DateTime endDate, string paginationKey = null)
+		{
+			#region Input Validation
+			var now = DateTime.Now;
+			var minDate = new DateTime(2000,1,1);
+			var maxDate = now.AddMonths(3);
+
+			if (startDate < minDate)
+				startDate = minDate;
+			if (startDate > now)
+				startDate = now;
+			if (endDate < minDate)
+				endDate = minDate;
+			if (endDate > maxDate)
+				endDate = maxDate;
+			#endregion Input Validation
+
+			try {
+				var start = startDate.ToString(TIME_FORMAT).Replace(":", "%3A");
+				var end = endDate.ToString(TIME_FORMAT).Replace(":", "%3A");
+				var endpoint = String.Format("orders?startDate={0}&endDate={1}", start, end);
+				if (!String.IsNullOrWhiteSpace(paginationKey))
+					endpoint = String.Format("{0}&paginationKey={1}", endpoint, paginationKey);
+				Console.Write("\n{0}", endpoint);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByDate(DateTime startDate'{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByDate(DateTime startDate'{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+			}
+		}
+
 		#endregion Orders
 
 		#region Products
