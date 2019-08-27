@@ -538,12 +538,38 @@ namespace Yutaka.VineSpringV3
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByDate(DateTime startDate'{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByDate(DateTime startDate'{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 			}
 		}
 
+		public async Task<string> GetOrder(string orderId)
+		{
+			if (String.IsNullOrWhiteSpace(orderId))
+				throw new Exception(String.Format("<orderId> is required. Exception thrown in V3Util.GetOrder(string orderId).{0}", Environment.NewLine));
+
+			try {
+				var endpoint = String.Format("orders/{0}", orderId);
+				Console.Write("\n{0}", endpoint);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetOrder(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetOrder(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
+			}
+		}
 		#endregion Orders
 
 		#region Products
