@@ -708,9 +708,32 @@ namespace Yutaka.VineSpringV3
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllProducts(='{3}')", ex.Message, ex.ToString(), Environment.NewLine));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllProducts()", ex.Message, ex.ToString(), Environment.NewLine));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllProducts(='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllProducts()", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+			}
+		}
+
+		public async Task<string> ListAllTags()
+		{
+			try {
+				var endpoint = "products/tags";
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllTags()", ex.Message, ex.ToString(), Environment.NewLine));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllTags()", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
 		}
 		#endregion Products
