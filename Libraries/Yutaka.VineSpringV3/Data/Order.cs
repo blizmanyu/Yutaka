@@ -24,11 +24,11 @@ namespace Yutaka.VineSpringV3
 
 	public class Item
 	{
-		public int total { get; set; }
+		public decimal total { get; set; }
 		public int quantity { get; set; }
 		public string productId { get; set; }
 		public int price { get; set; }
-		public int subtotal { get; set; }
+		public decimal subtotal { get; set; }
 		public string name { get; set; }
 		public int discount { get; set; }
 		public string sku { get; set; }
@@ -70,7 +70,7 @@ namespace Yutaka.VineSpringV3
 		public string fulfillmentDetail { get; set; }
 		public DateTime updatedOn { get; set; }
 		public string status { get; set; }
-		public int tax { get; set; }
+		public decimal tax { get; set; }
 		public string salesRep { get; set; }
 		public string updatedBy { get; set; }
 		public string fulfillmentHouse { get; set; }
@@ -87,12 +87,12 @@ namespace Yutaka.VineSpringV3
 		public string accountId { get; set; }
 		public string shipCompliantStatus { get; set; }
 		public bool isV2Import { get; set; }
-		public int total { get; set; }
+		public decimal total { get; set; }
 		public string fullName { get; set; }
 		public List<Item> items { get; set; }
-		public int freightTax { get; set; }
+		public decimal freightTax { get; set; }
 		public string orderNumber { get; set; }
-		public int subtotal { get; set; }
+		public decimal subtotal { get; set; }
 		public ShippingAddress shippingAddress { get; set; }
 		public DateTime createdOn { get; set; }
 		public int calculatedShipping { get; set; }
