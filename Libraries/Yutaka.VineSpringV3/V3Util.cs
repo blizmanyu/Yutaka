@@ -14,6 +14,8 @@ namespace Yutaka.VineSpringV3
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
 		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00:00.000Z";
 		private readonly DateTime DOB_THRESHOLD;
+		private readonly DateTime MIN_DATE = new DateTime(2000,1,1);
+		private readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
 
 		public Uri BaseAddress;
 		public string ApiKey;
@@ -568,6 +570,52 @@ namespace Yutaka.VineSpringV3
 					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetOrder(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
 				else
 					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetOrder(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
+			}
+		}
+
+		public async Task<string> UpdateOrder(Order order)
+		{
+			if (order == null)
+				throw new Exception(String.Format("<order> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(order.id))
+				throw new Exception(String.Format("<order.id> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
+
+			try {
+				var endpoint = String.Format("orders/{0}", order.id);
+				Console.Write("\n{0}", endpoint);
+
+				var strContent = String.Format("{{ \"fulfillmentHouse\": \"{0}\"", order.fulfillmentHouse ?? "");
+
+				if (order.shipDate != null && MIN_DATE < order.shipDate && order.shipDate < MAX_DATE)
+					strContent = String.Format("{0}, \"shipDate\": \"{1}\"", strContent, order.shipDate.Value.ToString(TIME_FORMAT));
+				if (!String.IsNullOrWhiteSpace(order.status))
+					strContent = String.Format("{0}, \"status\": \"{1}\"", strContent, order.status);
+				if (order.tags != null && order.tags.Count > 0)
+					strContent = String.Format("{0}, \"tags\": [ \"{1}\" ]", strContent, String.Join(",", order.tags));
+
+				strContent = String.Format("{0} }}", strContent);
+				Console.Write("\n{0}", strContent);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var content = new StringContent(strContent, System.Text.Encoding.Default, "application/json")) {
+						var requestUri = new Uri(BaseAddress, endpoint);
+						using (var request = new HttpRequestMessage { Method = new HttpMethod("PATCH"), RequestUri = requestUri, Content = content }) {
+							using (var response = await httpClient.SendAsync(request)) {
+								var responseData = await response.Content.ReadAsStringAsync();
+								return responseData;
+							}
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.UpdateOrder(Order order='{3}')", ex.Message, ex.ToString(), Environment.NewLine, order.id));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.id));
 			}
 		}
 		#endregion Orders
