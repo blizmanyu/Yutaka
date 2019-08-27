@@ -691,6 +691,29 @@ namespace Yutaka.VineSpringV3
 		#endregion Orders
 
 		#region Products
+		public async Task<string> GetProduct(string productId)
+		{
+			try {
+				var endpoint = String.Format("products/{0}", productId);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetProduct(string productId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, productId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetProduct(string productId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, productId));
+			}
+		}
+
 		public async Task<string> ListAllProducts()
 		{
 			try {
