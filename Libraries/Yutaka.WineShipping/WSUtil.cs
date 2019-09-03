@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -52,6 +53,30 @@ namespace Yutaka.WineShipping
 			else
 				Console.Write("\n{0}", response.Result);
 		}
+
+		public async Task<string> GetInventoryStatus(string productId)
+		{
+			try {
+				var endpoint = "api/Inventory/GetStatus";
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseUrl }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(endpoint)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetInventoryStatus(string productId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, productId));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetInventoryStatus(string productId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, productId));
+			}
+		}
+
 		#endregion Methods
 
 	}
