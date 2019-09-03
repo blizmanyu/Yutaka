@@ -54,26 +54,39 @@ namespace Yutaka.WineShipping
 				Console.Write("\n{0}", response.Result);
 		}
 
-		public async Task<string> GetInventoryStatus(string productId)
+		public async Task<string> GetInventoryStatus(string warehouse=null, string[] itemNumbers=null, bool? includeTotalRecordCount=null, int? skip=null, int? top=null)
 		{
+			if (includeTotalRecordCount == null)
+				includeTotalRecordCount = true;
+
 			try {
 				var endpoint = "api/Inventory/GetStatus";
+				var request = new InventoryStatusRequest {
+					Authentication = new Authentication { UserKey = UserKey, Password = Password, CustomerNo = CustomerNumber, },
+					Warehouse = warehouse,
+					ItemNumbers = itemNumbers,
+					IncludeTotalRecordCount = includeTotalRecordCount,
+					Skip = skip,
+					Top = top,
+				};
+
 
 				using (var httpClient = new HttpClient { BaseAddress = BaseUrl }) {
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
-					using (var response = await httpClient.GetAsync(endpoint)) {
-						var responseData = await response.Content.ReadAsStringAsync();
-						return responseData;
+					using (var content = new StringContent(request.ToJson(), Encoding.Default, "application/json")) {
+						using (var response = await httpClient.PostAsync(endpoint, content)) {
+							var responseData = await response.Content.ReadAsStringAsync();
+							return responseData;
+						}
 					}
 				}
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetInventoryStatus(string productId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, productId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.Message, ex.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetInventoryStatus(string productId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, productId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
 			}
 		}
 
