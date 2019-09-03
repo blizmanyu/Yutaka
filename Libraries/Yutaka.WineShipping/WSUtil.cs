@@ -58,6 +58,8 @@ namespace Yutaka.WineShipping
 		{
 			if (includeTotalRecordCount == null)
 				includeTotalRecordCount = true;
+			if (top == null)
+				top = 200;
 
 			try {
 				var endpoint = "api/Inventory/GetStatus";
@@ -69,7 +71,6 @@ namespace Yutaka.WineShipping
 					Skip = skip,
 					Top = top,
 				};
-
 
 				using (var httpClient = new HttpClient { BaseAddress = BaseUrl }) {
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
