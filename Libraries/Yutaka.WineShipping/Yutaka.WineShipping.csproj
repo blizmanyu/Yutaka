@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\InventoryStatusResult.cs" />
     <Compile Include="Data\InventoryStatusRequest.cs" />
     <Compile Include="Data\Authentication.cs" />
     <Compile Include="WSUtil.cs" />
