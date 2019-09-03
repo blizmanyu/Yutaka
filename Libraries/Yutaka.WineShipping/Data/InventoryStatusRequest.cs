@@ -16,19 +16,19 @@ namespace Yutaka.WineShipping
 			var json = String.Format("{{ {0}", Authentication.ToJson());
 
 			if (!String.IsNullOrWhiteSpace(Warehouse))
-				String.Format("{0}, \"Warehouse\": \"{1}\"", json, Warehouse);
+				json = String.Format("{0}, \"Warehouse\": \"{1}\"", json, Warehouse);
 
 			if (ItemNumbers != null && ItemNumbers.Length > 0)
-				String.Format("{0}, \"ItemNumbers\": [ \"{1}\" ]", json, String.Join(",", ItemNumbers));
+				json = String.Format("{0}, \"ItemNumbers\": [ \"{1}\" ]", json, String.Join(",", ItemNumbers));
 
 			if (IncludeTotalRecordCount != null)
-				String.Format("{0}, \"IncludeTotalRecordCount\": {1}", json, IncludeTotalRecordCount);
+				json = String.Format("{0}, \"IncludeTotalRecordCount\": {1}", json, IncludeTotalRecordCount);
 
 			if (Skip != null)
-				String.Format("{0}, \"Skip\": {1}", json, Skip);
+				json = String.Format("{0}, \"Skip\": {1}", json, Skip);
 
 			if (Top != null)
-				String.Format("{0}, \"Top\": {1}", json, Top);
+				json = String.Format("{0}, \"Top\": {1}", json, Top);
 
 			return String.Format("{0} }}", json);
 		}
