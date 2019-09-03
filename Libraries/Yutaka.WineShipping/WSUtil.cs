@@ -8,5 +8,14 @@ namespace Yutaka.WineShipping
 {
 	public class WSUtil
 	{
+		#region Fields
+		public const string PRODUCTION_URL = @"https://wsservices-test.azurewebsites.net/";
+
+		public Uri BaseUrl;
+		public string UserKey;
+		public string Password;
+		public string CustomerNumber;
+		#endregion Fields
+
 	}
 }
