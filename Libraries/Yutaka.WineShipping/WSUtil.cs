@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Yutaka.WineShipping
 {
@@ -35,6 +36,23 @@ namespace Yutaka.WineShipping
 			CustomerNumber = customerNumber;
 		}
 		#endregion Constructor
+
+		#region Methods
+		public void DisplayResponse(Task<string> response, bool pretty = true)
+		{
+			if (response == null || String.IsNullOrWhiteSpace(response.Result))
+				return;
+
+			if (pretty) {
+				dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
+				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+				Console.Write("\n{0}", formatted);
+			}
+
+			else
+				Console.Write("\n{0}", response.Result);
+		}
+		#endregion Methods
 
 	}
 }
