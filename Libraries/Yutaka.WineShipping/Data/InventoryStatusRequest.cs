@@ -22,7 +22,7 @@ namespace Yutaka.WineShipping
 				json = String.Format("{0}, \"ItemNumbers\": [ \"{1}\" ]", json, String.Join(",", ItemNumbers));
 
 			if (IncludeTotalRecordCount != null)
-				json = String.Format("{0}, \"IncludeTotalRecordCount\": {1}", json, IncludeTotalRecordCount);
+				json = String.Format("{0}, \"IncludeTotalRecordCount\": {1}", json, IncludeTotalRecordCount.ToString().ToLower());
 
 			if (Skip != null)
 				json = String.Format("{0}, \"Skip\": {1}", json, Skip);
