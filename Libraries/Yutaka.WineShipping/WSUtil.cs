@@ -11,6 +11,7 @@ namespace Yutaka.WineShipping
 	public class WSUtil
 	{
 		#region Fields
+		public const int DEFAULT_TOP = 400;
 		public const string PRODUCTION_URL = @"https://wsservices-test.azurewebsites.net/";
 
 		public Uri BaseUrl;
@@ -59,7 +60,7 @@ namespace Yutaka.WineShipping
 			if (includeTotalRecordCount == null)
 				includeTotalRecordCount = true;
 			if (top == null)
-				top = 200;
+				top = DEFAULT_TOP;
 
 			try {
 				var endpoint = "api/Inventory/GetStatus";
