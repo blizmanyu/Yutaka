@@ -268,6 +268,43 @@ namespace Yutaka.Data
 			}
 		}
 
+		public void TruncateTable(string connectionString, string database=null, string schema=null, string table=null)
+		{
+			if (String.IsNullOrWhiteSpace(connectionString))
+				throw new Exception(String.Format("<connectionString> is required.{0}", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(database))
+				database = "";
+			if (String.IsNullOrWhiteSpace(schema))
+				schema = "dbo";
+			if (String.IsNullOrWhiteSpace(table))
+				throw new Exception(String.Format("<table> is required.{0}", Environment.NewLine));
+
+			try {
+				var sql = "TRUNCATE TABLE ";
+
+				if (!String.IsNullOrWhiteSpace(database))
+					sql = String.Format("{0}{1}.", sql, database);
+
+				sql = String.Format("{0}{1}.{2}", sql, schema, table);
+
+				Console.Write("\n{0}", sql);
+
+				using (var conn = new SqlConnection(connectionString)) {
+					using (var cmd = new SqlCommand(sql, conn)) {
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in SqlUtil.TruncateTable(string connectionString, string database='{3}', string schema='{4}', string table='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, database, schema, table));
+
+				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil.TruncateTable(string connectionString, string database='{3}', string schema='{4}', string table='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, database, schema, table));
+			}
+		}
+
 		#region Commented Out Jan, 10, 2019
 		//public void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		//{
