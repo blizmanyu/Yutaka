@@ -170,9 +170,21 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_V3Util_CreateCustomer();
+			Test_SqlUtil_TruncateTable();
 			EndProgram();
 		}
+
+		#region Test_SqlUtil_TruncateTable - 2019 0905 1909
+		private static void Test_SqlUtil_TruncateTable()
+		{
+			var conStr = "";
+			var database = "";
+			var schema = "dbo";
+			var table = "";
+
+			_sqlUtil.TruncateTable(conStr, database, schema, table);
+		}
+		#endregion Test_SqlUtil_TruncateTable - 2019 0905 1909
 
 		private static void Test_V3Util_CreateCustomer()
 		{
