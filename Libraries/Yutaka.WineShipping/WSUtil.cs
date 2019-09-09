@@ -10,7 +10,7 @@ namespace Yutaka.WineShipping
 	{
 		#region Fields
 		public const int DEFAULT_TOP = 400;
-		public const string PRODUCTION_URL = @"https://wsservices-test.azurewebsites.net/";
+		public const string PRODUCTION_URL = @"http://wsservices-test.azurewebsites.net/";
 
 		public Uri BaseUrl;
 		public string UserKey;
@@ -57,6 +57,8 @@ namespace Yutaka.WineShipping
 		{
 			if (includeTotalRecordCount == null)
 				includeTotalRecordCount = true;
+			if (skip == null)
+				skip = 0;
 			if (top == null)
 				top = DEFAULT_TOP;
 
