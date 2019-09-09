@@ -100,10 +100,29 @@ namespace Yutaka.WineShipping
 			itemUnit = itemUnit.ToUpper();
 
 			switch (itemUnit) {
+				#region case 1.5L
 				case "1500":
 					return 6;
 				case "1500-1-W":
 					return 1;
+				#endregion case 1.5L
+				#region case 3L
+				case "3000":
+				case "3000-1-W":
+					return 1;
+				#endregion case 3L
+				#region case 750mL
+				case "750":
+					return 12;
+				case "750-3":
+					return 3;
+				case "750-3-W":
+					return 3;
+				#endregion case 750mL
+				#region case 9L
+				case "9000":
+					return 1;
+				#endregion case 9L
 				default:
 					return 1;
 			}
@@ -117,9 +136,26 @@ namespace Yutaka.WineShipping
 			itemUnit = itemUnit.ToUpper();
 
 			switch (itemUnit) {
+				#region case 1.5L
 				case "1500":
 				case "1500-1-W":
 					return 6;
+				#endregion case 1.5L
+				#region case 3L
+				case "3000":
+				case "3000-1-W":
+					return 3;
+				#endregion case 3L
+				#region case 750mL
+				case "750":
+				case "750-3":
+				case "750-3-W":
+					return 12;
+				#endregion case 750mL
+				#region case 9L
+				case "9000":
+					return 1;
+				#endregion case 9L
 				default:
 					return 1;
 			}
