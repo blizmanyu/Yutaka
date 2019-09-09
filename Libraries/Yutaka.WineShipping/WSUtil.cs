@@ -91,6 +91,39 @@ namespace Yutaka.WineShipping
 					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
 			}
 		}
+
+		public int? ItemUnitToBottlesPerUnit(string itemUnit)
+		{
+			if (String.IsNullOrWhiteSpace(itemUnit))
+				return 1;
+
+			itemUnit = itemUnit.ToUpper();
+
+			switch (itemUnit) {
+				case "1500":
+					return 6;
+				case "1500-1-W":
+					return 1;
+				default:
+					return 1;
+			}
+		}
+
+		public int? ItemUnitToBottlesPerCase(string itemUnit)
+		{
+			if (String.IsNullOrWhiteSpace(itemUnit))
+				return 1;
+
+			itemUnit = itemUnit.ToUpper();
+
+			switch (itemUnit) {
+				case "1500":
+				case "1500-1-W":
+					return 6;
+				default:
+					return 1;
+			}
+		}
 		#endregion Methods
 	}
 }
