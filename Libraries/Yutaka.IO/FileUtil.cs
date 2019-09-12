@@ -302,11 +302,16 @@ namespace Yutaka.IO
 		{
 			var deletedCount = 0;
 			var files = Directory.EnumerateFiles(folderPath, "Thumbs.db", searchOption).ToList();
+			files.AddRange(Directory.EnumerateFiles(folderPath, ".DS_Store", searchOption).ToList());
 			
 			try {
 				for (int i = 0; i < files.Count; i++) {
-					File.Delete(files[i]);
-					deletedCount++;
+					try {
+						File.Delete(files[i]);
+						deletedCount++;
+					}
+
+					catch (Exception) { }
 				}
 			}
 
