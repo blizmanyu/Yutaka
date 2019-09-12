@@ -10,7 +10,7 @@ namespace Yutaka.WineShipping
 	{
 		#region Fields
 		public const int DEFAULT_TOP = 400;
-		public const string PRODUCTION_URL = @"http://wsservices-test.azurewebsites.net/";
+		public const string PRODUCTION_URL = @"https://wsservices-test.azurewebsites.net/";
 
 		public Uri BaseUrl;
 		public string UserKey;
