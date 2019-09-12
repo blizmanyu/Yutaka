@@ -10,7 +10,9 @@ namespace Yutaka.WineShipping
 	{
 		#region Fields
 		public const int DEFAULT_TOP = 400;
-		public const string PRODUCTION_URL = @"https://wsservices-test.azurewebsites.net/";
+		public const string PRODUCTION_URL = @"asdf";
+		public const string TEST_URL = @"https://wsservices-test.azurewebsites.net/";
+		public const string BASE_URL = TEST_URL;
 
 		public Uri BaseUrl;
 		public string UserKey;
@@ -28,7 +30,7 @@ namespace Yutaka.WineShipping
 			if (String.IsNullOrWhiteSpace(customerNumber))
 				throw new Exception(String.Format("<customerNumber> is required. Exception thrown in Constructor WSUtil(string baseUrl, string userKey, string password, string customerNumber).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(baseUrl))
-				baseUrl = PRODUCTION_URL;
+				baseUrl = BASE_URL;
 
 			BaseUrl = new Uri(baseUrl);
 			UserKey = userKey;
