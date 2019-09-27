@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 
 namespace Yutaka.Data
 {
@@ -46,6 +47,23 @@ namespace Yutaka.Data
 				ConnectionStrings.Add(new SqlConnectionStringBuilder(connectionStrings[i]));
 			}
 		}
+
+		//public string GetConnectionString(string server=null, string database=null)
+		//{
+		//	if (String.IsNullOrWhiteSpace(server))
+		//		server = "localhost";
+		//	if (String.IsNullOrWhiteSpace(database))
+		//		throw new Exception(String.Format("<database> is required.{0}Exception thrown in ConnectionStringManager.GetConnectionString(string server, string database){0}", Environment.NewLine));
+
+		//	try {
+		//		var query = from x in ConnectionStrings
+		//					where x.DataSource
+		//	}
+
+		//	catch (Exception ex) {
+
+		//	}
+		//}
 
 		/// <summary>
 		/// Load connection strings
