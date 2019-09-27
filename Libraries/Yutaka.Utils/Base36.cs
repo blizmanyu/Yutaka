@@ -10,6 +10,7 @@ namespace Yutaka.Utils
 		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+		#region Encode Overrides
 		public static string Encode(DateTime? dt = null, bool lowerCase = true)
 		{
 			if (dt == null)
@@ -39,6 +40,7 @@ namespace Yutaka.Utils
 			}
 			return new string(result.ToArray());
 		}
+		#endregion Encode Overrides
 
 		public static long Decode(string input, bool lowerCase = true)
 		{
