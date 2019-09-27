@@ -10,6 +10,14 @@ namespace Yutaka.Utils
 		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
+		public static string Encode(DateTime? dt = null, bool lowerCase = true)
+		{
+			if (dt == null)
+				dt = DateTime.UtcNow;
+
+			return Encode(long.Parse(dt.Value.ToString("yyyyMMddHHmmssfff")), lowerCase);
+		}
+
 		public static string Encode(long input, bool lowerCase = true)
 		{
 			if (input < 0)
@@ -32,7 +40,7 @@ namespace Yutaka.Utils
 			return new string(result.ToArray());
 		}
 
-		public static Int64 Decode(string input, bool lowerCase = true)
+		public static long Decode(string input, bool lowerCase = true)
 		{
 			string CharList;
 			if (lowerCase)
