@@ -14,7 +14,7 @@ namespace Yutaka.Data
 		protected const string FOLDER2 = @"E:\NeverMoveOrDelete\";
 		protected const string FOLDER3 = @"C:\NeverMoveOrDelete\";
 		protected const string filename = "ConnectionStrings.txt";
-		protected List<SqlConnectionStringBuilder> ConnectionStrings = new List<SqlConnectionStringBuilder>();
+		private List<SqlConnectionStringBuilder> ConnectionStrings = new List<SqlConnectionStringBuilder>();
 
 		public ConnectionStringManager()
 		{
