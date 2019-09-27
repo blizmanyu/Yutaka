@@ -10,15 +10,17 @@ namespace Yutaka.Data
 	/// </summary>
 	public class ConnectionStringManager
 	{
-		protected const string FOLDER1 = @"D:\NeverMoveOrDelete\";
-		protected const string FOLDER2 = @"E:\NeverMoveOrDelete\";
-		protected const string FOLDER3 = @"C:\NeverMoveOrDelete\";
-		protected const string filename = "ConnectionStrings.txt";
-		private List<SqlConnectionStringBuilder> ConnectionStrings = new List<SqlConnectionStringBuilder>();
+		private const string FOLDER = @"DontMoveOrDelete\";
+		private const string FOLDER1 = @"D:\" + FOLDER;
+		private const string FOLDER2 = @"E:\" + FOLDER;
+		private const string FOLDER3 = @"C:\" + FOLDER;
+		private const string FILENAME = "ConnectionStrings.txt";
+		private List<SqlConnectionStringBuilder> ConnectionStrings;
 
-		public ConnectionStringManager()
+		public ConnectionStringManager(string filePath = null)
 		{
-
+			ConnectionStrings = new List<SqlConnectionStringBuilder>();
+			LoadConnectionStrings(filePath);
 		}
 
 		/// <summary>
@@ -54,17 +56,17 @@ namespace Yutaka.Data
 		{
 			if (String.IsNullOrWhiteSpace(filePath)) {
 				if (Directory.Exists(FOLDER1))
-					filePath = Path.Combine(FOLDER1, filename);
+					filePath = Path.Combine(FOLDER1, FILENAME);
 				else if (Directory.Exists(FOLDER2))
-					filePath = Path.Combine(FOLDER2, filename);
+					filePath = Path.Combine(FOLDER2, FILENAME);
 				else if (Directory.Exists(FOLDER3))
-					filePath = Path.Combine(FOLDER3, filename);
+					filePath = Path.Combine(FOLDER3, FILENAME);
 				else
 					throw new Exception(String.Format("Can't find default ConnectionStrings file.{0}Exception thrown in ConnectionStringManager.LoadConnectionStrings(string filePath){0}", Environment.NewLine));
 			}
 
 			if (File.Exists(filePath)) {
-				ConnectionStrings.Clear();
+				ConnectionStrings = new List<SqlConnectionStringBuilder>();
 				var text = File.ReadAllText(filePath);
 				ParseConnectionStrings(text);
 			}
