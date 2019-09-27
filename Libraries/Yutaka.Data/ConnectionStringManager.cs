@@ -16,7 +16,10 @@ namespace Yutaka.Data
 		protected const string filename = "ConnectionStrings.txt";
 		protected List<SqlConnectionStringBuilder> ConnectionStrings = new List<SqlConnectionStringBuilder>();
 
+		public ConnectionStringManager()
+		{
 
+		}
 
 		/// <summary>
 		/// Parse connection strings
@@ -61,6 +64,7 @@ namespace Yutaka.Data
 			}
 
 			if (File.Exists(filePath)) {
+				ConnectionStrings.Clear();
 				var text = File.ReadAllText(filePath);
 				ParseConnectionStrings(text);
 			}
