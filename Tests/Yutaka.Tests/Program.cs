@@ -170,9 +170,21 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_SqlUtil_TruncateTable();
+			TestDateTime201909271703();
 			EndProgram();
 		}
+
+		#region Test DateTime 2019 0927 1703
+		private static void TestDateTime201909271703()
+		{
+			var now = DateTime.UtcNow;
+			Console.Write("\n");
+			Console.Write("\nToString('yyyyMMddHHmmssfff'): {0}", now.ToString("yyyyMMddHHmmssfff"));
+			Console.Write("\n                        Ticks: {0}", now.Ticks);
+			Console.Write("\n                  GetHashCode: {0}", now.GetHashCode().ToString("x"));
+			Console.Write("\n       ToString().GetHashCode: {0}", now.ToString().GetHashCode().ToString("x"));
+		}
+		#endregion Test DateTime 2019 0927 1703
 
 		#region Test_SqlUtil_TruncateTable - 2019 0905 1909
 		private static void Test_SqlUtil_TruncateTable()
