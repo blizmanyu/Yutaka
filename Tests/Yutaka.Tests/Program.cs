@@ -170,9 +170,32 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			TestDateTime201909271703();
+			Test201909271804();
 			EndProgram();
 		}
+
+		#region Test DateTime 2019 0927 1804
+		private static void Test201909271804()
+		{
+			long parsed;
+			string[] split;
+			var tests = new string[] { "0.0.0.0", "0.0.0.1", "1.1.1.1", "255.255.255.255", };
+
+			for (int i=0; i<tests.Length; i++) {
+				split = tests[i].Split('.');
+				parsed = long.Parse(tests[i].Replace(".", ""));
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				Console.Write("\n   Encoded: {0}", Base36.Encode(parsed));
+				Console.Write("\n     Hexed: ");
+
+				for (int j=0; j<split.Length; j++) {
+					Console.Write("{0}", int.Parse(split[j]).ToString("x"));
+				}
+			}
+
+		}
+		#endregion Test DateTime 2019 0927 1804
 
 		#region Test DateTime 2019 0927 1703
 		private static void TestDateTime201909271703()
