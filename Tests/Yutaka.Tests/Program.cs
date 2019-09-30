@@ -19,7 +19,6 @@ using Yutaka.Net;
 using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
-using Yutaka.VineSpringV3;
 using Yutaka.Web;
 
 namespace Yutaka.Tests
@@ -170,9 +169,23 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test201909271804();
+			//Test201909300152();
 			EndProgram();
 		}
+
+		#region Test DateTime 2019 0930 0152
+		//private static void Test201909300152()
+		//{
+		//	var tests = new string[] { "blizmanyu@gmail.com", "yblizman@rcw1.com", };
+
+		//	for (int i = 0; i < tests.Length; i++) {
+		//		Console.Write("\n");
+		//		Console.Write("\n{0})  {1}", i + 1, tests[i]);
+		//		Console.Write("\n  Encoded: {0}", Base36.Encode(new MailAddress(tests[i])));
+		//	}
+
+		//}
+		#endregion Test DateTime 2019 0930 0152
 
 		#region Test DateTime 2019 0927 1804
 		private static void Test201909271804()
@@ -181,7 +194,7 @@ namespace Yutaka.Tests
 			string[] split;
 			var tests = new string[] { "0.0.0.0", "0.0.0.1", "1.1.1.1", "255.255.255.255", };
 
-			for (int i=0; i<tests.Length; i++) {
+			for (int i = 0; i < tests.Length; i++) {
 				split = tests[i].Split('.');
 				parsed = long.Parse(tests[i].Replace(".", ""));
 				Console.Write("\n");
@@ -189,7 +202,7 @@ namespace Yutaka.Tests
 				Console.Write("\n   Encoded: {0}", Base36.Encode(parsed));
 				Console.Write("\n     Hexed: ");
 
-				for (int j=0; j<split.Length; j++) {
+				for (int j = 0; j < split.Length; j++) {
 					Console.Write("{0}", int.Parse(split[j]).ToString("x"));
 				}
 			}
@@ -221,24 +234,24 @@ namespace Yutaka.Tests
 		}
 		#endregion Test_SqlUtil_TruncateTable - 2019 0905 1909
 
-		private static void Test_V3Util_CreateCustomer()
-		{
-			var apiKey = "asdfasdf";
-			//var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
-			var _v3Util = new V3Util(apiKey, V3Util.PRODUCTION_URL);
-			var customer = new Customer {
-				Email = "test@test.com",
-			};
+		//private static void Test_V3Util_CreateCustomer()
+		//{
+		//	var apiKey = "asdfasdf";
+		//	//var _v3Util = new V3Util(apiKey, V3Util.MOCK_SERVER_URL);
+		//	var _v3Util = new V3Util(apiKey, V3Util.PRODUCTION_URL);
+		//	var customer = new Customer {
+		//		Email = "test@test.com",
+		//	};
 
-			var response = _v3Util.CreateCustomer(customer);
-			response.Wait();
-			var json = JObject.Parse(response.Result);
+		//	var response = _v3Util.CreateCustomer(customer);
+		//	response.Wait();
+		//	var json = JObject.Parse(response.Result);
 
-			if (json["message"] == null || String.IsNullOrWhiteSpace(json["message"].ToString()))
-				Console.Write("\n{0}", json.ToString());
-			else
-				Console.Write("\n{0}: {1}", json["type"], json["message"]);
-		}
+		//	if (json["message"] == null || String.IsNullOrWhiteSpace(json["message"].ToString()))
+		//		Console.Write("\n{0}", json.ToString());
+		//	else
+		//		Console.Write("\n{0}: {1}", json["type"], json["message"]);
+		//}
 
 		private static void Test_TextUtil_BeautifyJson()
 		{

@@ -81,9 +81,6 @@
     <Reference Include="Yutaka.Video">
       <HintPath>..\..\Libraries\Yutaka.Video\bin\Release\Yutaka.Video.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.VineSpringV3">
-      <HintPath>..\..\Libraries\Yutaka.VineSpringV3\bin\Debug\Yutaka.VineSpringV3.dll</HintPath>
-    </Reference>
     <Reference Include="Yutaka.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.Web\bin\Release\Yutaka.Web.dll</HintPath>
