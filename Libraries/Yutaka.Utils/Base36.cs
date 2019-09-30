@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 
 namespace Yutaka.Utils
@@ -58,6 +59,19 @@ namespace Yutaka.Utils
 				pos++;
 			}
 			return result;
+		}
+
+		public static string DumbEncode(string str, bool lowercase = true)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			var sb = new StringBuilder();
+
+			for (int i = 0; i < str.Length; i++)
+				sb.Append((char) (str[i] + 2));
+
+			return sb.ToString();
 		}
 
 		public static string GetUniqueId(DateTime? time = null)
