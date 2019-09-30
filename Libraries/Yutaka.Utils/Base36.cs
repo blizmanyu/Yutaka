@@ -86,6 +86,8 @@ namespace Yutaka.Utils
 			return sb.ToString();
 		}
 
+		#region Deprecated
+		[Obsolete("Deprecated on Sep 30, 2019. Use Encode(DateTime? dt = null, bool lowerCase = true) instead.")]
 		public static string GetUniqueId(DateTime? time = null)
 		{
 			if (time == null)
@@ -101,7 +103,6 @@ namespace Yutaka.Utils
 			}
 		}
 
-		#region Deprecated
 		[Obsolete("Deprecated on Mar 25, 2019. Use WebUtil.EncodeIp(string ipAddress) instead.")]
 		public static string EncodeIp(string ipAddress)
 		{
