@@ -60,7 +60,7 @@ namespace Yutaka.Utils
 			return result;
 		}
 
-		public static string DumbDecode(string str, bool lowercase = true)
+		public static string DumbDecode(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
@@ -73,7 +73,7 @@ namespace Yutaka.Utils
 			return sb.ToString();
 		}
 
-		public static string DumbEncode(string str, bool lowercase = true)
+		public static string DumbEncode(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
