@@ -10,14 +10,9 @@ namespace Yutaka.Utils
 		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-		public static long Decode(string input, bool lowerCase = true)
+		public static long Decode(string input)
 		{
-			string CharList;
-			if (lowerCase)
-				CharList = CharListLower;
-			else
-				CharList = CharListUpper;
-
+			var CharList = input.Equals(input.ToUpper()) ? CharListUpper : CharListLower;
 			var reversed = input.Reverse();
 			long result = 0;
 			var pos = 0;
@@ -33,8 +28,7 @@ namespace Yutaka.Utils
 			if (String.IsNullOrWhiteSpace(input))
 				return "";
 
-			var lowerCase = input.Equals(input.ToUpper()) ? false : true;
-			var decoded = Decode(input, lowerCase);
+			var decoded = Decode(input);
 			var str = decoded.ToString("d12");
 			var sb = new StringBuilder();
 			sb.Append(int.Parse(str.Substring(0, 3))).Append(".");
