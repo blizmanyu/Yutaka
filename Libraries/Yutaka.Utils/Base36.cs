@@ -101,30 +101,6 @@ namespace Yutaka.Utils
 			}
 		}
 
-		// Work in progress. Do NOT use yet //
-		public static string GetUniqueIdByEmail(string email)
-		{
-			if (String.IsNullOrWhiteSpace(email))
-				throw new Exception(String.Format("Exception thrown in Base36.GetUniqueIdByEmail(string email='{1}'){0}<email> is NULL or whitespace", Environment.NewLine, email));
-
-			try {
-				var sb = new StringBuilder();
-
-				for (int i = 0; i < email.Length; i++) {
-					var v = email[i] - 31;
-					Console.Write("\n{0} => {1}", email[i], v);
-					sb.Append(v.ToString("d2"));
-				}
-
-				return sb.ToString();
-				return Encode(Int64.Parse(sb.ToString()));
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in Base36.GetUniqueIdByEmail(string email='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, email));
-			}
-		}
-
 		#region Deprecated
 		[Obsolete("Deprecated on Mar 25, 2019. Use WebUtil.EncodeIp(string ipAddress) instead.")]
 		public static string EncodeIp(string ipAddress)
