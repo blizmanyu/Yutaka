@@ -28,6 +28,22 @@ namespace Yutaka.Utils
 			return result;
 		}
 
+		public static string DecodeIP(string input)
+		{
+			if (String.IsNullOrWhiteSpace(input))
+				return "";
+
+			var lowerCase = input.Equals(input.ToUpper()) ? false : true;
+			var decoded = Decode(input, lowerCase);
+			var str = decoded.ToString("d12");
+			var sb = new StringBuilder();
+			sb.Append(int.Parse(str.Substring(0, 3))).Append(".");
+			sb.Append(int.Parse(str.Substring(3, 3))).Append(".");
+			sb.Append(int.Parse(str.Substring(6, 3))).Append(".");
+			sb.Append(int.Parse(str.Substring(9, 3)));
+			return sb.ToString();
+		}
+
 		public static string DumbDecode(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
@@ -95,7 +111,6 @@ namespace Yutaka.Utils
 			for (int i = 0; i < split.Length; i++)
 				sb.Append(split[i].PadLeft(3, '0'));
 
-			Console.Write("\nsb: {0}", sb);
 			return Encode(long.Parse(sb.ToString()), lowerCase);
 		}
 

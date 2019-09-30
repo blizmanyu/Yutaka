@@ -176,7 +176,7 @@ namespace Yutaka.Tests
 		#region Test Base36.EncodeIP 2019 0930 0312
 		private static void Test_Base36_EncodeIP()
 		{
-			string encoded;
+			string encoded, decoded;
 			var tests = new string[] {
 				"0.0.0.0",
 				"0.0.0.1",
@@ -195,6 +195,8 @@ namespace Yutaka.Tests
 				Console.Write("\n{0}) {1}", i + 1, tests[i]);
 				encoded = Base36.EncodeIP(tests[i]);
 				Console.Write("\n   Encoded: {0}", encoded);
+				decoded = Base36.DecodeIP(encoded);
+				Console.Write("\n   Decoded: {0}", decoded);
 			}
 
 		}
