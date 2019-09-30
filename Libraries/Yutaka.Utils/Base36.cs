@@ -60,6 +60,19 @@ namespace Yutaka.Utils
 			return result;
 		}
 
+		public static string DumbDecode(string str, bool lowercase = true)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			var sb = new StringBuilder();
+
+			for (int i = 0; i < str.Length; i++)
+				sb.Append((char) (str[i] - 2));
+
+			return sb.ToString();
+		}
+
 		public static string DumbEncode(string str, bool lowercase = true)
 		{
 			if (String.IsNullOrWhiteSpace(str))
