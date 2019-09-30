@@ -169,23 +169,54 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//Test201909300152();
+			Test_Base36_EncodeIP();
 			EndProgram();
 		}
 
-		#region Test DateTime 2019 0930 0152
-		//private static void Test201909300152()
-		//{
-		//	var tests = new string[] { "blizmanyu@gmail.com", "yblizman@rcw1.com", };
+		#region Test Base36.EncodeIP 2019 0930 0312
+		private static void Test_Base36_EncodeIP()
+		{
+			string encoded;
+			var tests = new string[] {
+				"0.0.0.0",
+				"0.0.0.1",
+				"0.0.1.0",
+				"0.1.0.0",
+				"1.0.0.0",
+				"1.255.255.255",
+				"10.255.255.255",
+				"100.255.255.255",
+				"107.184.169.245",
+				"255.255.255.255",
+			};
 
-		//	for (int i = 0; i < tests.Length; i++) {
-		//		Console.Write("\n");
-		//		Console.Write("\n{0})  {1}", i + 1, tests[i]);
-		//		Console.Write("\n  Encoded: {0}", Base36.Encode(new MailAddress(tests[i])));
-		//	}
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				encoded = Base36.EncodeIP(tests[i]);
+				Console.Write("\n   Encoded: {0}", encoded);
+			}
 
-		//}
-		#endregion Test DateTime 2019 0930 0152
+		}
+		#endregion Test Base36.EncodeIP 2019 0930 0312
+
+		#region Test Base36.DumbEncode 2019 0930 0251
+		private static void Test_Base36_DumbEncode()
+		{
+			string encoded, decoded;
+			var tests = new string[] { "blizmanyu@gmail.com", "yblizman@rcw1.com", };
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				encoded = Base36.DumbEncode(tests[i]);
+				Console.Write("\n   Encoded: {0}", encoded);
+				decoded = Base36.DumbDecode(encoded);
+				Console.Write("\n   Decoded: {0}", decoded);
+			}
+
+		}
+		#endregion Test Base36.DumbEncode 2019 0930 0251
 
 		#region Test DateTime 2019 0927 1804
 		private static void Test201909271804()

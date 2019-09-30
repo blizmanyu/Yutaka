@@ -10,38 +10,6 @@ namespace Yutaka.Utils
 		const string CharListLower = "0123456789abcdefghijklmnopqrstuvwxyz";
 		const string CharListUpper = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-		#region Encode Overrides
-		public static string Encode(DateTime? dt = null, bool lowerCase = true)
-		{
-			if (dt == null)
-				dt = DateTime.UtcNow;
-
-			return Encode(long.Parse(dt.Value.ToString("yyyyMMddHHmmssfff")), lowerCase);
-		}
-
-		public static string Encode(long input, bool lowerCase = true)
-		{
-			if (input < 0)
-				throw new ArgumentOutOfRangeException("input", input, "input cannot be negative");
-			if (input == 0)
-				return "0";
-
-			string CharList;
-			if (lowerCase)
-				CharList = CharListLower;
-			else
-				CharList = CharListUpper;
-
-			char[] clistarr = CharList.ToCharArray();
-			var result = new Stack<char>();
-			while (input != 0) {
-				result.Push(clistarr[input % 36]);
-				input /= 36;
-			}
-			return new string(result.ToArray());
-		}
-		#endregion Encode Overrides
-
 		public static long Decode(string input, bool lowerCase = true)
 		{
 			string CharList;
@@ -84,6 +52,51 @@ namespace Yutaka.Utils
 				sb.Append((char) (str[i] + 2));
 
 			return sb.ToString();
+		}
+
+		public static string Encode(DateTime? dt = null, bool lowerCase = true)
+		{
+			if (dt == null)
+				dt = DateTime.UtcNow;
+
+			return Encode(long.Parse(dt.Value.ToString("yyyyMMddHHmmssfff")), lowerCase);
+		}
+
+		public static string Encode(long input, bool lowerCase = true)
+		{
+			if (input < 0)
+				throw new ArgumentOutOfRangeException("input", input, "input cannot be negative");
+			if (input == 0)
+				return "0";
+
+			string CharList;
+			if (lowerCase)
+				CharList = CharListLower;
+			else
+				CharList = CharListUpper;
+
+			char[] clistarr = CharList.ToCharArray();
+			var result = new Stack<char>();
+			while (input != 0) {
+				result.Push(clistarr[input % 36]);
+				input /= 36;
+			}
+			return new string(result.ToArray());
+		}
+
+		public static string EncodeIP(string ip, bool lowerCase = true)
+		{
+			if (String.IsNullOrWhiteSpace(ip))
+				return "";
+
+			var sb = new StringBuilder();
+			var split = ip.Split('.');
+
+			for (int i = 0; i < split.Length; i++)
+				sb.Append(split[i].PadLeft(3, '0'));
+
+			Console.Write("\nsb: {0}", sb);
+			return Encode(long.Parse(sb.ToString()), lowerCase);
 		}
 
 		#region Deprecated
