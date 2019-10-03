@@ -322,6 +322,87 @@ namespace Yutaka.IO
 			return deletedCount;
 		}
 
+		public int DeleteAllThumbsDb(string folderPath)
+		{
+			if (String.IsNullOrWhiteSpace(folderPath))
+				throw new Exception(String.Format("<folderPath> is required.{0}Exception thrown in FileUtil.DeleteAllThumbsDb(string folderPath).", Environment.NewLine));
+			if (!Directory.Exists(folderPath))
+				throw new Exception(String.Format("'{0}' doesn't exist.{1}Exception thrown in FileUtil.DeleteAllThumbsDb(string folderPath).{1}", folderPath, Environment.NewLine));
+
+			string currentDir;
+			string[] subDirs;
+			var UnauthorizedAccessCount = 0;
+			var DirectoryNotFoundCount = 0;
+			var IOExceptionCount = 0;
+			var deletedCount = 0;
+			var files = Enumerable.Empty<string>();
+			var dirs = new Stack<string>(100); // Data structure to hold names of subfolders to be examined for files.
+			dirs.Push(folderPath);
+
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
+				files = null;
+
+				try {
+					files = Directory.EnumerateFiles(currentDir, ".ds_store")
+						.Concat(Directory.EnumerateFiles(currentDir, "thumbs*.db"))
+						.Concat(Directory.EnumerateFiles(currentDir, "desktop*.ini"));
+				}
+
+				catch (UnauthorizedAccessException) {
+					UnauthorizedAccessCount++;
+					continue;
+				}
+
+				catch (DirectoryNotFoundException) {
+					DirectoryNotFoundCount++;
+					continue;
+				}
+
+				catch (IOException) {
+					IOExceptionCount++;
+					continue;
+				}
+
+				foreach (string file in files) {
+					if (TryDelete(file))
+						deletedCount++;
+				}
+
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+
+				catch (UnauthorizedAccessException) {
+					UnauthorizedAccessCount++;
+					continue;
+				}
+
+				catch (DirectoryNotFoundException) {
+					DirectoryNotFoundCount++;
+					continue;
+				}
+
+				catch (IOException) {
+					IOExceptionCount++;
+					continue;
+				}
+
+				// Push the subdirectories onto the stack for traversal.
+				foreach (string subDir in subDirs)
+					dirs.Push(subDir);
+			}
+
+			if (UnauthorizedAccessCount > 0)
+				Console.Write("\nCouldn't access {0} folders.\n", UnauthorizedAccessCount);
+			if (DirectoryNotFoundCount > 0)
+				Console.Write("\n{0} folders were deleted after initial pulling of this list.\n", DirectoryNotFoundCount);
+			if (IOExceptionCount > 0)
+				Console.Write("\n{0} generic IO Exceptions, most likely due to Symbolic Links.\n", IOExceptionCount);
+
+			return deletedCount;
+		}
+
 		public void DeleteFiles(string folder, string extension)
 		{
 			if (String.IsNullOrEmpty(folder))
@@ -372,7 +453,6 @@ namespace Yutaka.IO
 
 			string currentDir;
 			string[] subDirs;
-
 			var UnauthorizedAccessCount = 0;
 			var DirectoryNotFoundCount = 0;
 			var IOExceptionCount = 0;

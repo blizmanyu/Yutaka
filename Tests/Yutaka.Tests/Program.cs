@@ -169,9 +169,29 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_EnumerateFiles();
+			Test_FileUtil_DeleteAllThumbsDb();
 			EndProgram();
 		}
+
+		#region Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
+		private static void Test_FileUtil_DeleteAllThumbsDb()
+		{
+			consoleOut = true;
+			var count = 0;
+			var tests = new string[] {
+				//@"Z:\Downloads\",
+				//@"Z:\Users\",
+				@"Z:\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				count = _fileUtil.DeleteAllThumbsDb(tests[i]);
+				Console.Write("\n   Count: {0}", count);
+			}
+		}
+		#endregion Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
 
 		#region Test FileUtil.EnumerateFiles 2019 1002 1419
 		private static void Test_FileUtil_EnumerateFiles()
@@ -193,25 +213,6 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test FileUtil.EnumerateFiles 2019 1002 1419
-
-		#region Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
-		private static void Test_FileUtil_DeleteAllThumbsDb()
-		{
-			consoleOut = true;
-			var count = 0;
-			var tests = new string[] {
-				@"Z:\Downloads\",
-				@"Z:\Users\ghildebrand\",
-			};
-
-			for (int i=0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				count = _fileUtil.DeleteAllThumbsDb(tests[i]);
-				Console.Write("\n   Count: {0}", count);
-			}
-		}
-		#endregion Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
 
 		#region Test Base36.EncodeIP 2019 0930 0312
 		private static void Test_Base36_EncodeIP()
