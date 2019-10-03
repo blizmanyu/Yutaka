@@ -169,9 +169,49 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Base36_EncodeIP();
+			Test_FileUtil_EnumerateFiles();
 			EndProgram();
 		}
+
+		#region Test FileUtil.EnumerateFiles 2019 1002 1419
+		private static void Test_FileUtil_EnumerateFiles()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				@"Z:\Downloads\",
+				@"Z:\Users\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n==============================");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				var files = _fileUtil.EnumerateFiles(tests[i], "desktop*.ini", SearchOption.AllDirectories);
+				Console.Write("\n   files.Count: {0}", files.Count());
+
+				foreach (var v in files)
+					Console.Write("\n   {0}", v);
+			}
+		}
+		#endregion Test FileUtil.EnumerateFiles 2019 1002 1419
+
+		#region Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
+		private static void Test_FileUtil_DeleteAllThumbsDb()
+		{
+			consoleOut = true;
+			var count = 0;
+			var tests = new string[] {
+				@"Z:\Downloads\",
+				@"Z:\Users\ghildebrand\",
+			};
+
+			for (int i=0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				count = _fileUtil.DeleteAllThumbsDb(tests[i]);
+				Console.Write("\n   Count: {0}", count);
+			}
+		}
+		#endregion Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
 
 		#region Test Base36.EncodeIP 2019 0930 0312
 		private static void Test_Base36_EncodeIP()
@@ -411,14 +451,6 @@ namespace Yutaka.Tests
 			//Top1000GirlNamesFalsePositives = Top1000GirlNamesFalsePositives.OrderByDescending(x => x.Length).ThenBy(x => x).ToList();
 			//Console.Write("\n\n\"{0}\"", String.Join("\", \"", Top1000GirlNamesFalsePositives));
 			Console.Write("\n\nCount: {0}", Top1000GirlNamesFalsePositives.Count);
-		}
-
-		private static void Test_FileUtil_DeleteAllThumbsDb()
-		{
-			consoleOut = true;
-			var folder = @"asfdasdf\";
-			var count = _fileUtil.DeleteAllThumbsDb(folder);
-			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
 
 		#region Test CreateDirectory

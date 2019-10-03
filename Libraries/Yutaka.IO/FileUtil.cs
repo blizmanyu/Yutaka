@@ -301,17 +301,14 @@ namespace Yutaka.IO
 		public int DeleteAllThumbsDb(string folderPath, SearchOption searchOption=SearchOption.AllDirectories)
 		{
 			var deletedCount = 0;
-			var files = Directory.EnumerateFiles(folderPath, "Thumbs.db", searchOption).ToList();
-			files.AddRange(Directory.EnumerateFiles(folderPath, ".DS_Store", searchOption).ToList());
-			
+			var files = Directory.EnumerateFiles(folderPath, "*", searchOption).Where(x => (x.Equals(".DS_Store")) || ((x.StartsWith("Desktop") || x.StartsWith("desktop")) && x.EndsWith(".ini")) || ((x.StartsWith("Thumbs") || x.StartsWith("thumbs")) && x.EndsWith(".db"))).ToList();
+			//var files = Directory.EnumerateFiles(folderPath, "Thumbs.db", searchOption).ToList();
+			//files.AddRange(Directory.EnumerateFiles(folderPath, ".DS_Store", searchOption).ToList());
+
 			try {
 				for (int i = 0; i < files.Count; i++) {
-					try {
-						File.Delete(files[i]);
+					if (TryDelete(files[i]))
 						deletedCount++;
-					}
-
-					catch (Exception) { }
 				}
 			}
 
@@ -362,6 +359,78 @@ namespace Yutaka.IO
 		public IEnumerable<FileInfo> EnumerateAudioFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			return new DirectoryInfo(path).EnumerateFiles(searchPattern, searchOption).Where(x => audioExtensions.Contains(x.Extension, StringComparer.OrdinalIgnoreCase));
+		}
+
+		public IEnumerable<string> EnumerateFiles(string root, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		{
+			if (String.IsNullOrWhiteSpace(root))
+				throw new Exception(String.Format("<root> is required.{0}Exception thrown in FileUtil.EnumerateFiles(string root, string searchPattern, SearchOption searchOption).", Environment.NewLine));
+			if (!Directory.Exists(root))
+				throw new Exception(String.Format("'{1}' doesn't exist.{0}Exception thrown in FileUtil.EnumerateFiles(string root, string searchPattern, SearchOption searchOption).", Environment.NewLine, root));
+			if (searchOption.Equals(SearchOption.TopDirectoryOnly))
+				return Directory.EnumerateFiles(root, searchPattern);
+
+			string currentDir;
+			string[] subDirs;
+
+			var UnauthorizedAccessCount = 0;
+			var DirectoryNotFoundCount = 0;
+			var IOExceptionCount = 0;
+			var files = Enumerable.Empty<string>();
+			var dirs = new Stack<string>(100);
+			dirs.Push(root);
+
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
+
+				try {
+					files = files.Concat(Directory.EnumerateFiles(currentDir, searchPattern));
+				}
+
+				catch (UnauthorizedAccessException) {
+					UnauthorizedAccessCount++;
+					continue;
+				}
+
+				catch (DirectoryNotFoundException ) {
+					DirectoryNotFoundCount++;
+					continue;
+				}
+
+				catch (IOException) {
+					IOExceptionCount++;
+					continue;
+				}
+
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+				catch (UnauthorizedAccessException) {
+					UnauthorizedAccessCount++;
+					continue;
+				}
+				catch (DirectoryNotFoundException) {
+					DirectoryNotFoundCount++;
+					continue;
+				}
+				catch (IOException) {
+					IOExceptionCount++;
+					continue;
+				}
+
+				// Push the subdirectories onto the stack for traversal.
+				foreach (string subDir in subDirs)
+					dirs.Push(subDir);
+			}
+
+			if (UnauthorizedAccessCount > 0)
+				Console.Write("\nCouldn't access {0} folders.\n", UnauthorizedAccessCount);
+			if (DirectoryNotFoundCount > 0)
+				Console.Write("\n{0} folders were deleted after initial pulling of this list.\n", DirectoryNotFoundCount);
+			if (IOExceptionCount > 0)
+				Console.Write("\n{0} generic IO Exceptions, most likely due to Symbolic Links.\n", IOExceptionCount);
+
+			return files;
 		}
 
 		/// <summary>
