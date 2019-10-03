@@ -861,6 +861,81 @@ namespace Yutaka.IO
 			}
 		}
 
+		public void TraverseTreeExample(string root)
+		{
+			if (String.IsNullOrWhiteSpace(root))
+				throw new Exception(String.Format("<root> is required.{0}Exception thrown in FileUtil.TraverseTreeExample(string root).", Environment.NewLine));
+			if (!Directory.Exists(root))
+				throw new Exception(String.Format("'{0}' doesn't exist.{1}Exception thrown in FileUtil.TraverseTreeExample(string root).{1}", root, Environment.NewLine));
+
+			string currentDir;
+			string[] files, subDirs;
+			var dirs = new Stack<string>(100); // Data structure to hold names of subfolders to be examined for files.
+			dirs.Push(root);
+
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
+				files = null;
+
+				try {
+					files = Directory.GetFiles(currentDir);
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+
+				catch (DirectoryNotFoundException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+
+				catch (IOException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+				// Perform the required action on each file here.
+				// Modify this block to perform your required task.
+				foreach (string file in files) {
+					try {
+						// Perform whatever action is required in your scenario.
+						var fi = new FileInfo(file);
+						Console.WriteLine("{0}: {1}, {2}", fi.Name, fi.Length, fi.CreationTime);
+					}
+
+					catch (FileNotFoundException e) {
+						// If file was deleted by a separate application or thread since the call to TraverseTree() then just continue.
+						Console.WriteLine(e.Message);
+						continue;
+					}
+				}
+
+				try {
+					subDirs = Directory.GetDirectories(currentDir);
+				}
+
+				catch (UnauthorizedAccessException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+
+				catch (DirectoryNotFoundException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+
+				catch (IOException e) {
+					Console.WriteLine(e.Message);
+					continue;
+				}
+
+				// Push the subdirectories onto the stack for traversal.
+				foreach (string subDir in subDirs)
+					dirs.Push(subDir);
+			}
+		}
+
 		public bool TryDelete(string path)
 		{
 			if (String.IsNullOrWhiteSpace(path))
