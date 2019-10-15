@@ -328,6 +328,20 @@ namespace Yutaka.Text
 			return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
 		}
 
+		public static string ToTitleCaseSmart(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			if (str.Equals(str.ToLower()))
+				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+
+			if (str.Length > 3 && str.Equals(str.ToUpper()))
+				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+
+			return str;
+		}
+
 		public static string ToTitleCaseIfLengthGreaterThan(string str, int strLength=0)
 		{
 			if (String.IsNullOrWhiteSpace(str))
