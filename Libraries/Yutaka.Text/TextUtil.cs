@@ -333,13 +333,18 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
-			if (str.Equals(str.ToLower()))
-				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+			var ti = CultureInfo.CurrentCulture.TextInfo;
+			var split = str.Split(' ');
 
-			if (str.Length > 3 && str.Equals(str.ToUpper()))
-				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+			for (int i=0; i<split.Length; i++) {
+				if (split[i].Equals(split[i].ToLower()))
+					split[i] = ti.ToTitleCase(split[i]);
 
-			return str;
+				else if (split[i].Length > 3 && split[i].Equals(split[i].ToUpper()))
+					split[i] = ti.ToTitleCase(split[i].ToLower());
+			}
+
+			return String.Join(" ", split);
 		}
 
 		public static string ToTitleCaseIfLengthGreaterThan(string str, int length=3)

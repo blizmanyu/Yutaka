@@ -169,9 +169,26 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_DeleteAllThumbsDb();
+			Test_TextUtil_ToTitleCaseSmart();
 			EndProgram();
 		}
+
+		#region Test TextUtil.ToTitleCaseSmart 2019 1016 1223
+		private static void Test_TextUtil_ToTitleCaseSmart()
+		{
+			string[] tests = {
+				null, "", "a tale of two cities", "gROWL to the rescue",
+				"inside the US government", "sports and MLB baseball",
+				"The Return of Sherlock Holmes", "UNICEF and children", "UNICEF AND CHILDREN",
+				"Old McDonald", "old mcdonald", "OLD MCDONALD", };
+
+			for (int i=0; i< tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, tests[i] ?? "NULL");
+				Console.Write("\n   {0}", TextUtil.ToTitleCaseSmart(tests[i]));
+			}
+		}
+		#endregion Test TextUtil.ToTitleCaseSmart 2019 1016 1223
 
 		#region Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
 		private static void Test_FileUtil_DeleteAllThumbsDb()
