@@ -336,7 +336,7 @@ namespace Yutaka.Text
 			var ti = CultureInfo.CurrentCulture.TextInfo;
 			var split = str.Split(' ');
 
-			for (int i=0; i<split.Length; i++) {
+			for (int i = 0; i < split.Length; i++) {
 				if (split[i].Equals(split[i].ToLower()))
 					split[i] = ti.ToTitleCase(split[i]);
 
@@ -352,13 +352,18 @@ namespace Yutaka.Text
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
 
-			if (str.Equals(str.ToLower()))
-				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+			var ti = CultureInfo.CurrentCulture.TextInfo;
+			var split = str.Split(' ');
 
-			if (str.Length > length && str.Equals(str.ToUpper()))
-				return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
+			for (int i = 0; i < split.Length; i++) {
+				if (split[i].Equals(split[i].ToLower()))
+					split[i] = ti.ToTitleCase(split[i]);
 
-			return str;
+				else if (split[i].Length > length && split[i].Equals(split[i].ToUpper()))
+					split[i] = ti.ToTitleCase(split[i].ToLower());
+			}
+
+			return String.Join(" ", split);
 		}
 	}
 }
