@@ -9,6 +9,7 @@ namespace Yutaka.Text
 {
 	public static class TextUtil
 	{
+		#region Methods
 		#region Encode/Decode
 		public static string Encode(string input)
 		{
@@ -221,7 +222,7 @@ namespace Yutaka.Text
 			return -1;
 		}
 
-		public static string ConvertIpToBase36(string ip, bool lowerCase=true)
+		public static string ConvertIpToBase36(string ip, bool lowerCase = true)
 		{
 			if (String.IsNullOrEmpty(ip))
 				throw new ArgumentNullException("ip", "<ip> is required.");
@@ -230,7 +231,7 @@ namespace Yutaka.Text
 
 			var sb = new StringBuilder();
 			ip.Split('.').ToList().ForEach(u => sb.Append(u.ToString().PadLeft(3, '0')));
-			sb.Replace(".","");
+			sb.Replace(".", "");
 
 			Int64 result;
 			if (Int64.TryParse(sb.ToString(), out result))
@@ -280,13 +281,10 @@ namespace Yutaka.Text
 
 			for (int i = 0; i < commonLabels.Length; i++) {
 				if (labelUpper.Equals(commonLabels[i]))
-					return ToTitleCase(label);
+					return ToTitleCaseIfLengthGreaterThan(label, 0);
 			}
 
-			if (label.Length > 7 && (label.Equals(labelUpper) || label.Equals(label.ToLower())))
-				return ToTitleCase(label);
-
-			return label;
+			return ToTitleCaseIfLengthGreaterThan(label, 0);
 		}
 
 		public static string GetPlainTextFromHtml(string html)
@@ -320,14 +318,6 @@ namespace Yutaka.Text
 			return str;
 		}
 
-		public static string ToTitleCase(string str)
-		{
-			if (String.IsNullOrWhiteSpace(str))
-				return "";
-
-			return new CultureInfo("en-US", false).TextInfo.ToTitleCase(str);
-		}
-
 		public static string ToTitleCaseSmart(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
@@ -347,7 +337,7 @@ namespace Yutaka.Text
 			return String.Join(" ", split);
 		}
 
-		public static string ToTitleCaseIfLengthGreaterThan(string str, int length=3)
+		public static string ToTitleCaseIfLengthGreaterThan(string str, int length = 3)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
@@ -365,5 +355,17 @@ namespace Yutaka.Text
 
 			return String.Join(" ", split);
 		}
+
+		#region Deprecated
+		[Obsolete("Deprecated Oct 16, 2019. Use ToTitleCaseSmart(string str) instead.", true)]
+		public static string ToTitleCase(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str);
+		}
+		#endregion Deprecated
+		#endregion Methods
 	}
 }
