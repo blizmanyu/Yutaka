@@ -12,7 +12,6 @@ namespace Yutaka.WineShipping
 		public const int DEFAULT_TOP = 480;
 		public const string PRODUCTION_URL = @"https://services.wineshipping.com/";
 		public const string TEST_URL = @"https://wsservices-test.azurewebsites.net/";
-		public const string BASE_URL = TEST_URL;
 
 		public Uri BaseUrl;
 		public string UserKey;
@@ -30,7 +29,7 @@ namespace Yutaka.WineShipping
 			if (String.IsNullOrWhiteSpace(customerNumber))
 				throw new Exception(String.Format("<customerNumber> is required. Exception thrown in Constructor WSUtil(string baseUrl, string userKey, string password, string customerNumber).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(baseUrl))
-				baseUrl = BASE_URL;
+				baseUrl = TEST_URL;
 
 			BaseUrl = new Uri(baseUrl);
 			UserKey = userKey;
