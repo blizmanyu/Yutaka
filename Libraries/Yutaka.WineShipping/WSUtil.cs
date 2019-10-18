@@ -9,8 +9,8 @@ namespace Yutaka.WineShipping
 	public class WSUtil
 	{
 		#region Fields
-		public const int DEFAULT_TOP = 400;
-		public const string PRODUCTION_URL = @"asdf";
+		public const int DEFAULT_TOP = 480;
+		public const string PRODUCTION_URL = @"https://services.wineshipping.com/";
 		public const string TEST_URL = @"https://wsservices-test.azurewebsites.net/";
 		public const string BASE_URL = TEST_URL;
 
