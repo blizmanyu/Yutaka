@@ -11,6 +11,7 @@ namespace Yutaka.QuickBooks
 	{
 		#region Fields
 		public const string DEFAULT_APP_NAME = "QB20191021Util";
+		public enum ActionType { InventoryAdjustmentAdd, };
 		public bool Debug;
 		private RequestProcessor2 Rp;
 		private bool ConnectionOpen;
@@ -28,6 +29,11 @@ namespace Yutaka.QuickBooks
 		}
 
 		#region Methods
+		private void BuildRequest(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+
+		}
+
 		public void CloseConnection()
 		{
 			if (SessionBegun) {
@@ -39,6 +45,11 @@ namespace Yutaka.QuickBooks
 				Rp.CloseConnection();
 				ConnectionOpen = false;
 			}
+		}
+
+		public void DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+
 		}
 
 		public bool OpenConnection(string appId = null, string appName = null, QBXMLRPConnectionType connPref = QBXMLRPConnectionType.localQBD, string qbFileName = null, QBFileMode reqFileMode = QBFileMode.qbFileOpenDoNotCare)
@@ -90,6 +101,16 @@ namespace Yutaka.QuickBooks
 
 				return false;
 			}
+		}
+
+		private void ProcessResponse(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+
+		}
+
+		private void ProcessReturn(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+
 		}
 		#endregion Methods
 	}
