@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Xml;
 using Interop.QBXMLRP2Lib;
 
 namespace Yutaka.QuickBooks
@@ -10,8 +8,9 @@ namespace Yutaka.QuickBooks
 	public class QB20191021Util
 	{
 		#region Fields
+		private const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
 		public const string DEFAULT_APP_NAME = "QB20191021Util";
-		public enum ActionType { InventoryAdjustmentAdd, };
+		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
 		public bool Debug;
 		private RequestProcessor2 Rp;
 		private bool ConnectionOpen;
@@ -28,12 +27,72 @@ namespace Yutaka.QuickBooks
 			SessionId = null;
 		}
 
-		#region Methods
-		private void BuildRequest(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		#region Private Utilities
+		private string BeautifyXml(string xml)
 		{
+			if (String.IsNullOrWhiteSpace(xml))
+				return "";
+
+			using (var sw = new StringWriter()) {
+				var xmlDoc = new XmlDocument();
+				xmlDoc.LoadXml(xml);
+				xmlDoc.Save(sw);
+
+				return sw.ToString();
+			}
+		}
+
+		private void BuildRequest(XmlDocument doc, XmlElement parent, ActionType actionType, string startTime, string endTime)
+		{
+			var request = doc.CreateElement(String.Format("{0}Rq", actionType.ToString()));
+			parent.AppendChild(request);
+
+			switch (actionType) {
+				#region InventoryAdjustmentAdd
+				case ActionType.InventoryAdjustmentAdd:
+					request.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", startTime));
+					request.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", endTime));
+					break;
+				#endregion InventoryAdjustmentAdd
+				#region InventoryAdjustmentQuery
+				case ActionType.InventoryAdjustmentQuery:
+					var ModifiedDateRangeFilter = doc.CreateElement("ModifiedDateRangeFilter");
+					request.AppendChild(ModifiedDateRangeFilter);
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", startTime));
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", endTime));
+					request.AppendChild(MakeSimpleElem(doc, "IncludeLineItems", "1"));
+					break;
+				#endregion InventoryAdjustmentQuery
+				default:
+					break;
+			}
+		}
+
+		private XmlElement MakeSimpleElem(XmlDocument doc, string tagName, string tagVal)
+		{
+			var elem = doc.CreateElement(tagName);
+			elem.InnerText = tagVal;
+			return elem;
+		}
+
+		private void ProcessResponse(ActionType actionType, string response)
+		{
+			#region Input Validation
+			if (String.IsNullOrWhiteSpace(response))
+				return;
+			if (actionType < 0)
+				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.ProcessResponse(ActionType actionType, string response).{0}", Environment.NewLine));
+			#endregion Input Validation
 
 		}
 
+		private void ProcessReturn(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+
+		}
+		#endregion Private Utilities
+
+		#region Public Methods
 		public void CloseConnection()
 		{
 			if (SessionBegun) {
@@ -49,7 +108,82 @@ namespace Yutaka.QuickBooks
 
 		public void DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
 		{
+			#region Input Validation
+			if (actionType < 0)
+				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.DoAction(ActionType actionType, DateTime? startTime, DateTime? endTime).{0}", Environment.NewLine));
 
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+			var maxDate = new DateTime(now.Year, 12, 31, 23, 59, 59, 999);
+
+			if (startTime == null || startTime < minDate)
+				startTime = minDate;
+			if (endTime == null || endTime > maxDate)
+				endTime = maxDate;
+
+			var startTimeStr = startTime.Value.ToString(QB_FORMAT);
+			var endTimeStr = endTime.Value.ToString(QB_FORMAT);
+
+			if (endTimeStr.Length < 20)
+				endTimeStr = string.Format("{0}-07:00", endTimeStr);
+			#endregion Input Validation
+
+			try {
+				if (!ConnectionOpen || !SessionBegun || String.IsNullOrWhiteSpace(SessionId))
+					OpenConnection();
+
+				//Create the message set request object to hold our request
+				var requestXmlDoc = new XmlDocument();
+
+				//Add the prolog processing instructions
+				requestXmlDoc.AppendChild(requestXmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
+				requestXmlDoc.AppendChild(requestXmlDoc.CreateProcessingInstruction("qbxml", "version=\"13.0\""));
+
+				//Create the outer request envelope tag
+				var outer = requestXmlDoc.CreateElement("QBXML");
+				requestXmlDoc.AppendChild(outer);
+
+				//Create the inner request envelope & any needed attributes
+				var inner = requestXmlDoc.CreateElement("QBXMLMsgsRq");
+				outer.AppendChild(inner);
+				inner.SetAttribute("onError", "stopOnError");
+				BuildRequest(requestXmlDoc, inner, actionType, startTimeStr, endTimeStr);
+
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), BeautifyXml(requestXmlDoc.OuterXml));
+
+				//Send the request and get the response from QuickBooks
+				var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
+
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
+
+				ProcessResponse(actionType, responseStr);
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+
+				if (Debug)
+					Console.Write("\n{0}", log);
+				#endregion Log
+
+				if (SessionBegun) {
+					Rp.EndSession(SessionId);
+					SessionBegun = false;
+				}
+
+				if (ConnectionOpen) {
+					Rp.CloseConnection();
+					ConnectionOpen = false;
+				}
+			}
 		}
 
 		public bool OpenConnection(string appId = null, string appName = null, QBXMLRPConnectionType connPref = QBXMLRPConnectionType.localQBD, string qbFileName = null, QBFileMode reqFileMode = QBFileMode.qbFileOpenDoNotCare)
@@ -102,16 +236,6 @@ namespace Yutaka.QuickBooks
 				return false;
 			}
 		}
-
-		private void ProcessResponse(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
-		{
-
-		}
-
-		private void ProcessReturn(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
-		{
-
-		}
-		#endregion Methods
+		#endregion Public Methods
 	}
 }

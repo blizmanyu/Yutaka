@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\InventoryAdjustmentRet.cs" />
     <Compile Include="Data\BillRet.cs" />
     <Compile Include="Data\Bill_ExpenseLineRet.cs" />
     <Compile Include="Data\HelperClasses.cs" />
@@ -75,6 +76,7 @@
     <Content Include="XMLOps\CustomerQuery.xml" />
     <Content Include="XMLOps\DepositQuery.xml" />
     <Content Include="XMLOps\InventoryAdjustmentAdd.xml" />
+    <Content Include="XMLOps\InventoryAdjustmentQuery.xml" />
     <Content Include="XMLOps\ItemInventoryMod.xml" />
     <Content Include="XMLOps\ReceivePaymentQuery.xml" />
     <Content Include="XMLOps\SalesReceiptQuery.xml" />
