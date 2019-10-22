@@ -1,12 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Yutaka.QuickBooks.Data
+﻿namespace Yutaka.QuickBooks
 {
 	public class InventoryAdjustmentLineRet
 	{
+		public string TxnLineID; // required
+		public ItemRef ItemRef; // required
+		public string SerialNumber;
+		public string SerialNumberAddedOrRemoved;
+		public string LotNumber;
+		public InventorySiteLocationRef InventorySiteLocationRef;
+		public int QuantityDifference; // required
+		public decimal ValueDifference; // required
+
+		public InventoryAdjustmentLineRet()
+		{
+			ItemRef = new ItemRef();
+			InventorySiteLocationRef = new InventorySiteLocationRef();
+		}
 	}
 }

@@ -53,6 +53,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\InventoryAdjustmentLineRet.cs" />
     <Compile Include="Data\InventoryAdjustmentRet.cs" />
     <Compile Include="Data\BillRet.cs" />
     <Compile Include="Data\Bill_ExpenseLineRet.cs" />
