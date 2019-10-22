@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 using Interop.QBXMLRP2Lib;
@@ -75,7 +76,7 @@ namespace Yutaka.QuickBooks
 			return elem;
 		}
 
-		private object ProcessResponse(ActionType actionType, string response)
+		private List<object> ProcessResponse(ActionType actionType, string response)
 		{
 			#region Input Validation
 			if (String.IsNullOrWhiteSpace(response))
@@ -104,31 +105,146 @@ namespace Yutaka.QuickBooks
 					return ProcessReturn(actionType, responseNode);
 			}
 
-			return null;
+			return new List<object>();
 		}
 
-		private object ProcessReturn(ActionType actionType, XmlNode responseNode)
+		private List<object> ProcessReturn(ActionType actionType, XmlNode responseNode)
 		{
 			if (actionType < 0)
 				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.ProcessReturn(ActionType actionType).{0}", Environment.NewLine));
 			if (responseNode == null || String.IsNullOrWhiteSpace(responseNode.ToString()))
 				return null;
 
+			XmlNode Item, ItemRef, LineItem;
+			XmlNodeList ItemList, LineItemList;
+			var list = new List<object>();
+
 			switch (actionType) {
-				#region InventoryAdjustmentAdd
+				#region InventoryAdjustment
 				case ActionType.InventoryAdjustmentAdd:
-					break;
-				#endregion InventoryAdjustmentAdd
-				#region InventoryAdjustmentQuery
 				case ActionType.InventoryAdjustmentQuery:
-					var ItemList = responseNode.SelectNodes("//CustomerRet");
+					InventoryAdjustmentRet ent;
+					InventoryAdjustmentLineRet entLine;
+					ItemList = responseNode.SelectNodes("//InventoryAdjustmentRet");
+
+					for (int i = 0; i < ItemList.Count; i++) {
+						Item = ItemList.Item(i);
+						ent = new InventoryAdjustmentRet {
+							TxnID = Item.SelectSingleNode("ListID") == null ? null : Item.SelectSingleNode("ListID").InnerText,
+							TimeCreated = DateTime.Parse(Item.SelectSingleNode("TimeCreated").InnerText),
+							TimeModified = DateTime.Parse(Item.SelectSingleNode("TimeModified").InnerText),
+							EditSequence = Item.SelectSingleNode("EditSequence") == null ? null : Item.SelectSingleNode("EditSequence").InnerText,
+							TxnNumber = Item.SelectSingleNode("TxnNumber") == null ? (int?) null : int.Parse(Item.SelectSingleNode("TxnNumber").InnerText),
+							TxnDate = DateTime.Parse(Item.SelectSingleNode("TxnDate").InnerText),
+							RefNumber = Item.SelectSingleNode("RefNumber") == null ? null : Item.SelectSingleNode("RefNumber").InnerText,
+							Memo = Item.SelectSingleNode("Memo") == null ? null : Item.SelectSingleNode("Memo").InnerText,
+							ExternalGUID = Item.SelectSingleNode("ExternalGUID") == null ? null : Item.SelectSingleNode("ExternalGUID").InnerText,
+						};
+
+						#region AccountRef
+						if (Item.SelectSingleNode("AccountRef") == null) {
+							ent.AccountRef.ListID = null;
+							ent.AccountRef.FullName = null;
+						}
+
+						else {
+							ItemRef = Item.SelectSingleNode("AccountRef");
+							ent.AccountRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							ent.AccountRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion AccountRef
+
+						#region InventorySiteRef
+						if (Item.SelectSingleNode("InventorySiteRef") == null) {
+							ent.InventorySiteRef.ListID = null;
+							ent.InventorySiteRef.FullName = null;
+						}
+
+						else {
+							ItemRef = Item.SelectSingleNode("InventorySiteRef");
+							ent.InventorySiteRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							ent.InventorySiteRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion InventorySiteRef
+
+						#region CustomerRef
+						if (Item.SelectSingleNode("CustomerRef") == null) {
+							ent.CustomerRef.ListID = null;
+							ent.CustomerRef.FullName = null;
+						}
+
+						else {
+							ItemRef = Item.SelectSingleNode("CustomerRef");
+							ent.CustomerRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							ent.CustomerRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion CustomerRef
+
+						#region ClassRef
+						if (Item.SelectSingleNode("ClassRef") == null) {
+							ent.ClassRef.ListID = null;
+							ent.ClassRef.FullName = null;
+						}
+
+						else {
+							ItemRef = Item.SelectSingleNode("ClassRef");
+							ent.ClassRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							ent.ClassRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion ClassRef
+
+						#region LineItems
+						LineItemList = Item.SelectNodes("InventoryAdjustmentLineRet");
+
+						for (int j = 0; j < LineItemList.Count; j++) {
+							LineItem = LineItemList.Item(j);
+							entLine = new InventoryAdjustmentLineRet {
+								TxnLineID = LineItem.SelectSingleNode("TxnLineID") == null ? null : LineItem.SelectSingleNode("TxnLineID").InnerText,
+								SerialNumber = LineItem.SelectSingleNode("SerialNumber") == null ? null : LineItem.SelectSingleNode("SerialNumber").InnerText,
+								SerialNumberAddedOrRemoved = LineItem.SelectSingleNode("SerialNumberAddedOrRemoved") == null ? null : LineItem.SelectSingleNode("SerialNumberAddedOrRemoved").InnerText,
+								LotNumber = LineItem.SelectSingleNode("LotNumber") == null ? null : LineItem.SelectSingleNode("LotNumber").InnerText,
+								QuantityDifference = int.Parse(LineItem.SelectSingleNode("QuantityDifference").InnerText),
+								ValueDifference = decimal.Parse(LineItem.SelectSingleNode("ValueDifference").InnerText),
+							};
+
+							#region ItemRef
+							if (LineItem.SelectSingleNode("ItemRef") == null) {
+								entLine.ItemRef.ListID = null;
+								entLine.ItemRef.FullName = null;
+							}
+
+							else {
+								ItemRef = LineItem.SelectSingleNode("ItemRef");
+								entLine.ItemRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+								entLine.ItemRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+							}
+							#endregion ItemRef
+
+							#region InventorySiteLocationRef
+							if (LineItem.SelectSingleNode("InventorySiteLocationRef") == null) {
+								entLine.InventorySiteLocationRef.ListID = null;
+								entLine.InventorySiteLocationRef.FullName = null;
+							}
+
+							else {
+								ItemRef = LineItem.SelectSingleNode("InventorySiteLocationRef");
+								entLine.InventorySiteLocationRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+								entLine.InventorySiteLocationRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+							}
+							#endregion InventorySiteLocationRef
+
+							ent.LineItems.Add(entLine);
+						}
+						#endregion LineItems
+					}
+
 					break;
-				#endregion InventoryAdjustmentQuery
+				#endregion InventoryAdjustment
 				default:
 					break;
 			}
 
-			return new InventoryAdjustmentRet();
+			return list;
 		}
 		#endregion Private Utilities
 
@@ -146,7 +262,7 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		public object DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		public List<object> DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
 		{
 			#region Input Validation
 			if (actionType < 0)
@@ -224,7 +340,7 @@ namespace Yutaka.QuickBooks
 					ConnectionOpen = false;
 				}
 
-				return null;
+				return new List<object>();
 			}
 		}
 
