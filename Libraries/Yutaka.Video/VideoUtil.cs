@@ -11,9 +11,11 @@ namespace Yutaka.Video
 		private List<string> Images;
 		public int FirstXMin;
 		public int Fps;
+		public int FrameWidth;
 		public int GifLength;
 		public int NumMiddleSegments;
 		public int Width;
+		public decimal FrameRate;
 		public double StartTime;
 		public string DestFolder;
 		public string DestFile;
@@ -32,6 +34,8 @@ namespace Yutaka.Video
 				StartTime = startTime;
 				FirstXMin = 5;
 				Fps = 10;
+				FrameRate = GetFrameRate(Path.GetDirectoryName(source), Path.GetFileName(source));
+				FrameWidth = GetFrameWidth(Path.GetDirectoryName(source), Path.GetFileName(source));
 				GifLength = 10;
 				NumMiddleSegments = 21;
 				Width = 960;

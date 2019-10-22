@@ -171,9 +171,24 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_GetFrameRateAndGetWidth();
+			Test_VideoUtil();
 			EndProgram();
 		}
+
+		#region Test VideoUtil
+		private static void Test_VideoUtil()
+		{
+			var source = @"asdf";
+			var _videoUtil = new VideoUtil(source);
+
+			if (!File.Exists(source))
+				Console.Write("\nFile doesn't exist. Make sure its correct.");
+
+			Console.Write("\n");
+			Console.Write("\nframeRate: {0}", _videoUtil.FrameRate);
+			Console.Write("\nframeWidth: {0}", _videoUtil.FrameWidth);
+		}
+		#endregion Test VideoUtil
 
 		#region Test FileUtil.GetFrameRateAndGetWidth
 		private static void Test_FileUtil_GetFrameRateAndGetWidth()
