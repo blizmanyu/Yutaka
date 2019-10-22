@@ -12,37 +12,21 @@ namespace Yutaka.QuickBooks
 		public int? TxnNumber;
 		public AccountRef AccountRef; // required
 		public InventorySiteRef InventorySiteRef;
-		public AccountRef AccountRef; // required
-
-
-		public VendorRef VendorRef;
-		public VendorAddress VendorAddress;
-		public APAccountRef APAccountRef;
 		public DateTime TxnDate; // required
-		public DateTime? DueDate;
-		public decimal AmountDue; // required
-		public CurrencyRef CurrencyRef;
-		public decimal? ExchangeRate;
-		public decimal? AmountDueInHomeCurrency;
 		public string RefNumber;
-		public TermsRef TermsRef;
+		public CustomerRef CustomerRef;
+		public ClassRef ClassRef;
 		public string Memo;
-		public bool? IsTaxIncluded;
-		public SalesTaxCodeRef SalesTaxCodeRef;
-		public bool? IsPaid;
 		public string ExternalGUID;
-		public decimal? OpenAmount;
-		public List<Bill_ExpenseLineRet> ExpenseLines;
+		public List<InventoryAdjustmentLineRet> LineItems;
 
 		public InventoryAdjustmentRet()
 		{
-			VendorRef = new VendorRef();
-			VendorAddress = new VendorAddress();
-			APAccountRef = new APAccountRef();
-			CurrencyRef = new CurrencyRef();
-			TermsRef = new TermsRef();
-			SalesTaxCodeRef = new SalesTaxCodeRef();
-			ExpenseLines = new List<Bill_ExpenseLineRet>();
+			AccountRef = new AccountRef();
+			InventorySiteRef = new InventorySiteRef();
+			CustomerRef = new CustomerRef();
+			ClassRef = new ClassRef();
+			LineItems = new List<InventoryAdjustmentLineRet>();
 		}
 	}
 }
