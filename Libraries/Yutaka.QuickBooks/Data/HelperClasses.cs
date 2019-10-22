@@ -64,6 +64,14 @@
 	}
 	#endregion InventorySiteRef
 
+	#region public class ItemRef
+	public class ItemRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion ItemRef
+
 	#region public class ParentRef
 	public class ParentRef
 	{
