@@ -75,20 +75,60 @@ namespace Yutaka.QuickBooks
 			return elem;
 		}
 
-		private void ProcessResponse(ActionType actionType, string response)
+		private object ProcessResponse(ActionType actionType, string response)
 		{
 			#region Input Validation
 			if (String.IsNullOrWhiteSpace(response))
-				return;
+				return null;
 			if (actionType < 0)
 				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.ProcessResponse(ActionType actionType, string response).{0}", Environment.NewLine));
 			#endregion Input Validation
 
+			var responseXmlDoc = new XmlDocument();
+			responseXmlDoc.LoadXml(response);
+			var QueryRsList = responseXmlDoc.GetElementsByTagName(String.Format("{0}Rs", actionType.ToString()));
+
+			if (QueryRsList.Count == 1) {
+				var responseNode = QueryRsList.Item(0);
+				// Check the status code, info, and severity
+				var rsAttributes = responseNode.Attributes;
+				var statusCode = rsAttributes.GetNamedItem("statusCode").Value;
+				var statusSeverity = rsAttributes.GetNamedItem("statusSeverity").Value;
+				var statusMessage = rsAttributes.GetNamedItem("statusMessage").Value;
+
+				if (Debug)
+					Console.Write("\n{0} {1}", statusCode, statusMessage);
+
+				// status code = 0 all OK, > 0 is warning
+				if (Convert.ToInt32(statusCode) > -1)
+					return ProcessReturn(actionType, responseNode);
+			}
+
+			return null;
 		}
 
-		private void ProcessReturn(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		private object ProcessReturn(ActionType actionType, XmlNode responseNode)
 		{
+			if (actionType < 0)
+				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.ProcessReturn(ActionType actionType).{0}", Environment.NewLine));
+			if (responseNode == null || String.IsNullOrWhiteSpace(responseNode.ToString()))
+				return null;
 
+			switch (actionType) {
+				#region InventoryAdjustmentAdd
+				case ActionType.InventoryAdjustmentAdd:
+					break;
+				#endregion InventoryAdjustmentAdd
+				#region InventoryAdjustmentQuery
+				case ActionType.InventoryAdjustmentQuery:
+					var ItemList = responseNode.SelectNodes("//CustomerRet");
+					break;
+				#endregion InventoryAdjustmentQuery
+				default:
+					break;
+			}
+
+			return new InventoryAdjustmentRet();
 		}
 		#endregion Private Utilities
 
@@ -106,7 +146,7 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		public void DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		public object DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
 		{
 			#region Input Validation
 			if (actionType < 0)
@@ -158,7 +198,7 @@ namespace Yutaka.QuickBooks
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
 
-				ProcessResponse(actionType, responseStr);
+				return ProcessResponse(actionType, responseStr);
 			}
 
 			catch (Exception ex) {
@@ -183,6 +223,8 @@ namespace Yutaka.QuickBooks
 					Rp.CloseConnection();
 					ConnectionOpen = false;
 				}
+
+				return null;
 			}
 		}
 
