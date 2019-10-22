@@ -56,6 +56,14 @@
 	}
 	#endregion IncomeAccountRef
 
+	#region public class InventorySiteLocationRef
+	public class InventorySiteLocationRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion InventorySiteLocationRef
+
 	#region public class InventorySiteRef
 	public class InventorySiteRef
 	{
