@@ -42,6 +42,7 @@ namespace Yutaka.Tests
 		const string TIMESTAMP = @"[HH:mm:ss] ";
 
 		// PIVs //
+		private static readonly Guid CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
 		private static DateTime startTime = DateTime.Now;
 		private static FileUtil _fileUtil = new FileUtil();
 		private static List<string> bots = new List<string> { "bot", "crawler", "spider", "80legs", "baidu", "yahoo! slurp", "ia_archiver", "mediapartners-google", "lwp-trivial", "nederland.zoek", "ahoy", "anthill", "appie", "arale", "araneo", "ariadne", "atn_worldwide", "atomz", "bjaaland", "ukonline", "calif", "combine", "cosmos", "cusco", "cyberspyder", "digger", "grabber", "downloadexpress", "ecollector", "ebiness", "esculapio", "esther", "felix ide", "hamahakki", "kit-fireball", "fouineur", "freecrawl", "desertrealm", "gcreep", "golem", "griffon", "gromit", "gulliver", "gulper", "whowhere", "havindex", "hotwired", "htdig", "ingrid", "informant", "inspectorwww", "iron33", "teoma", "ask jeeves", "jeeves", "image.kapsi.net", "kdd-explorer", "label-grabber", "larbin", "linkidator", "linkwalker", "lockon", "marvin", "mattie", "mediafox", "merzscope", "nec-meshexplorer", "udmsearch", "moget", "motor", "muncher", "muninn", "muscatferret", "mwdsearch", "sharp-info-agent", "webmechanic", "netscoop", "newscan-online", "objectssearch", "orbsearch", "packrat", "pageboy", "parasite", "patric", "pegasus", "phpdig", "piltdownman", "pimptrain", "plumtreewebaccessor", "getterrobo-plus", "raven", "roadrunner", "robbie", "robocrawl", "robofox", "webbandit", "scooter", "search-au", "searchprocess", "senrigan", "shagseeker", "site valet", "skymob", "slurp", "snooper", "speedy", "curl_image_client", "suke", "www.sygol.com", "tach_bw", "templeton", "titin", "topiclink", "udmsearch", "urlck", "valkyrie libwww-perl", "verticrawl", "victoria", "webscout", "voyager", "crawlpaper", "webcatcher", "t-h-u-n-d-e-r-s-t-o-n-e", "webmoose", "pagesinventory", "webquest", "weborama", "fetcher", "webreaper", "webwalker", "winona", "occam", "robi", "fdse", "jobo", "rhcs", "gazz", "dwcp", "yeti", "fido", "wlm", "wolp", "wwwc", "xget", "legs", "curl", "webs", "wget", "sift", "cmc" };
@@ -170,9 +171,27 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_QB20191021Util();
+			GetAllExtendedProperties();
 			EndProgram();
 		}
+
+		#region Get All Extended Properties
+		private static void GetAllExtendedProperties()
+		{
+			string label;
+			dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+			var DirectoryName = @"G:\Projects\FileCopier2\Downloads\";
+			var folder = shell.NameSpace(DirectoryName);
+
+			for (int i=0; i<1000; i++) {
+				label = folder.GetDetailsOf(null, i);
+
+				if (!String.IsNullOrWhiteSpace(label))
+					Console.Write("\n{0}: {1}", i, label);
+			}
+
+		}
+		#endregion Get All Extended Properties
 
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()

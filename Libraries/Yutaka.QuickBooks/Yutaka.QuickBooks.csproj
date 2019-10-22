@@ -31,13 +31,12 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Interop.QBFC13, Version=13.0.0.23, Culture=neutral, PublicKeyToken=31d8aec643e18259">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Interop.QBFC13">
+      <HintPath>..\..\Interop.QBFC13.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
-      <HintPath>..\..\..\Rcw\Libraries\Rcw.QuickBooks\Interop.QBFC13.dll</HintPath>
     </Reference>
     <Reference Include="Interop.QBXMLRP2Lib">
-      <HintPath>..\..\..\Rcw\Libraries\Rcw.QuickBooks\Interop.QBXMLRP2Lib.dll</HintPath>
+      <HintPath>..\..\Interop.QBXMLRP2Lib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="System" />
