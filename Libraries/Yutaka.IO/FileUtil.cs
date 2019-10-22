@@ -12,12 +12,16 @@ namespace Yutaka.IO
 	{
 		#region Fields
 		// Constants //
+		const int FRAME_RATE_FIELD = 315;
+		const int FRAME_WIDTH_FIELD = 316;
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		const int ONE_GIGABYTE = 1073741824; // Math.Pow(2, 30) //
 		const int ONE_MEGABYTE = 1048576; // Math.Pow(2, 20) //
 		const int FIVE_TWELVE_KB = 524288; // Math.Pow(2, 19) //
 		const int ONE_KILOBYTE = 1024; // Math.Pow(2, 10) //
 		const int BUFFER = FIVE_TWELVE_KB;
+		private static readonly Guid CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
+		private static readonly char[] charactersToRemove = new char[] { (char) 8206, (char) 8207 };
 
 		// Config/Settings //
 		private bool consoleOut = true;
@@ -826,6 +830,73 @@ namespace Yutaka.IO
 					throw new Exception(String.Format("{0}{2}Exception thrown in FileUtil.GetNewestFile(string dirPath='{3}', string extension='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, dirPath, extension));
 
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.GetNewestFile(string dirPath='{3}', string extension='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dirPath, extension));
+			}
+		}
+
+		public decimal GetFrameRate(string DirectoryName, string Name)
+		{
+			try {
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var label = folder.GetDetailsOf(null, FRAME_RATE_FIELD);
+
+				if (label.ToUpper().Equals("FRAME RATE")) {
+					var value = folder.GetDetailsOf(file, FRAME_RATE_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return -1, otherwise return the frame rate
+					if (String.IsNullOrWhiteSpace(value) || !value.Contains(" frames/second"))
+						return -1;
+
+					return decimal.Parse(value.Replace(" frames/second", ""));
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Frame Rate field", FRAME_RATE_FIELD);
+					Console.Write("\n**********");
+					return -1;
+				}
+			}
+
+			catch (Exception) {
+				return -1;
+			}
+		}
+
+		public int GetFrameWidth(string DirectoryName, string Name)
+		{
+			try {
+				dynamic shell = Activator.CreateInstance(Type.GetTypeFromCLSID(CLSID_Shell));
+				var folder = shell.NameSpace(DirectoryName);
+				var file = folder.ParseName(Name);
+				var label = folder.GetDetailsOf(null, FRAME_WIDTH_FIELD);
+
+				if (label.ToUpper().Equals("FRAME WIDTH")) {
+					var value = folder.GetDetailsOf(file, FRAME_WIDTH_FIELD).Trim();
+
+					// Removing the suspect characters
+					foreach (char c in charactersToRemove)
+						value = value.Replace((c).ToString(), "").Trim();
+
+					// If the value string is empty, return -1, otherwise return the frame width
+					return String.IsNullOrWhiteSpace(value) ? -1 : int.Parse(value);
+				}
+
+				else {
+					Console.Write("\n**********");
+					Console.Write("\n{0} is NOT the Frame Width field", FRAME_WIDTH_FIELD);
+					Console.Write("\n**********");
+					return -1;
+				}
+			}
+
+			catch (Exception) {
+				return -1;
 			}
 		}
 

@@ -171,9 +171,23 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			GetAllExtendedProperties();
+			Test_FileUtil_GetFrameRateAndGetWidth();
 			EndProgram();
 		}
+
+		#region Test FileUtil.GetFrameRateAndGetWidth
+		private static void Test_FileUtil_GetFrameRateAndGetWidth()
+		{
+			var DirectoryName = @"asdf\";
+			var Name = @"asdf";
+			var frameRate = _fileUtil.GetFrameRate(DirectoryName, Name);
+			var frameWidth = _fileUtil.GetFrameWidth(DirectoryName, Name);
+
+			Console.Write("\n");
+			Console.Write("\nframeRate: {0}", frameRate);
+			Console.Write("\nframeWidth: {0}", frameWidth);
+		}
+		#endregion Test FileUtil.GetFrameRateAndGetWidth
 
 		#region Get All Extended Properties
 		private static void GetAllExtendedProperties()
