@@ -10,6 +10,11 @@ namespace Yutaka.QuickBooks
 		public DateTime TimeModified; // required
 		public string EditSequence; // required
 		public int? TxnNumber;
+		public AccountRef AccountRef; // required
+		public InventorySiteRef InventorySiteRef;
+		public AccountRef AccountRef; // required
+
+
 		public VendorRef VendorRef;
 		public VendorAddress VendorAddress;
 		public APAccountRef APAccountRef;
