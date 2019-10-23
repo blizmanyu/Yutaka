@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{2F7E70C2-68B7-4A98-873D-D49E4F3AF552}"
 EndProject
@@ -44,6 +44,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpringV3", "Libraries\Yutaka.VineSpringV3\Yutaka.VineSpringV3.csproj", "{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.WineShipping", "Libraries\Yutaka.WineShipping\Yutaka.WineShipping.csproj", "{01E94A65-93EB-4E54-A46C-5F76E3C58217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Xml", "Libraries\Yutaka.Xml\Yutaka.Xml.csproj", "{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -123,6 +125,10 @@ Global
 		{01E94A65-93EB-4E54-A46C-5F76E3C58217}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{01E94A65-93EB-4E54-A46C-5F76E3C58217}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{01E94A65-93EB-4E54-A46C-5F76E3C58217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -146,6 +152,7 @@ Global
 		{1954C736-342D-4927-9881-7CB2129BAB11} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{01E94A65-93EB-4E54-A46C-5F76E3C58217} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{E35CE9B7-00A7-44CA-8B2D-2B96D9D13FA7} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
