@@ -17,5 +17,10 @@ namespace Yutaka.Xml
 		{
 			return "";
 		}
+
+		public override string ToString()
+		{
+			return WIPBeautify();
+		}
 	}
 }
