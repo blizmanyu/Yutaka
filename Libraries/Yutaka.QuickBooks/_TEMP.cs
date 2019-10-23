@@ -269,9 +269,9 @@ namespace com.intuit.idn.samples
 					if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference != null) {
 						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
 							//Get value of SerialNumberRet
-							//if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
-							//	ISerialNumberRet nothing10782 = (ISerialNumberRet)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
-							//}
+							if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
+								//ISerialNumberRet nothing10782 = (ISerialNumberRet)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
+							}
 						}
 						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.LotNumber != null) {
 							//Get value of LotNumber
