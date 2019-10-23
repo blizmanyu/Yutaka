@@ -203,7 +203,7 @@ namespace Yutaka.QuickBooks
 								SerialNumber = LineItem.SelectSingleNode("SerialNumber") == null ? null : LineItem.SelectSingleNode("SerialNumber").InnerText,
 								SerialNumberAddedOrRemoved = LineItem.SelectSingleNode("SerialNumberAddedOrRemoved") == null ? null : LineItem.SelectSingleNode("SerialNumberAddedOrRemoved").InnerText,
 								LotNumber = LineItem.SelectSingleNode("LotNumber") == null ? null : LineItem.SelectSingleNode("LotNumber").InnerText,
-								QuantityDifference = int.Parse(LineItem.SelectSingleNode("QuantityDifference").InnerText),
+								QuantityDifference = decimal.Parse(LineItem.SelectSingleNode("QuantityDifference").InnerText),
 								ValueDifference = decimal.Parse(LineItem.SelectSingleNode("ValueDifference").InnerText),
 							};
 

@@ -8,7 +8,7 @@
 		public string SerialNumberAddedOrRemoved;
 		public string LotNumber;
 		public InventorySiteLocationRef InventorySiteLocationRef;
-		public int QuantityDifference; // required
+		public decimal QuantityDifference; // required
 		public decimal ValueDifference; // required
 
 		public InventoryAdjustmentLineRet()
