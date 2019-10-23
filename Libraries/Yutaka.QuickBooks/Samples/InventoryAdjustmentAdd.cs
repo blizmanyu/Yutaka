@@ -39,7 +39,7 @@ namespace com.intuit.idn.samples
 				WalkInventoryAdjustmentAddRs(responseMsgSet);
 			}
 			catch (Exception e) {
-				//MessageBox.Show(e.Message, "Error");
+				MessageBox.Show(e.Message, "Error");
 				if (sessionBegun) {
 					sessionManager.EndSession();
 				}
@@ -270,7 +270,7 @@ namespace com.intuit.idn.samples
 						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
 							//Get value of SerialNumberRet
 							if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
-								//ISerialNumberRet nothing10782 = (ISerialNumberRet)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
+								ISerialNumberRet nothing10782 = (ISerialNumberRet)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
 							}
 						}
 						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.LotNumber != null) {
