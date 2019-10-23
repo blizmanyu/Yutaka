@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace Yutaka.Xml
 {
-	public class YuXmlDocument
+	public class YuXmlDoc : XmlDocument
 	{
 	}
 }
