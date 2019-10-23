@@ -63,9 +63,17 @@
     <Compile Include="Qb20191023Util.cs" />
     <Compile Include="Qbfc13Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Samples\AccountQuery.cs" />
+    <Compile Include="Samples\BillQuery.cs" />
+    <Compile Include="Samples\CreditMemoQuery.cs" />
+    <Compile Include="Samples\CustomerQuery.cs" />
+    <Compile Include="Samples\InventoryAdjustmentMod.cs" />
     <Compile Include="Samples\InventoryAdjustmentQuery.cs" />
     <Compile Include="Samples\InventoryAdjustmentAdd.cs" />
     <Compile Include="Samples\InvoiceQuery.cs" />
+    <Compile Include="Samples\ItemInventoryQuery.cs" />
+    <Compile Include="Samples\ItemNonInventoryQuery.cs" />
+    <Compile Include="Samples\JournalEntryQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="XMLOps\ARRefundCreditCardQuery.xml" />
