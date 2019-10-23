@@ -59,7 +59,6 @@
     <Compile Include="Data\HelperClasses.cs" />
     <Compile Include="Data\ItemNonInventoryRet.cs" />
     <Compile Include="QB20191021Util.cs" />
-    <Compile Include="_TEMP.cs" />
     <Compile Include="Qb13Util.cs" />
     <Compile Include="Qbfc13Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
