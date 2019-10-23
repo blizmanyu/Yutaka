@@ -171,9 +171,26 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_QB20191021Util();
+			Test_2019_1022_2342();
 			EndProgram();
 		}
+
+		#region Test 2019 1022 2342
+		private static void Test_2019_1022_2342()
+		{
+			var tests = new string[] {
+				@"C:\lasdkfj\",
+				@"D:\asldkfj\",
+				@"https://www.rarecoinwholesalers.com/",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				Console.Write("\n   {0}", Path.GetPathRoot(test));
+			}
+		}
+		#endregion Test 2019 1022 2342
 
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()

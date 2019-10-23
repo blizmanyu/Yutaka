@@ -157,6 +157,7 @@ namespace Yutaka.IO
 		public string NewFilename;
 		public string NewFolder;
 		public string ParentFolder;
+		public string Root;
 		#endregion Fields
 
 		public YuFile(string filename)
@@ -190,6 +191,7 @@ namespace Yutaka.IO
 			NewFilename = Name;
 			NewFolder = "";
 			ParentFolder = fi.Directory.Name;
+			Root = Path.GetPathRoot(filename);
 			fi = null;
 
 			SetDateReleased();
