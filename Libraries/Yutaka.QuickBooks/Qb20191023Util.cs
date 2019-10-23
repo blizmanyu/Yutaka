@@ -33,6 +33,18 @@ namespace Yutaka.QuickBooks
 
 		#region Public Methods
 		#region Connection
+		public void CloseConnection()
+		{
+			if (SessionBegun) {
+				SessionManager.EndSession();
+				SessionBegun = false;
+			}
+
+			if (ConnectionOpen) {
+				SessionManager.CloseConnection();
+				ConnectionOpen = false;
+			}
+		}
 
 		public bool OpenConnection(string appId = null, string appName = null, string qbFile = null, ENOpenMode openMode = ENOpenMode.omDontCare)
 		{

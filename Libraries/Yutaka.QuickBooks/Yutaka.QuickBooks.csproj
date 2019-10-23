@@ -67,9 +67,9 @@
     <Compile Include="Samples\BillQuery.cs" />
     <Compile Include="Samples\CreditMemoQuery.cs" />
     <Compile Include="Samples\CustomerQuery.cs" />
+    <Compile Include="Samples\InventoryAdjustmentAdd.cs" />
     <Compile Include="Samples\InventoryAdjustmentMod.cs" />
     <Compile Include="Samples\InventoryAdjustmentQuery.cs" />
-    <Compile Include="Samples\InventoryAdjustmentAdd.cs" />
     <Compile Include="Samples\InvoiceQuery.cs" />
     <Compile Include="Samples\ItemInventoryQuery.cs" />
     <Compile Include="Samples\ItemNonInventoryQuery.cs" />
