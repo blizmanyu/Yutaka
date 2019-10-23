@@ -64,6 +64,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\InventoryAdjustmentQuery.cs" />
     <Compile Include="Samples\InventoryAdjustmentAdd.cs" />
+    <Compile Include="Samples\InvoiceQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="XMLOps\ARRefundCreditCardQuery.xml" />
