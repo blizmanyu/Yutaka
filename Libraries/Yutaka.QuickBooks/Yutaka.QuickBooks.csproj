@@ -60,6 +60,7 @@
     <Compile Include="Data\ItemNonInventoryRet.cs" />
     <Compile Include="QB20191021Util.cs" />
     <Compile Include="Qb13Util.cs" />
+    <Compile Include="Qb20191023Util.cs" />
     <Compile Include="Qbfc13Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\InventoryAdjustmentQuery.cs" />
