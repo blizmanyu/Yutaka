@@ -47,17 +47,29 @@ namespace Yutaka.QuickBooks
 		{
 			var request = doc.CreateElement(String.Format("{0}Rq", actionType.ToString()));
 			parent.AppendChild(request);
+			XmlElement AccountRef, ItemRef, InventoryAdjustmentAdd, InventoryAdjustmentLineAdd, QuantityAdjustment, ModifiedDateRangeFilter;
 
 			switch (actionType) {
 				#region InventoryAdjustmentAdd
 				case ActionType.InventoryAdjustmentAdd:
-					request.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", startTime));
-					request.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", endTime));
+					InventoryAdjustmentAdd = doc.CreateElement("InventoryAdjustmentAdd");
+					request.AppendChild(InventoryAdjustmentAdd);
+					AccountRef = doc.CreateElement("AccountRef");
+					InventoryAdjustmentAdd.AppendChild(AccountRef);
+					AccountRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					InventoryAdjustmentLineAdd = doc.CreateElement("InventoryAdjustmentLineAdd");
+					InventoryAdjustmentAdd.AppendChild(InventoryAdjustmentLineAdd);
+					ItemRef = doc.CreateElement("ItemRef");
+					InventoryAdjustmentLineAdd.AppendChild(ItemRef);
+					ItemRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					QuantityAdjustment = doc.CreateElement("QuantityAdjustment");
+					InventoryAdjustmentLineAdd.AppendChild(QuantityAdjustment);
+					QuantityAdjustment.AppendChild(MakeSimpleElem(doc, "QuantityDifference", "QUANTYPE"));
 					break;
 				#endregion InventoryAdjustmentAdd
 				#region InventoryAdjustmentQuery
 				case ActionType.InventoryAdjustmentQuery:
-					var ModifiedDateRangeFilter = doc.CreateElement("ModifiedDateRangeFilter");
+					ModifiedDateRangeFilter = doc.CreateElement("ModifiedDateRangeFilter");
 					request.AppendChild(ModifiedDateRangeFilter);
 					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", startTime));
 					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", endTime));
@@ -317,6 +329,7 @@ namespace Yutaka.QuickBooks
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
 
 				return ProcessResponse(actionType, responseStr);
+				return new List<object>();
 			}
 
 			catch (Exception ex) {
