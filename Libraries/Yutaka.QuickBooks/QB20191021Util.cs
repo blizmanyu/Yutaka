@@ -130,7 +130,7 @@ namespace Yutaka.QuickBooks
 					for (int i = 0; i < ItemList.Count; i++) {
 						Item = ItemList.Item(i);
 						ent = new InventoryAdjustmentRet {
-							TxnID = Item.SelectSingleNode("ListID") == null ? null : Item.SelectSingleNode("ListID").InnerText,
+							TxnID = Item.SelectSingleNode("TxnID") == null ? null : Item.SelectSingleNode("TxnID").InnerText,
 							TimeCreated = DateTime.Parse(Item.SelectSingleNode("TimeCreated").InnerText),
 							TimeModified = DateTime.Parse(Item.SelectSingleNode("TimeModified").InnerText),
 							EditSequence = Item.SelectSingleNode("EditSequence") == null ? null : Item.SelectSingleNode("EditSequence").InnerText,
@@ -236,6 +236,8 @@ namespace Yutaka.QuickBooks
 							ent.LineItems.Add(entLine);
 						}
 						#endregion LineItems
+
+						list.Add(ent);
 					}
 
 					break;
