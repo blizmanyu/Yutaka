@@ -187,7 +187,7 @@ namespace Yutaka.Tests
 			foreach (var test in tests) {
 				Console.Write("\n");
 				Console.Write("\n{0}) {1}", ++totalCount, test);
-				Console.Write("\n   {0}", Path.GetPathRoot(test));
+				Console.Write("\n  '{0}'", Path.GetPathRoot(test));
 			}
 		}
 		#endregion Test 2019 1022 2342
