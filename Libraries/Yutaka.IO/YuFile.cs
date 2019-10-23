@@ -160,8 +160,11 @@ namespace Yutaka.IO
 		public string Root;
 		#endregion Fields
 
-		public YuFile(string filename)
+		public YuFile(string filename = null)
 		{
+			if (String.IsNullOrWhiteSpace(filename))
+				throw new Exception(String.Format("<filename> is required.{0}Exception thrown in YuFile Constructor.{0}", Environment.NewLine));
+
 			var fi = new FileInfo(filename);
 			fi.IsReadOnly = false;
 			#region CreationTime = fi.CreationTime;
