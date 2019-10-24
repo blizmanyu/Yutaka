@@ -84,10 +84,10 @@ namespace Yutaka.QuickBooks
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), requestMsgSet.ToXMLString());
 
 				//Send the request and get the response from QuickBooks
-				//var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
+				var responseMsgSet = SessionManager.DoRequests(requestMsgSet);
 
-				//if (Debug)
-				//	File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), responseMsgSet.ToXMLString());
 
 				//return ProcessResponse(actionType, responseStr);
 				return new List<object>();
