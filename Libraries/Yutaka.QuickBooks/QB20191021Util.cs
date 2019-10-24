@@ -9,8 +9,8 @@ namespace Yutaka.QuickBooks
 	public class QB20191021Util
 	{
 		#region Fields
-		private const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
-		public const string DEFAULT_APP_NAME = "QB20191021Util";
+		const string DEFAULT_APP_NAME = "QB20191021Util";
+		const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
 		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
 		public bool Debug;
 		private RequestProcessor2 Rp;
