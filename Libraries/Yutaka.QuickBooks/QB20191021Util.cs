@@ -126,13 +126,13 @@ namespace Yutaka.QuickBooks
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), BeautifyXml(requestXmlDoc.OuterXml));
 
 				//Send the request and get the response from QuickBooks
-				//var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
+				var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
 
-				//if (Debug)
-				//	File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
 
-				//return ProcessResponse(actionType, responseStr);
-				return new List<object>();
+				return ProcessResponse(actionType, responseStr);
+				//return new List<object>();
 			}
 
 			catch (Exception ex) {
@@ -408,20 +408,11 @@ namespace Yutaka.QuickBooks
 
 			var dtFromStr = dtFrom.Value.ToString(QB_FORMAT);
 			var dtToStr = dtTo.Value.ToString(QB_FORMAT);
-
-			//if (dtFromStr.Length < 20 || dtToStr.Length < 20) {
-			//	var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
-
-			//	if (dtFromStr.Length < 20)
-			//		dtFromStr = String.Format("{0}-{1}", dtFromStr, offset);
-			//	if (dtToStr.Length < 20)
-			//		dtToStr = String.Format("{0}-{1}", dtToStr, offset);
-			//}
 			#endregion Input Validation
 
 			var parameters = new KeyValuePair<string, object>[] {
-					new KeyValuePair<string, object>("dtFrom", dtFrom),
-					new KeyValuePair<string, object>("dtTo", dtTo),
+					new KeyValuePair<string, object>("dtFrom", dtFromStr),
+					new KeyValuePair<string, object>("dtTo", dtToStr),
 				};
 
 			var list = new List<InventoryAdjustmentRet>();

@@ -171,9 +171,32 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Qb20191023Util();
+			Test_QB20191021Util();
 			EndProgram();
 		}
+
+		#region Test QB20191021Util 2019 1021 1643
+		private static void Test_QB20191021Util()
+		{
+			var now = DateTime.Now;
+			DateTime? fromTime = null;
+			DateTime? toTime = null;
+			var appName = "Rcw.QuickBooks";
+			var qbFileName = @"C:\Shared\Quickbooks\Little Creek Winery, LLC.QBW";
+			var _qbUtil = new QB20191021Util { Debug = true };
+
+			if (_qbUtil.OpenConnection(appName, appName, qbFileName: qbFileName)) {
+				fromTime = now.AddDays(-53);
+				toTime = new DateTime(2020, 1, 1);
+				var list = _qbUtil.GetAllInventoryAdjustments(fromTime, toTime);
+				_qbUtil.CloseConnection();
+
+				foreach (InventoryAdjustmentRet v in list) {
+					var laskdjf = v.AccountRef;
+				}
+			}
+		}
+		#endregion Test QB20191021Util 2019 1021 1643
 
 		#region Test Qb20191023Util 2019 1023 1639
 		private static void Test_Qb20191023Util()
@@ -207,29 +230,6 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test 2019 1022 2342
-
-		#region Test QB20191021Util 2019 1021 1643
-		private static void Test_QB20191021Util()
-		{
-			var now = DateTime.Now;
-			DateTime? fromTime = null;
-			DateTime? toTime = null;
-			var appName = "Rcw.QuickBooks";
-			var qbFileName = @"C:\Shared\Quickbooks\Little Creek Winery, LLC.QBW";
-			var _qbUtil = new QB20191021Util { Debug = true };
-
-			if (_qbUtil.OpenConnection(appName, appName, qbFileName: qbFileName)) {
-				fromTime = now.AddDays(-53);
-				toTime = new DateTime(2020, 1, 1);
-				var list = _qbUtil.DoAction(QB20191021Util.ActionType.InventoryAdjustmentQuery, fromTime, toTime);
-				_qbUtil.CloseConnection();
-
-				foreach (InventoryAdjustmentRet v in list) {
-					var laskdjf = v.AccountRef;
-				}
-			}
-		}
-		#endregion Test QB20191021Util 2019 1021 1643
 
 		#region Test VideoUtil
 		private static void Test_VideoUtil()
