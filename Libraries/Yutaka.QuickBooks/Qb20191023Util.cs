@@ -30,84 +30,33 @@ namespace Yutaka.QuickBooks
 		}
 
 		#region Private Utilities
-		protected void BuildAddRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
+		protected void BuildRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
 		{
-
-		}
-
-		protected void BuildModRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
-		{
-
-		}
-
-		protected void BuildQueryRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
-		{
-
-		}
-
-		protected List<object> ProcessResponse(IMsgSetResponse responseMsgSet)
-		{
-			if (responseMsgSet == null) {
-				if (Debug)
-					Console.Write("\n<responseMsgSet> is null.");
-
-				return new List<object>();
-			}
-
-			var responseList = responseMsgSet.ResponseList;
-
-			if (responseList == null) {
-				if (Debug)
-					Console.Write("\n<responseList> is null.");
-
-				return new List<object>();
-			}
-
-			//if we sent only one request, there is only one response, we'll walk the list for this sample
-			for (int i = 0; i < responseList.Count; i++) {
-				var response = responseList.GetAt(i);
-				//check the status code of the response, 0=ok, >0 is warning
-				if (response.StatusCode > -1) {
-					//the request-specific response is in the details, make sure we have some
-					if (response.Detail != null)
-						return ProcessRet(responseMsgSet.ToXMLString());
-					else {
-						if (Debug)
-							Console.Write("\nresponse.Detail is null.");
-
-						return new List<object>();
-					}
-				}
-
-				else {
-					if (Debug)
-						Console.Write("\nStatusCode: {0}, StatusSeverity: {1}, StatusMessage: {2}", response.StatusCode, response.StatusSeverity, response.StatusMessage);
-
-					return new List<object>();
-				}
-			}
-
-			return new List<object>();
-		}
-
-		protected List<object> ProcessRet(string responseMsgSet)
-		{
-			return new List<object>();
-		}
-		#endregion Private Utilities
-
-		#region Public Methods
-		#region General
-		public void CloseConnection()
-		{
-			if (SessionBegun) {
-				SessionManager.EndSession();
-				SessionBegun = false;
-			}
-
-			if (ConnectionOpen) {
-				SessionManager.CloseConnection();
-				ConnectionOpen = false;
+			switch (actionType) {
+				#region InventoryAdjustmentAdd
+				case ActionType.InventoryAdjustmentAdd:
+					//InventoryAdjustmentAdd = doc.CreateElement("InventoryAdjustmentAdd");
+					//request.AppendChild(InventoryAdjustmentAdd);
+					//AccountRef = doc.CreateElement("AccountRef");
+					//InventoryAdjustmentAdd.AppendChild(AccountRef);
+					//AccountRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					//InventoryAdjustmentLineAdd = doc.CreateElement("InventoryAdjustmentLineAdd");
+					//InventoryAdjustmentAdd.AppendChild(InventoryAdjustmentLineAdd);
+					//ItemRef = doc.CreateElement("ItemRef");
+					//InventoryAdjustmentLineAdd.AppendChild(ItemRef);
+					//ItemRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					//QuantityAdjustment = doc.CreateElement("QuantityAdjustment");
+					//InventoryAdjustmentLineAdd.AppendChild(QuantityAdjustment);
+					//QuantityAdjustment.AppendChild(MakeSimpleElem(doc, "QuantityDifference", "QUANTYPE"));
+					break;
+				#endregion InventoryAdjustmentAdd
+				#region InventoryAdjustmentQuery
+				case ActionType.InventoryAdjustmentQuery:
+					IInventoryAdjustmentQuery InventoryAdjustmentQueryRq= requestMsgSet.AppendInventoryAdjustmentQueryRq();
+					break;
+				#endregion InventoryAdjustmentQuery
+				default:
+					break;
 			}
 		}
 
@@ -124,12 +73,7 @@ namespace Yutaka.QuickBooks
 				var requestMsgSet = SessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeStop;
 
-				if (actionType.ToString().EndsWith("Query"))
-					BuildQueryRequest(requestMsgSet, actionType, parameters);
-				else if (actionType.ToString().EndsWith("Add"))
-					BuildAddRequest(requestMsgSet, actionType, parameters);
-				else
-					BuildModRequest(requestMsgSet, actionType, parameters);
+				BuildRequest(requestMsgSet, actionType, parameters);
 
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), requestMsgSet.ToXMLString());
@@ -140,7 +84,8 @@ namespace Yutaka.QuickBooks
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), responseMsgSet.ToXMLString());
 
-				return ProcessResponse(responseMsgSet);
+				return new List<object>();
+				//return ProcessResponse(responseMsgSet);
 			}
 
 			catch (Exception ex) {
@@ -157,6 +102,82 @@ namespace Yutaka.QuickBooks
 				#endregion Log
 
 				return new List<object>();
+			}
+		}
+
+		protected List<object> ProcessResponse(IMsgSetResponse responseMsgSet)
+		{
+			#region Check Input
+			if (responseMsgSet == null) {
+				if (Debug)
+					Console.Write("\n<responseMsgSet> is null.");
+
+				return new List<object>();
+			}
+
+			var responseList = responseMsgSet.ResponseList;
+
+			if (responseList == null) {
+				if (Debug)
+					Console.Write("\n<responseList> is null.");
+
+				return new List<object>();
+			}
+			#endregion Check Input
+
+			var response = responseList.GetAt(0);
+			//check the status code of the response, 0=ok, >0 is warning
+			if (response.StatusCode > -1) {
+				//the request-specific response is in the details, make sure we have some
+				if (response.Detail == null) {
+					if (Debug)
+						Console.Write("\nresponse.Detail is null.");
+
+					return new List<object>();
+				}
+
+				return ProcessRet(responseMsgSet.ToXMLString());
+			}
+
+			else {
+				if (Debug)
+					Console.Write("\nStatusCode: {0}, StatusSeverity: {1}, StatusMessage: {2}", response.StatusCode, response.StatusSeverity, response.StatusMessage);
+
+				return new List<object>();
+			}
+		}
+
+		protected List<object> ProcessRet(string responseMsg)
+		{
+			#region Input Validation
+			if (String.IsNullOrWhiteSpace(responseMsg)) {
+				if (Debug)
+					Console.Write("\n<responseMsg> is null.");
+
+				return new List<object>();
+			}
+			#endregion Input Validation
+
+			var list = new List<object>();
+
+
+
+			return list;
+		}
+		#endregion Private Utilities
+
+		#region Public Methods
+		#region General
+		public void CloseConnection()
+		{
+			if (SessionBegun) {
+				SessionManager.EndSession();
+				SessionBegun = false;
+			}
+
+			if (ConnectionOpen) {
+				SessionManager.CloseConnection();
+				ConnectionOpen = false;
 			}
 		}
 
