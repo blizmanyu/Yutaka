@@ -11,6 +11,9 @@ namespace Yutaka.QuickBooks
 		#region Fields
 		const string DEFAULT_APP_NAME = "QB20191021Util";
 		const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
+		private readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
+		private readonly DateTime MAX_DATE = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999, DateTimeKind.Local);
+
 		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
 		public bool Debug;
 		private RequestProcessor2 Rp;
