@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Interop.QBFC13">
+      <HintPath>..\..\Interop.QBFC13.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Interop.QBXMLRP2Lib">
       <HintPath>..\..\Interop.QBXMLRP2Lib.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
@@ -76,7 +80,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.Net\bin\Release\Yutaka.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.QuickBooks">
+    <Reference Include="Yutaka.QuickBooks, Version=1.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.QuickBooks\bin\Release\Yutaka.QuickBooks.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Text">

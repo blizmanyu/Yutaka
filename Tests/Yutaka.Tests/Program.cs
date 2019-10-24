@@ -171,9 +171,30 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_2019_1022_2342();
+			Test_Qb20191023Util();
 			EndProgram();
 		}
+
+		#region Test Qb20191023Util 2019 1023 1639
+		private static void Test_Qb20191023Util()
+		{
+			DateTime? dtFrom, dtTo;
+			var appName = "Rcw.QuickBooks";
+			var qbFile = @"C:\Shared\Quickbooks\Little Creek Winery, LLC.QBW";
+			var _qb20191023Util = new Qb20191023Util { Debug = true };
+
+			if (_qb20191023Util.OpenConnection(appName, appName, qbFile)) {
+				dtFrom = DateTime.Now.AddYears(-10);
+				dtTo = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999);
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("dtFrom", dtFrom),
+					new KeyValuePair<string, object>("dtTo", dtTo),
+				};
+				_qb20191023Util.DoAction(Qb20191023Util.ActionType.InventoryAdjustmentQuery, parameters);
+				_qb20191023Util.CloseConnection();
+			}
+		}
+		#endregion Test Qb20191023Util 2019 1023 1639
 
 		#region Test 2019 1022 2342
 		private static void Test_2019_1022_2342()

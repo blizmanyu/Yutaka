@@ -9,7 +9,7 @@ namespace Yutaka.QuickBooks
 	public class Qb20191023Util
 	{
 		#region Fields
-		const string DEFAULT_APP_NAME = "QB20191021Util";
+		const string DEFAULT_APP_NAME = "Qb20191023Util";
 		const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
 
 		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
@@ -29,10 +29,24 @@ namespace Yutaka.QuickBooks
 		}
 
 		#region Private Utilities
+		protected void BuildAddRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
+		{
+
+		}
+
+		protected void BuildModRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
+		{
+
+		}
+
+		protected void BuildQueryRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
+		{
+
+		}
 		#endregion Private Utilities
 
 		#region Public Methods
-		#region Connection
+		#region General
 		public void CloseConnection()
 		{
 			if (SessionBegun) {
@@ -43,6 +57,56 @@ namespace Yutaka.QuickBooks
 			if (ConnectionOpen) {
 				SessionManager.CloseConnection();
 				ConnectionOpen = false;
+			}
+		}
+
+		public List<object> DoAction(ActionType actionType, params KeyValuePair<string, object>[] parameters)
+		{
+			if (actionType < 0)
+				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in Qb20191023Util.DoAction(ActionType actionType, params KeyValuePair<string, object>[] parameters).{0}", Environment.NewLine));
+
+			try {
+				if (!ConnectionOpen || !SessionBegun)
+					OpenConnection();
+
+				//Create the message set request object to hold our request
+				var requestMsgSet = SessionManager.CreateMsgSetRequest("US",13,0);
+				requestMsgSet.Attributes.OnError = ENRqOnError.roeStop;
+
+				if (actionType.ToString().EndsWith("Query"))
+					BuildQueryRequest(requestMsgSet, actionType, parameters);
+				else if (actionType.ToString().EndsWith("Add"))
+					BuildAddRequest(requestMsgSet, actionType, parameters);
+				else
+					BuildModRequest(requestMsgSet, actionType, parameters);
+
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), requestMsgSet.ToXMLString());
+
+				//Send the request and get the response from QuickBooks
+				//var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
+
+				//if (Debug)
+				//	File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
+
+				//return ProcessResponse(actionType, responseStr);
+				return new List<object>();
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Qb20191023Util.DoAction(ActionType actionType='{3}', params KeyValuePair<string, object>[] parameters='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), String.Join(", ", parameters));
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Qb20191023Util.DoAction(ActionType actionType='{3}', params KeyValuePair<string, object>[] parameters='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), String.Join(", ", parameters));
+
+				if (Debug)
+					Console.Write("\n{0}", log);
+				#endregion Log
+
+				return new List<object>();
 			}
 		}
 
@@ -73,9 +137,9 @@ namespace Yutaka.QuickBooks
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in QB20191021Util.OpenConnection(string appId='{3}', string appName='{4}', string qbFile='{5}', ENOpenMode openMode='{6}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, appId, appName, qbFile, openMode.ToString());
+					log = String.Format("{0}{2}Exception thrown in Qb20191023Util.OpenConnection(string appId='{3}', string appName='{4}', string qbFile='{5}', ENOpenMode openMode='{6}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, appId, appName, qbFile, openMode.ToString());
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QB20191021Util.OpenConnection(string appId='{3}', string appName='{4}', string qbFile='{5}', ENOpenMode openMode='{6}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, appId, appName, qbFile, openMode.ToString());
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Qb20191023Util.OpenConnection(string appId='{3}', string appName='{4}', string qbFile='{5}', ENOpenMode openMode='{6}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, appId, appName, qbFile, openMode.ToString());
 
 				if (Debug)
 					Console.Write("\n{0}", log);
@@ -94,7 +158,7 @@ namespace Yutaka.QuickBooks
 				return false;
 			}
 		}
-		#endregion Connection
+		#endregion General
 
 		#region InventoryAdjustment
 		public bool AddInventoryAdjustment(InventoryAdjustmentRet ia)
