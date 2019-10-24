@@ -185,12 +185,7 @@ namespace Yutaka.Tests
 
 			if (_qb20191023Util.OpenConnection(appName, appName, qbFile)) {
 				dtFrom = DateTime.Now.AddYears(-10);
-				dtTo = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999);
-				var parameters = new KeyValuePair<string, object>[] {
-					new KeyValuePair<string, object>("dtFrom", dtFrom),
-					new KeyValuePair<string, object>("dtTo", dtTo),
-				};
-				_qb20191023Util.DoAction(Qb20191023Util.ActionType.InventoryAdjustmentQuery, parameters);
+				_qb20191023Util.GetAllInventoryAdjustments(dtFrom);
 				_qb20191023Util.CloseConnection();
 			}
 		}

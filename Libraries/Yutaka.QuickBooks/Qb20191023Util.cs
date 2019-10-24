@@ -52,7 +52,10 @@ namespace Yutaka.QuickBooks
 				#endregion InventoryAdjustmentAdd
 				#region InventoryAdjustmentQuery
 				case ActionType.InventoryAdjustmentQuery:
-					IInventoryAdjustmentQuery InventoryAdjustmentQueryRq= requestMsgSet.AppendInventoryAdjustmentQueryRq();
+					var InventoryAdjustmentQueryRq= requestMsgSet.AppendInventoryAdjustmentQueryRq();
+					InventoryAdjustmentQueryRq.ORInventoryAdjustmentQuery.TxnFilterWithItemFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue((DateTime) parameters[0].Value, false);
+					InventoryAdjustmentQueryRq.ORInventoryAdjustmentQuery.TxnFilterWithItemFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue((DateTime) parameters[1].Value, false);
+					InventoryAdjustmentQueryRq.IncludeLineItems.SetValue(true);
 					break;
 				#endregion InventoryAdjustmentQuery
 				default:
@@ -247,6 +250,15 @@ namespace Yutaka.QuickBooks
 
 			var dtFromStr = dtFrom.Value.ToString(QB_FORMAT);
 			var dtToStr = dtTo.Value.ToString(QB_FORMAT);
+
+			if (dtFromStr.Length < 20 || dtToStr.Length < 20) {
+				var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+
+				if (dtFromStr.Length < 20)
+					dtFromStr = String.Format("{0}-{1}", dtFromStr, offset);
+				if (dtToStr.Length < 20)
+					dtToStr = String.Format("{0}-{1}", dtToStr, offset);
+			}
 			#endregion Input Validation
 
 			var parameters = new KeyValuePair<string, object>[] {
