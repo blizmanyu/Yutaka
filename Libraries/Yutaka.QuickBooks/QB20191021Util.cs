@@ -397,6 +397,41 @@ namespace Yutaka.QuickBooks
 				return false;
 			}
 		}
+
+		public List<InventoryAdjustmentRet> GetAllInventoryAdjustments(DateTime? dtFrom, DateTime? dtTo = null)
+		{
+			#region Input Validation
+			if (dtFrom == null || dtFrom < MIN_DATE)
+				dtFrom = MIN_DATE;
+			if (dtTo == null || dtTo > MAX_DATE)
+				dtTo = MAX_DATE;
+
+			var dtFromStr = dtFrom.Value.ToString(QB_FORMAT);
+			var dtToStr = dtTo.Value.ToString(QB_FORMAT);
+
+			//if (dtFromStr.Length < 20 || dtToStr.Length < 20) {
+			//	var offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+
+			//	if (dtFromStr.Length < 20)
+			//		dtFromStr = String.Format("{0}-{1}", dtFromStr, offset);
+			//	if (dtToStr.Length < 20)
+			//		dtToStr = String.Format("{0}-{1}", dtToStr, offset);
+			//}
+			#endregion Input Validation
+
+			var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("dtFrom", dtFrom),
+					new KeyValuePair<string, object>("dtTo", dtTo),
+				};
+
+			var list = new List<InventoryAdjustmentRet>();
+			var rets = DoAction(ActionType.InventoryAdjustmentQuery, parameters);
+
+			foreach (InventoryAdjustmentRet ret in rets)
+				list.Add(ret);
+
+			return list;
+		}
 		#endregion Public Methods
 	}
 }
