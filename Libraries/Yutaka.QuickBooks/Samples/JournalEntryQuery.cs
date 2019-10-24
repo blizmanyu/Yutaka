@@ -5,7 +5,7 @@ namespace com.intuit.idn.samples
 {
 	public partial class Sample
 	{
-		public void DoJournalEntryQuery()
+		public void DoQuery()
 		{
 			bool sessionBegun = false;
 			bool connectionOpen = false;
@@ -19,7 +19,7 @@ namespace com.intuit.idn.samples
 				IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-				BuildJournalEntryQueryRq(requestMsgSet);
+				BuildQueryRq(requestMsgSet);
 
 				//Connect to QuickBooks and begin a session
 				sessionManager.OpenConnection("", "Sample Code from OSR");
@@ -36,7 +36,7 @@ namespace com.intuit.idn.samples
 				sessionManager.CloseConnection();
 				connectionOpen = false;
 
-				WalkJournalEntryQueryRs(responseMsgSet);
+				WalkQueryRs(responseMsgSet);
 			}
 			catch (Exception e) {
 				MessageBox.Show(e.Message, "Error");
@@ -49,129 +49,129 @@ namespace com.intuit.idn.samples
 			}
 		}
 
-		void BuildJournalEntryQueryRq(IMsgSetRequest requestMsgSet)
+		void BuildQueryRq(IMsgSetRequest requestMsgSet)
 		{
-			IJournalEntryQuery JournalEntryQueryRq= requestMsgSet.AppendJournalEntryQueryRq();
+			IQuery QueryRq= requestMsgSet.AppendQueryRq();
 			//Set attributes
 			//Set field value for metaData
-			JournalEntryQueryRq.metaData.SetValue("IQBENmetaDataType");
+			QueryRq.metaData.SetValue("IQBENmetaDataType");
 			//Set field value for iterator
-			JournalEntryQueryRq.iterator.SetValue("IQBENiteratorType");
+			QueryRq.iterator.SetValue("IQBENiteratorType");
 			//Set field value for iteratorID
-			JournalEntryQueryRq.iteratorID.SetValue("IQBUUIDType");
+			QueryRq.iteratorID.SetValue("IQBUUIDType");
 			string ORTxnQueryElementType16581 = "TxnIDList";
 			if (ORTxnQueryElementType16581 == "TxnIDList") {
 				//Set field value for TxnIDList
 				//May create more than one of these if needed
-				JournalEntryQueryRq.ORTxnQuery.TxnIDList.Add("200000-1011023419");
+				QueryRq.ORTxnQuery.TxnIDList.Add("200000-1011023419");
 			}
 			if (ORTxnQueryElementType16581 == "RefNumberList") {
 				//Set field value for RefNumberList
 				//May create more than one of these if needed
-				JournalEntryQueryRq.ORTxnQuery.RefNumberList.Add("ab");
+				QueryRq.ORTxnQuery.RefNumberList.Add("ab");
 			}
 			if (ORTxnQueryElementType16581 == "RefNumberCaseSensitiveList") {
 				//Set field value for RefNumberCaseSensitiveList
 				//May create more than one of these if needed
-				JournalEntryQueryRq.ORTxnQuery.RefNumberCaseSensitiveList.Add("ab");
+				QueryRq.ORTxnQuery.RefNumberCaseSensitiveList.Add("ab");
 			}
 			if (ORTxnQueryElementType16581 == "TxnFilter") {
 				//Set field value for MaxReturned
-				JournalEntryQueryRq.ORTxnQuery.TxnFilter.MaxReturned.SetValue(6);
+				QueryRq.ORTxnQuery.TxnFilter.MaxReturned.SetValue(6);
 				string ORDateRangeFilterElementType16582 = "ModifiedDateRangeFilter";
 				if (ORDateRangeFilterElementType16582 == "ModifiedDateRangeFilter") {
 					//Set field value for FromModifiedDate
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+					QueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 					//Set field value for ToModifiedDate
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+					QueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 				}
 				if (ORDateRangeFilterElementType16582 == "TxnDateRangeFilter") {
 					string ORTxnDateRangeFilterElementType16583 = "TxnDateFilter";
 					if (ORTxnDateRangeFilterElementType16583 == "TxnDateFilter") {
 						//Set field value for FromTxnDate
-						JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.FromTxnDate.SetValue(DateTime.Parse("12/15/2007"));
+						QueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.FromTxnDate.SetValue(DateTime.Parse("12/15/2007"));
 						//Set field value for ToTxnDate
-						JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.ToTxnDate.SetValue(DateTime.Parse("12/15/2007"));
+						QueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.ToTxnDate.SetValue(DateTime.Parse("12/15/2007"));
 					}
 					if (ORTxnDateRangeFilterElementType16583 == "DateMacro") {
 						//Set field value for DateMacro
-						JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.DateMacro.SetValue(ENDateMacro.dmAll);
+						QueryRq.ORTxnQuery.TxnFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.DateMacro.SetValue(ENDateMacro.dmAll);
 					}
 				}
 				string OREntityFilterElementType16584 = "ListIDList";
 				if (OREntityFilterElementType16584 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (OREntityFilterElementType16584 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.FullNameList.Add("ab");
+					QueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.FullNameList.Add("ab");
 				}
 				if (OREntityFilterElementType16584 == "ListIDWithChildren") {
 					//Set field value for ListIDWithChildren
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.ListIDWithChildren.SetValue("200000-1011023419");
+					QueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.ListIDWithChildren.SetValue("200000-1011023419");
 				}
 				if (OREntityFilterElementType16584 == "FullNameWithChildren") {
 					//Set field value for FullNameWithChildren
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.FullNameWithChildren.SetValue("ab");
+					QueryRq.ORTxnQuery.TxnFilter.EntityFilter.OREntityFilter.FullNameWithChildren.SetValue("ab");
 				}
 				string ORAccountFilterElementType16585 = "ListIDList";
 				if (ORAccountFilterElementType16585 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (ORAccountFilterElementType16585 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.FullNameList.Add("ab");
+					QueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.FullNameList.Add("ab");
 				}
 				if (ORAccountFilterElementType16585 == "ListIDWithChildren") {
 					//Set field value for ListIDWithChildren
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.ListIDWithChildren.SetValue("200000-1011023419");
+					QueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.ListIDWithChildren.SetValue("200000-1011023419");
 				}
 				if (ORAccountFilterElementType16585 == "FullNameWithChildren") {
 					//Set field value for FullNameWithChildren
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.FullNameWithChildren.SetValue("ab");
+					QueryRq.ORTxnQuery.TxnFilter.AccountFilter.ORAccountFilter.FullNameWithChildren.SetValue("ab");
 				}
 				string ORRefNumberFilterElementType16586 = "RefNumberFilter";
 				if (ORRefNumberFilterElementType16586 == "RefNumberFilter") {
 					//Set field value for MatchCriterion
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+					QueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
 					//Set field value for RefNumber
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberFilter.RefNumber.SetValue("ab");
+					QueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberFilter.RefNumber.SetValue("ab");
 				}
 				if (ORRefNumberFilterElementType16586 == "RefNumberRangeFilter") {
 					//Set field value for FromRefNumber
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberRangeFilter.FromRefNumber.SetValue("ab");
+					QueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberRangeFilter.FromRefNumber.SetValue("ab");
 					//Set field value for ToRefNumber
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberRangeFilter.ToRefNumber.SetValue("ab");
+					QueryRq.ORTxnQuery.TxnFilter.ORRefNumberFilter.RefNumberRangeFilter.ToRefNumber.SetValue("ab");
 				}
 				string ORCurrencyFilterElementType16587 = "ListIDList";
 				if (ORCurrencyFilterElementType16587 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.CurrencyFilter.ORCurrencyFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORTxnQuery.TxnFilter.CurrencyFilter.ORCurrencyFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (ORCurrencyFilterElementType16587 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					JournalEntryQueryRq.ORTxnQuery.TxnFilter.CurrencyFilter.ORCurrencyFilter.FullNameList.Add("ab");
+					QueryRq.ORTxnQuery.TxnFilter.CurrencyFilter.ORCurrencyFilter.FullNameList.Add("ab");
 				}
 			}
 			//Set field value for IncludeLineItems
-			JournalEntryQueryRq.IncludeLineItems.SetValue(true);
+			QueryRq.IncludeLineItems.SetValue(true);
 			//Set field value for IncludeRetElementList
 			//May create more than one of these if needed
-			JournalEntryQueryRq.IncludeRetElementList.Add("ab");
+			QueryRq.IncludeRetElementList.Add("ab");
 			//Set field value for OwnerIDList
 			//May create more than one of these if needed
-			JournalEntryQueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
+			QueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
 		}
 
-		void WalkJournalEntryQueryRs(IMsgSetResponse responseMsgSet)
+		void WalkQueryRs(IMsgSetResponse responseMsgSet)
 		{
 			if (responseMsgSet == null) return;
 			IResponseList responseList = responseMsgSet.ResponseList;
@@ -185,71 +185,71 @@ namespace com.intuit.idn.samples
 					if (response.Detail != null) {
 						//make sure the response is the type we're expecting
 						ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-						if (responseType == ENResponseType.rtJournalEntryQueryRs) {
+						if (responseType == ENResponseType.rtQueryRs) {
 							//upcast to more specific type here, this is safe because we checked with response.Type check above
-							IJournalEntryRetList JournalEntryRet = (IJournalEntryRetList)response.Detail;
-							WalkJournalEntryRet(JournalEntryRet);
+							IRetList Ret = (IRetList)response.Detail;
+							WalkRet(Ret);
 						}
 					}
 				}
 			}
 		}
 
-		void WalkJournalEntryRet(IJournalEntryRetList JournalEntryRet)
+		void WalkRet(IRetList Ret)
 		{
-			if (JournalEntryRet == null) return;
-			//Go through all the elements of IJournalEntryRetList
+			if (Ret == null) return;
+			//Go through all the elements of IRetList
 			//Get value of TxnID
-			string TxnID16588 = (string)JournalEntryRet.TxnID.GetValue();
+			string TxnID16588 = (string)Ret.TxnID.GetValue();
 			//Get value of TimeCreated
-			DateTime TimeCreated16589 = (DateTime)JournalEntryRet.TimeCreated.GetValue();
+			DateTime TimeCreated16589 = (DateTime)Ret.TimeCreated.GetValue();
 			//Get value of TimeModified
-			DateTime TimeModified16590 = (DateTime)JournalEntryRet.TimeModified.GetValue();
+			DateTime TimeModified16590 = (DateTime)Ret.TimeModified.GetValue();
 			//Get value of EditSequence
-			string EditSequence16591 = (string)JournalEntryRet.EditSequence.GetValue();
+			string EditSequence16591 = (string)Ret.EditSequence.GetValue();
 			//Get value of TxnNumber
-			if (JournalEntryRet.TxnNumber != null) {
-				int TxnNumber16592 = (int)JournalEntryRet.TxnNumber.GetValue();
+			if (Ret.TxnNumber != null) {
+				int TxnNumber16592 = (int)Ret.TxnNumber.GetValue();
 			}
 			//Get value of TxnDate
-			DateTime TxnDate16593 = (DateTime)JournalEntryRet.TxnDate.GetValue();
+			DateTime TxnDate16593 = (DateTime)Ret.TxnDate.GetValue();
 			//Get value of RefNumber
-			if (JournalEntryRet.RefNumber != null) {
-				string RefNumber16594 = (string)JournalEntryRet.RefNumber.GetValue();
+			if (Ret.RefNumber != null) {
+				string RefNumber16594 = (string)Ret.RefNumber.GetValue();
 			}
 			//Get value of IsAdjustment
-			if (JournalEntryRet.IsAdjustment != null) {
-				bool IsAdjustment16595 = (bool)JournalEntryRet.IsAdjustment.GetValue();
+			if (Ret.IsAdjustment != null) {
+				bool IsAdjustment16595 = (bool)Ret.IsAdjustment.GetValue();
 			}
 			//Get value of IsHomeCurrencyAdjustment
-			if (JournalEntryRet.IsHomeCurrencyAdjustment != null) {
-				bool IsHomeCurrencyAdjustment16596 = (bool)JournalEntryRet.IsHomeCurrencyAdjustment.GetValue();
+			if (Ret.IsHomeCurrencyAdjustment != null) {
+				bool IsHomeCurrencyAdjustment16596 = (bool)Ret.IsHomeCurrencyAdjustment.GetValue();
 			}
 			//Get value of IsAmountsEnteredInHomeCurrency
-			if (JournalEntryRet.IsAmountsEnteredInHomeCurrency != null) {
-				bool IsAmountsEnteredInHomeCurrency16597 = (bool)JournalEntryRet.IsAmountsEnteredInHomeCurrency.GetValue();
+			if (Ret.IsAmountsEnteredInHomeCurrency != null) {
+				bool IsAmountsEnteredInHomeCurrency16597 = (bool)Ret.IsAmountsEnteredInHomeCurrency.GetValue();
 			}
-			if (JournalEntryRet.CurrencyRef != null) {
+			if (Ret.CurrencyRef != null) {
 				//Get value of ListID
-				if (JournalEntryRet.CurrencyRef.ListID != null) {
-					string ListID16598 = (string)JournalEntryRet.CurrencyRef.ListID.GetValue();
+				if (Ret.CurrencyRef.ListID != null) {
+					string ListID16598 = (string)Ret.CurrencyRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (JournalEntryRet.CurrencyRef.FullName != null) {
-					string FullName16599 = (string)JournalEntryRet.CurrencyRef.FullName.GetValue();
+				if (Ret.CurrencyRef.FullName != null) {
+					string FullName16599 = (string)Ret.CurrencyRef.FullName.GetValue();
 				}
 			}
 			//Get value of ExchangeRate
-			if (JournalEntryRet.ExchangeRate != null) {
-				IQBFloatType ExchangeRate16600 = (IQBFloatType)JournalEntryRet.ExchangeRate.GetValue();
+			if (Ret.ExchangeRate != null) {
+				IQBFloatType ExchangeRate16600 = (IQBFloatType)Ret.ExchangeRate.GetValue();
 			}
 			//Get value of ExternalGUID
-			if (JournalEntryRet.ExternalGUID != null) {
-				string ExternalGUID16601 = (string)JournalEntryRet.ExternalGUID.GetValue();
+			if (Ret.ExternalGUID != null) {
+				string ExternalGUID16601 = (string)Ret.ExternalGUID.GetValue();
 			}
-			if (JournalEntryRet.ORJournalLineList != null) {
-				for (int i16602 = 0; i16602 < JournalEntryRet.ORJournalLineList.Count; i16602++) {
-					IORJournalLine ORJournalLine16603 = JournalEntryRet.ORJournalLineList.GetAt(i16602);
+			if (Ret.ORJournalLineList != null) {
+				for (int i16602 = 0; i16602 < Ret.ORJournalLineList.Count; i16602++) {
+					IORJournalLine ORJournalLine16603 = Ret.ORJournalLineList.GetAt(i16602);
 					if (ORJournalLine16603.JournalDebitLine != null) {
 						if (ORJournalLine16603.JournalDebitLine != null) {
 							//Get value of TxnLineID
@@ -372,9 +372,9 @@ namespace com.intuit.idn.samples
 					}
 				}
 			}
-			if (JournalEntryRet.DataExtRetList != null) {
-				for (int i16628 = 0; i16628 < JournalEntryRet.DataExtRetList.Count; i16628++) {
-					IDataExtRet DataExtRet = JournalEntryRet.DataExtRetList.GetAt(i16628);
+			if (Ret.DataExtRetList != null) {
+				for (int i16628 = 0; i16628 < Ret.DataExtRetList.Count; i16628++) {
+					IDataExtRet DataExtRet = Ret.DataExtRetList.GetAt(i16628);
 					//Get value of OwnerID
 					if (DataExtRet.OwnerID != null) {
 						string OwnerID16629 = (string)DataExtRet.OwnerID.GetValue();

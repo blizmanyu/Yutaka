@@ -5,7 +5,7 @@ namespace com.intuit.idn.samples
 {
 	public partial class Sample
 	{
-		public void DoInventoryAdjustmentMod()
+		public void DoMod()
 		{
 			bool sessionBegun = false;
 			bool connectionOpen = false;
@@ -19,7 +19,7 @@ namespace com.intuit.idn.samples
 				IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-				BuildInventoryAdjustmentModRq(requestMsgSet);
+				BuildModRq(requestMsgSet);
 
 				//Connect to QuickBooks and begin a session
 				sessionManager.OpenConnection("", "Sample Code from OSR");
@@ -36,7 +36,7 @@ namespace com.intuit.idn.samples
 				sessionManager.CloseConnection();
 				connectionOpen = false;
 
-				WalkInventoryAdjustmentModRs(responseMsgSet);
+				WalkModRs(responseMsgSet);
 			}
 			catch (Exception e) {
 				MessageBox.Show(e.Message, "Error");
@@ -49,67 +49,67 @@ namespace com.intuit.idn.samples
 			}
 		}
 
-		void BuildInventoryAdjustmentModRq(IMsgSetRequest requestMsgSet)
+		void BuildModRq(IMsgSetRequest requestMsgSet)
 		{
-			IInventoryAdjustmentMod InventoryAdjustmentModRq= requestMsgSet.AppendInventoryAdjustmentModRq();
+			IMod ModRq= requestMsgSet.AppendModRq();
 			//Set field value for TxnID
-			InventoryAdjustmentModRq.TxnID.SetValue("200000-1011023419");
+			ModRq.TxnID.SetValue("200000-1011023419");
 			//Set field value for EditSequence
-			InventoryAdjustmentModRq.EditSequence.SetValue("ab");
+			ModRq.EditSequence.SetValue("ab");
 			//Set field value for ListID
-			InventoryAdjustmentModRq.AccountRef.ListID.SetValue("200000-1011023419");
+			ModRq.AccountRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentModRq.AccountRef.FullName.SetValue("ab");
+			ModRq.AccountRef.FullName.SetValue("ab");
 			//Set field value for ListID
-			InventoryAdjustmentModRq.InventorySiteRef.ListID.SetValue("200000-1011023419");
+			ModRq.InventorySiteRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentModRq.InventorySiteRef.FullName.SetValue("ab");
+			ModRq.InventorySiteRef.FullName.SetValue("ab");
 			//Set field value for TxnDate
-			InventoryAdjustmentModRq.TxnDate.SetValue(DateTime.Parse("12/15/2007"));
+			ModRq.TxnDate.SetValue(DateTime.Parse("12/15/2007"));
 			//Set field value for RefNumber
-			InventoryAdjustmentModRq.RefNumber.SetValue("ab");
+			ModRq.RefNumber.SetValue("ab");
 			//Set field value for ListID
-			InventoryAdjustmentModRq.CustomerRef.ListID.SetValue("200000-1011023419");
+			ModRq.CustomerRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentModRq.CustomerRef.FullName.SetValue("ab");
+			ModRq.CustomerRef.FullName.SetValue("ab");
 			//Set field value for ListID
-			InventoryAdjustmentModRq.ClassRef.ListID.SetValue("200000-1011023419");
+			ModRq.ClassRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentModRq.ClassRef.FullName.SetValue("ab");
+			ModRq.ClassRef.FullName.SetValue("ab");
 			//Set field value for Memo
-			InventoryAdjustmentModRq.Memo.SetValue("ab");
-			IInventoryAdjustmentLineMod InventoryAdjustmentLineMod10833=InventoryAdjustmentModRq.InventoryAdjustmentLineModList.Append();
+			ModRq.Memo.SetValue("ab");
+			ILineMod LineMod10833=ModRq.LineModList.Append();
 			//Set field value for TxnLineID
-			InventoryAdjustmentLineMod10833.TxnLineID.SetValue("200000-1011023419");
+			LineMod10833.TxnLineID.SetValue("200000-1011023419");
 			//Set field value for ListID
-			InventoryAdjustmentLineMod10833.ItemRef.ListID.SetValue("200000-1011023419");
+			LineMod10833.ItemRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentLineMod10833.ItemRef.FullName.SetValue("ab");
+			LineMod10833.ItemRef.FullName.SetValue("ab");
 			string ORTypeAdjustmentModElementType10834 = "SerialNumber";
 			if (ORTypeAdjustmentModElementType10834 == "SerialNumber") {
 				//Set field value for SerialNumber
-				InventoryAdjustmentLineMod10833.ORTypeAdjustmentMod.SerialNumber.SetValue("ab");
+				LineMod10833.ORTypeAdjustmentMod.SerialNumber.SetValue("ab");
 			}
 			if (ORTypeAdjustmentModElementType10834 == "LotAdjustment") {
 				//Set field value for LotNumber
-				InventoryAdjustmentLineMod10833.ORTypeAdjustmentMod.LotAdjustment.LotNumber.SetValue("ab");
+				LineMod10833.ORTypeAdjustmentMod.LotAdjustment.LotNumber.SetValue("ab");
 				//Set field value for CountAdjustment
-				InventoryAdjustmentLineMod10833.ORTypeAdjustmentMod.LotAdjustment.CountAdjustment.SetValue(6);
+				LineMod10833.ORTypeAdjustmentMod.LotAdjustment.CountAdjustment.SetValue(6);
 			}
 			//Set field value for ListID
-			InventoryAdjustmentLineMod10833.InventorySiteLocationRef.ListID.SetValue("200000-1011023419");
+			LineMod10833.InventorySiteLocationRef.ListID.SetValue("200000-1011023419");
 			//Set field value for FullName
-			InventoryAdjustmentLineMod10833.InventorySiteLocationRef.FullName.SetValue("ab");
+			LineMod10833.InventorySiteLocationRef.FullName.SetValue("ab");
 			//Set field value for QuantityDifference
-			InventoryAdjustmentLineMod10833.QuantityDifference.SetValue(2);
+			LineMod10833.QuantityDifference.SetValue(2);
 			//Set field value for ValueDifference
-			InventoryAdjustmentLineMod10833.ValueDifference.SetValue(10.01);
+			LineMod10833.ValueDifference.SetValue(10.01);
 			//Set field value for IncludeRetElementList
 			//May create more than one of these if needed
-			InventoryAdjustmentModRq.IncludeRetElementList.Add("ab");
+			ModRq.IncludeRetElementList.Add("ab");
 		}
 
-		void WalkInventoryAdjustmentModRs(IMsgSetResponse responseMsgSet)
+		void WalkModRs(IMsgSetResponse responseMsgSet)
 		{
 			if (responseMsgSet == null) return;
 			IResponseList responseList = responseMsgSet.ResponseList;
@@ -123,130 +123,130 @@ namespace com.intuit.idn.samples
 					if (response.Detail != null) {
 						//make sure the response is the type we're expecting
 						ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-						if (responseType == ENResponseType.rtInventoryAdjustmentModRs) {
+						if (responseType == ENResponseType.rtModRs) {
 							//upcast to more specific type here, this is safe because we checked with response.Type check above
-							IInventoryAdjustmentRet InventoryAdjustmentRet = (IInventoryAdjustmentRet)response.Detail;
-							WalkInventoryAdjustmentRet(InventoryAdjustmentRet);
+							IRet Ret = (IRet)response.Detail;
+							WalkRet(Ret);
 						}
 					}
 				}
 			}
 		}
 
-		void WalkInventoryAdjustmentRet(IInventoryAdjustmentRet InventoryAdjustmentRet)
+		void WalkRet(IRet Ret)
 		{
-			if (InventoryAdjustmentRet == null) return;
-			//Go through all the elements of IInventoryAdjustmentRet
+			if (Ret == null) return;
+			//Go through all the elements of IRet
 			//Get value of TxnID
-			string TxnID10835 = (string)InventoryAdjustmentRet.TxnID.GetValue();
+			string TxnID10835 = (string)Ret.TxnID.GetValue();
 			//Get value of TimeCreated
-			DateTime TimeCreated10836 = (DateTime)InventoryAdjustmentRet.TimeCreated.GetValue();
+			DateTime TimeCreated10836 = (DateTime)Ret.TimeCreated.GetValue();
 			//Get value of TimeModified
-			DateTime TimeModified10837 = (DateTime)InventoryAdjustmentRet.TimeModified.GetValue();
+			DateTime TimeModified10837 = (DateTime)Ret.TimeModified.GetValue();
 			//Get value of EditSequence
-			string EditSequence10838 = (string)InventoryAdjustmentRet.EditSequence.GetValue();
+			string EditSequence10838 = (string)Ret.EditSequence.GetValue();
 			//Get value of TxnNumber
-			if (InventoryAdjustmentRet.TxnNumber != null) {
-				int TxnNumber10839 = (int)InventoryAdjustmentRet.TxnNumber.GetValue();
+			if (Ret.TxnNumber != null) {
+				int TxnNumber10839 = (int)Ret.TxnNumber.GetValue();
 			}
 			//Get value of ListID
-			if (InventoryAdjustmentRet.AccountRef.ListID != null) {
-				string ListID10840 = (string)InventoryAdjustmentRet.AccountRef.ListID.GetValue();
+			if (Ret.AccountRef.ListID != null) {
+				string ListID10840 = (string)Ret.AccountRef.ListID.GetValue();
 			}
 			//Get value of FullName
-			if (InventoryAdjustmentRet.AccountRef.FullName != null) {
-				string FullName10841 = (string)InventoryAdjustmentRet.AccountRef.FullName.GetValue();
+			if (Ret.AccountRef.FullName != null) {
+				string FullName10841 = (string)Ret.AccountRef.FullName.GetValue();
 			}
-			if (InventoryAdjustmentRet.InventorySiteRef != null) {
+			if (Ret.InventorySiteRef != null) {
 				//Get value of ListID
-				if (InventoryAdjustmentRet.InventorySiteRef.ListID != null) {
-					string ListID10842 = (string)InventoryAdjustmentRet.InventorySiteRef.ListID.GetValue();
+				if (Ret.InventorySiteRef.ListID != null) {
+					string ListID10842 = (string)Ret.InventorySiteRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InventoryAdjustmentRet.InventorySiteRef.FullName != null) {
-					string FullName10843 = (string)InventoryAdjustmentRet.InventorySiteRef.FullName.GetValue();
+				if (Ret.InventorySiteRef.FullName != null) {
+					string FullName10843 = (string)Ret.InventorySiteRef.FullName.GetValue();
 				}
 			}
 			//Get value of TxnDate
-			DateTime TxnDate10844 = (DateTime)InventoryAdjustmentRet.TxnDate.GetValue();
+			DateTime TxnDate10844 = (DateTime)Ret.TxnDate.GetValue();
 			//Get value of RefNumber
-			if (InventoryAdjustmentRet.RefNumber != null) {
-				string RefNumber10845 = (string)InventoryAdjustmentRet.RefNumber.GetValue();
+			if (Ret.RefNumber != null) {
+				string RefNumber10845 = (string)Ret.RefNumber.GetValue();
 			}
-			if (InventoryAdjustmentRet.CustomerRef != null) {
+			if (Ret.CustomerRef != null) {
 				//Get value of ListID
-				if (InventoryAdjustmentRet.CustomerRef.ListID != null) {
-					string ListID10846 = (string)InventoryAdjustmentRet.CustomerRef.ListID.GetValue();
+				if (Ret.CustomerRef.ListID != null) {
+					string ListID10846 = (string)Ret.CustomerRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InventoryAdjustmentRet.CustomerRef.FullName != null) {
-					string FullName10847 = (string)InventoryAdjustmentRet.CustomerRef.FullName.GetValue();
+				if (Ret.CustomerRef.FullName != null) {
+					string FullName10847 = (string)Ret.CustomerRef.FullName.GetValue();
 				}
 			}
-			if (InventoryAdjustmentRet.ClassRef != null) {
+			if (Ret.ClassRef != null) {
 				//Get value of ListID
-				if (InventoryAdjustmentRet.ClassRef.ListID != null) {
-					string ListID10848 = (string)InventoryAdjustmentRet.ClassRef.ListID.GetValue();
+				if (Ret.ClassRef.ListID != null) {
+					string ListID10848 = (string)Ret.ClassRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InventoryAdjustmentRet.ClassRef.FullName != null) {
-					string FullName10849 = (string)InventoryAdjustmentRet.ClassRef.FullName.GetValue();
+				if (Ret.ClassRef.FullName != null) {
+					string FullName10849 = (string)Ret.ClassRef.FullName.GetValue();
 				}
 			}
 			//Get value of Memo
-			if (InventoryAdjustmentRet.Memo != null) {
-				string Memo10850 = (string)InventoryAdjustmentRet.Memo.GetValue();
+			if (Ret.Memo != null) {
+				string Memo10850 = (string)Ret.Memo.GetValue();
 			}
 			//Get value of ExternalGUID
-			if (InventoryAdjustmentRet.ExternalGUID != null) {
-				string ExternalGUID10851 = (string)InventoryAdjustmentRet.ExternalGUID.GetValue();
+			if (Ret.ExternalGUID != null) {
+				string ExternalGUID10851 = (string)Ret.ExternalGUID.GetValue();
 			}
-			if (InventoryAdjustmentRet.InventoryAdjustmentLineRetList != null) {
-				for (int i10852 = 0; i10852 < InventoryAdjustmentRet.InventoryAdjustmentLineRetList.Count; i10852++) {
-					IInventoryAdjustmentLineRet InventoryAdjustmentLineRet = InventoryAdjustmentRet.InventoryAdjustmentLineRetList.GetAt(i10852);
+			if (Ret.LineRetList != null) {
+				for (int i10852 = 0; i10852 < Ret.LineRetList.Count; i10852++) {
+					ILineRet LineRet = Ret.LineRetList.GetAt(i10852);
 					//Get value of TxnLineID
-					string TxnLineID10853 = (string)InventoryAdjustmentLineRet.TxnLineID.GetValue();
+					string TxnLineID10853 = (string)LineRet.TxnLineID.GetValue();
 					//Get value of ListID
-					if (InventoryAdjustmentLineRet.ItemRef.ListID != null) {
-						string ListID10854 = (string)InventoryAdjustmentLineRet.ItemRef.ListID.GetValue();
+					if (LineRet.ItemRef.ListID != null) {
+						string ListID10854 = (string)LineRet.ItemRef.ListID.GetValue();
 					}
 					//Get value of FullName
-					if (InventoryAdjustmentLineRet.ItemRef.FullName != null) {
-						string FullName10855 = (string)InventoryAdjustmentLineRet.ItemRef.FullName.GetValue();
+					if (LineRet.ItemRef.FullName != null) {
+						string FullName10855 = (string)LineRet.ItemRef.FullName.GetValue();
 					}
-					if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference != null) {
-						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
+					if (LineRet.ORSerialLotNumberPreference != null) {
+						if (LineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
 							//Get value of SerialNumberRet
-							if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
-								ISerialNumberRet nothing10857 = (ISerialNumberRet)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
+							if (LineRet.ORSerialLotNumberPreference.SerialNumberRet != null) {
+								ISerialNumberRet nothing10857 = (ISerialNumberRet)LineRet.ORSerialLotNumberPreference.SerialNumberRet.GetValue();
 							}
 						}
-						if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.LotNumber != null) {
+						if (LineRet.ORSerialLotNumberPreference.LotNumber != null) {
 							//Get value of LotNumber
-							if (InventoryAdjustmentLineRet.ORSerialLotNumberPreference.LotNumber != null) {
-								string LotNumber10858 = (string)InventoryAdjustmentLineRet.ORSerialLotNumberPreference.LotNumber.GetValue();
+							if (LineRet.ORSerialLotNumberPreference.LotNumber != null) {
+								string LotNumber10858 = (string)LineRet.ORSerialLotNumberPreference.LotNumber.GetValue();
 							}
 						}
 					}
-					if (InventoryAdjustmentLineRet.InventorySiteLocationRef != null) {
+					if (LineRet.InventorySiteLocationRef != null) {
 						//Get value of ListID
-						if (InventoryAdjustmentLineRet.InventorySiteLocationRef.ListID != null) {
-							string ListID10859 = (string)InventoryAdjustmentLineRet.InventorySiteLocationRef.ListID.GetValue();
+						if (LineRet.InventorySiteLocationRef.ListID != null) {
+							string ListID10859 = (string)LineRet.InventorySiteLocationRef.ListID.GetValue();
 						}
 						//Get value of FullName
-						if (InventoryAdjustmentLineRet.InventorySiteLocationRef.FullName != null) {
-							string FullName10860 = (string)InventoryAdjustmentLineRet.InventorySiteLocationRef.FullName.GetValue();
+						if (LineRet.InventorySiteLocationRef.FullName != null) {
+							string FullName10860 = (string)LineRet.InventorySiteLocationRef.FullName.GetValue();
 						}
 					}
 					//Get value of QuantityDifference
-					int QuantityDifference10861 = (int)InventoryAdjustmentLineRet.QuantityDifference.GetValue();
+					int QuantityDifference10861 = (int)LineRet.QuantityDifference.GetValue();
 					//Get value of ValueDifference
-					double ValueDifference10862 = (double)InventoryAdjustmentLineRet.ValueDifference.GetValue();
+					double ValueDifference10862 = (double)LineRet.ValueDifference.GetValue();
 				}
 			}
-			if (InventoryAdjustmentRet.DataExtRetList != null) {
-				for (int i10863 = 0; i10863 < InventoryAdjustmentRet.DataExtRetList.Count; i10863++) {
-					IDataExtRet DataExtRet = InventoryAdjustmentRet.DataExtRetList.GetAt(i10863);
+			if (Ret.DataExtRetList != null) {
+				for (int i10863 = 0; i10863 < Ret.DataExtRetList.Count; i10863++) {
+					IDataExtRet DataExtRet = Ret.DataExtRetList.GetAt(i10863);
 					//Get value of OwnerID
 					if (DataExtRet.OwnerID != null) {
 						string OwnerID10864 = (string)DataExtRet.OwnerID.GetValue();

@@ -5,7 +5,7 @@ namespace com.intuit.idn.samples
 {
 	public partial class Sample
 	{
-		public void DoItemInventoryQuery()
+		public void DoQuery()
 		{
 			bool sessionBegun = false;
 			bool connectionOpen = false;
@@ -19,7 +19,7 @@ namespace com.intuit.idn.samples
 				IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-				BuildItemInventoryQueryRq(requestMsgSet);
+				BuildQueryRq(requestMsgSet);
 
 				//Connect to QuickBooks and begin a session
 				sessionManager.OpenConnection("", "Sample Code from OSR");
@@ -36,7 +36,7 @@ namespace com.intuit.idn.samples
 				sessionManager.CloseConnection();
 				connectionOpen = false;
 
-				WalkItemInventoryQueryRs(responseMsgSet);
+				WalkQueryRs(responseMsgSet);
 			}
 			catch (Exception e) {
 				MessageBox.Show(e.Message, "Error");
@@ -49,78 +49,78 @@ namespace com.intuit.idn.samples
 			}
 		}
 
-		void BuildItemInventoryQueryRq(IMsgSetRequest requestMsgSet)
+		void BuildQueryRq(IMsgSetRequest requestMsgSet)
 		{
-			IItemInventoryQuery ItemInventoryQueryRq= requestMsgSet.AppendItemInventoryQueryRq();
+			IQuery QueryRq= requestMsgSet.AppendQueryRq();
 			//Set attributes
 			//Set field value for metaData
-			ItemInventoryQueryRq.metaData.SetValue("IQBENmetaDataType");
+			QueryRq.metaData.SetValue("IQBENmetaDataType");
 			//Set field value for iterator
-			ItemInventoryQueryRq.iterator.SetValue("IQBENiteratorType");
+			QueryRq.iterator.SetValue("IQBENiteratorType");
 			//Set field value for iteratorID
-			ItemInventoryQueryRq.iteratorID.SetValue("IQBUUIDType");
+			QueryRq.iteratorID.SetValue("IQBUUIDType");
 			string ORListQueryWithOwnerIDAndClassElementType13273 = "ListIDList";
 			if (ORListQueryWithOwnerIDAndClassElementType13273 == "ListIDList") {
 				//Set field value for ListIDList
 				//May create more than one of these if needed
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListIDList.Add("200000-1011023419");
+				QueryRq.ORListQueryWithOwnerIDAndClass.ListIDList.Add("200000-1011023419");
 			}
 			if (ORListQueryWithOwnerIDAndClassElementType13273 == "FullNameList") {
 				//Set field value for FullNameList
 				//May create more than one of these if needed
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.FullNameList.Add("ab");
+				QueryRq.ORListQueryWithOwnerIDAndClass.FullNameList.Add("ab");
 			}
 			if (ORListQueryWithOwnerIDAndClassElementType13273 == "ListWithClassFilter") {
 				//Set field value for MaxReturned
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.MaxReturned.SetValue(6);
+				QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.MaxReturned.SetValue(6);
 				//Set field value for ActiveStatus
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly[DEFAULT]);
+				QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ActiveStatus.SetValue(ENActiveStatus.asActiveOnly[DEFAULT]);
 				//Set field value for FromModifiedDate
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+				QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 				//Set field value for ToModifiedDate
-				ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+				QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 				string ORNameFilterElementType13274 = "NameFilter";
 				if (ORNameFilterElementType13274 == "NameFilter") {
 					//Set field value for MatchCriterion
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
 					//Set field value for Name
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue("ab");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameFilter.Name.SetValue("ab");
 				}
 				if (ORNameFilterElementType13274 == "NameRangeFilter") {
 					//Set field value for FromName
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameRangeFilter.FromName.SetValue("ab");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameRangeFilter.FromName.SetValue("ab");
 					//Set field value for ToName
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameRangeFilter.ToName.SetValue("ab");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ORNameFilter.NameRangeFilter.ToName.SetValue("ab");
 				}
 				string ORClassFilterElementType13275 = "ListIDList";
 				if (ORClassFilterElementType13275 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (ORClassFilterElementType13275 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.FullNameList.Add("ab");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.FullNameList.Add("ab");
 				}
 				if (ORClassFilterElementType13275 == "ListIDWithChildren") {
 					//Set field value for ListIDWithChildren
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.ListIDWithChildren.SetValue("200000-1011023419");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.ListIDWithChildren.SetValue("200000-1011023419");
 				}
 				if (ORClassFilterElementType13275 == "FullNameWithChildren") {
 					//Set field value for FullNameWithChildren
-					ItemInventoryQueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.FullNameWithChildren.SetValue("ab");
+					QueryRq.ORListQueryWithOwnerIDAndClass.ListWithClassFilter.ClassFilter.ORClassFilter.FullNameWithChildren.SetValue("ab");
 				}
 			}
 			//Set field value for IncludeRetElementList
 			//May create more than one of these if needed
-			ItemInventoryQueryRq.IncludeRetElementList.Add("ab");
+			QueryRq.IncludeRetElementList.Add("ab");
 			//Set field value for OwnerIDList
 			//May create more than one of these if needed
-			ItemInventoryQueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
+			QueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
 		}
 
-		void WalkItemInventoryQueryRs(IMsgSetResponse responseMsgSet)
+		void WalkQueryRs(IMsgSetResponse responseMsgSet)
 		{
 			if (responseMsgSet == null) return;
 			IResponseList responseList = responseMsgSet.ResponseList;
@@ -134,187 +134,187 @@ namespace com.intuit.idn.samples
 					if (response.Detail != null) {
 						//make sure the response is the type we're expecting
 						ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-						if (responseType == ENResponseType.rtItemInventoryQueryRs) {
+						if (responseType == ENResponseType.rtQueryRs) {
 							//upcast to more specific type here, this is safe because we checked with response.Type check above
-							IItemInventoryRetList ItemInventoryRet = (IItemInventoryRetList)response.Detail;
-							WalkItemInventoryRet(ItemInventoryRet);
+							IRetList Ret = (IRetList)response.Detail;
+							WalkRet(Ret);
 						}
 					}
 				}
 			}
 		}
 
-		void WalkItemInventoryRet(IItemInventoryRetList ItemInventoryRet)
+		void WalkRet(IRetList Ret)
 		{
-			if (ItemInventoryRet == null) return;
-			//Go through all the elements of IItemInventoryRetList
+			if (Ret == null) return;
+			//Go through all the elements of IRetList
 			//Get value of ListID
-			string ListID13276 = (string)ItemInventoryRet.ListID.GetValue();
+			string ListID13276 = (string)Ret.ListID.GetValue();
 			//Get value of TimeCreated
-			DateTime TimeCreated13277 = (DateTime)ItemInventoryRet.TimeCreated.GetValue();
+			DateTime TimeCreated13277 = (DateTime)Ret.TimeCreated.GetValue();
 			//Get value of TimeModified
-			DateTime TimeModified13278 = (DateTime)ItemInventoryRet.TimeModified.GetValue();
+			DateTime TimeModified13278 = (DateTime)Ret.TimeModified.GetValue();
 			//Get value of EditSequence
-			string EditSequence13279 = (string)ItemInventoryRet.EditSequence.GetValue();
+			string EditSequence13279 = (string)Ret.EditSequence.GetValue();
 			//Get value of Name
-			string Name13280 = (string)ItemInventoryRet.Name.GetValue();
+			string Name13280 = (string)Ret.Name.GetValue();
 			//Get value of FullName
-			string FullName13281 = (string)ItemInventoryRet.FullName.GetValue();
+			string FullName13281 = (string)Ret.FullName.GetValue();
 			//Get value of BarCodeValue
-			if (ItemInventoryRet.BarCodeValue != null) {
-				string BarCodeValue13282 = (string)ItemInventoryRet.BarCodeValue.GetValue();
+			if (Ret.BarCodeValue != null) {
+				string BarCodeValue13282 = (string)Ret.BarCodeValue.GetValue();
 			}
 			//Get value of IsActive
-			if (ItemInventoryRet.IsActive != null) {
-				bool IsActive13283 = (bool)ItemInventoryRet.IsActive.GetValue();
+			if (Ret.IsActive != null) {
+				bool IsActive13283 = (bool)Ret.IsActive.GetValue();
 			}
-			if (ItemInventoryRet.ClassRef != null) {
+			if (Ret.ClassRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.ClassRef.ListID != null) {
-					string ListID13284 = (string)ItemInventoryRet.ClassRef.ListID.GetValue();
+				if (Ret.ClassRef.ListID != null) {
+					string ListID13284 = (string)Ret.ClassRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.ClassRef.FullName != null) {
-					string FullName13285 = (string)ItemInventoryRet.ClassRef.FullName.GetValue();
+				if (Ret.ClassRef.FullName != null) {
+					string FullName13285 = (string)Ret.ClassRef.FullName.GetValue();
 				}
 			}
-			if (ItemInventoryRet.ParentRef != null) {
+			if (Ret.ParentRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.ParentRef.ListID != null) {
-					string ListID13286 = (string)ItemInventoryRet.ParentRef.ListID.GetValue();
+				if (Ret.ParentRef.ListID != null) {
+					string ListID13286 = (string)Ret.ParentRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.ParentRef.FullName != null) {
-					string FullName13287 = (string)ItemInventoryRet.ParentRef.FullName.GetValue();
+				if (Ret.ParentRef.FullName != null) {
+					string FullName13287 = (string)Ret.ParentRef.FullName.GetValue();
 				}
 			}
 			//Get value of Sublevel
-			int Sublevel13288 = (int)ItemInventoryRet.Sublevel.GetValue();
+			int Sublevel13288 = (int)Ret.Sublevel.GetValue();
 			//Get value of ManufacturerPartNumber
-			if (ItemInventoryRet.ManufacturerPartNumber != null) {
-				string ManufacturerPartNumber13289 = (string)ItemInventoryRet.ManufacturerPartNumber.GetValue();
+			if (Ret.ManufacturerPartNumber != null) {
+				string ManufacturerPartNumber13289 = (string)Ret.ManufacturerPartNumber.GetValue();
 			}
-			if (ItemInventoryRet.UnitOfMeasureSetRef != null) {
+			if (Ret.UnitOfMeasureSetRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.UnitOfMeasureSetRef.ListID != null) {
-					string ListID13290 = (string)ItemInventoryRet.UnitOfMeasureSetRef.ListID.GetValue();
+				if (Ret.UnitOfMeasureSetRef.ListID != null) {
+					string ListID13290 = (string)Ret.UnitOfMeasureSetRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.UnitOfMeasureSetRef.FullName != null) {
-					string FullName13291 = (string)ItemInventoryRet.UnitOfMeasureSetRef.FullName.GetValue();
+				if (Ret.UnitOfMeasureSetRef.FullName != null) {
+					string FullName13291 = (string)Ret.UnitOfMeasureSetRef.FullName.GetValue();
 				}
 			}
 			//Get value of IsTaxIncluded
-			if (ItemInventoryRet.IsTaxIncluded != null) {
-				bool IsTaxIncluded13292 = (bool)ItemInventoryRet.IsTaxIncluded.GetValue();
+			if (Ret.IsTaxIncluded != null) {
+				bool IsTaxIncluded13292 = (bool)Ret.IsTaxIncluded.GetValue();
 			}
-			if (ItemInventoryRet.SalesTaxCodeRef != null) {
+			if (Ret.SalesTaxCodeRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.SalesTaxCodeRef.ListID != null) {
-					string ListID13293 = (string)ItemInventoryRet.SalesTaxCodeRef.ListID.GetValue();
+				if (Ret.SalesTaxCodeRef.ListID != null) {
+					string ListID13293 = (string)Ret.SalesTaxCodeRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.SalesTaxCodeRef.FullName != null) {
-					string FullName13294 = (string)ItemInventoryRet.SalesTaxCodeRef.FullName.GetValue();
+				if (Ret.SalesTaxCodeRef.FullName != null) {
+					string FullName13294 = (string)Ret.SalesTaxCodeRef.FullName.GetValue();
 				}
 			}
 			//Get value of SalesDesc
-			if (ItemInventoryRet.SalesDesc != null) {
-				string SalesDesc13295 = (string)ItemInventoryRet.SalesDesc.GetValue();
+			if (Ret.SalesDesc != null) {
+				string SalesDesc13295 = (string)Ret.SalesDesc.GetValue();
 			}
 			//Get value of SalesPrice
-			if (ItemInventoryRet.SalesPrice != null) {
-				double SalesPrice13296 = (double)ItemInventoryRet.SalesPrice.GetValue();
+			if (Ret.SalesPrice != null) {
+				double SalesPrice13296 = (double)Ret.SalesPrice.GetValue();
 			}
-			if (ItemInventoryRet.IncomeAccountRef != null) {
+			if (Ret.IncomeAccountRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.IncomeAccountRef.ListID != null) {
-					string ListID13297 = (string)ItemInventoryRet.IncomeAccountRef.ListID.GetValue();
+				if (Ret.IncomeAccountRef.ListID != null) {
+					string ListID13297 = (string)Ret.IncomeAccountRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.IncomeAccountRef.FullName != null) {
-					string FullName13298 = (string)ItemInventoryRet.IncomeAccountRef.FullName.GetValue();
+				if (Ret.IncomeAccountRef.FullName != null) {
+					string FullName13298 = (string)Ret.IncomeAccountRef.FullName.GetValue();
 				}
 			}
 			//Get value of PurchaseDesc
-			if (ItemInventoryRet.PurchaseDesc != null) {
-				string PurchaseDesc13299 = (string)ItemInventoryRet.PurchaseDesc.GetValue();
+			if (Ret.PurchaseDesc != null) {
+				string PurchaseDesc13299 = (string)Ret.PurchaseDesc.GetValue();
 			}
 			//Get value of PurchaseCost
-			if (ItemInventoryRet.PurchaseCost != null) {
-				double PurchaseCost13300 = (double)ItemInventoryRet.PurchaseCost.GetValue();
+			if (Ret.PurchaseCost != null) {
+				double PurchaseCost13300 = (double)Ret.PurchaseCost.GetValue();
 			}
-			if (ItemInventoryRet.PurchaseTaxCodeRef != null) {
+			if (Ret.PurchaseTaxCodeRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.PurchaseTaxCodeRef.ListID != null) {
-					string ListID13301 = (string)ItemInventoryRet.PurchaseTaxCodeRef.ListID.GetValue();
+				if (Ret.PurchaseTaxCodeRef.ListID != null) {
+					string ListID13301 = (string)Ret.PurchaseTaxCodeRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.PurchaseTaxCodeRef.FullName != null) {
-					string FullName13302 = (string)ItemInventoryRet.PurchaseTaxCodeRef.FullName.GetValue();
+				if (Ret.PurchaseTaxCodeRef.FullName != null) {
+					string FullName13302 = (string)Ret.PurchaseTaxCodeRef.FullName.GetValue();
 				}
 			}
-			if (ItemInventoryRet.COGSAccountRef != null) {
+			if (Ret.COGSAccountRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.COGSAccountRef.ListID != null) {
-					string ListID13303 = (string)ItemInventoryRet.COGSAccountRef.ListID.GetValue();
+				if (Ret.COGSAccountRef.ListID != null) {
+					string ListID13303 = (string)Ret.COGSAccountRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.COGSAccountRef.FullName != null) {
-					string FullName13304 = (string)ItemInventoryRet.COGSAccountRef.FullName.GetValue();
+				if (Ret.COGSAccountRef.FullName != null) {
+					string FullName13304 = (string)Ret.COGSAccountRef.FullName.GetValue();
 				}
 			}
-			if (ItemInventoryRet.PrefVendorRef != null) {
+			if (Ret.PrefVendorRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.PrefVendorRef.ListID != null) {
-					string ListID13305 = (string)ItemInventoryRet.PrefVendorRef.ListID.GetValue();
+				if (Ret.PrefVendorRef.ListID != null) {
+					string ListID13305 = (string)Ret.PrefVendorRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.PrefVendorRef.FullName != null) {
-					string FullName13306 = (string)ItemInventoryRet.PrefVendorRef.FullName.GetValue();
+				if (Ret.PrefVendorRef.FullName != null) {
+					string FullName13306 = (string)Ret.PrefVendorRef.FullName.GetValue();
 				}
 			}
-			if (ItemInventoryRet.AssetAccountRef != null) {
+			if (Ret.AssetAccountRef != null) {
 				//Get value of ListID
-				if (ItemInventoryRet.AssetAccountRef.ListID != null) {
-					string ListID13307 = (string)ItemInventoryRet.AssetAccountRef.ListID.GetValue();
+				if (Ret.AssetAccountRef.ListID != null) {
+					string ListID13307 = (string)Ret.AssetAccountRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (ItemInventoryRet.AssetAccountRef.FullName != null) {
-					string FullName13308 = (string)ItemInventoryRet.AssetAccountRef.FullName.GetValue();
+				if (Ret.AssetAccountRef.FullName != null) {
+					string FullName13308 = (string)Ret.AssetAccountRef.FullName.GetValue();
 				}
 			}
 			//Get value of ReorderPoint
-			if (ItemInventoryRet.ReorderPoint != null) {
-				int ReorderPoint13309 = (int)ItemInventoryRet.ReorderPoint.GetValue();
+			if (Ret.ReorderPoint != null) {
+				int ReorderPoint13309 = (int)Ret.ReorderPoint.GetValue();
 			}
 			//Get value of Max
-			if (ItemInventoryRet.Max != null) {
-				int Max13310 = (int)ItemInventoryRet.Max.GetValue();
+			if (Ret.Max != null) {
+				int Max13310 = (int)Ret.Max.GetValue();
 			}
 			//Get value of QuantityOnHand
-			if (ItemInventoryRet.QuantityOnHand != null) {
-				int QuantityOnHand13311 = (int)ItemInventoryRet.QuantityOnHand.GetValue();
+			if (Ret.QuantityOnHand != null) {
+				int QuantityOnHand13311 = (int)Ret.QuantityOnHand.GetValue();
 			}
 			//Get value of AverageCost
-			if (ItemInventoryRet.AverageCost != null) {
-				double AverageCost13312 = (double)ItemInventoryRet.AverageCost.GetValue();
+			if (Ret.AverageCost != null) {
+				double AverageCost13312 = (double)Ret.AverageCost.GetValue();
 			}
 			//Get value of QuantityOnOrder
-			if (ItemInventoryRet.QuantityOnOrder != null) {
-				int QuantityOnOrder13313 = (int)ItemInventoryRet.QuantityOnOrder.GetValue();
+			if (Ret.QuantityOnOrder != null) {
+				int QuantityOnOrder13313 = (int)Ret.QuantityOnOrder.GetValue();
 			}
 			//Get value of QuantityOnSalesOrder
-			if (ItemInventoryRet.QuantityOnSalesOrder != null) {
-				int QuantityOnSalesOrder13314 = (int)ItemInventoryRet.QuantityOnSalesOrder.GetValue();
+			if (Ret.QuantityOnSalesOrder != null) {
+				int QuantityOnSalesOrder13314 = (int)Ret.QuantityOnSalesOrder.GetValue();
 			}
 			//Get value of ExternalGUID
-			if (ItemInventoryRet.ExternalGUID != null) {
-				string ExternalGUID13315 = (string)ItemInventoryRet.ExternalGUID.GetValue();
+			if (Ret.ExternalGUID != null) {
+				string ExternalGUID13315 = (string)Ret.ExternalGUID.GetValue();
 			}
-			if (ItemInventoryRet.DataExtRetList != null) {
-				for (int i13316 = 0; i13316 < ItemInventoryRet.DataExtRetList.Count; i13316++) {
-					IDataExtRet DataExtRet = ItemInventoryRet.DataExtRetList.GetAt(i13316);
+			if (Ret.DataExtRetList != null) {
+				for (int i13316 = 0; i13316 < Ret.DataExtRetList.Count; i13316++) {
+					IDataExtRet DataExtRet = Ret.DataExtRetList.GetAt(i13316);
 					//Get value of OwnerID
 					if (DataExtRet.OwnerID != null) {
 						string OwnerID13317 = (string)DataExtRet.OwnerID.GetValue();

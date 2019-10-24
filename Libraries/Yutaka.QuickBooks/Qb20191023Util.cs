@@ -11,21 +11,22 @@ namespace Yutaka.QuickBooks
 		#region Fields
 		const string DEFAULT_APP_NAME = "Qb20191023Util";
 		const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
-
-		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
-		public bool Debug;
+		private readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
+		private readonly DateTime MAX_DATE = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999, DateTimeKind.Local);
 
 		private QBSessionManager SessionManager;
 		private bool ConnectionOpen;
 		private bool SessionBegun;
+		public bool Debug;
+		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
 		#endregion Fields
 
 		public Qb20191023Util()
 		{
-			Debug = false;
 			SessionManager = null;
 			ConnectionOpen = false;
 			SessionBegun = false;
+			Debug = false;
 		}
 
 		#region Private Utilities
@@ -42,6 +43,56 @@ namespace Yutaka.QuickBooks
 		protected void BuildQueryRequest(IMsgSetRequest requestMsgSet, ActionType actionType, params KeyValuePair<string, object>[] parameters)
 		{
 
+		}
+
+		protected List<object> ProcessResponse(IMsgSetResponse responseMsgSet)
+		{
+			if (responseMsgSet == null) {
+				if (Debug)
+					Console.Write("\n<responseMsgSet> is null.");
+
+				return new List<object>();
+			}
+
+			var responseList = responseMsgSet.ResponseList;
+
+			if (responseList == null) {
+				if (Debug)
+					Console.Write("\n<responseList> is null.");
+
+				return new List<object>();
+			}
+
+			//if we sent only one request, there is only one response, we'll walk the list for this sample
+			for (int i = 0; i < responseList.Count; i++) {
+				var response = responseList.GetAt(i);
+				//check the status code of the response, 0=ok, >0 is warning
+				if (response.StatusCode > -1) {
+					//the request-specific response is in the details, make sure we have some
+					if (response.Detail != null)
+						return ProcessRet(responseMsgSet.ToXMLString());
+					else {
+						if (Debug)
+							Console.Write("\nresponse.Detail is null.");
+
+						return new List<object>();
+					}
+				}
+
+				else {
+					if (Debug)
+						Console.Write("\nStatusCode: {0}, StatusSeverity: {1}, StatusMessage: {2}", response.StatusCode, response.StatusSeverity, response.StatusMessage);
+
+					return new List<object>();
+				}
+			}
+
+			return new List<object>();
+		}
+
+		protected List<object> ProcessRet(string responseMsgSet)
+		{
+			return new List<object>();
 		}
 		#endregion Private Utilities
 
@@ -89,8 +140,7 @@ namespace Yutaka.QuickBooks
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), responseMsgSet.ToXMLString());
 
-				//return ProcessResponse(actionType, responseStr);
-				return new List<object>();
+				return ProcessResponse(responseMsgSet);
 			}
 
 			catch (Exception ex) {
@@ -166,9 +216,30 @@ namespace Yutaka.QuickBooks
 			return true;
 		}
 
-		public List<InventoryAdjustmentRet> GetAllInventoryAdjustments(DateTime? dtFrom)
+		public List<InventoryAdjustmentRet> GetAllInventoryAdjustments(DateTime? dtFrom, DateTime? dtTo = null)
 		{
-			return new List<InventoryAdjustmentRet>();
+			#region Input Validation
+			if (dtFrom == null || dtFrom < MIN_DATE)
+				dtFrom = MIN_DATE;
+			if (dtTo == null || dtTo > MAX_DATE)
+				dtTo = MAX_DATE;
+
+			var dtFromStr = dtFrom.Value.ToString(QB_FORMAT);
+			var dtToStr = dtTo.Value.ToString(QB_FORMAT);
+			#endregion Input Validation
+
+			var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("dtFrom", dtFrom),
+					new KeyValuePair<string, object>("dtTo", dtTo),
+				};
+
+			var list = new List<InventoryAdjustmentRet>();
+			var results = DoAction(ActionType.InventoryAdjustmentQuery, parameters);
+
+			foreach (InventoryAdjustmentRet v in results)
+				list.Add(v);
+
+			return list;
 		}
 		#endregion InventoryAdjustment
 		#endregion Public Methods

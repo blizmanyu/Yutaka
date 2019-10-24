@@ -5,7 +5,7 @@ namespace com.intuit.idn.samples
 {
 	public partial class Sample
 	{
-		public void DoInvoiceQuery()
+		public void DoQuery()
 		{
 			bool sessionBegun = false;
 			bool connectionOpen = false;
@@ -19,7 +19,7 @@ namespace com.intuit.idn.samples
 				IMsgSetRequest requestMsgSet = sessionManager.CreateMsgSetRequest("US",13,0);
 				requestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
 
-				BuildInvoiceQueryRq(requestMsgSet);
+				BuildQueryRq(requestMsgSet);
 
 				//Connect to QuickBooks and begin a session
 				sessionManager.OpenConnection("", "Sample Code from OSR");
@@ -36,7 +36,7 @@ namespace com.intuit.idn.samples
 				sessionManager.CloseConnection();
 				connectionOpen = false;
 
-				WalkInvoiceQueryRs(responseMsgSet);
+				WalkQueryRs(responseMsgSet);
 			}
 			catch (Exception e) {
 				MessageBox.Show(e.Message, "Error");
@@ -49,133 +49,133 @@ namespace com.intuit.idn.samples
 			}
 		}
 
-		void BuildInvoiceQueryRq(IMsgSetRequest requestMsgSet)
+		void BuildQueryRq(IMsgSetRequest requestMsgSet)
 		{
-			IInvoiceQuery InvoiceQueryRq= requestMsgSet.AppendInvoiceQueryRq();
+			IQuery QueryRq= requestMsgSet.AppendQueryRq();
 			//Set attributes
 			//Set field value for metaData
-			InvoiceQueryRq.metaData.SetValue("IQBENmetaDataType");
+			QueryRq.metaData.SetValue("IQBENmetaDataType");
 			//Set field value for iterator
-			InvoiceQueryRq.iterator.SetValue("IQBENiteratorType");
+			QueryRq.iterator.SetValue("IQBENiteratorType");
 			//Set field value for iteratorID
-			InvoiceQueryRq.iteratorID.SetValue("IQBUUIDType");
-			string ORInvoiceQueryElementType11877 = "TxnIDList";
-			if (ORInvoiceQueryElementType11877 == "TxnIDList") {
+			QueryRq.iteratorID.SetValue("IQBUUIDType");
+			string ORQueryElementType11877 = "TxnIDList";
+			if (ORQueryElementType11877 == "TxnIDList") {
 				//Set field value for TxnIDList
 				//May create more than one of these if needed
-				InvoiceQueryRq.ORInvoiceQuery.TxnIDList.Add("200000-1011023419");
+				QueryRq.ORQuery.TxnIDList.Add("200000-1011023419");
 			}
-			if (ORInvoiceQueryElementType11877 == "RefNumberList") {
+			if (ORQueryElementType11877 == "RefNumberList") {
 				//Set field value for RefNumberList
 				//May create more than one of these if needed
-				InvoiceQueryRq.ORInvoiceQuery.RefNumberList.Add("ab");
+				QueryRq.ORQuery.RefNumberList.Add("ab");
 			}
-			if (ORInvoiceQueryElementType11877 == "RefNumberCaseSensitiveList") {
+			if (ORQueryElementType11877 == "RefNumberCaseSensitiveList") {
 				//Set field value for RefNumberCaseSensitiveList
 				//May create more than one of these if needed
-				InvoiceQueryRq.ORInvoiceQuery.RefNumberCaseSensitiveList.Add("ab");
+				QueryRq.ORQuery.RefNumberCaseSensitiveList.Add("ab");
 			}
-			if (ORInvoiceQueryElementType11877 == "InvoiceFilter") {
+			if (ORQueryElementType11877 == "Filter") {
 				//Set field value for MaxReturned
-				InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.MaxReturned.SetValue(6);
+				QueryRq.ORQuery.Filter.MaxReturned.SetValue(6);
 				string ORDateRangeFilterElementType11878 = "ModifiedDateRangeFilter";
 				if (ORDateRangeFilterElementType11878 == "ModifiedDateRangeFilter") {
 					//Set field value for FromModifiedDate
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+					QueryRq.ORQuery.Filter.ORDateRangeFilter.ModifiedDateRangeFilter.FromModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 					//Set field value for ToModifiedDate
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
+					QueryRq.ORQuery.Filter.ORDateRangeFilter.ModifiedDateRangeFilter.ToModifiedDate.SetValue(DateTime.Parse("12/15/2007 12:15:12"), false);
 				}
 				if (ORDateRangeFilterElementType11878 == "TxnDateRangeFilter") {
 					string ORTxnDateRangeFilterElementType11879 = "TxnDateFilter";
 					if (ORTxnDateRangeFilterElementType11879 == "TxnDateFilter") {
 						//Set field value for FromTxnDate
-						InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.FromTxnDate.SetValue(DateTime.Parse("12/15/2007"));
+						QueryRq.ORQuery.Filter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.FromTxnDate.SetValue(DateTime.Parse("12/15/2007"));
 						//Set field value for ToTxnDate
-						InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.ToTxnDate.SetValue(DateTime.Parse("12/15/2007"));
+						QueryRq.ORQuery.Filter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.TxnDateFilter.ToTxnDate.SetValue(DateTime.Parse("12/15/2007"));
 					}
 					if (ORTxnDateRangeFilterElementType11879 == "DateMacro") {
 						//Set field value for DateMacro
-						InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.DateMacro.SetValue(ENDateMacro.dmAll);
+						QueryRq.ORQuery.Filter.ORDateRangeFilter.TxnDateRangeFilter.ORTxnDateRangeFilter.DateMacro.SetValue(ENDateMacro.dmAll);
 					}
 				}
 				string OREntityFilterElementType11880 = "ListIDList";
 				if (OREntityFilterElementType11880 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.EntityFilter.OREntityFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORQuery.Filter.EntityFilter.OREntityFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (OREntityFilterElementType11880 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.EntityFilter.OREntityFilter.FullNameList.Add("ab");
+					QueryRq.ORQuery.Filter.EntityFilter.OREntityFilter.FullNameList.Add("ab");
 				}
 				if (OREntityFilterElementType11880 == "ListIDWithChildren") {
 					//Set field value for ListIDWithChildren
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.EntityFilter.OREntityFilter.ListIDWithChildren.SetValue("200000-1011023419");
+					QueryRq.ORQuery.Filter.EntityFilter.OREntityFilter.ListIDWithChildren.SetValue("200000-1011023419");
 				}
 				if (OREntityFilterElementType11880 == "FullNameWithChildren") {
 					//Set field value for FullNameWithChildren
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.EntityFilter.OREntityFilter.FullNameWithChildren.SetValue("ab");
+					QueryRq.ORQuery.Filter.EntityFilter.OREntityFilter.FullNameWithChildren.SetValue("ab");
 				}
 				string ORAccountFilterElementType11881 = "ListIDList";
 				if (ORAccountFilterElementType11881 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.AccountFilter.ORAccountFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORQuery.Filter.AccountFilter.ORAccountFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (ORAccountFilterElementType11881 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.AccountFilter.ORAccountFilter.FullNameList.Add("ab");
+					QueryRq.ORQuery.Filter.AccountFilter.ORAccountFilter.FullNameList.Add("ab");
 				}
 				if (ORAccountFilterElementType11881 == "ListIDWithChildren") {
 					//Set field value for ListIDWithChildren
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.AccountFilter.ORAccountFilter.ListIDWithChildren.SetValue("200000-1011023419");
+					QueryRq.ORQuery.Filter.AccountFilter.ORAccountFilter.ListIDWithChildren.SetValue("200000-1011023419");
 				}
 				if (ORAccountFilterElementType11881 == "FullNameWithChildren") {
 					//Set field value for FullNameWithChildren
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.AccountFilter.ORAccountFilter.FullNameWithChildren.SetValue("ab");
+					QueryRq.ORQuery.Filter.AccountFilter.ORAccountFilter.FullNameWithChildren.SetValue("ab");
 				}
 				string ORRefNumberFilterElementType11882 = "RefNumberFilter";
 				if (ORRefNumberFilterElementType11882 == "RefNumberFilter") {
 					//Set field value for MatchCriterion
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORRefNumberFilter.RefNumberFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
+					QueryRq.ORQuery.Filter.ORRefNumberFilter.RefNumberFilter.MatchCriterion.SetValue(ENMatchCriterion.mcStartsWith);
 					//Set field value for RefNumber
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORRefNumberFilter.RefNumberFilter.RefNumber.SetValue("ab");
+					QueryRq.ORQuery.Filter.ORRefNumberFilter.RefNumberFilter.RefNumber.SetValue("ab");
 				}
 				if (ORRefNumberFilterElementType11882 == "RefNumberRangeFilter") {
 					//Set field value for FromRefNumber
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORRefNumberFilter.RefNumberRangeFilter.FromRefNumber.SetValue("ab");
+					QueryRq.ORQuery.Filter.ORRefNumberFilter.RefNumberRangeFilter.FromRefNumber.SetValue("ab");
 					//Set field value for ToRefNumber
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.ORRefNumberFilter.RefNumberRangeFilter.ToRefNumber.SetValue("ab");
+					QueryRq.ORQuery.Filter.ORRefNumberFilter.RefNumberRangeFilter.ToRefNumber.SetValue("ab");
 				}
 				string ORCurrencyFilterElementType11883 = "ListIDList";
 				if (ORCurrencyFilterElementType11883 == "ListIDList") {
 					//Set field value for ListIDList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.CurrencyFilter.ORCurrencyFilter.ListIDList.Add("200000-1011023419");
+					QueryRq.ORQuery.Filter.CurrencyFilter.ORCurrencyFilter.ListIDList.Add("200000-1011023419");
 				}
 				if (ORCurrencyFilterElementType11883 == "FullNameList") {
 					//Set field value for FullNameList
 					//May create more than one of these if needed
-					InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.CurrencyFilter.ORCurrencyFilter.FullNameList.Add("ab");
+					QueryRq.ORQuery.Filter.CurrencyFilter.ORCurrencyFilter.FullNameList.Add("ab");
 				}
 				//Set field value for PaidStatus
-				InvoiceQueryRq.ORInvoiceQuery.InvoiceFilter.PaidStatus.SetValue(ENPaidStatus.psAll[DEFAULT]);
+				QueryRq.ORQuery.Filter.PaidStatus.SetValue(ENPaidStatus.psAll[DEFAULT]);
 			}
 			//Set field value for IncludeLineItems
-			InvoiceQueryRq.IncludeLineItems.SetValue(true);
+			QueryRq.IncludeLineItems.SetValue(true);
 			//Set field value for IncludeLinkedTxns
-			InvoiceQueryRq.IncludeLinkedTxns.SetValue(true);
+			QueryRq.IncludeLinkedTxns.SetValue(true);
 			//Set field value for IncludeRetElementList
 			//May create more than one of these if needed
-			InvoiceQueryRq.IncludeRetElementList.Add("ab");
+			QueryRq.IncludeRetElementList.Add("ab");
 			//Set field value for OwnerIDList
 			//May create more than one of these if needed
-			InvoiceQueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
+			QueryRq.OwnerIDList.Add(Guid.NewGuid().ToString());
 		}
 
-		void WalkInvoiceQueryRs(IMsgSetResponse responseMsgSet)
+		void WalkQueryRs(IMsgSetResponse responseMsgSet)
 		{
 			if (responseMsgSet == null) return;
 			IResponseList responseList = responseMsgSet.ResponseList;
@@ -189,365 +189,365 @@ namespace com.intuit.idn.samples
 					if (response.Detail != null) {
 						//make sure the response is the type we're expecting
 						ENResponseType responseType = (ENResponseType)response.Type.GetValue();
-						if (responseType == ENResponseType.rtInvoiceQueryRs) {
+						if (responseType == ENResponseType.rtQueryRs) {
 							//upcast to more specific type here, this is safe because we checked with response.Type check above
-							IInvoiceRetList InvoiceRet = (IInvoiceRetList)response.Detail;
-							WalkInvoiceRet(InvoiceRet);
+							IRetList Ret = (IRetList)response.Detail;
+							WalkRet(Ret);
 						}
 					}
 				}
 			}
 		}
 
-		void WalkInvoiceRet(IInvoiceRetList InvoiceRet)
+		void WalkRet(IRetList Ret)
 		{
-			if (InvoiceRet == null) return;
-			//Go through all the elements of IInvoiceRetList
+			if (Ret == null) return;
+			//Go through all the elements of IRetList
 			//Get value of TxnID
-			string TxnID11884 = (string)InvoiceRet.TxnID.GetValue();
+			string TxnID11884 = (string)Ret.TxnID.GetValue();
 			//Get value of TimeCreated
-			DateTime TimeCreated11885 = (DateTime)InvoiceRet.TimeCreated.GetValue();
+			DateTime TimeCreated11885 = (DateTime)Ret.TimeCreated.GetValue();
 			//Get value of TimeModified
-			DateTime TimeModified11886 = (DateTime)InvoiceRet.TimeModified.GetValue();
+			DateTime TimeModified11886 = (DateTime)Ret.TimeModified.GetValue();
 			//Get value of EditSequence
-			string EditSequence11887 = (string)InvoiceRet.EditSequence.GetValue();
+			string EditSequence11887 = (string)Ret.EditSequence.GetValue();
 			//Get value of TxnNumber
-			if (InvoiceRet.TxnNumber != null) {
-				int TxnNumber11888 = (int)InvoiceRet.TxnNumber.GetValue();
+			if (Ret.TxnNumber != null) {
+				int TxnNumber11888 = (int)Ret.TxnNumber.GetValue();
 			}
 			//Get value of ListID
-			if (InvoiceRet.CustomerRef.ListID != null) {
-				string ListID11889 = (string)InvoiceRet.CustomerRef.ListID.GetValue();
+			if (Ret.CustomerRef.ListID != null) {
+				string ListID11889 = (string)Ret.CustomerRef.ListID.GetValue();
 			}
 			//Get value of FullName
-			if (InvoiceRet.CustomerRef.FullName != null) {
-				string FullName11890 = (string)InvoiceRet.CustomerRef.FullName.GetValue();
+			if (Ret.CustomerRef.FullName != null) {
+				string FullName11890 = (string)Ret.CustomerRef.FullName.GetValue();
 			}
-			if (InvoiceRet.ClassRef != null) {
+			if (Ret.ClassRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.ClassRef.ListID != null) {
-					string ListID11891 = (string)InvoiceRet.ClassRef.ListID.GetValue();
+				if (Ret.ClassRef.ListID != null) {
+					string ListID11891 = (string)Ret.ClassRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.ClassRef.FullName != null) {
-					string FullName11892 = (string)InvoiceRet.ClassRef.FullName.GetValue();
+				if (Ret.ClassRef.FullName != null) {
+					string FullName11892 = (string)Ret.ClassRef.FullName.GetValue();
 				}
 			}
-			if (InvoiceRet.ARAccountRef != null) {
+			if (Ret.ARAccountRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.ARAccountRef.ListID != null) {
-					string ListID11893 = (string)InvoiceRet.ARAccountRef.ListID.GetValue();
+				if (Ret.ARAccountRef.ListID != null) {
+					string ListID11893 = (string)Ret.ARAccountRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.ARAccountRef.FullName != null) {
-					string FullName11894 = (string)InvoiceRet.ARAccountRef.FullName.GetValue();
+				if (Ret.ARAccountRef.FullName != null) {
+					string FullName11894 = (string)Ret.ARAccountRef.FullName.GetValue();
 				}
 			}
-			if (InvoiceRet.TemplateRef != null) {
+			if (Ret.TemplateRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.TemplateRef.ListID != null) {
-					string ListID11895 = (string)InvoiceRet.TemplateRef.ListID.GetValue();
+				if (Ret.TemplateRef.ListID != null) {
+					string ListID11895 = (string)Ret.TemplateRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.TemplateRef.FullName != null) {
-					string FullName11896 = (string)InvoiceRet.TemplateRef.FullName.GetValue();
+				if (Ret.TemplateRef.FullName != null) {
+					string FullName11896 = (string)Ret.TemplateRef.FullName.GetValue();
 				}
 			}
 			//Get value of TxnDate
-			DateTime TxnDate11897 = (DateTime)InvoiceRet.TxnDate.GetValue();
+			DateTime TxnDate11897 = (DateTime)Ret.TxnDate.GetValue();
 			//Get value of RefNumber
-			if (InvoiceRet.RefNumber != null) {
-				string RefNumber11898 = (string)InvoiceRet.RefNumber.GetValue();
+			if (Ret.RefNumber != null) {
+				string RefNumber11898 = (string)Ret.RefNumber.GetValue();
 			}
-			if (InvoiceRet.BillAddress != null) {
+			if (Ret.BillAddress != null) {
 				//Get value of Addr1
-				if (InvoiceRet.BillAddress.Addr1 != null) {
-					string Addr111899 = (string)InvoiceRet.BillAddress.Addr1.GetValue();
+				if (Ret.BillAddress.Addr1 != null) {
+					string Addr111899 = (string)Ret.BillAddress.Addr1.GetValue();
 				}
 				//Get value of Addr2
-				if (InvoiceRet.BillAddress.Addr2 != null) {
-					string Addr211900 = (string)InvoiceRet.BillAddress.Addr2.GetValue();
+				if (Ret.BillAddress.Addr2 != null) {
+					string Addr211900 = (string)Ret.BillAddress.Addr2.GetValue();
 				}
 				//Get value of Addr3
-				if (InvoiceRet.BillAddress.Addr3 != null) {
-					string Addr311901 = (string)InvoiceRet.BillAddress.Addr3.GetValue();
+				if (Ret.BillAddress.Addr3 != null) {
+					string Addr311901 = (string)Ret.BillAddress.Addr3.GetValue();
 				}
 				//Get value of Addr4
-				if (InvoiceRet.BillAddress.Addr4 != null) {
-					string Addr411902 = (string)InvoiceRet.BillAddress.Addr4.GetValue();
+				if (Ret.BillAddress.Addr4 != null) {
+					string Addr411902 = (string)Ret.BillAddress.Addr4.GetValue();
 				}
 				//Get value of Addr5
-				if (InvoiceRet.BillAddress.Addr5 != null) {
-					string Addr511903 = (string)InvoiceRet.BillAddress.Addr5.GetValue();
+				if (Ret.BillAddress.Addr5 != null) {
+					string Addr511903 = (string)Ret.BillAddress.Addr5.GetValue();
 				}
 				//Get value of City
-				if (InvoiceRet.BillAddress.City != null) {
-					string City11904 = (string)InvoiceRet.BillAddress.City.GetValue();
+				if (Ret.BillAddress.City != null) {
+					string City11904 = (string)Ret.BillAddress.City.GetValue();
 				}
 				//Get value of State
-				if (InvoiceRet.BillAddress.State != null) {
-					string State11905 = (string)InvoiceRet.BillAddress.State.GetValue();
+				if (Ret.BillAddress.State != null) {
+					string State11905 = (string)Ret.BillAddress.State.GetValue();
 				}
 				//Get value of PostalCode
-				if (InvoiceRet.BillAddress.PostalCode != null) {
-					string PostalCode11906 = (string)InvoiceRet.BillAddress.PostalCode.GetValue();
+				if (Ret.BillAddress.PostalCode != null) {
+					string PostalCode11906 = (string)Ret.BillAddress.PostalCode.GetValue();
 				}
 				//Get value of Country
-				if (InvoiceRet.BillAddress.Country != null) {
-					string Country11907 = (string)InvoiceRet.BillAddress.Country.GetValue();
+				if (Ret.BillAddress.Country != null) {
+					string Country11907 = (string)Ret.BillAddress.Country.GetValue();
 				}
 				//Get value of Note
-				if (InvoiceRet.BillAddress.Note != null) {
-					string Note11908 = (string)InvoiceRet.BillAddress.Note.GetValue();
+				if (Ret.BillAddress.Note != null) {
+					string Note11908 = (string)Ret.BillAddress.Note.GetValue();
 				}
 			}
-			if (InvoiceRet.BillAddressBlock != null) {
+			if (Ret.BillAddressBlock != null) {
 				//Get value of Addr1
-				if (InvoiceRet.BillAddressBlock.Addr1 != null) {
-					string Addr111909 = (string)InvoiceRet.BillAddressBlock.Addr1.GetValue();
+				if (Ret.BillAddressBlock.Addr1 != null) {
+					string Addr111909 = (string)Ret.BillAddressBlock.Addr1.GetValue();
 				}
 				//Get value of Addr2
-				if (InvoiceRet.BillAddressBlock.Addr2 != null) {
-					string Addr211910 = (string)InvoiceRet.BillAddressBlock.Addr2.GetValue();
+				if (Ret.BillAddressBlock.Addr2 != null) {
+					string Addr211910 = (string)Ret.BillAddressBlock.Addr2.GetValue();
 				}
 				//Get value of Addr3
-				if (InvoiceRet.BillAddressBlock.Addr3 != null) {
-					string Addr311911 = (string)InvoiceRet.BillAddressBlock.Addr3.GetValue();
+				if (Ret.BillAddressBlock.Addr3 != null) {
+					string Addr311911 = (string)Ret.BillAddressBlock.Addr3.GetValue();
 				}
 				//Get value of Addr4
-				if (InvoiceRet.BillAddressBlock.Addr4 != null) {
-					string Addr411912 = (string)InvoiceRet.BillAddressBlock.Addr4.GetValue();
+				if (Ret.BillAddressBlock.Addr4 != null) {
+					string Addr411912 = (string)Ret.BillAddressBlock.Addr4.GetValue();
 				}
 				//Get value of Addr5
-				if (InvoiceRet.BillAddressBlock.Addr5 != null) {
-					string Addr511913 = (string)InvoiceRet.BillAddressBlock.Addr5.GetValue();
+				if (Ret.BillAddressBlock.Addr5 != null) {
+					string Addr511913 = (string)Ret.BillAddressBlock.Addr5.GetValue();
 				}
 			}
-			if (InvoiceRet.ShipAddress != null) {
+			if (Ret.ShipAddress != null) {
 				//Get value of Addr1
-				if (InvoiceRet.ShipAddress.Addr1 != null) {
-					string Addr111914 = (string)InvoiceRet.ShipAddress.Addr1.GetValue();
+				if (Ret.ShipAddress.Addr1 != null) {
+					string Addr111914 = (string)Ret.ShipAddress.Addr1.GetValue();
 				}
 				//Get value of Addr2
-				if (InvoiceRet.ShipAddress.Addr2 != null) {
-					string Addr211915 = (string)InvoiceRet.ShipAddress.Addr2.GetValue();
+				if (Ret.ShipAddress.Addr2 != null) {
+					string Addr211915 = (string)Ret.ShipAddress.Addr2.GetValue();
 				}
 				//Get value of Addr3
-				if (InvoiceRet.ShipAddress.Addr3 != null) {
-					string Addr311916 = (string)InvoiceRet.ShipAddress.Addr3.GetValue();
+				if (Ret.ShipAddress.Addr3 != null) {
+					string Addr311916 = (string)Ret.ShipAddress.Addr3.GetValue();
 				}
 				//Get value of Addr4
-				if (InvoiceRet.ShipAddress.Addr4 != null) {
-					string Addr411917 = (string)InvoiceRet.ShipAddress.Addr4.GetValue();
+				if (Ret.ShipAddress.Addr4 != null) {
+					string Addr411917 = (string)Ret.ShipAddress.Addr4.GetValue();
 				}
 				//Get value of Addr5
-				if (InvoiceRet.ShipAddress.Addr5 != null) {
-					string Addr511918 = (string)InvoiceRet.ShipAddress.Addr5.GetValue();
+				if (Ret.ShipAddress.Addr5 != null) {
+					string Addr511918 = (string)Ret.ShipAddress.Addr5.GetValue();
 				}
 				//Get value of City
-				if (InvoiceRet.ShipAddress.City != null) {
-					string City11919 = (string)InvoiceRet.ShipAddress.City.GetValue();
+				if (Ret.ShipAddress.City != null) {
+					string City11919 = (string)Ret.ShipAddress.City.GetValue();
 				}
 				//Get value of State
-				if (InvoiceRet.ShipAddress.State != null) {
-					string State11920 = (string)InvoiceRet.ShipAddress.State.GetValue();
+				if (Ret.ShipAddress.State != null) {
+					string State11920 = (string)Ret.ShipAddress.State.GetValue();
 				}
 				//Get value of PostalCode
-				if (InvoiceRet.ShipAddress.PostalCode != null) {
-					string PostalCode11921 = (string)InvoiceRet.ShipAddress.PostalCode.GetValue();
+				if (Ret.ShipAddress.PostalCode != null) {
+					string PostalCode11921 = (string)Ret.ShipAddress.PostalCode.GetValue();
 				}
 				//Get value of Country
-				if (InvoiceRet.ShipAddress.Country != null) {
-					string Country11922 = (string)InvoiceRet.ShipAddress.Country.GetValue();
+				if (Ret.ShipAddress.Country != null) {
+					string Country11922 = (string)Ret.ShipAddress.Country.GetValue();
 				}
 				//Get value of Note
-				if (InvoiceRet.ShipAddress.Note != null) {
-					string Note11923 = (string)InvoiceRet.ShipAddress.Note.GetValue();
+				if (Ret.ShipAddress.Note != null) {
+					string Note11923 = (string)Ret.ShipAddress.Note.GetValue();
 				}
 			}
-			if (InvoiceRet.ShipAddressBlock != null) {
+			if (Ret.ShipAddressBlock != null) {
 				//Get value of Addr1
-				if (InvoiceRet.ShipAddressBlock.Addr1 != null) {
-					string Addr111924 = (string)InvoiceRet.ShipAddressBlock.Addr1.GetValue();
+				if (Ret.ShipAddressBlock.Addr1 != null) {
+					string Addr111924 = (string)Ret.ShipAddressBlock.Addr1.GetValue();
 				}
 				//Get value of Addr2
-				if (InvoiceRet.ShipAddressBlock.Addr2 != null) {
-					string Addr211925 = (string)InvoiceRet.ShipAddressBlock.Addr2.GetValue();
+				if (Ret.ShipAddressBlock.Addr2 != null) {
+					string Addr211925 = (string)Ret.ShipAddressBlock.Addr2.GetValue();
 				}
 				//Get value of Addr3
-				if (InvoiceRet.ShipAddressBlock.Addr3 != null) {
-					string Addr311926 = (string)InvoiceRet.ShipAddressBlock.Addr3.GetValue();
+				if (Ret.ShipAddressBlock.Addr3 != null) {
+					string Addr311926 = (string)Ret.ShipAddressBlock.Addr3.GetValue();
 				}
 				//Get value of Addr4
-				if (InvoiceRet.ShipAddressBlock.Addr4 != null) {
-					string Addr411927 = (string)InvoiceRet.ShipAddressBlock.Addr4.GetValue();
+				if (Ret.ShipAddressBlock.Addr4 != null) {
+					string Addr411927 = (string)Ret.ShipAddressBlock.Addr4.GetValue();
 				}
 				//Get value of Addr5
-				if (InvoiceRet.ShipAddressBlock.Addr5 != null) {
-					string Addr511928 = (string)InvoiceRet.ShipAddressBlock.Addr5.GetValue();
+				if (Ret.ShipAddressBlock.Addr5 != null) {
+					string Addr511928 = (string)Ret.ShipAddressBlock.Addr5.GetValue();
 				}
 			}
 			//Get value of IsPending
-			if (InvoiceRet.IsPending != null) {
-				bool IsPending11929 = (bool)InvoiceRet.IsPending.GetValue();
+			if (Ret.IsPending != null) {
+				bool IsPending11929 = (bool)Ret.IsPending.GetValue();
 			}
 			//Get value of IsFinanceCharge
-			if (InvoiceRet.IsFinanceCharge != null) {
-				bool IsFinanceCharge11930 = (bool)InvoiceRet.IsFinanceCharge.GetValue();
+			if (Ret.IsFinanceCharge != null) {
+				bool IsFinanceCharge11930 = (bool)Ret.IsFinanceCharge.GetValue();
 			}
 			//Get value of PONumber
-			if (InvoiceRet.PONumber != null) {
-				string PONumber11931 = (string)InvoiceRet.PONumber.GetValue();
+			if (Ret.PONumber != null) {
+				string PONumber11931 = (string)Ret.PONumber.GetValue();
 			}
-			if (InvoiceRet.TermsRef != null) {
+			if (Ret.TermsRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.TermsRef.ListID != null) {
-					string ListID11932 = (string)InvoiceRet.TermsRef.ListID.GetValue();
+				if (Ret.TermsRef.ListID != null) {
+					string ListID11932 = (string)Ret.TermsRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.TermsRef.FullName != null) {
-					string FullName11933 = (string)InvoiceRet.TermsRef.FullName.GetValue();
+				if (Ret.TermsRef.FullName != null) {
+					string FullName11933 = (string)Ret.TermsRef.FullName.GetValue();
 				}
 			}
 			//Get value of DueDate
-			if (InvoiceRet.DueDate != null) {
-				DateTime DueDate11934 = (DateTime)InvoiceRet.DueDate.GetValue();
+			if (Ret.DueDate != null) {
+				DateTime DueDate11934 = (DateTime)Ret.DueDate.GetValue();
 			}
-			if (InvoiceRet.SalesRepRef != null) {
+			if (Ret.SalesRepRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.SalesRepRef.ListID != null) {
-					string ListID11935 = (string)InvoiceRet.SalesRepRef.ListID.GetValue();
+				if (Ret.SalesRepRef.ListID != null) {
+					string ListID11935 = (string)Ret.SalesRepRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.SalesRepRef.FullName != null) {
-					string FullName11936 = (string)InvoiceRet.SalesRepRef.FullName.GetValue();
+				if (Ret.SalesRepRef.FullName != null) {
+					string FullName11936 = (string)Ret.SalesRepRef.FullName.GetValue();
 				}
 			}
 			//Get value of FOB
-			if (InvoiceRet.FOB != null) {
-				string FOB11937 = (string)InvoiceRet.FOB.GetValue();
+			if (Ret.FOB != null) {
+				string FOB11937 = (string)Ret.FOB.GetValue();
 			}
 			//Get value of ShipDate
-			if (InvoiceRet.ShipDate != null) {
-				DateTime ShipDate11938 = (DateTime)InvoiceRet.ShipDate.GetValue();
+			if (Ret.ShipDate != null) {
+				DateTime ShipDate11938 = (DateTime)Ret.ShipDate.GetValue();
 			}
-			if (InvoiceRet.ShipMethodRef != null) {
+			if (Ret.ShipMethodRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.ShipMethodRef.ListID != null) {
-					string ListID11939 = (string)InvoiceRet.ShipMethodRef.ListID.GetValue();
+				if (Ret.ShipMethodRef.ListID != null) {
+					string ListID11939 = (string)Ret.ShipMethodRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.ShipMethodRef.FullName != null) {
-					string FullName11940 = (string)InvoiceRet.ShipMethodRef.FullName.GetValue();
+				if (Ret.ShipMethodRef.FullName != null) {
+					string FullName11940 = (string)Ret.ShipMethodRef.FullName.GetValue();
 				}
 			}
 			//Get value of Subtotal
-			if (InvoiceRet.Subtotal != null) {
-				double Subtotal11941 = (double)InvoiceRet.Subtotal.GetValue();
+			if (Ret.Subtotal != null) {
+				double Subtotal11941 = (double)Ret.Subtotal.GetValue();
 			}
-			if (InvoiceRet.ItemSalesTaxRef != null) {
+			if (Ret.ItemSalesTaxRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.ItemSalesTaxRef.ListID != null) {
-					string ListID11942 = (string)InvoiceRet.ItemSalesTaxRef.ListID.GetValue();
+				if (Ret.ItemSalesTaxRef.ListID != null) {
+					string ListID11942 = (string)Ret.ItemSalesTaxRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.ItemSalesTaxRef.FullName != null) {
-					string FullName11943 = (string)InvoiceRet.ItemSalesTaxRef.FullName.GetValue();
+				if (Ret.ItemSalesTaxRef.FullName != null) {
+					string FullName11943 = (string)Ret.ItemSalesTaxRef.FullName.GetValue();
 				}
 			}
 			//Get value of SalesTaxPercentage
-			if (InvoiceRet.SalesTaxPercentage != null) {
-				double SalesTaxPercentage11944 = (double)InvoiceRet.SalesTaxPercentage.GetValue();
+			if (Ret.SalesTaxPercentage != null) {
+				double SalesTaxPercentage11944 = (double)Ret.SalesTaxPercentage.GetValue();
 			}
 			//Get value of SalesTaxTotal
-			if (InvoiceRet.SalesTaxTotal != null) {
-				double SalesTaxTotal11945 = (double)InvoiceRet.SalesTaxTotal.GetValue();
+			if (Ret.SalesTaxTotal != null) {
+				double SalesTaxTotal11945 = (double)Ret.SalesTaxTotal.GetValue();
 			}
 			//Get value of AppliedAmount
-			if (InvoiceRet.AppliedAmount != null) {
-				double AppliedAmount11946 = (double)InvoiceRet.AppliedAmount.GetValue();
+			if (Ret.AppliedAmount != null) {
+				double AppliedAmount11946 = (double)Ret.AppliedAmount.GetValue();
 			}
 			//Get value of BalanceRemaining
-			if (InvoiceRet.BalanceRemaining != null) {
-				double BalanceRemaining11947 = (double)InvoiceRet.BalanceRemaining.GetValue();
+			if (Ret.BalanceRemaining != null) {
+				double BalanceRemaining11947 = (double)Ret.BalanceRemaining.GetValue();
 			}
-			if (InvoiceRet.CurrencyRef != null) {
+			if (Ret.CurrencyRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.CurrencyRef.ListID != null) {
-					string ListID11948 = (string)InvoiceRet.CurrencyRef.ListID.GetValue();
+				if (Ret.CurrencyRef.ListID != null) {
+					string ListID11948 = (string)Ret.CurrencyRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.CurrencyRef.FullName != null) {
-					string FullName11949 = (string)InvoiceRet.CurrencyRef.FullName.GetValue();
+				if (Ret.CurrencyRef.FullName != null) {
+					string FullName11949 = (string)Ret.CurrencyRef.FullName.GetValue();
 				}
 			}
 			//Get value of ExchangeRate
-			if (InvoiceRet.ExchangeRate != null) {
-				IQBFloatType ExchangeRate11950 = (IQBFloatType)InvoiceRet.ExchangeRate.GetValue();
+			if (Ret.ExchangeRate != null) {
+				IQBFloatType ExchangeRate11950 = (IQBFloatType)Ret.ExchangeRate.GetValue();
 			}
 			//Get value of BalanceRemainingInHomeCurrency
-			if (InvoiceRet.BalanceRemainingInHomeCurrency != null) {
-				double BalanceRemainingInHomeCurrency11951 = (double)InvoiceRet.BalanceRemainingInHomeCurrency.GetValue();
+			if (Ret.BalanceRemainingInHomeCurrency != null) {
+				double BalanceRemainingInHomeCurrency11951 = (double)Ret.BalanceRemainingInHomeCurrency.GetValue();
 			}
 			//Get value of Memo
-			if (InvoiceRet.Memo != null) {
-				string Memo11952 = (string)InvoiceRet.Memo.GetValue();
+			if (Ret.Memo != null) {
+				string Memo11952 = (string)Ret.Memo.GetValue();
 			}
 			//Get value of IsPaid
-			if (InvoiceRet.IsPaid != null) {
-				bool IsPaid11953 = (bool)InvoiceRet.IsPaid.GetValue();
+			if (Ret.IsPaid != null) {
+				bool IsPaid11953 = (bool)Ret.IsPaid.GetValue();
 			}
-			if (InvoiceRet.CustomerMsgRef != null) {
+			if (Ret.CustomerMsgRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.CustomerMsgRef.ListID != null) {
-					string ListID11954 = (string)InvoiceRet.CustomerMsgRef.ListID.GetValue();
+				if (Ret.CustomerMsgRef.ListID != null) {
+					string ListID11954 = (string)Ret.CustomerMsgRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.CustomerMsgRef.FullName != null) {
-					string FullName11955 = (string)InvoiceRet.CustomerMsgRef.FullName.GetValue();
+				if (Ret.CustomerMsgRef.FullName != null) {
+					string FullName11955 = (string)Ret.CustomerMsgRef.FullName.GetValue();
 				}
 			}
 			//Get value of IsToBePrinted
-			if (InvoiceRet.IsToBePrinted != null) {
-				bool IsToBePrinted11956 = (bool)InvoiceRet.IsToBePrinted.GetValue();
+			if (Ret.IsToBePrinted != null) {
+				bool IsToBePrinted11956 = (bool)Ret.IsToBePrinted.GetValue();
 			}
 			//Get value of IsToBeEmailed
-			if (InvoiceRet.IsToBeEmailed != null) {
-				bool IsToBeEmailed11957 = (bool)InvoiceRet.IsToBeEmailed.GetValue();
+			if (Ret.IsToBeEmailed != null) {
+				bool IsToBeEmailed11957 = (bool)Ret.IsToBeEmailed.GetValue();
 			}
 			//Get value of IsTaxIncluded
-			if (InvoiceRet.IsTaxIncluded != null) {
-				bool IsTaxIncluded11958 = (bool)InvoiceRet.IsTaxIncluded.GetValue();
+			if (Ret.IsTaxIncluded != null) {
+				bool IsTaxIncluded11958 = (bool)Ret.IsTaxIncluded.GetValue();
 			}
-			if (InvoiceRet.CustomerSalesTaxCodeRef != null) {
+			if (Ret.CustomerSalesTaxCodeRef != null) {
 				//Get value of ListID
-				if (InvoiceRet.CustomerSalesTaxCodeRef.ListID != null) {
-					string ListID11959 = (string)InvoiceRet.CustomerSalesTaxCodeRef.ListID.GetValue();
+				if (Ret.CustomerSalesTaxCodeRef.ListID != null) {
+					string ListID11959 = (string)Ret.CustomerSalesTaxCodeRef.ListID.GetValue();
 				}
 				//Get value of FullName
-				if (InvoiceRet.CustomerSalesTaxCodeRef.FullName != null) {
-					string FullName11960 = (string)InvoiceRet.CustomerSalesTaxCodeRef.FullName.GetValue();
+				if (Ret.CustomerSalesTaxCodeRef.FullName != null) {
+					string FullName11960 = (string)Ret.CustomerSalesTaxCodeRef.FullName.GetValue();
 				}
 			}
 			//Get value of SuggestedDiscountAmount
-			if (InvoiceRet.SuggestedDiscountAmount != null) {
-				double SuggestedDiscountAmount11961 = (double)InvoiceRet.SuggestedDiscountAmount.GetValue();
+			if (Ret.SuggestedDiscountAmount != null) {
+				double SuggestedDiscountAmount11961 = (double)Ret.SuggestedDiscountAmount.GetValue();
 			}
 			//Get value of SuggestedDiscountDate
-			if (InvoiceRet.SuggestedDiscountDate != null) {
-				DateTime SuggestedDiscountDate11962 = (DateTime)InvoiceRet.SuggestedDiscountDate.GetValue();
+			if (Ret.SuggestedDiscountDate != null) {
+				DateTime SuggestedDiscountDate11962 = (DateTime)Ret.SuggestedDiscountDate.GetValue();
 			}
 			//Get value of Other
-			if (InvoiceRet.Other != null) {
-				string Other11963 = (string)InvoiceRet.Other.GetValue();
+			if (Ret.Other != null) {
+				string Other11963 = (string)Ret.Other.GetValue();
 			}
 			//Get value of ExternalGUID
-			if (InvoiceRet.ExternalGUID != null) {
-				string ExternalGUID11964 = (string)InvoiceRet.ExternalGUID.GetValue();
+			if (Ret.ExternalGUID != null) {
+				string ExternalGUID11964 = (string)Ret.ExternalGUID.GetValue();
 			}
-			if (InvoiceRet.LinkedTxnList != null) {
-				for (int i11965 = 0; i11965 < InvoiceRet.LinkedTxnList.Count; i11965++) {
-					ILinkedTxn LinkedTxn = InvoiceRet.LinkedTxnList.GetAt(i11965);
+			if (Ret.LinkedTxnList != null) {
+				for (int i11965 = 0; i11965 < Ret.LinkedTxnList.Count; i11965++) {
+					ILinkedTxn LinkedTxn = Ret.LinkedTxnList.GetAt(i11965);
 					//Get value of TxnID
 					string TxnID11966 = (string)LinkedTxn.TxnID.GetValue();
 					//Get value of TxnType
@@ -566,132 +566,132 @@ namespace com.intuit.idn.samples
 					double Amount11971 = (double)LinkedTxn.Amount.GetValue();
 				}
 			}
-			if (InvoiceRet.ORInvoiceLineRetList != null) {
-				for (int i11972 = 0; i11972 < InvoiceRet.ORInvoiceLineRetList.Count; i11972++) {
-					IORInvoiceLineRet ORInvoiceLineRet11973 = InvoiceRet.ORInvoiceLineRetList.GetAt(i11972);
-					if (ORInvoiceLineRet11973.InvoiceLineRet != null) {
-						if (ORInvoiceLineRet11973.InvoiceLineRet != null) {
+			if (Ret.ORLineRetList != null) {
+				for (int i11972 = 0; i11972 < Ret.ORLineRetList.Count; i11972++) {
+					IORLineRet ORLineRet11973 = Ret.ORLineRetList.GetAt(i11972);
+					if (ORLineRet11973.LineRet != null) {
+						if (ORLineRet11973.LineRet != null) {
 							//Get value of TxnLineID
-							string TxnLineID11974 = (string)ORInvoiceLineRet11973.InvoiceLineRet.TxnLineID.GetValue();
-							if (ORInvoiceLineRet11973.InvoiceLineRet.ItemRef != null) {
+							string TxnLineID11974 = (string)ORLineRet11973.LineRet.TxnLineID.GetValue();
+							if (ORLineRet11973.LineRet.ItemRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ItemRef.ListID != null) {
-									string ListID11975 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ItemRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.ItemRef.ListID != null) {
+									string ListID11975 = (string)ORLineRet11973.LineRet.ItemRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ItemRef.FullName != null) {
-									string FullName11976 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ItemRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.ItemRef.FullName != null) {
+									string FullName11976 = (string)ORLineRet11973.LineRet.ItemRef.FullName.GetValue();
 								}
 							}
 							//Get value of Desc
-							if (ORInvoiceLineRet11973.InvoiceLineRet.Desc != null) {
-								string Desc11977 = (string)ORInvoiceLineRet11973.InvoiceLineRet.Desc.GetValue();
+							if (ORLineRet11973.LineRet.Desc != null) {
+								string Desc11977 = (string)ORLineRet11973.LineRet.Desc.GetValue();
 							}
 							//Get value of Quantity
-							if (ORInvoiceLineRet11973.InvoiceLineRet.Quantity != null) {
-								int Quantity11978 = (int)ORInvoiceLineRet11973.InvoiceLineRet.Quantity.GetValue();
+							if (ORLineRet11973.LineRet.Quantity != null) {
+								int Quantity11978 = (int)ORLineRet11973.LineRet.Quantity.GetValue();
 							}
 							//Get value of UnitOfMeasure
-							if (ORInvoiceLineRet11973.InvoiceLineRet.UnitOfMeasure != null) {
-								string UnitOfMeasure11979 = (string)ORInvoiceLineRet11973.InvoiceLineRet.UnitOfMeasure.GetValue();
+							if (ORLineRet11973.LineRet.UnitOfMeasure != null) {
+								string UnitOfMeasure11979 = (string)ORLineRet11973.LineRet.UnitOfMeasure.GetValue();
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.OverrideUOMSetRef != null) {
+							if (ORLineRet11973.LineRet.OverrideUOMSetRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.OverrideUOMSetRef.ListID != null) {
-									string ListID11980 = (string)ORInvoiceLineRet11973.InvoiceLineRet.OverrideUOMSetRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.OverrideUOMSetRef.ListID != null) {
+									string ListID11980 = (string)ORLineRet11973.LineRet.OverrideUOMSetRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.OverrideUOMSetRef.FullName != null) {
-									string FullName11981 = (string)ORInvoiceLineRet11973.InvoiceLineRet.OverrideUOMSetRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.OverrideUOMSetRef.FullName != null) {
+									string FullName11981 = (string)ORLineRet11973.LineRet.OverrideUOMSetRef.FullName.GetValue();
 								}
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.ORRate != null) {
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ORRate.Rate != null) {
+							if (ORLineRet11973.LineRet.ORRate != null) {
+								if (ORLineRet11973.LineRet.ORRate.Rate != null) {
 									//Get value of Rate
-									if (ORInvoiceLineRet11973.InvoiceLineRet.ORRate.Rate != null) {
-										double Rate11983 = (double)ORInvoiceLineRet11973.InvoiceLineRet.ORRate.Rate.GetValue();
+									if (ORLineRet11973.LineRet.ORRate.Rate != null) {
+										double Rate11983 = (double)ORLineRet11973.LineRet.ORRate.Rate.GetValue();
 									}
 								}
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ORRate.RatePercent != null) {
+								if (ORLineRet11973.LineRet.ORRate.RatePercent != null) {
 									//Get value of RatePercent
-									if (ORInvoiceLineRet11973.InvoiceLineRet.ORRate.RatePercent != null) {
-										double RatePercent11984 = (double)ORInvoiceLineRet11973.InvoiceLineRet.ORRate.RatePercent.GetValue();
+									if (ORLineRet11973.LineRet.ORRate.RatePercent != null) {
+										double RatePercent11984 = (double)ORLineRet11973.LineRet.ORRate.RatePercent.GetValue();
 									}
 								}
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.ClassRef != null) {
+							if (ORLineRet11973.LineRet.ClassRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ClassRef.ListID != null) {
-									string ListID11985 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ClassRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.ClassRef.ListID != null) {
+									string ListID11985 = (string)ORLineRet11973.LineRet.ClassRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ClassRef.FullName != null) {
-									string FullName11986 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ClassRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.ClassRef.FullName != null) {
+									string FullName11986 = (string)ORLineRet11973.LineRet.ClassRef.FullName.GetValue();
 								}
 							}
 							//Get value of Amount
-							if (ORInvoiceLineRet11973.InvoiceLineRet.Amount != null) {
-								double Amount11987 = (double)ORInvoiceLineRet11973.InvoiceLineRet.Amount.GetValue();
+							if (ORLineRet11973.LineRet.Amount != null) {
+								double Amount11987 = (double)ORLineRet11973.LineRet.Amount.GetValue();
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteRef != null) {
+							if (ORLineRet11973.LineRet.InventorySiteRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteRef.ListID != null) {
-									string ListID11988 = (string)ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.InventorySiteRef.ListID != null) {
+									string ListID11988 = (string)ORLineRet11973.LineRet.InventorySiteRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteRef.FullName != null) {
-									string FullName11989 = (string)ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.InventorySiteRef.FullName != null) {
+									string FullName11989 = (string)ORLineRet11973.LineRet.InventorySiteRef.FullName.GetValue();
 								}
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteLocationRef != null) {
+							if (ORLineRet11973.LineRet.InventorySiteLocationRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteLocationRef.ListID != null) {
-									string ListID11990 = (string)ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteLocationRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.InventorySiteLocationRef.ListID != null) {
+									string ListID11990 = (string)ORLineRet11973.LineRet.InventorySiteLocationRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteLocationRef.FullName != null) {
-									string FullName11991 = (string)ORInvoiceLineRet11973.InvoiceLineRet.InventorySiteLocationRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.InventorySiteLocationRef.FullName != null) {
+									string FullName11991 = (string)ORLineRet11973.LineRet.InventorySiteLocationRef.FullName.GetValue();
 								}
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber != null) {
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.SerialNumber != null) {
+							if (ORLineRet11973.LineRet.ORSerialLotNumber != null) {
+								if (ORLineRet11973.LineRet.ORSerialLotNumber.SerialNumber != null) {
 									//Get value of SerialNumber
-									if (ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.SerialNumber != null) {
-										string SerialNumber11993 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.SerialNumber.GetValue();
+									if (ORLineRet11973.LineRet.ORSerialLotNumber.SerialNumber != null) {
+										string SerialNumber11993 = (string)ORLineRet11973.LineRet.ORSerialLotNumber.SerialNumber.GetValue();
 									}
 								}
-								if (ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.LotNumber != null) {
+								if (ORLineRet11973.LineRet.ORSerialLotNumber.LotNumber != null) {
 									//Get value of LotNumber
-									if (ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.LotNumber != null) {
-										string LotNumber11994 = (string)ORInvoiceLineRet11973.InvoiceLineRet.ORSerialLotNumber.LotNumber.GetValue();
+									if (ORLineRet11973.LineRet.ORSerialLotNumber.LotNumber != null) {
+										string LotNumber11994 = (string)ORLineRet11973.LineRet.ORSerialLotNumber.LotNumber.GetValue();
 									}
 								}
 							}
 							//Get value of ServiceDate
-							if (ORInvoiceLineRet11973.InvoiceLineRet.ServiceDate != null) {
-								DateTime ServiceDate11995 = (DateTime)ORInvoiceLineRet11973.InvoiceLineRet.ServiceDate.GetValue();
+							if (ORLineRet11973.LineRet.ServiceDate != null) {
+								DateTime ServiceDate11995 = (DateTime)ORLineRet11973.LineRet.ServiceDate.GetValue();
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.SalesTaxCodeRef != null) {
+							if (ORLineRet11973.LineRet.SalesTaxCodeRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineRet.SalesTaxCodeRef.ListID != null) {
-									string ListID11996 = (string)ORInvoiceLineRet11973.InvoiceLineRet.SalesTaxCodeRef.ListID.GetValue();
+								if (ORLineRet11973.LineRet.SalesTaxCodeRef.ListID != null) {
+									string ListID11996 = (string)ORLineRet11973.LineRet.SalesTaxCodeRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineRet.SalesTaxCodeRef.FullName != null) {
-									string FullName11997 = (string)ORInvoiceLineRet11973.InvoiceLineRet.SalesTaxCodeRef.FullName.GetValue();
+								if (ORLineRet11973.LineRet.SalesTaxCodeRef.FullName != null) {
+									string FullName11997 = (string)ORLineRet11973.LineRet.SalesTaxCodeRef.FullName.GetValue();
 								}
 							}
 							//Get value of Other1
-							if (ORInvoiceLineRet11973.InvoiceLineRet.Other1 != null) {
-								string Other111998 = (string)ORInvoiceLineRet11973.InvoiceLineRet.Other1.GetValue();
+							if (ORLineRet11973.LineRet.Other1 != null) {
+								string Other111998 = (string)ORLineRet11973.LineRet.Other1.GetValue();
 							}
 							//Get value of Other2
-							if (ORInvoiceLineRet11973.InvoiceLineRet.Other2 != null) {
-								string Other211999 = (string)ORInvoiceLineRet11973.InvoiceLineRet.Other2.GetValue();
+							if (ORLineRet11973.LineRet.Other2 != null) {
+								string Other211999 = (string)ORLineRet11973.LineRet.Other2.GetValue();
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineRet.DataExtRetList != null) {
-								for (int i12000 = 0; i12000 < ORInvoiceLineRet11973.InvoiceLineRet.DataExtRetList.Count; i12000++) {
-									IDataExtRet DataExtRet = ORInvoiceLineRet11973.InvoiceLineRet.DataExtRetList.GetAt(i12000);
+							if (ORLineRet11973.LineRet.DataExtRetList != null) {
+								for (int i12000 = 0; i12000 < ORLineRet11973.LineRet.DataExtRetList.Count; i12000++) {
+									IDataExtRet DataExtRet = ORLineRet11973.LineRet.DataExtRetList.GetAt(i12000);
 									//Get value of OwnerID
 									if (DataExtRet.OwnerID != null) {
 										string OwnerID12001 = (string)DataExtRet.OwnerID.GetValue();
@@ -706,168 +706,168 @@ namespace com.intuit.idn.samples
 							}
 						}
 					}
-					if (ORInvoiceLineRet11973.InvoiceLineGroupRet != null) {
-						if (ORInvoiceLineRet11973.InvoiceLineGroupRet != null) {
+					if (ORLineRet11973.LineGroupRet != null) {
+						if (ORLineRet11973.LineGroupRet != null) {
 							//Get value of TxnLineID
-							string TxnLineID12005 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.TxnLineID.GetValue();
+							string TxnLineID12005 = (string)ORLineRet11973.LineGroupRet.TxnLineID.GetValue();
 							//Get value of ListID
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.ItemGroupRef.ListID != null) {
-								string ListID12006 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.ItemGroupRef.ListID.GetValue();
+							if (ORLineRet11973.LineGroupRet.ItemGroupRef.ListID != null) {
+								string ListID12006 = (string)ORLineRet11973.LineGroupRet.ItemGroupRef.ListID.GetValue();
 							}
 							//Get value of FullName
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.ItemGroupRef.FullName != null) {
-								string FullName12007 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.ItemGroupRef.FullName.GetValue();
+							if (ORLineRet11973.LineGroupRet.ItemGroupRef.FullName != null) {
+								string FullName12007 = (string)ORLineRet11973.LineGroupRet.ItemGroupRef.FullName.GetValue();
 							}
 							//Get value of Desc
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.Desc != null) {
-								string Desc12008 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.Desc.GetValue();
+							if (ORLineRet11973.LineGroupRet.Desc != null) {
+								string Desc12008 = (string)ORLineRet11973.LineGroupRet.Desc.GetValue();
 							}
 							//Get value of Quantity
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.Quantity != null) {
-								int Quantity12009 = (int)ORInvoiceLineRet11973.InvoiceLineGroupRet.Quantity.GetValue();
+							if (ORLineRet11973.LineGroupRet.Quantity != null) {
+								int Quantity12009 = (int)ORLineRet11973.LineGroupRet.Quantity.GetValue();
 							}
 							//Get value of UnitOfMeasure
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.UnitOfMeasure != null) {
-								string UnitOfMeasure12010 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.UnitOfMeasure.GetValue();
+							if (ORLineRet11973.LineGroupRet.UnitOfMeasure != null) {
+								string UnitOfMeasure12010 = (string)ORLineRet11973.LineGroupRet.UnitOfMeasure.GetValue();
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.OverrideUOMSetRef != null) {
+							if (ORLineRet11973.LineGroupRet.OverrideUOMSetRef != null) {
 								//Get value of ListID
-								if (ORInvoiceLineRet11973.InvoiceLineGroupRet.OverrideUOMSetRef.ListID != null) {
-									string ListID12011 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.OverrideUOMSetRef.ListID.GetValue();
+								if (ORLineRet11973.LineGroupRet.OverrideUOMSetRef.ListID != null) {
+									string ListID12011 = (string)ORLineRet11973.LineGroupRet.OverrideUOMSetRef.ListID.GetValue();
 								}
 								//Get value of FullName
-								if (ORInvoiceLineRet11973.InvoiceLineGroupRet.OverrideUOMSetRef.FullName != null) {
-									string FullName12012 = (string)ORInvoiceLineRet11973.InvoiceLineGroupRet.OverrideUOMSetRef.FullName.GetValue();
+								if (ORLineRet11973.LineGroupRet.OverrideUOMSetRef.FullName != null) {
+									string FullName12012 = (string)ORLineRet11973.LineGroupRet.OverrideUOMSetRef.FullName.GetValue();
 								}
 							}
 							//Get value of IsPrintItemsInGroup
-							bool IsPrintItemsInGroup12013 = (bool)ORInvoiceLineRet11973.InvoiceLineGroupRet.IsPrintItemsInGroup.GetValue();
+							bool IsPrintItemsInGroup12013 = (bool)ORLineRet11973.LineGroupRet.IsPrintItemsInGroup.GetValue();
 							//Get value of TotalAmount
-							double TotalAmount12014 = (double)ORInvoiceLineRet11973.InvoiceLineGroupRet.TotalAmount.GetValue();
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.InvoiceLineRetList != null) {
-								for (int i12015 = 0; i12015 < ORInvoiceLineRet11973.InvoiceLineGroupRet.InvoiceLineRetList.Count; i12015++) {
-									IInvoiceLineRet InvoiceLineRet = ORInvoiceLineRet11973.InvoiceLineGroupRet.InvoiceLineRetList.GetAt(i12015);
+							double TotalAmount12014 = (double)ORLineRet11973.LineGroupRet.TotalAmount.GetValue();
+							if (ORLineRet11973.LineGroupRet.LineRetList != null) {
+								for (int i12015 = 0; i12015 < ORLineRet11973.LineGroupRet.LineRetList.Count; i12015++) {
+									ILineRet LineRet = ORLineRet11973.LineGroupRet.LineRetList.GetAt(i12015);
 									//Get value of TxnLineID
-									string TxnLineID12016 = (string)InvoiceLineRet.TxnLineID.GetValue();
-									if (InvoiceLineRet.ItemRef != null) {
+									string TxnLineID12016 = (string)LineRet.TxnLineID.GetValue();
+									if (LineRet.ItemRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.ItemRef.ListID != null) {
-											string ListID12017 = (string)InvoiceLineRet.ItemRef.ListID.GetValue();
+										if (LineRet.ItemRef.ListID != null) {
+											string ListID12017 = (string)LineRet.ItemRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.ItemRef.FullName != null) {
-											string FullName12018 = (string)InvoiceLineRet.ItemRef.FullName.GetValue();
+										if (LineRet.ItemRef.FullName != null) {
+											string FullName12018 = (string)LineRet.ItemRef.FullName.GetValue();
 										}
 									}
 									//Get value of Desc
-									if (InvoiceLineRet.Desc != null) {
-										string Desc12019 = (string)InvoiceLineRet.Desc.GetValue();
+									if (LineRet.Desc != null) {
+										string Desc12019 = (string)LineRet.Desc.GetValue();
 									}
 									//Get value of Quantity
-									if (InvoiceLineRet.Quantity != null) {
-										int Quantity12020 = (int)InvoiceLineRet.Quantity.GetValue();
+									if (LineRet.Quantity != null) {
+										int Quantity12020 = (int)LineRet.Quantity.GetValue();
 									}
 									//Get value of UnitOfMeasure
-									if (InvoiceLineRet.UnitOfMeasure != null) {
-										string UnitOfMeasure12021 = (string)InvoiceLineRet.UnitOfMeasure.GetValue();
+									if (LineRet.UnitOfMeasure != null) {
+										string UnitOfMeasure12021 = (string)LineRet.UnitOfMeasure.GetValue();
 									}
-									if (InvoiceLineRet.OverrideUOMSetRef != null) {
+									if (LineRet.OverrideUOMSetRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.OverrideUOMSetRef.ListID != null) {
-											string ListID12022 = (string)InvoiceLineRet.OverrideUOMSetRef.ListID.GetValue();
+										if (LineRet.OverrideUOMSetRef.ListID != null) {
+											string ListID12022 = (string)LineRet.OverrideUOMSetRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.OverrideUOMSetRef.FullName != null) {
-											string FullName12023 = (string)InvoiceLineRet.OverrideUOMSetRef.FullName.GetValue();
+										if (LineRet.OverrideUOMSetRef.FullName != null) {
+											string FullName12023 = (string)LineRet.OverrideUOMSetRef.FullName.GetValue();
 										}
 									}
-									if (InvoiceLineRet.ORRate != null) {
-										if (InvoiceLineRet.ORRate.Rate != null) {
+									if (LineRet.ORRate != null) {
+										if (LineRet.ORRate.Rate != null) {
 											//Get value of Rate
-											if (InvoiceLineRet.ORRate.Rate != null) {
-												double Rate12025 = (double)InvoiceLineRet.ORRate.Rate.GetValue();
+											if (LineRet.ORRate.Rate != null) {
+												double Rate12025 = (double)LineRet.ORRate.Rate.GetValue();
 											}
 										}
-										if (InvoiceLineRet.ORRate.RatePercent != null) {
+										if (LineRet.ORRate.RatePercent != null) {
 											//Get value of RatePercent
-											if (InvoiceLineRet.ORRate.RatePercent != null) {
-												double RatePercent12026 = (double)InvoiceLineRet.ORRate.RatePercent.GetValue();
+											if (LineRet.ORRate.RatePercent != null) {
+												double RatePercent12026 = (double)LineRet.ORRate.RatePercent.GetValue();
 											}
 										}
 									}
-									if (InvoiceLineRet.ClassRef != null) {
+									if (LineRet.ClassRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.ClassRef.ListID != null) {
-											string ListID12027 = (string)InvoiceLineRet.ClassRef.ListID.GetValue();
+										if (LineRet.ClassRef.ListID != null) {
+											string ListID12027 = (string)LineRet.ClassRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.ClassRef.FullName != null) {
-											string FullName12028 = (string)InvoiceLineRet.ClassRef.FullName.GetValue();
+										if (LineRet.ClassRef.FullName != null) {
+											string FullName12028 = (string)LineRet.ClassRef.FullName.GetValue();
 										}
 									}
 									//Get value of Amount
-									if (InvoiceLineRet.Amount != null) {
-										double Amount12029 = (double)InvoiceLineRet.Amount.GetValue();
+									if (LineRet.Amount != null) {
+										double Amount12029 = (double)LineRet.Amount.GetValue();
 									}
-									if (InvoiceLineRet.InventorySiteRef != null) {
+									if (LineRet.InventorySiteRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.InventorySiteRef.ListID != null) {
-											string ListID12030 = (string)InvoiceLineRet.InventorySiteRef.ListID.GetValue();
+										if (LineRet.InventorySiteRef.ListID != null) {
+											string ListID12030 = (string)LineRet.InventorySiteRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.InventorySiteRef.FullName != null) {
-											string FullName12031 = (string)InvoiceLineRet.InventorySiteRef.FullName.GetValue();
+										if (LineRet.InventorySiteRef.FullName != null) {
+											string FullName12031 = (string)LineRet.InventorySiteRef.FullName.GetValue();
 										}
 									}
-									if (InvoiceLineRet.InventorySiteLocationRef != null) {
+									if (LineRet.InventorySiteLocationRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.InventorySiteLocationRef.ListID != null) {
-											string ListID12032 = (string)InvoiceLineRet.InventorySiteLocationRef.ListID.GetValue();
+										if (LineRet.InventorySiteLocationRef.ListID != null) {
+											string ListID12032 = (string)LineRet.InventorySiteLocationRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.InventorySiteLocationRef.FullName != null) {
-											string FullName12033 = (string)InvoiceLineRet.InventorySiteLocationRef.FullName.GetValue();
+										if (LineRet.InventorySiteLocationRef.FullName != null) {
+											string FullName12033 = (string)LineRet.InventorySiteLocationRef.FullName.GetValue();
 										}
 									}
-									if (InvoiceLineRet.ORSerialLotNumber != null) {
-										if (InvoiceLineRet.ORSerialLotNumber.SerialNumber != null) {
+									if (LineRet.ORSerialLotNumber != null) {
+										if (LineRet.ORSerialLotNumber.SerialNumber != null) {
 											//Get value of SerialNumber
-											if (InvoiceLineRet.ORSerialLotNumber.SerialNumber != null) {
-												string SerialNumber12035 = (string)InvoiceLineRet.ORSerialLotNumber.SerialNumber.GetValue();
+											if (LineRet.ORSerialLotNumber.SerialNumber != null) {
+												string SerialNumber12035 = (string)LineRet.ORSerialLotNumber.SerialNumber.GetValue();
 											}
 										}
-										if (InvoiceLineRet.ORSerialLotNumber.LotNumber != null) {
+										if (LineRet.ORSerialLotNumber.LotNumber != null) {
 											//Get value of LotNumber
-											if (InvoiceLineRet.ORSerialLotNumber.LotNumber != null) {
-												string LotNumber12036 = (string)InvoiceLineRet.ORSerialLotNumber.LotNumber.GetValue();
+											if (LineRet.ORSerialLotNumber.LotNumber != null) {
+												string LotNumber12036 = (string)LineRet.ORSerialLotNumber.LotNumber.GetValue();
 											}
 										}
 									}
 									//Get value of ServiceDate
-									if (InvoiceLineRet.ServiceDate != null) {
-										DateTime ServiceDate12037 = (DateTime)InvoiceLineRet.ServiceDate.GetValue();
+									if (LineRet.ServiceDate != null) {
+										DateTime ServiceDate12037 = (DateTime)LineRet.ServiceDate.GetValue();
 									}
-									if (InvoiceLineRet.SalesTaxCodeRef != null) {
+									if (LineRet.SalesTaxCodeRef != null) {
 										//Get value of ListID
-										if (InvoiceLineRet.SalesTaxCodeRef.ListID != null) {
-											string ListID12038 = (string)InvoiceLineRet.SalesTaxCodeRef.ListID.GetValue();
+										if (LineRet.SalesTaxCodeRef.ListID != null) {
+											string ListID12038 = (string)LineRet.SalesTaxCodeRef.ListID.GetValue();
 										}
 										//Get value of FullName
-										if (InvoiceLineRet.SalesTaxCodeRef.FullName != null) {
-											string FullName12039 = (string)InvoiceLineRet.SalesTaxCodeRef.FullName.GetValue();
+										if (LineRet.SalesTaxCodeRef.FullName != null) {
+											string FullName12039 = (string)LineRet.SalesTaxCodeRef.FullName.GetValue();
 										}
 									}
 									//Get value of Other1
-									if (InvoiceLineRet.Other1 != null) {
-										string Other112040 = (string)InvoiceLineRet.Other1.GetValue();
+									if (LineRet.Other1 != null) {
+										string Other112040 = (string)LineRet.Other1.GetValue();
 									}
 									//Get value of Other2
-									if (InvoiceLineRet.Other2 != null) {
-										string Other212041 = (string)InvoiceLineRet.Other2.GetValue();
+									if (LineRet.Other2 != null) {
+										string Other212041 = (string)LineRet.Other2.GetValue();
 									}
-									if (InvoiceLineRet.DataExtRetList != null) {
-										for (int i12042 = 0; i12042 < InvoiceLineRet.DataExtRetList.Count; i12042++) {
-											IDataExtRet DataExtRet = InvoiceLineRet.DataExtRetList.GetAt(i12042);
+									if (LineRet.DataExtRetList != null) {
+										for (int i12042 = 0; i12042 < LineRet.DataExtRetList.Count; i12042++) {
+											IDataExtRet DataExtRet = LineRet.DataExtRetList.GetAt(i12042);
 											//Get value of OwnerID
 											if (DataExtRet.OwnerID != null) {
 												string OwnerID12043 = (string)DataExtRet.OwnerID.GetValue();
@@ -882,9 +882,9 @@ namespace com.intuit.idn.samples
 									}
 								}
 							}
-							if (ORInvoiceLineRet11973.InvoiceLineGroupRet.DataExtRetList != null) {
-								for (int i12047 = 0; i12047 < ORInvoiceLineRet11973.InvoiceLineGroupRet.DataExtRetList.Count; i12047++) {
-									IDataExtRet DataExtRet = ORInvoiceLineRet11973.InvoiceLineGroupRet.DataExtRetList.GetAt(i12047);
+							if (ORLineRet11973.LineGroupRet.DataExtRetList != null) {
+								for (int i12047 = 0; i12047 < ORLineRet11973.LineGroupRet.DataExtRetList.Count; i12047++) {
+									IDataExtRet DataExtRet = ORLineRet11973.LineGroupRet.DataExtRetList.GetAt(i12047);
 									//Get value of OwnerID
 									if (DataExtRet.OwnerID != null) {
 										string OwnerID12048 = (string)DataExtRet.OwnerID.GetValue();
@@ -901,9 +901,9 @@ namespace com.intuit.idn.samples
 					}
 				}
 			}
-			if (InvoiceRet.DataExtRetList != null) {
-				for (int i12052 = 0; i12052 < InvoiceRet.DataExtRetList.Count; i12052++) {
-					IDataExtRet DataExtRet = InvoiceRet.DataExtRetList.GetAt(i12052);
+			if (Ret.DataExtRetList != null) {
+				for (int i12052 = 0; i12052 < Ret.DataExtRetList.Count; i12052++) {
+					IDataExtRet DataExtRet = Ret.DataExtRetList.GetAt(i12052);
 					//Get value of OwnerID
 					if (DataExtRet.OwnerID != null) {
 						string OwnerID12053 = (string)DataExtRet.OwnerID.GetValue();
