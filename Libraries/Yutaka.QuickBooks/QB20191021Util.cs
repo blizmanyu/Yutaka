@@ -9,17 +9,17 @@ namespace Yutaka.QuickBooks
 	public class QB20191021Util
 	{
 		#region Fields
-		const string DEFAULT_APP_NAME = "QB20191021Util";
-		const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
-		private readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
-		private readonly DateTime MAX_DATE = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999, DateTimeKind.Local);
+		protected const string DEFAULT_APP_NAME = "QB20191021Util";
+		protected const string QB_FORMAT = "yyyy-MM-ddTHH:mm:ssK";
+		protected readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
+		protected readonly DateTime MAX_DATE = new DateTime(DateTime.Now.Year, 12, 31, 23, 59, 59, 999, DateTimeKind.Local);
+		protected enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
+		protected RequestProcessor2 Rp;
+		protected bool ConnectionOpen;
+		protected bool SessionBegun;
+		protected string SessionId;
 
-		public enum ActionType { InventoryAdjustmentAdd, InventoryAdjustmentQuery, };
 		public bool Debug;
-		private RequestProcessor2 Rp;
-		private bool ConnectionOpen;
-		private bool SessionBegun;
-		private string SessionId;
 		#endregion Fields
 
 		public QB20191021Util()
@@ -31,8 +31,8 @@ namespace Yutaka.QuickBooks
 			SessionId = null;
 		}
 
-		#region Private Utilities
-		private string BeautifyXml(string xml)
+		#region Utilities
+		protected string BeautifyXml(string xml)
 		{
 			if (String.IsNullOrWhiteSpace(xml))
 				return "";
@@ -46,7 +46,7 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		private void BuildRequest(XmlDocument doc, XmlElement parent, ActionType actionType, string startTime, string endTime)
+		protected void BuildRequest(XmlDocument doc, XmlElement parent, ActionType actionType, string startTime, string endTime)
 		{
 			var request = doc.CreateElement(String.Format("{0}Rq", actionType.ToString()));
 			parent.AppendChild(request);
@@ -84,14 +84,97 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		private XmlElement MakeSimpleElem(XmlDocument doc, string tagName, string tagVal)
+		protected List<object> DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		{
+			#region Input Validation
+			if (actionType < 0)
+				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.DoAction(ActionType actionType, DateTime? startTime, DateTime? endTime).{0}", Environment.NewLine));
+
+			var now = DateTime.Now;
+			var minDate = now.AddYears(-10);
+			var maxDate = new DateTime(now.Year, 12, 31, 23, 59, 59, 999);
+
+			if (startTime == null || startTime < minDate)
+				startTime = minDate;
+			if (endTime == null || endTime > maxDate)
+				endTime = maxDate;
+
+			var startTimeStr = startTime.Value.ToString(QB_FORMAT);
+			var endTimeStr = endTime.Value.ToString(QB_FORMAT);
+
+			if (endTimeStr.Length < 20)
+				endTimeStr = string.Format("{0}-07:00", endTimeStr);
+			#endregion Input Validation
+
+			try {
+				if (!ConnectionOpen || !SessionBegun || String.IsNullOrWhiteSpace(SessionId))
+					OpenConnection();
+
+				//Create the message set request object to hold our request
+				var requestXmlDoc = new XmlDocument();
+
+				//Add the prolog processing instructions
+				requestXmlDoc.AppendChild(requestXmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
+				requestXmlDoc.AppendChild(requestXmlDoc.CreateProcessingInstruction("qbxml", "version=\"13.0\""));
+
+				//Create the outer request envelope tag
+				var outer = requestXmlDoc.CreateElement("QBXML");
+				requestXmlDoc.AppendChild(outer);
+
+				//Create the inner request envelope & any needed attributes
+				var inner = requestXmlDoc.CreateElement("QBXMLMsgsRq");
+				outer.AppendChild(inner);
+				inner.SetAttribute("onError", "stopOnError");
+				BuildRequest(requestXmlDoc, inner, actionType, startTimeStr, endTimeStr);
+
+				if (Debug)
+					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), BeautifyXml(requestXmlDoc.OuterXml));
+
+				//Send the request and get the response from QuickBooks
+				//var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
+
+				//if (Debug)
+				//	File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
+
+				//return ProcessResponse(actionType, responseStr);
+				return new List<object>();
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+
+				if (Debug)
+					Console.Write("\n{0}", log);
+				#endregion Log
+
+				if (SessionBegun) {
+					Rp.EndSession(SessionId);
+					SessionBegun = false;
+				}
+
+				if (ConnectionOpen) {
+					Rp.CloseConnection();
+					ConnectionOpen = false;
+				}
+
+				return new List<object>();
+			}
+		}
+
+		protected XmlElement MakeSimpleElem(XmlDocument doc, string tagName, string tagVal)
 		{
 			var elem = doc.CreateElement(tagName);
 			elem.InnerText = tagVal;
 			return elem;
 		}
 
-		private List<object> ProcessResponse(ActionType actionType, string response)
+		protected List<object> ProcessResponse(ActionType actionType, string response)
 		{
 			#region Input Validation
 			if (String.IsNullOrWhiteSpace(response))
@@ -123,7 +206,7 @@ namespace Yutaka.QuickBooks
 			return new List<object>();
 		}
 
-		private List<object> ProcessReturn(ActionType actionType, XmlNode responseNode)
+		protected List<object> ProcessReturn(ActionType actionType, XmlNode responseNode)
 		{
 			if (actionType < 0)
 				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.ProcessReturn(ActionType actionType).{0}", Environment.NewLine));
@@ -263,7 +346,7 @@ namespace Yutaka.QuickBooks
 
 			return list;
 		}
-		#endregion Private Utilities
+		#endregion Utilities
 
 		#region Public Methods
 		public void CloseConnection()
@@ -276,89 +359,6 @@ namespace Yutaka.QuickBooks
 			if (ConnectionOpen) {
 				Rp.CloseConnection();
 				ConnectionOpen = false;
-			}
-		}
-
-		public List<object> DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
-		{
-			#region Input Validation
-			if (actionType < 0)
-				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.DoAction(ActionType actionType, DateTime? startTime, DateTime? endTime).{0}", Environment.NewLine));
-
-			var now = DateTime.Now;
-			var minDate = now.AddYears(-10);
-			var maxDate = new DateTime(now.Year, 12, 31, 23, 59, 59, 999);
-
-			if (startTime == null || startTime < minDate)
-				startTime = minDate;
-			if (endTime == null || endTime > maxDate)
-				endTime = maxDate;
-
-			var startTimeStr = startTime.Value.ToString(QB_FORMAT);
-			var endTimeStr = endTime.Value.ToString(QB_FORMAT);
-
-			if (endTimeStr.Length < 20)
-				endTimeStr = string.Format("{0}-07:00", endTimeStr);
-			#endregion Input Validation
-
-			try {
-				if (!ConnectionOpen || !SessionBegun || String.IsNullOrWhiteSpace(SessionId))
-					OpenConnection();
-
-				//Create the message set request object to hold our request
-				var requestXmlDoc = new XmlDocument();
-
-				//Add the prolog processing instructions
-				requestXmlDoc.AppendChild(requestXmlDoc.CreateXmlDeclaration("1.0", "UTF-8", null));
-				requestXmlDoc.AppendChild(requestXmlDoc.CreateProcessingInstruction("qbxml", "version=\"13.0\""));
-
-				//Create the outer request envelope tag
-				var outer = requestXmlDoc.CreateElement("QBXML");
-				requestXmlDoc.AppendChild(outer);
-
-				//Create the inner request envelope & any needed attributes
-				var inner = requestXmlDoc.CreateElement("QBXMLMsgsRq");
-				outer.AppendChild(inner);
-				inner.SetAttribute("onError", "stopOnError");
-				BuildRequest(requestXmlDoc, inner, actionType, startTimeStr, endTimeStr);
-
-				if (Debug)
-					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), BeautifyXml(requestXmlDoc.OuterXml));
-
-				//Send the request and get the response from QuickBooks
-				//var responseStr = Rp.ProcessRequest(SessionId, requestXmlDoc.OuterXml);
-
-				//if (Debug)
-				//	File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
-
-				//return ProcessResponse(actionType, responseStr);
-				return new List<object>();
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
-
-				if (Debug)
-					Console.Write("\n{0}", log);
-				#endregion Log
-
-				if (SessionBegun) {
-					Rp.EndSession(SessionId);
-					SessionBegun = false;
-				}
-
-				if (ConnectionOpen) {
-					Rp.CloseConnection();
-					ConnectionOpen = false;
-				}
-
-				return new List<object>();
 			}
 		}
 
