@@ -6,6 +6,7 @@ using Interop.QBFC13;
 
 namespace Yutaka.QuickBooks
 {
+	[Obsolete("Deprecated Oct 24, 2019. Use QB20191021Util instead.")]
 	public class Qb20191023Util
 	{
 		#region Fields
