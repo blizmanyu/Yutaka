@@ -46,11 +46,23 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		protected void BuildRequest(XmlDocument doc, XmlElement parent, ActionType actionType, string startTime, string endTime)
+		protected void BuildRequest(XmlDocument doc, XmlElement parent, ActionType actionType, params KeyValuePair<string, object>[] parameters)
 		{
 			var request = doc.CreateElement(String.Format("{0}Rq", actionType.ToString()));
 			parent.AppendChild(request);
 			XmlElement AccountRef, ItemRef, InventoryAdjustmentAdd, InventoryAdjustmentLineAdd, QuantityAdjustment, ModifiedDateRangeFilter;
+
+			#region Go through parameters
+			var dtFrom = "";
+			var dtTo = "";
+
+			foreach (var param in parameters) {
+				if (param.Key.Equals("dtFrom"))
+					dtFrom = param.Value.ToString();
+				else if (param.Key.Equals("dtTo"))
+					dtTo = param.Value.ToString();
+			}
+			#endregion Go through parameters
 
 			switch (actionType) {
 				#region InventoryAdjustmentAdd
@@ -74,8 +86,8 @@ namespace Yutaka.QuickBooks
 				case ActionType.InventoryAdjustmentQuery:
 					ModifiedDateRangeFilter = doc.CreateElement("ModifiedDateRangeFilter");
 					request.AppendChild(ModifiedDateRangeFilter);
-					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", startTime));
-					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", endTime));
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "FromModifiedDate", dtFrom));
+					ModifiedDateRangeFilter.AppendChild(MakeSimpleElem(doc, "ToModifiedDate", dtTo));
 					request.AppendChild(MakeSimpleElem(doc, "IncludeLineItems", "1"));
 					break;
 				#endregion InventoryAdjustmentQuery
@@ -84,27 +96,10 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		protected List<object> DoAction(ActionType actionType, DateTime? startTime = null, DateTime? endTime = null)
+		protected List<object> DoAction(ActionType actionType, params KeyValuePair<string, object>[] parameters)
 		{
-			#region Input Validation
 			if (actionType < 0)
 				throw new Exception(String.Format("<actionType> is required.{0}Exception thrown in QB20191021Util.DoAction(ActionType actionType, DateTime? startTime, DateTime? endTime).{0}", Environment.NewLine));
-
-			var now = DateTime.Now;
-			var minDate = now.AddYears(-10);
-			var maxDate = new DateTime(now.Year, 12, 31, 23, 59, 59, 999);
-
-			if (startTime == null || startTime < minDate)
-				startTime = minDate;
-			if (endTime == null || endTime > maxDate)
-				endTime = maxDate;
-
-			var startTimeStr = startTime.Value.ToString(QB_FORMAT);
-			var endTimeStr = endTime.Value.ToString(QB_FORMAT);
-
-			if (endTimeStr.Length < 20)
-				endTimeStr = string.Format("{0}-07:00", endTimeStr);
-			#endregion Input Validation
 
 			try {
 				if (!ConnectionOpen || !SessionBegun || String.IsNullOrWhiteSpace(SessionId))
@@ -125,7 +120,7 @@ namespace Yutaka.QuickBooks
 				var inner = requestXmlDoc.CreateElement("QBXMLMsgsRq");
 				outer.AppendChild(inner);
 				inner.SetAttribute("onError", "stopOnError");
-				BuildRequest(requestXmlDoc, inner, actionType, startTimeStr, endTimeStr);
+				BuildRequest(requestXmlDoc, inner, actionType, parameters);
 
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Request.xml", actionType.ToString()), BeautifyXml(requestXmlDoc.OuterXml));
@@ -145,23 +140,13 @@ namespace Yutaka.QuickBooks
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+					log = String.Format("{0}{2}Exception thrown in QBV20191021Util.DoAction(ActionType actionType='{3}', params KeyValuePair<string, object>[] parameters='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, actionType.ToString(), String.Join(", ", parameters));
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QBV20191021Util.DoAction(ActionType actionType='{3}', DateTime? startTime='{4}', DateTime? endTime='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), startTime, endTime);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of QBV20191021Util.DoAction(ActionType actionType='{3}', params KeyValuePair<string, object>[] parameters='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, actionType.ToString(), String.Join(", ", parameters));
 
 				if (Debug)
 					Console.Write("\n{0}", log);
 				#endregion Log
-
-				if (SessionBegun) {
-					Rp.EndSession(SessionId);
-					SessionBegun = false;
-				}
-
-				if (ConnectionOpen) {
-					Rp.CloseConnection();
-					ConnectionOpen = false;
-				}
 
 				return new List<object>();
 			}
