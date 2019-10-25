@@ -419,18 +419,18 @@ namespace Yutaka.QuickBooks
 		#endregion Connection
 
 		#region InventoryAdjustment
-		public bool AddInventoryAdjustment(string accountRefListId, string itemRefFullName, int quantityDifference)
+		public bool AddInventoryAdjustment(string accountRefListId, string sku, int quantityDifference)
 		{
 			#region Input Validation
 			var errorMsg = "";
 
 			if (String.IsNullOrWhiteSpace(accountRefListId))
 				errorMsg = String.Format("{0}<accountRefListId> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(itemRefFullName))
-				errorMsg = String.Format("{0}<itemRefFullName> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(sku))
+				errorMsg = String.Format("{0}<sku> is required.{1}", errorMsg, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(errorMsg)) {
-				Console.Write("\n{0}Error in QB20191021Util.AddInventoryAdjustment(string accountRefListId, string itemRefFullName, int quantityDifference).{1}", errorMsg, Environment.NewLine);
+				Console.Write("\n{0}Error in QB20191021Util.AddInventoryAdjustment(string accountRefListId, string sku, int quantityDifference).{1}", errorMsg, Environment.NewLine);
 				return false;
 			}
 			#endregion Input Validation
@@ -438,7 +438,7 @@ namespace Yutaka.QuickBooks
 			try {
 				var parameters = new KeyValuePair<string, object>[] {
 					new KeyValuePair<string, object>("accountRefListId", accountRefListId),
-					new KeyValuePair<string, object>("itemRefFullName", itemRefFullName),
+					new KeyValuePair<string, object>("itemRefFullName", String.Format("WINE:{0}", sku)),
 					new KeyValuePair<string, object>("quantityDifference", quantityDifference),
 				};
 
@@ -448,9 +448,9 @@ namespace Yutaka.QuickBooks
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, accountRefListId, itemRefFullName, quantityDifference);
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string sku='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, accountRefListId, sku, quantityDifference);
 				else
-					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, accountRefListId, itemRefFullName, quantityDifference);
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string sku='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, accountRefListId, sku, quantityDifference);
 
 				Console.Write("\n{0}", errorMsg);
 				return false;
