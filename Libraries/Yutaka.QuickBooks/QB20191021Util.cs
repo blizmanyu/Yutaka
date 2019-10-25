@@ -94,7 +94,7 @@ namespace Yutaka.QuickBooks
 					InventoryAdjustmentAdd.AppendChild(InventoryAdjustmentLineAdd);
 					ItemRef = doc.CreateElement("ItemRef");
 					InventoryAdjustmentLineAdd.AppendChild(ItemRef);
-					ItemRef.AppendChild(MakeSimpleElem(doc, "ListID", itemRefFullName));
+					ItemRef.AppendChild(MakeSimpleElem(doc, "FullName", itemRefFullName));
 					QuantityAdjustment = doc.CreateElement("QuantityAdjustment");
 					InventoryAdjustmentLineAdd.AppendChild(QuantityAdjustment);
 					QuantityAdjustment.AppendChild(MakeSimpleElem(doc, "QuantityDifference", quantityDifference.ToString()));
