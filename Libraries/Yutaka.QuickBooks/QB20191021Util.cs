@@ -53,14 +53,32 @@ namespace Yutaka.QuickBooks
 			XmlElement AccountRef, ItemRef, InventoryAdjustmentAdd, InventoryAdjustmentLineAdd, QuantityAdjustment, ModifiedDateRangeFilter;
 
 			#region Go through parameters
+			var accountRefListId = "";
 			var dtFrom = "";
 			var dtTo = "";
+			var itemRefListId = "";
+			var quantityDifference = 0;
 
 			foreach (var param in parameters) {
-				if (param.Key.Equals("dtFrom"))
-					dtFrom = param.Value.ToString();
-				else if (param.Key.Equals("dtTo"))
-					dtTo = param.Value.ToString();
+				switch (param.Key) {
+					case "accountRefListId":
+						accountRefListId = param.Value.ToString();
+						break;
+					case "dtFrom":
+						dtFrom = param.Value.ToString();
+						break;
+					case "dtTo":
+						dtTo = param.Value.ToString();
+						break;
+					case "itemRefListId":
+						itemRefListId = param.Value.ToString();
+						break;
+					case "quantityDifference":
+						quantityDifference = (int) param.Value;
+						break;
+					default:
+						break;
+				}
 			}
 			#endregion Go through parameters
 
@@ -71,15 +89,15 @@ namespace Yutaka.QuickBooks
 					request.AppendChild(InventoryAdjustmentAdd);
 					AccountRef = doc.CreateElement("AccountRef");
 					InventoryAdjustmentAdd.AppendChild(AccountRef);
-					AccountRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					AccountRef.AppendChild(MakeSimpleElem(doc, "ListID", accountRefListId));
 					InventoryAdjustmentLineAdd = doc.CreateElement("InventoryAdjustmentLineAdd");
 					InventoryAdjustmentAdd.AppendChild(InventoryAdjustmentLineAdd);
 					ItemRef = doc.CreateElement("ItemRef");
 					InventoryAdjustmentLineAdd.AppendChild(ItemRef);
-					ItemRef.AppendChild(MakeSimpleElem(doc, "ListID", "IDTYPE"));
+					ItemRef.AppendChild(MakeSimpleElem(doc, "ListID", itemRefListId));
 					QuantityAdjustment = doc.CreateElement("QuantityAdjustment");
 					InventoryAdjustmentLineAdd.AppendChild(QuantityAdjustment);
-					QuantityAdjustment.AppendChild(MakeSimpleElem(doc, "QuantityDifference", "QUANTYPE"));
+					QuantityAdjustment.AppendChild(MakeSimpleElem(doc, "QuantityDifference", quantityDifference.ToString()));
 					break;
 				#endregion InventoryAdjustmentAdd
 				#region InventoryAdjustmentQuery
