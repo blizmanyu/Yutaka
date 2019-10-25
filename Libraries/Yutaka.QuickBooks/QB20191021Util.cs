@@ -149,8 +149,10 @@ namespace Yutaka.QuickBooks
 				if (Debug)
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
 
-				return ProcessResponse(actionType, responseStr);
-				//return new List<object>(); // For debugging only //
+				if (actionType.ToString().EndsWith("Query"))
+					return ProcessResponse(actionType, responseStr);
+
+				return new List<object>();
 			}
 
 			catch (Exception ex) {
