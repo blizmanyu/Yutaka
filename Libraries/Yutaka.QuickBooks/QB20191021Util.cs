@@ -132,7 +132,7 @@ namespace Yutaka.QuickBooks
 					File.WriteAllText(String.Format(@"C:\TEMP\{0}Response.xml", actionType.ToString()), BeautifyXml(responseStr));
 
 				return ProcessResponse(actionType, responseStr);
-				//return new List<object>();
+				//return new List<object>(); // For debugging only //
 			}
 
 			catch (Exception ex) {
@@ -334,6 +334,7 @@ namespace Yutaka.QuickBooks
 		#endregion Utilities
 
 		#region Public Methods
+		#region Connection
 		public void CloseConnection()
 		{
 			if (SessionBegun) {
@@ -397,6 +398,46 @@ namespace Yutaka.QuickBooks
 				return false;
 			}
 		}
+		#endregion Connection
+
+		#region InventoryAdjustment
+		public bool AddInventoryAdjustment(string accountRefListId, string itemRefListId, int quantityDifference)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(accountRefListId))
+				errorMsg = String.Format("{0}<accountRefListId> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(itemRefListId))
+				errorMsg = String.Format("{0}<itemRefListId> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.AddInventoryAdjustment(string accountRefListId, string itemRefListId, int quantityDifference).{1}", errorMsg, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Validation
+
+			try {
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("accountRefListId", accountRefListId),
+					new KeyValuePair<string, object>("itemRefListId", itemRefListId),
+					new KeyValuePair<string, object>("quantityDifference", quantityDifference),
+				};
+
+				var result = DoAction(ActionType.InventoryAdjustmentAdd, parameters);
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string itemRefListId='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, accountRefListId, itemRefListId, quantityDifference);
+				else
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddInventoryAdjustment(string accountRefListId='{3}', string itemRefListId='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, accountRefListId, itemRefListId, quantityDifference);
+
+				Console.Write("\n{0}", errorMsg);
+				return false;
+			}
+		}
 
 		public List<InventoryAdjustmentRet> GetAllInventoryAdjustments(DateTime? dtFrom, DateTime? dtTo = null)
 		{
@@ -411,9 +452,9 @@ namespace Yutaka.QuickBooks
 			#endregion Input Validation
 
 			var parameters = new KeyValuePair<string, object>[] {
-					new KeyValuePair<string, object>("dtFrom", dtFromStr),
-					new KeyValuePair<string, object>("dtTo", dtToStr),
-				};
+				new KeyValuePair<string, object>("dtFrom", dtFromStr),
+				new KeyValuePair<string, object>("dtTo", dtToStr),
+			};
 
 			var list = new List<InventoryAdjustmentRet>();
 			var rets = DoAction(ActionType.InventoryAdjustmentQuery, parameters);
@@ -423,6 +464,7 @@ namespace Yutaka.QuickBooks
 
 			return list;
 		}
+		#endregion InventoryAdjustment
 		#endregion Public Methods
 	}
 }
