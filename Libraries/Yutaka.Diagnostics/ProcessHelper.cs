@@ -116,20 +116,22 @@ namespace Yutaka.Diagnostics
 			Process.Start(psi);
 		}
 
-		public static void RestartComputer(bool force = true, int waitTime = 60, string remoteCompName = null)
+		public static void RestartComputer(bool force = true, int waitTime = 60, string remoteCompName = null, bool createWindow = false)
 		{
-			var args = "/r ";
+			var args = "-r";
 
 			if (force)
-				args += "/f ";
+				args = String.Format("{0} -f", args);
 			if (waitTime > 0)
-				args += string.Format("/t {0} ", waitTime);
-			if (!string.IsNullOrEmpty(remoteCompName))
-				args += string.Format(@"/m \\{1}", remoteCompName);
+				args = String.Format("{0} -t {1}", args, waitTime);
+			if (!String.IsNullOrWhiteSpace(remoteCompName))
+				args = String.Format(@"{0} -m \\{1}", args, remoteCompName);
 
-			var psi = new ProcessStartInfo("shutdown", args);
-			psi.CreateNoWindow = true;
-			psi.UseShellExecute = false;
+			var psi = new ProcessStartInfo("shutdown", args) {
+				CreateNoWindow = !createWindow,
+				UseShellExecute = false,
+			};
+
 			Process.Start(psi);
 		}
 
