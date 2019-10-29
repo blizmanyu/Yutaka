@@ -122,7 +122,7 @@ namespace Yutaka.Diagnostics
 			Process.Start(psi);
 		}
 
-		public static int StartProcess(string fileName, string args=null, bool redirectStandardOutput = true, bool redirectStandardError = true, bool useShellExecute = false, bool createNoWindow = true)
+		public static int StartProcess(string fileName, string args = null, bool redirectStandardOutput = true, bool redirectStandardError = true, bool useShellExecute = false, bool createNoWindow = true)
 		{
 			if (String.IsNullOrWhiteSpace(fileName))
 				throw new Exception(String.Format("<fileName> is required.{0}Exception thrown in ProcessHelper.StartProcess(string fileName, string args, bool redirectStandardOutput, bool redirectStandardError, bool useShellExecute, bool createNoWindow).{0}{0}", Environment.NewLine));
