@@ -5,6 +5,7 @@ using System.Threading;
 
 namespace Yutaka.Diagnostics
 {
+	[Obsolete("Deprecated Oct 28, 2019. Use ProcessUtil instead.", true)]
 	public static class ProcessHelper
 	{
 		public const int ONE_DAY_IN_SECONDS = 86400;
