@@ -103,19 +103,6 @@ namespace Yutaka.Diagnostics
 			RefreshTrayArea(notificationAreaHandle);
 		}
 
-		public static void RestartComputer(string remoteCompName = null)
-		{
-			var args = "/r /f /t 30";
-
-			if (!string.IsNullOrEmpty(remoteCompName))
-				args = string.Format(@"{0} /m \\{1}", args, remoteCompName);
-
-			var psi = new ProcessStartInfo("shutdown", args);
-			psi.CreateNoWindow = true;
-			psi.UseShellExecute = false;
-			Process.Start(psi);
-		}
-
 		public static void RestartComputer(bool force = true, int waitTime = 60, string remoteCompName = null, bool createWindow = false)
 		{
 			var args = "-r";
