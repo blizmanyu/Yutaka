@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using Yutaka.Data;
+using Yutaka.Diagnostics;
 using Yutaka.Images;
 using Yutaka.IO;
 using Yutaka.Net;
@@ -171,9 +172,16 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_QB20191021Util();
+			Tests_ProcessHelper_GetUpTime();
 			EndProgram();
 		}
+
+		#region Tests ProcessHelper.GetUpTime
+		private static void Tests_ProcessHelper_GetUpTime()
+		{
+			Console.Write("\nUp Time: {0}", ProcessHelper.GetUpTime());
+		}
+		#endregion Tests ProcessHelper.GetUpTime
 
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()

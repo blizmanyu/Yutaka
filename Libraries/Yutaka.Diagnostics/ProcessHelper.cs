@@ -75,6 +75,14 @@ namespace Yutaka.Diagnostics
 				KillProcessesByName(processName);
 		}
 
+		public static float GetUpTime()
+		{
+			using (var uptime = new PerformanceCounter("System", "System Up Time")) {
+				uptime.NextValue(); // call this an extra time before reading its value
+				return uptime.NextValue();
+			}
+		}
+
 		public static void RefreshTrayArea()
 		{
 			IntPtr systemTrayContainerHandle = FindWindow("Shell_TrayWnd", null);
