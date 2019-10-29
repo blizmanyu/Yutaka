@@ -7,6 +7,9 @@ namespace Yutaka.Diagnostics
 {
 	public static class ProcessHelper
 	{
+		public const int ONE_DAY_IN_SECONDS = 86400;
+		public const int FIVE_DAYS_IN_SECONDS = 432000;
+
 		#region DLL Imports
 		[StructLayout(LayoutKind.Sequential)]
 		public struct RECT
