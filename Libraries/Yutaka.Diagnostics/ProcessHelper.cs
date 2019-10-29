@@ -116,7 +116,7 @@ namespace Yutaka.Diagnostics
 			Process.Start(psi);
 		}
 
-		public static void RestartComputer(bool force = true, int waitTime = 30, string remoteCompName = null)
+		public static void RestartComputer(bool force = true, int waitTime = 60, string remoteCompName = null)
 		{
 			var args = "/r ";
 
