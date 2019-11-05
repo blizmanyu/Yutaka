@@ -6,6 +6,17 @@ using Interop.QBXMLRP2Lib;
 
 namespace Yutaka.QuickBooks
 {
+	/// <summary>
+	/// To support a new Action/Query, simply perform these 5 steps:
+	/// 1) Add the Action to the Enum ActionType.
+	/// 2) Look at the Response portion of the XMLOps from the API Docs to create a C# class that corresponds to the Ret object.
+	/// 3) In the method BuildRequest(), add a case to build the request XML for your action. Make sure you read/handle the params object that comes
+	///	   in for you specific action.
+	///	4) If your action is a Query, add a case in the ProcessReturn() method to convert the response XML to a list of ret class you created in number (2).
+	///	   Also do this if your action isn't a query, but you still want to see the returned object.
+	///	5) Create a public method that takes in logically-named parameters that converts them to the more-general params object to pass into DoAction().
+	///	   If you want your public method to return a list, "upcast" it to a list of your Ret objects instead of generic objects.
+	/// </summary>
 	public class QB20191021Util
 	{
 		#region Fields
@@ -114,6 +125,7 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
+		// This is the main method that actually sends the request to QuickBooks. Most of the other methods are called from within this method.
 		protected List<object> DoAction(ActionType actionType, params KeyValuePair<string, object>[] parameters)
 		{
 			if (actionType < 0)
