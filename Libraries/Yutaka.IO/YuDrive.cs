@@ -26,20 +26,24 @@ namespace Yutaka.IO
 				Console.Write("\n");
 			}
 
-			Console.Write("\n======= Network Locations =======");
+			Console.Write("\n======= Network Locations =======");//asdf
 			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Network"))) {
-				Console.Write("\n       DriveFormat: {0}", drive.DriveFormat);
-				Console.Write("\n         DriveType: {0}", drive.DriveType);
-				Console.Write("\n         GetType(): {0}", drive.GetType());
-				Console.Write("\n           IsReady: {0}", drive.IsReady);
-				Console.Write("\n              Name: {0}", drive.Name);
-				Console.Write("\n     RootDirectory: {0}", drive.RootDirectory);
-				Console.Write("\n        ToString(): {0}", drive.ToString());
-				Console.Write("\nAvailableFreeSpace: {0}", drive.AvailableFreeSpace);
-				Console.Write("\n    TotalFreeSpace: {0}", drive.TotalFreeSpace);
-				Console.Write("\n         TotalSize: {0}", drive.TotalSize);
-				Console.Write("\n       VolumeLabel: {0}", drive.VolumeLabel);
-				Console.Write("\n");
+				try {
+					Console.Write("\n       DriveFormat: {0}", drive.DriveFormat);
+					Console.Write("\n         DriveType: {0}", drive.DriveType);
+					Console.Write("\n         GetType(): {0}", drive.GetType());
+					Console.Write("\n           IsReady: {0}", drive.IsReady);
+					Console.Write("\n              Name: {0}", drive.Name);
+					Console.Write("\n     RootDirectory: {0}", drive.RootDirectory);
+					Console.Write("\n        ToString(): {0}", drive.ToString());
+					Console.Write("\nAvailableFreeSpace: {0}", drive.AvailableFreeSpace);
+					Console.Write("\n    TotalFreeSpace: {0}", drive.TotalFreeSpace);
+					Console.Write("\n         TotalSize: {0}", drive.TotalSize);
+					Console.Write("\n       VolumeLabel: {0}", drive.VolumeLabel);
+					Console.Write("\n");
+				}
+
+				catch (Exception) { continue; }
 			}
 		}
 
