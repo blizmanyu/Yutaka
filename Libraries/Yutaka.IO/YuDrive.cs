@@ -138,12 +138,16 @@ namespace Yutaka.IO
 
 			Console.Write("\n======= Network Locations =======");
 			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Network"))) {
-				used = drive.TotalSize - drive.TotalFreeSpace;
-				Console.Write("\n{0}) '{1}' ({2})", ++driveCount, drive.VolumeLabel, drive.Name);
-				Console.Write("\n Used space: {0} ({1:p})", ToFriendlyUnits(used), (decimal) used / drive.TotalSize);
-				Console.Write("\n Free space: {0} ({1:p})", ToFriendlyUnits(drive.TotalFreeSpace), (decimal) drive.TotalFreeSpace / drive.TotalSize);
-				Console.Write("\n   Capacity: {0}", ToFriendlyUnits(drive.TotalSize));
-				Console.Write("\n");
+				try {
+					used = drive.TotalSize - drive.TotalFreeSpace;
+					Console.Write("\n{0}) '{1}' ({2})", ++driveCount, drive.VolumeLabel, drive.Name);
+					Console.Write("\n Used space: {0} ({1:p})", ToFriendlyUnits(used), (decimal) used / drive.TotalSize);
+					Console.Write("\n Free space: {0} ({1:p})", ToFriendlyUnits(drive.TotalFreeSpace), (decimal) drive.TotalFreeSpace / drive.TotalSize);
+					Console.Write("\n   Capacity: {0}", ToFriendlyUnits(drive.TotalSize));
+					Console.Write("\n");
+				}
+
+				catch (Exception) { continue; }
 			}
 		}
 	}
