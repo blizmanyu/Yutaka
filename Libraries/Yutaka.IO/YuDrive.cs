@@ -26,7 +26,7 @@ namespace Yutaka.IO
 				Console.Write("\n");
 			}
 
-			Console.Write("\n======= Network Locations =======");//asdf
+			Console.Write("\n======= Network Locations =======");
 			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Network"))) {
 				try {
 					Console.Write("\n       DriveFormat: {0}", drive.DriveFormat);
