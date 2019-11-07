@@ -179,18 +179,18 @@ namespace Yutaka.Tests
 		#region Tests ProcessHelper.RestartComputer
 		private static void Tests_ProcessHelper_RestartComputer()
 		{
-			ProcessHelper.RestartComputer();
-			ProcessHelper.RestartComputer(force: false);
-			ProcessHelper.RestartComputer(waitTime: 30);
-			ProcessHelper.RestartComputer(remoteCompName: "laksjdf");
-			ProcessHelper.RestartComputer(createWindow: true);
+			ProcessUtil.RestartComputer();
+			ProcessUtil.RestartComputer(force: false);
+			ProcessUtil.RestartComputer(waitTime: 30);
+			ProcessUtil.RestartComputer(remoteCompName: "laksjdf");
+			ProcessUtil.RestartComputer(createWindow: true);
 		}
 		#endregion Tests ProcessHelper.RestartComputer
 
 		#region Tests ProcessHelper.GetUpTime
 		private static void Tests_ProcessHelper_GetUpTime()
 		{
-			Console.Write("\nUp Time: {0}", ProcessHelper.GetUpTime());
+			Console.Write("\nUp Time: {0}", ProcessUtil.GetUpTime());
 		}
 		#endregion Tests ProcessHelper.GetUpTime
 

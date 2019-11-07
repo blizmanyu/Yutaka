@@ -1,0 +1,150 @@
+﻿using System;
+using System.IO;
+using System.Linq;
+
+namespace Yutaka.IO
+{
+	public class YuDrive
+	{
+		public void Debug()
+		{
+			var drives = DriveInfo.GetDrives();
+
+			Console.Write("\n======= Local Disks =============");
+			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Fixed"))) {
+				Console.Write("\n        DriveFormat: {0}", drive.DriveFormat);
+				Console.Write("\n          DriveType: {0}", drive.DriveType);
+				Console.Write("\n          GetType(): {0}", drive.GetType());
+				Console.Write("\n            IsReady: {0}", drive.IsReady);
+				Console.Write("\n               Name: {0}", drive.Name);
+				Console.Write("\n      RootDirectory: {0}", drive.RootDirectory);
+				Console.Write("\n         ToString(): {0}", drive.ToString());
+				Console.Write("\n AvailableFreeSpace: {0}", drive.AvailableFreeSpace);
+				Console.Write("\n     TotalFreeSpace: {0}", drive.TotalFreeSpace);
+				Console.Write("\n          TotalSize: {0}", drive.TotalSize);
+				Console.Write("\n        VolumeLabel: {0}", drive.VolumeLabel);
+				Console.Write("\n");
+			}
+
+			Console.Write("\n======= Network Locations =======");
+			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Network"))) {
+				Console.Write("\n        DriveFormat: {0}", drive.DriveFormat);
+				Console.Write("\n          DriveType: {0}", drive.DriveType);
+				Console.Write("\n          GetType(): {0}", drive.GetType());
+				Console.Write("\n            IsReady: {0}", drive.IsReady);
+				Console.Write("\n               Name: {0}", drive.Name);
+				Console.Write("\n      RootDirectory: {0}", drive.RootDirectory);
+				Console.Write("\n         ToString(): {0}", drive.ToString());
+				Console.Write("\n AvailableFreeSpace: {0}", drive.AvailableFreeSpace);
+				Console.Write("\n     TotalFreeSpace: {0}", drive.TotalFreeSpace);
+				Console.Write("\n          TotalSize: {0}", drive.TotalSize);
+				Console.Write("\n        VolumeLabel: {0}", drive.VolumeLabel);
+				Console.Write("\n");
+			}
+		}
+
+		public string ToFriendlyUnits(long bytes)
+		{
+			if (bytes == 0)
+				return "0 bytes";
+			if (bytes < 1000)
+				return String.Format("{0} bytes", bytes);
+
+			string unit;
+			decimal temp;
+
+			#region KB
+			if (bytes < 1000000) {
+				temp = (decimal) bytes / 1024;
+				unit = "KB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:n0}  {1}", temp, unit);
+			}
+			#endregion KB
+
+			#region MB
+			if (bytes < 1000000000) {
+				temp = (decimal) bytes / 1024 / 1024;
+				unit = "MB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:n0}  {1}", temp, unit);
+			}
+			#endregion MB
+
+			#region GB
+			if (bytes < 1000000000000) {
+				temp = (decimal) bytes / 1024 / 1024 / 1024;
+				unit = "GB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:n0}  {1}", temp, unit);
+			}
+			#endregion GB
+
+			#region TB
+			if (bytes < 1000000000000000) {
+				temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024;
+				unit = "TB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:n0}  {1}", temp, unit);
+			}
+			#endregion TB
+
+			temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024 / 1024;
+			unit = "PB";
+
+			if (temp < 10)
+				return String.Format("{0:n2} {1}", temp, unit);
+			if (temp < 100)
+				return String.Format("{0:n1} {1}", temp, unit);
+
+			return String.Format("{0:n0}  {1}", temp, unit);
+		}
+
+		public void WriteToConsole()
+		{
+			long used;
+			var driveCount = 0;
+			var drives = DriveInfo.GetDrives();
+
+			Console.Write("\n======= Local Disks =============");
+			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Fixed"))) {
+				used = drive.TotalSize - drive.TotalFreeSpace;
+				Console.Write("\n{0}) '{1}' ({2})", ++driveCount, drive.VolumeLabel, drive.Name);
+				Console.Write("\n Used space: {0} ({1:p})", ToFriendlyUnits(used), (decimal) used / drive.TotalSize);
+				Console.Write("\n Free space: {0} ({1:p})", ToFriendlyUnits(drive.TotalFreeSpace), (decimal) drive.TotalFreeSpace / drive.TotalSize);
+				Console.Write("\n   Capacity: {0}", ToFriendlyUnits(drive.TotalSize));
+				Console.Write("\n");
+			}
+
+			Console.Write("\n======= Network Locations =======");
+			foreach (var drive in drives.Where(x => x.DriveType.ToString().Equals("Network"))) {
+				used = drive.TotalSize - drive.TotalFreeSpace;
+				Console.Write("\n{0}) '{1}' ({2})", ++driveCount, drive.VolumeLabel, drive.Name);
+				Console.Write("\n Used space: {0} ({1:p})", ToFriendlyUnits(used), (decimal) used / drive.TotalSize);
+				Console.Write("\n Free space: {0} ({1:p})", ToFriendlyUnits(drive.TotalFreeSpace), (decimal) drive.TotalFreeSpace / drive.TotalSize);
+				Console.Write("\n   Capacity: {0}", ToFriendlyUnits(drive.TotalSize));
+				Console.Write("\n");
+			}
+		}
+	}
+}
