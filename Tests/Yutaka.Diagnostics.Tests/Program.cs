@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Yutaka.Diagnostics.Tests
 {
@@ -39,19 +38,37 @@ namespace Yutaka.Diagnostics.Tests
 		#region Tests for FfmpegProcess
 		private static void Test_CreateAnimatedGif()
 		{
+			TimeSpan startTime;
 			var length = TimeSpan.FromMilliseconds(10000);
 			var source = @"asdf";
 			var fps = 24;
 			var width = 960;
 
-			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(0), length, source, fps, width, true)) {
-				ffmpeg.WaitForExit();
+			startTime = TimeSpan.FromMilliseconds(0);
+			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+				proc1.WaitForExit();
+
+				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+					proc2.WaitForExit();
+				}
 			}
-			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(500), length, source, fps, width, true)) {
-				ffmpeg.WaitForExit();
+
+			startTime = TimeSpan.FromMilliseconds(500);
+			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+				proc1.WaitForExit();
+
+				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+					proc2.WaitForExit();
+				}
 			}
-			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(1000), length, source, fps, width, true)) {
-				ffmpeg.WaitForExit();
+
+			startTime = TimeSpan.FromMilliseconds(1000);
+			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+				proc1.WaitForExit();
+
+				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+					proc2.WaitForExit();
+				}
 			}
 		}
 		#endregion Tests for FfmpegProcess
