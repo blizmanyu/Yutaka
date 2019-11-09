@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FfmpegProcess.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="ProcessUtil.cs" />
     <Compile Include="ProcessHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
