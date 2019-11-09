@@ -43,6 +43,9 @@
     <Reference Include="Yutaka.Diagnostics">
       <HintPath>..\..\Libraries\Yutaka.Diagnostics\bin\Release\Yutaka.Diagnostics.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.IO">
+      <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

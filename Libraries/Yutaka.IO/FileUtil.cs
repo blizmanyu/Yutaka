@@ -302,6 +302,28 @@ namespace Yutaka.IO
 			}
 		}
 
+		public void CreateGalleryHtml(string folder)
+		{
+			#region Parameter Check
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(folder))
+				errorMsg = String.Format("{0}<folder> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg))
+				throw new Exception(String.Format("{0}{1}", errorMsg, Environment.NewLine));
+			#endregion Parameter Check
+
+			var sb = new StringBuilder();
+			var files = Directory.EnumerateFiles(folder, "*thumb.gif", SearchOption.TopDirectoryOnly);
+			foreach (var file in files) {
+				sb.Append(String.Format("<a href='{0}' target='_blank'><img src='{1}' /></a>", file.Replace("-thumb", ""), file));
+			}
+
+			var dest = Path.Combine(folder, String.Format(@"{0}.html", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			Write(sb, dest);
+		}
+
 		public int DeleteAllThumbsDb(string folderPath, SearchOption searchOption=SearchOption.AllDirectories)
 		{
 			var deletedCount = 0;

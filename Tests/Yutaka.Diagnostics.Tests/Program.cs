@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Yutaka.IO;
 
 namespace Yutaka.Diagnostics.Tests
 {
@@ -43,6 +44,10 @@ namespace Yutaka.Diagnostics.Tests
 			var source = @"asdf";
 			var fps = 24;
 			var width = 960;
+
+			var _fileUtil = new FileUtil();
+			_fileUtil.CreateGalleryHtml(@"C:\TEMP");
+			return;
 
 			startTime = TimeSpan.FromMilliseconds(10000);
 			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
