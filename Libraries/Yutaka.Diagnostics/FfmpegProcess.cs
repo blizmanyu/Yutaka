@@ -14,13 +14,11 @@ namespace Yutaka.Diagnostics
 		/// <param name="startTime"></param>
 		/// <param name="length"></param>
 		/// <param name="source"></param>
-		/// <param name="output"></param>
-		/// <param name="overwriteAll"></param>
 		/// <param name="fps"></param>
 		/// <param name="width"></param>
-		/// <param name="createThumbnail"></param>
 		/// <param name="createWindow"></param>
-		public static Process StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, string output, bool? overwriteAll = null, int fps = 24, int width = 960, bool createThumbnail = false, bool createWindow = true)
+		/// <returns></returns>
+		public static Process StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true)
 		{
 			#region Parameter Check
 			var errorMsg = "";
@@ -33,8 +31,6 @@ namespace Yutaka.Diagnostics
 				errorMsg = String.Format("{0}<source> is required.{1}", errorMsg, Environment.NewLine);
 			else if (!File.Exists(source))
 				errorMsg = String.Format("{0}<source> doesn't exist.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(output))
-				errorMsg = String.Format("{0}<output> is required.{1}", errorMsg, Environment.NewLine);
 			if (fps < 1)
 				errorMsg = String.Format("{0}<fps> must be at least 1.{1}", errorMsg, Environment.NewLine);
 			if (width < 1)

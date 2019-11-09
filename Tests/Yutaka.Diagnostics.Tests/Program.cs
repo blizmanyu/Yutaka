@@ -39,49 +39,8 @@ namespace Yutaka.Diagnostics.Tests
 		#region Tests for FfmpegProcess
 		private static void Test_CreateAnimatedGif()
 		{
-			//try {
-			//	FfmpegProcess ffmpeg;
 			var source = @"asdf";
-			//	using (ffmpeg = FfmpegProcess.CreateAnimatedGif() {
-			//		ffmpeg.CreateAnimatedGif(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true);
-			//		using (var proc = FfmpegProcess.GetProcessById(ffmpeg.Id)) {
-			//			if (proc.ProcessName.Equals("ffmpeg"))
-			//				Console.Write("\nproc.ProcessName.Equals('ffmpeg')\n");
-			//			else
-			//				Console.Write("\nproc.ProcessName does NOT Equal 'ffmpeg'\n");
-			//		}
-			//	}
-			//	Thread.Sleep(2200);
-			//	using (ffmpeg = new FfmpegProcess()) {
-			//		ffmpeg.CreateAnimatedGif(TimeSpan.FromMilliseconds(500), TimeSpan.FromMilliseconds(10000), source, "output", true, 24, 960, false, true);
-			//	}
-			//	Thread.Sleep(2200);
-			//	using (ffmpeg = new FfmpegProcess()) {
-			//		ffmpeg.CreateAnimatedGif(TimeSpan.FromMilliseconds(1000), TimeSpan.FromMilliseconds(10000), source, "output", false, 24, 960, false, true);
-			//	}
-			//	Thread.Sleep(2200);
-			//}
 
-			//catch (Exception ex) {
-			//	var log = "";
-
-			//	if (ex.InnerException == null)
-			//		log = String.Format("{0}{2}{2}Exception thrown in Program.Test_CreateAnimatedGif(){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-			//	else
-			//		log = String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Program.Test_CreateAnimatedGif(){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
-
-			//	if (log.Contains("The system cannot find the file specified"))
-			//		Console.Write("\nThe system can't find ffmpeg. Make sure it's installed on the system AND it's Path is in the Environment Variables.");
-			//	else
-			//		Console.Write("\n{0}", log);
-			//}
-
-
-			// Define variables to track the peak
-			// memory usage of the process.
-			long peakPagedMem = 0,
-				 peakWorkingSet = 0,
-				 peakVirtualMem = 0;
 			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true)) {
 				// Display the process statistics until
 				// the user closes the program.
