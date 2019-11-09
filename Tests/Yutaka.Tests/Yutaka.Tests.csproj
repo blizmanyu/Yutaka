@@ -66,9 +66,6 @@
     <Reference Include="Yutaka.Data">
       <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.Diagnostics">
-      <HintPath>..\..\Libraries\Yutaka.Diagnostics\bin\Release\Yutaka.Diagnostics.dll</HintPath>
-    </Reference>
     <Reference Include="Yutaka.Images">
       <HintPath>..\..\Libraries\Yutaka.Images\bin\Release\Yutaka.Images.dll</HintPath>
     </Reference>

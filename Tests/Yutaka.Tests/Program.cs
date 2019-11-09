@@ -13,7 +13,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
 using Yutaka.Data;
-using Yutaka.Diagnostics;
 using Yutaka.Images;
 using Yutaka.IO;
 using Yutaka.Net;
@@ -172,27 +171,10 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Tests_ProcessHelper_RestartComputer();
+			//Tests_ProcessHelper_RestartComputer();
 			EndProgram();
 		}
 
-		#region Tests ProcessHelper.RestartComputer
-		private static void Tests_ProcessHelper_RestartComputer()
-		{
-			ProcessUtil.RestartComputer();
-			ProcessUtil.RestartComputer(force: false);
-			ProcessUtil.RestartComputer(waitTime: 30);
-			ProcessUtil.RestartComputer(remoteCompName: "laksjdf");
-			ProcessUtil.RestartComputer(createWindow: true);
-		}
-		#endregion Tests ProcessHelper.RestartComputer
-
-		#region Tests ProcessHelper.GetUpTime
-		private static void Tests_ProcessHelper_GetUpTime()
-		{
-			Console.Write("\nUp Time: {0}", ProcessUtil.GetUpTime());
-		}
-		#endregion Tests ProcessHelper.GetUpTime
 
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()

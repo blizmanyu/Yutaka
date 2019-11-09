@@ -116,6 +116,22 @@ namespace Yutaka.Diagnostics.Tests
 		}
 		#endregion Tests for FfmpegProcess
 
+		#region Tests for ProcessUtil
+		private static void Test_GetUpTime()
+		{
+			Console.Write("\nUp Time: {0}", ProcessUtil.GetUpTime());
+		}
+
+		private static void Test_RestartComputer()
+		{
+			ProcessUtil.RestartComputer();
+			ProcessUtil.RestartComputer(force: false);
+			ProcessUtil.RestartComputer(waitTime: 61);
+			ProcessUtil.RestartComputer(remoteCompName: "laksjdf");
+			ProcessUtil.RestartComputer(createWindow: true);
+		}
+		#endregion Tests for ProcessUtil
+
 		#region Start & EndProgram
 		static void StartProgram()
 		{
