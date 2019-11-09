@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Yutaka.Diagnostics.Tests
 {
@@ -31,9 +32,89 @@ namespace Yutaka.Diagnostics.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//asdf();
+			Test_CreateAnimatedGif();
 			EndProgram();
 		}
+
+		#region Tests for FfmpegProcess
+		private static void Test_CreateAnimatedGif()
+		{
+			try {
+				var ffmpeg = new FfmpegProcess();
+				//ffmpeg.CreateAnimatedGif();
+				Thread.Sleep(1000);
+			}
+
+			catch (Exception ex) {
+				var log = "";
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}{2}Exception thrown in Program.Test_CreateAnimatedGif(){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Program.Test_CreateAnimatedGif(){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				if (log.Contains("The system cannot find the file specified"))
+					Console.Write("\nThe system can't find ffmpeg. Make sure it's installed on the system AND it's Path is in the Environment Variables.");
+				else
+					Console.Write("\n{0}", log);
+			}
+
+
+			// Define variables to track the peak
+			// memory usage of the process.
+			//long peakPagedMem = 0,
+			//	 peakWorkingSet = 0,
+			//	 peakVirtualMem = 0;
+			//using (var ffmpeg = new FfmpegProcess()) {
+			//	// Display the process statistics until
+			//	// the user closes the program.
+			//	do {
+			//		if (!ffmpeg.HasExited) {
+			//			// Refresh the current process property values.
+			//			ffmpeg.Refresh();
+
+			//			Console.WriteLine();
+
+			//			// Display current process statistics.
+
+			//			Console.WriteLine($"{ffmpeg} -");
+			//			Console.WriteLine("-------------------------------------");
+
+			//			Console.WriteLine($"  Physical memory usage     : {ffmpeg.WorkingSet64}");
+			//			Console.WriteLine($"  Base priority             : {ffmpeg.BasePriority}");
+			//			Console.WriteLine($"  Priority class            : {ffmpeg.PriorityClass}");
+			//			Console.WriteLine($"  User processor time       : {ffmpeg.UserProcessorTime}");
+			//			Console.WriteLine($"  Privileged processor time : {ffmpeg.PrivilegedProcessorTime}");
+			//			Console.WriteLine($"  Total processor time      : {ffmpeg.TotalProcessorTime}");
+			//			Console.WriteLine($"  Paged system memory size  : {ffmpeg.PagedSystemMemorySize64}");
+			//			Console.WriteLine($"  Paged memory size         : {ffmpeg.PagedMemorySize64}");
+
+			//			// Update the values for the overall peak memory statistics.
+			//			peakPagedMem = ffmpeg.PeakPagedMemorySize64;
+			//			peakVirtualMem = ffmpeg.PeakVirtualMemorySize64;
+			//			peakWorkingSet = ffmpeg.PeakWorkingSet64;
+
+			//			if (ffmpeg.Responding) {
+			//				Console.WriteLine("Status = Running");
+			//			}
+			//			else {
+			//				Console.WriteLine("Status = Not Responding");
+			//			}
+			//		}
+			//	}
+			//	while (!ffmpeg.WaitForExit(1000));
+
+
+			//	Console.WriteLine();
+			//	Console.WriteLine($"  Process exit code          : {ffmpeg.ExitCode}");
+
+			//	// Display peak memory statistics for the process.
+			//	Console.WriteLine($"  Peak physical memory usage : {peakWorkingSet}");
+			//	Console.WriteLine($"  Peak paged memory usage    : {peakPagedMem}");
+			//	Console.WriteLine($"  Peak virtual memory usage  : {peakVirtualMem}");
+			//}
+		}
+		#endregion Tests for FfmpegProcess
 
 		#region Start & EndProgram
 		static void StartProgram()
