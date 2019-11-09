@@ -20,7 +20,7 @@ namespace Yutaka.Diagnostics
 		/// <param name="width"></param>
 		/// <param name="createThumbnail"></param>
 		/// <param name="createWindow"></param>
-		public static Process CreateAnimatedGif(TimeSpan startTime, TimeSpan length, string source, string output, bool? overwriteAll = null, int fps = 24, int width = 960, bool createThumbnail = false, bool createWindow = true)
+		public static Process StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, string output, bool? overwriteAll = null, int fps = 24, int width = 960, bool createThumbnail = false, bool createWindow = true)
 		{
 			#region Parameter Check
 			var errorMsg = "";
