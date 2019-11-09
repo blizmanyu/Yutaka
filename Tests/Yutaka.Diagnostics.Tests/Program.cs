@@ -39,55 +39,19 @@ namespace Yutaka.Diagnostics.Tests
 		#region Tests for FfmpegProcess
 		private static void Test_CreateAnimatedGif()
 		{
+			var length = TimeSpan.FromMilliseconds(10000);
 			var source = @"asdf";
+			var fps = 24;
+			var width = 960;
 
-			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true)) {
-				// Display the process statistics until
-				// the user closes the program.
-				do {
-					if (!ffmpeg.HasExited) {
-						// Refresh the current process property values.
-						ffmpeg.Refresh();
-
-						//Console.WriteLine();
-
-						//// Display current process statistics.
-
-						//Console.WriteLine($"{ffmpeg} -");
-						//Console.WriteLine("-------------------------------------");
-
-						//Console.WriteLine($"  Physical memory usage     : {ffmpeg.WorkingSet64}");
-						//Console.WriteLine($"  Base priority             : {ffmpeg.BasePriority}");
-						//Console.WriteLine($"  Priority class            : {ffmpeg.PriorityClass}");
-						//Console.WriteLine($"  User processor time       : {ffmpeg.UserProcessorTime}");
-						//Console.WriteLine($"  Privileged processor time : {ffmpeg.PrivilegedProcessorTime}");
-						//Console.WriteLine($"  Total processor time      : {ffmpeg.TotalProcessorTime}");
-						//Console.WriteLine($"  Paged system memory size  : {ffmpeg.PagedSystemMemorySize64}");
-						//Console.WriteLine($"  Paged memory size         : {ffmpeg.PagedMemorySize64}");
-
-						//// Update the values for the overall peak memory statistics.
-						peakPagedMem = ffmpeg.PeakPagedMemorySize64;
-						peakVirtualMem = ffmpeg.PeakVirtualMemorySize64;
-						peakWorkingSet = ffmpeg.PeakWorkingSet64;
-
-						//if (ffmpeg.Responding) {
-						//	Console.WriteLine("Status = Running");
-						//}
-						//else {
-						//	Console.WriteLine("Status = Not Responding");
-						//}
-					}
-				}
-				while (!ffmpeg.WaitForExit(1000));
-
-
-				Console.WriteLine("\n\n");
-				Console.WriteLine($"  Process exit code          : {ffmpeg.ExitCode}");
-
-				// Display peak memory statistics for the process.
-				Console.WriteLine($"  Peak physical memory usage :   {peakWorkingSet:n0}");
-				Console.WriteLine($"  Peak paged memory usage    :   {peakPagedMem:n0}");
-				Console.WriteLine($"  Peak virtual memory usage  : {peakVirtualMem:n0}");
+			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(0), length, source, fps, width, true)) {
+				ffmpeg.WaitForExit();
+			}
+			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(500), length, source, fps, width, true)) {
+				ffmpeg.WaitForExit();
+			}
+			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(1000), length, source, fps, width, true)) {
+				ffmpeg.WaitForExit();
 			}
 		}
 		#endregion Tests for FfmpegProcess

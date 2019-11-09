@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Threading;
 
 namespace Yutaka.Diagnostics
 {
 	public class FfmpegProcess : Process
 	{
 		/// <summary>
-		/// Work-in-progress: Do not use yet!
+		/// 
 		/// </summary>
 		/// <param name="startTime"></param>
 		/// <param name="length"></param>
@@ -47,7 +45,6 @@ namespace Yutaka.Diagnostics
 				startTime, length.TotalSeconds, source, fps, width, NameWithoutExtension);
 
 			Console.Write("\nargs: {0}\n\n", args);
-			//return null;
 
 			try {
 				var psi = new ProcessStartInfo("ffmpeg", args) {
@@ -60,9 +57,9 @@ namespace Yutaka.Diagnostics
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegProcess.CreateAnimatedGif(bool createWindow={3}){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegProcess.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.CreateAnimatedGif(bool createWindow={3}){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
 			}
 		}
 
