@@ -41,7 +41,7 @@ namespace Yutaka.Diagnostics.Tests
 		{
 			//try {
 			//	FfmpegProcess ffmpeg;
-			var source = @"G:\Projects\FileCopier2\Downloads\Kyler Quinn - TrueAnal 2019 1st First Anal 1080p.mp4";
+			var source = @"asdf";
 			//	using (ffmpeg = FfmpegProcess.CreateAnimatedGif() {
 			//		ffmpeg.CreateAnimatedGif(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true);
 			//		using (var proc = FfmpegProcess.GetProcessById(ffmpeg.Id)) {
@@ -82,7 +82,7 @@ namespace Yutaka.Diagnostics.Tests
 			long peakPagedMem = 0,
 				 peakWorkingSet = 0,
 				 peakVirtualMem = 0;
-			using (var ffmpeg = FfmpegProcess.CreateAnimatedGif(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true)) {
+			using (var ffmpeg = FfmpegProcess.StartCreatingPalette(TimeSpan.FromMilliseconds(0), TimeSpan.FromMilliseconds(10000), source, "output", null, 24, 960, false, true)) {
 				// Display the process statistics until
 				// the user closes the program.
 				do {
@@ -90,45 +90,45 @@ namespace Yutaka.Diagnostics.Tests
 						// Refresh the current process property values.
 						ffmpeg.Refresh();
 
-						Console.WriteLine();
+						//Console.WriteLine();
 
-						// Display current process statistics.
+						//// Display current process statistics.
 
-						Console.WriteLine($"{ffmpeg} -");
-						Console.WriteLine("-------------------------------------");
+						//Console.WriteLine($"{ffmpeg} -");
+						//Console.WriteLine("-------------------------------------");
 
-						Console.WriteLine($"  Physical memory usage     : {ffmpeg.WorkingSet64}");
-						Console.WriteLine($"  Base priority             : {ffmpeg.BasePriority}");
-						Console.WriteLine($"  Priority class            : {ffmpeg.PriorityClass}");
-						Console.WriteLine($"  User processor time       : {ffmpeg.UserProcessorTime}");
-						Console.WriteLine($"  Privileged processor time : {ffmpeg.PrivilegedProcessorTime}");
-						Console.WriteLine($"  Total processor time      : {ffmpeg.TotalProcessorTime}");
-						Console.WriteLine($"  Paged system memory size  : {ffmpeg.PagedSystemMemorySize64}");
-						Console.WriteLine($"  Paged memory size         : {ffmpeg.PagedMemorySize64}");
+						//Console.WriteLine($"  Physical memory usage     : {ffmpeg.WorkingSet64}");
+						//Console.WriteLine($"  Base priority             : {ffmpeg.BasePriority}");
+						//Console.WriteLine($"  Priority class            : {ffmpeg.PriorityClass}");
+						//Console.WriteLine($"  User processor time       : {ffmpeg.UserProcessorTime}");
+						//Console.WriteLine($"  Privileged processor time : {ffmpeg.PrivilegedProcessorTime}");
+						//Console.WriteLine($"  Total processor time      : {ffmpeg.TotalProcessorTime}");
+						//Console.WriteLine($"  Paged system memory size  : {ffmpeg.PagedSystemMemorySize64}");
+						//Console.WriteLine($"  Paged memory size         : {ffmpeg.PagedMemorySize64}");
 
-						// Update the values for the overall peak memory statistics.
+						//// Update the values for the overall peak memory statistics.
 						peakPagedMem = ffmpeg.PeakPagedMemorySize64;
 						peakVirtualMem = ffmpeg.PeakVirtualMemorySize64;
 						peakWorkingSet = ffmpeg.PeakWorkingSet64;
 
-						if (ffmpeg.Responding) {
-							Console.WriteLine("Status = Running");
-						}
-						else {
-							Console.WriteLine("Status = Not Responding");
-						}
+						//if (ffmpeg.Responding) {
+						//	Console.WriteLine("Status = Running");
+						//}
+						//else {
+						//	Console.WriteLine("Status = Not Responding");
+						//}
 					}
 				}
 				while (!ffmpeg.WaitForExit(1000));
 
 
-				Console.WriteLine();
+				Console.WriteLine("\n\n");
 				Console.WriteLine($"  Process exit code          : {ffmpeg.ExitCode}");
 
 				// Display peak memory statistics for the process.
-				Console.WriteLine($"  Peak physical memory usage : {peakWorkingSet}");
-				Console.WriteLine($"  Peak paged memory usage    : {peakPagedMem}");
-				Console.WriteLine($"  Peak virtual memory usage  : {peakVirtualMem}");
+				Console.WriteLine($"  Peak physical memory usage :   {peakWorkingSet:n0}");
+				Console.WriteLine($"  Peak paged memory usage    :   {peakPagedMem:n0}");
+				Console.WriteLine($"  Peak virtual memory usage  : {peakVirtualMem:n0}");
 			}
 		}
 		#endregion Tests for FfmpegProcess

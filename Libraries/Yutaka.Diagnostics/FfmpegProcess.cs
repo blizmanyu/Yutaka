@@ -44,14 +44,14 @@ namespace Yutaka.Diagnostics
 				throw new Exception(String.Format("{0}{1}", errorMsg, Environment.NewLine));
 			#endregion Parameter Check
 
-			var args = "-y -ss";
-			args = String.Format("{0} {1}", args, startTime.ToString(@"hh\:mm\:ss\.fff"));
-			args = String.Format("{0} -t {1:0.000}", args, length.TotalSeconds);
-			args = String.Format("{0} -i \"{1}\"", args, source);
-			args = String.Format("{0} -vf fps={1},scale={2}:-1:flags=lanczos,palettegen", args, fps, width);
-			args = String.Format("{0} \"{1}.png\"", args, startTime.ToString(@"hh\h\ mm\m\ ss\s\ fff"));
+			var fi = new FileInfo(source);
+			var NameWithoutExtension = fi.Name.Replace(fi.Extension, "");
+			fi = null;
+			var args = String.Format("-y -ss {0:hh\\:mm\\:ss\\.fff} -t {1:0.000} -i \"{2}\" -vf fps={3},scale={4}:-1:flags=lanczos,palettegen \"C:\\TEMP\\{5} {0:hhmm\\ ssff}.png\"",
+				startTime, length.TotalSeconds, source, fps, width, NameWithoutExtension);
 
-			Console.Write("\nargs: {0}", args);
+			Console.Write("\nargs: {0}\n\n", args);
+			//return null;
 
 			try {
 				var psi = new ProcessStartInfo("ffmpeg", args) {
@@ -69,5 +69,10 @@ namespace Yutaka.Diagnostics
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.CreateAnimatedGif(bool createWindow={3}){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
 			}
 		}
+
+		//public static Process laksdjf(TimeSpan startTime, TimeSpan length, string source, string output, bool? overwriteAll = null, int fps = 24, int width = 960, bool createThumbnail = false, bool createWindow = true)
+		//{
+
+		//}
 	}
 }
