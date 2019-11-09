@@ -44,30 +44,42 @@ namespace Yutaka.Diagnostics.Tests
 			var fps = 24;
 			var width = 960;
 
-			startTime = TimeSpan.FromMilliseconds(0);
+			startTime = TimeSpan.FromMilliseconds(10000);
 			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
 				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
+
+					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+						proc3.WaitForExit();
+					}
 				}
 			}
 
-			startTime = TimeSpan.FromMilliseconds(500);
+			startTime = TimeSpan.FromMilliseconds(20000);
 			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
 				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
+
+					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+						proc3.WaitForExit();
+					}
 				}
 			}
 
-			startTime = TimeSpan.FromMilliseconds(1000);
+			startTime = TimeSpan.FromMilliseconds(30000);
 			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
 				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
+
+					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+						proc3.WaitForExit();
+					}
 				}
 			}
 		}
