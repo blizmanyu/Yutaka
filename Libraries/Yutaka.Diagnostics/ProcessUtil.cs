@@ -35,20 +35,6 @@ namespace Yutaka.Diagnostics
 		public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 		#endregion DLL Imports
 
-		#region Private Helpers
-		private static void KillProcessesByName(string processName)
-		{
-			var processes = Process.GetProcessesByName(processName);
-
-			if (processes == null || processes.Length < 1)
-				return;
-
-			for (int i = 0; i < processes.Length; i++) {
-				processes[i].Kill();
-				processes[i].Close();
-			}
-		}
-
 		private static void RefreshTrayArea(IntPtr windowHandle)
 		{
 			const uint wmMousemove = 0x0200;
@@ -58,7 +44,6 @@ namespace Yutaka.Diagnostics
 				for (var y = 0; y < rect.bottom; y += 5)
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
 		}
-		#endregion
 
 		#region Methods
 		public static void CloseProgram(string programName)
@@ -75,24 +60,6 @@ namespace Yutaka.Diagnostics
 
 				catch (Exception) { }
 			}
-		}
-
-		public static void EndProcessesByName(string processName, bool forceKill = true)
-		{
-			var processes = Process.GetProcessesByName(processName);
-
-			if (processes == null || processes.Length < 1)
-				return;
-
-			for (int i = 0; i < processes.Length; i++) {
-				processes[i].CloseMainWindow();
-				processes[i].Close();
-			}
-
-			Thread.Sleep(DEFAULT_SLEEP_TIME);
-
-			if (forceKill)
-				KillProcessesByName(processName);
 		}
 
 		public static float GetUpTime()
