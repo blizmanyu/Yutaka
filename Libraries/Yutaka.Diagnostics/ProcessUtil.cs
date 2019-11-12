@@ -9,6 +9,9 @@ namespace Yutaka.Diagnostics
 	{
 		public const int DEFAULT_SLEEP_TIME = 2200;
 		public const int ONE_DAY_IN_SECONDS = 86400;
+		public const int TWO_DAYS_IN_SECONDS = 172800;
+		public const int THREE_DAYS_IN_SECONDS = 259200;
+		public const int FOUR_DAYS_IN_SECONDS = 345600;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
 
 		#region DLL Imports
