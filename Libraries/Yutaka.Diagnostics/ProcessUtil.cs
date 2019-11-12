@@ -60,6 +60,18 @@ namespace Yutaka.Diagnostics
 		#endregion
 
 		#region Methods
+		public static void CloseProgram(string programName)
+		{
+			if (String.IsNullOrWhiteSpace(programName))
+				return;
+
+			foreach (var process in Process.GetProcessesByName(programName)) {
+				process.CloseMainWindow();
+				Thread.Sleep(2200);
+				process.Close();
+			}
+		}
+
 		public static void EndProcessesByName(string processName, bool forceKill = true)
 		{
 			var processes = Process.GetProcessesByName(processName);
