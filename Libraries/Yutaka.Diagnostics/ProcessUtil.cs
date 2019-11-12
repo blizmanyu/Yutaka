@@ -66,9 +66,13 @@ namespace Yutaka.Diagnostics
 				return;
 
 			foreach (var process in Process.GetProcessesByName(programName)) {
-				process.CloseMainWindow();
-				Thread.Sleep(2200);
-				process.Close();
+				try {
+					process.CloseMainWindow();
+					Thread.Sleep(2200);
+					process.Close();
+				}
+
+				catch (Exception) { }
 			}
 		}
 
