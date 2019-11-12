@@ -156,15 +156,25 @@ namespace Yutaka.Diagnostics
 			}
 		}
 
-		public static Process StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, bool createWindow = true)
+		/// <summary>
+		/// Creates a thumbnail for animated GIF.
+		/// </summary>
+		/// <param name="startTime">Start time in decimal seconds.</param>
+		/// <param name="source">Full path of the source.</param>
+		/// <param name="destFolder">Destination folder. Defaults to C:\TEMP\&lt;filename&gt;\</param>
+		/// <param name="overwriteAll">null: prompt for each. true: overwrite all. false: overwrite none.</param>
+		/// <param name="length">Default is 10. If length is less than .5, it will default to 10.</param>
+		/// <param name="fps">Default is 24. If length is less than 1, it will default to 24.</param>
+		/// <param name="width">Default is 480. If length is less than 1, it will default to 480.</param>
+		/// <param name="createWindow">Whether to create a console window or not.</param>
+		/// <returns></returns>
+		public static Process StartCreatingThumbnail(double startTime, string source, bool? overwriteAll = null, double length = -1, int fps = -1, int width = -1, string destFolder = null, bool createWindow = true)
 		{
 			#region Parameter Check
 			var errorMsg = "";
 
-			if (startTime.TotalSeconds < 0)
+			if (startTime < 0)
 				errorMsg = String.Format("{0}<startTime> must be at least 0.{1}", errorMsg, Environment.NewLine);
-			if (length.TotalSeconds < 1)
-				errorMsg = String.Format("{0}<length> must be at least 1.{1}", errorMsg, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(source))
 				errorMsg = String.Format("{0}<source> is required.{1}", errorMsg, Environment.NewLine);
 			else if (!File.Exists(source))
@@ -177,15 +187,37 @@ namespace Yutaka.Diagnostics
 			var fi = new FileInfo(source);
 			var NameWithoutExtension = fi.Name.Replace(fi.Extension, "");
 			fi = null;
-			var args = "-y";
-			args = String.Format("{0} -ss {1}", args, startTime.ToString(@"hh\:mm\:ss\.fff"));
-			args = String.Format("{0} -t {1:0.000}", args, length.TotalSeconds);
+			// startTime //
+			var args = String.Format("-ss {0:0.000}", startTime);
+			// overwriteAll //
+			if (overwriteAll != null) {
+				if (overwriteAll == true)
+					args = String.Format("-y {0}", args);
+				else
+					args = String.Format("-n {0}", args);
+			}
+			// length //
+			if (length < .5)
+				length = 10;
+			args = String.Format("{0} -t {1:0.000}", args, length);
+			// source //
 			args = String.Format("{0} -i \"{1}\"", args, source);
-			args = String.Format("{0} -i \"C:\\TEMP\\{1} {2}.png\"", args, NameWithoutExtension, startTime.ToString(@"hhmm\ ssff"));
-			args = String.Format("{0} -filter_complex \"fps={1},scale={2}:-1:flags=lanczos[x];[x][1:v]paletteuse\"", args, 24, 480);
-			args = String.Format("{0} \"C:\\TEMP\\{1} {2}-thumb.gif\"", args, NameWithoutExtension, startTime.ToString(@"hhmm\ ssff"));
-
-			Console.Write("\n\n**********\nargs: {0}\n**********\n\n", args);
+			// palette //
+			args = String.Format("{0} -i \"C:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			// fps & width //
+			if (fps < 1)
+				fps = 24;
+			if (width < 1)
+				width = 480;
+			args = String.Format("{0} -filter_complex \"fps={1},scale={2}:-1:flags=lanczos[x];[x][1:v]paletteuse\"", args, fps, width);
+			// destFolder //
+			if (String.IsNullOrWhiteSpace(destFolder))
+				destFolder = String.Format(@"C:\TEMP\{0}\", NameWithoutExtension);
+			Directory.CreateDirectory(destFolder);
+			args = String.Format("{0} \"{1}-thumb.gif\"", args, Path.Combine(destFolder, startTime.ToString("00000.00")));
+			Console.Write("\n\n******************************\n");
+			Console.Write("args: {0}", args);
+			Console.Write("\n******************************\n\n");
 
 			try {
 				var psi = new ProcessStartInfo("ffmpeg", args) {
@@ -198,9 +230,9 @@ namespace Yutaka.Diagnostics
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.StartCreatingThumbnail(double startTime='{3}', string source='{4}', bool? overwriteAll='{5}', double length='{6}', int fps='{7}', int width='{8}', string destFolder='{9}', bool createWindow='{10}'){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, startTime, source, overwriteAll, length, fps, width, destFolder, createWindow));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.StartCreatingThumbnail(double startTime='{3}', string source='{4}', bool? overwriteAll='{5}', double length='{6}', int fps='{7}', int width='{8}', string destFolder='{9}', bool createWindow='{10}'){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startTime, source, overwriteAll, length, fps, width, destFolder, createWindow));
 			}
 		}
 	}
