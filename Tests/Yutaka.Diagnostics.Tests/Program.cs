@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Yutaka.IO;
 
 namespace Yutaka.Diagnostics.Tests
@@ -39,54 +41,43 @@ namespace Yutaka.Diagnostics.Tests
 		#region Tests for FfmpegUtil
 		private static void Test_CreateAnimatedGif()
 		{
-			TimeSpan startTime;
-			var length = TimeSpan.FromMilliseconds(10000);
-			var source = @"asdf";
-			var fps = 24;
-			var width = 960;
-
+			double startTime;
+			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
+			var filename = @"Lexi Lore & Dakota Skye - AllAnal 2019 08 Double Anal Delivery 1080p.mp4";
+			var source = Path.Combine(folder, filename);
 			var _fileUtil = new FileUtil();
-			_fileUtil.CreateGalleryHtml(@"C:\TEMP");
-			return;
 
-			startTime = TimeSpan.FromMilliseconds(10000);
-			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
-				proc1.WaitForExit();
+			for (int i=0; i< 300; i+=10) {
+				startTime = i;
+				using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, source)) {
+					proc1.WaitForExit();
 
-				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
-					proc2.WaitForExit();
+					using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, source, true)) {
+						proc2.WaitForExit();
 
-					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
-						proc3.WaitForExit();
+						using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, source, true)) {
+							proc3.WaitForExit();
+						}
 					}
 				}
 			}
 
-			startTime = TimeSpan.FromMilliseconds(20000);
-			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
-				proc1.WaitForExit();
+			for (int i = 3571; i < 3876; i += 10) {
+				startTime = i;
+				using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, source)) {
+					proc1.WaitForExit();
 
-				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
-					proc2.WaitForExit();
+					using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, source, true)) {
+						proc2.WaitForExit();
 
-					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
-						proc3.WaitForExit();
+						using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, source, true)) {
+							proc3.WaitForExit();
+						}
 					}
 				}
 			}
 
-			startTime = TimeSpan.FromMilliseconds(30000);
-			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
-				proc1.WaitForExit();
-
-				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
-					proc2.WaitForExit();
-
-					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
-						proc3.WaitForExit();
-					}
-				}
-			}
+			_fileUtil.CreateGalleryHtml(String.Format(@"G:\TEMP\{0}\", filename));
 		}
 		#endregion Tests for FfmpegUtil
 
