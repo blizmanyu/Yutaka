@@ -36,7 +36,7 @@ namespace Yutaka.Diagnostics.Tests
 			EndProgram();
 		}
 
-		#region Tests for FfmpegProcess
+		#region Tests for FfmpegUtil
 		private static void Test_CreateAnimatedGif()
 		{
 			TimeSpan startTime;
@@ -50,45 +50,45 @@ namespace Yutaka.Diagnostics.Tests
 			return;
 
 			startTime = TimeSpan.FromMilliseconds(10000);
-			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
-				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
 
-					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
 						proc3.WaitForExit();
 					}
 				}
 			}
 
 			startTime = TimeSpan.FromMilliseconds(20000);
-			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
-				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
 
-					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
 						proc3.WaitForExit();
 					}
 				}
 			}
 
 			startTime = TimeSpan.FromMilliseconds(30000);
-			using (var proc1 = FfmpegProcess.StartCreatingPalette(startTime, length, source, fps, width, true)) {
+			using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, length, source, fps, width, true)) {
 				proc1.WaitForExit();
 
-				using (var proc2 = FfmpegProcess.StartCreatingAnimatedGif(startTime, length, source, true)) {
+				using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, length, source, true)) {
 					proc2.WaitForExit();
 
-					using (var proc3 = FfmpegProcess.StartCreatingThumbnail(startTime, length, source, true)) {
+					using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, length, source, true)) {
 						proc3.WaitForExit();
 					}
 				}
 			}
 		}
-		#endregion Tests for FfmpegProcess
+		#endregion Tests for FfmpegUtil
 
 		#region Tests for ProcessUtil
 		private static void Test_GetUpTime()

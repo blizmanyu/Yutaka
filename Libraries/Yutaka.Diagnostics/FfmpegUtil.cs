@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Yutaka.Diagnostics
 {
-	public class FfmpegProcess : Process
+	public class FfmpegUtil
 	{
 		public static Process StartCreatingAnimatedGif(TimeSpan startTime, TimeSpan length, string source, bool? overwriteAll = null, int fps = 24, int width = 960, bool createThumbnail = false, bool createWindow = true)
 		{
@@ -47,14 +47,14 @@ namespace Yutaka.Diagnostics
 					UseShellExecute = false,
 				};
 
-				return Start(psi);
+				return Process.Start(psi);
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegProcess.StartCreatingAnimatedGif(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.StartCreatingAnimatedGif(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.StartCreatingAnimatedGif(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.StartCreatingAnimatedGif(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
 			}
 		}
 
@@ -104,14 +104,14 @@ namespace Yutaka.Diagnostics
 					UseShellExecute = false,
 				};
 
-				return Start(psi);
+				return Process.Start(psi);
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegProcess.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.StartCreatingPalette(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
 			}
 		}
 
@@ -152,14 +152,14 @@ namespace Yutaka.Diagnostics
 					UseShellExecute = false,
 				};
 
-				return Start(psi);
+				return Process.Start(psi);
 			}
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegProcess.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, createWindow));
 
-				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegProcess.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.StartCreatingThumbnail(TimeSpan startTime, TimeSpan length, string source, int fps = 24, int width = 960, bool createWindow = true){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, createWindow));
 			}
 		}
 	}
