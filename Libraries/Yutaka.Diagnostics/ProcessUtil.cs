@@ -7,6 +7,7 @@ namespace Yutaka.Diagnostics
 {
 	public static class ProcessUtil
 	{
+		public const int DEFAULT_SLEEP_TIME = 2200;
 		public const int ONE_DAY_IN_SECONDS = 86400;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
 
@@ -68,7 +69,7 @@ namespace Yutaka.Diagnostics
 			foreach (var process in Process.GetProcessesByName(programName)) {
 				try {
 					process.CloseMainWindow();
-					Thread.Sleep(2200);
+					Thread.Sleep(DEFAULT_SLEEP_TIME);
 					process.Close();
 				}
 
@@ -88,7 +89,7 @@ namespace Yutaka.Diagnostics
 				processes[i].Close();
 			}
 
-			Thread.Sleep(2200);
+			Thread.Sleep(DEFAULT_SLEEP_TIME);
 
 			if (forceKill)
 				KillProcessesByName(processName);
@@ -110,7 +111,7 @@ namespace Yutaka.Diagnostics
 			foreach (var process in Process.GetProcessesByName(processName)) {
 				try {
 					process.Kill();
-					Thread.Sleep(2200);
+					Thread.Sleep(DEFAULT_SLEEP_TIME);
 					process.Close();
 				}
 
