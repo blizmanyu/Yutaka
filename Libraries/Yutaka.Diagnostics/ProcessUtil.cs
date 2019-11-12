@@ -48,7 +48,7 @@ namespace Yutaka.Diagnostics
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
 		}
 
-		#region Methods
+		#region Public Methods
 		public static void CloseProgram(string programName)
 		{
 			if (String.IsNullOrWhiteSpace(programName))
@@ -160,6 +160,6 @@ namespace Yutaka.Diagnostics
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of ProcessHelper.StartProcess(string fileName='{3}', string args'{4}', bool redirectStandardOutput, bool redirectStandardError, bool useShellExecute, bool createNoWindow).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, fileName, args));
 			}
 		}
-		#endregion
+		#endregion Public Methods
 	}
 }
