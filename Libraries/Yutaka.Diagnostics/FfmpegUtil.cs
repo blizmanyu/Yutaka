@@ -53,7 +53,7 @@ namespace Yutaka.Diagnostics
 			// source //
 			args = String.Format("{0} -i \"{1}\"", args, source);
 			// palette //
-			args = String.Format("{0} -i \"C:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} -i \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
 			// fps & width //
 			if (fps < 1)
 				fps = 24;
@@ -134,7 +134,7 @@ namespace Yutaka.Diagnostics
 			// palette //
 			var destFolder = String.Format(@"C:\TEMP\{0}\", NameWithoutExtension);
 			Directory.CreateDirectory(destFolder);
-			args = String.Format("{0} \"C:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
 			//Console.Write("\n\n******************************\n");
 			//Console.Write("args: {0}", args);
 			//Console.Write("\n******************************\n\n");
@@ -203,7 +203,7 @@ namespace Yutaka.Diagnostics
 			// source //
 			args = String.Format("{0} -i \"{1}\"", args, source);
 			// palette //
-			args = String.Format("{0} -i \"C:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} -i \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
 			// fps & width //
 			if (fps < 1)
 				fps = 24;
