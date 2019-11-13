@@ -9,6 +9,8 @@ namespace Yutaka.Text
 {
 	public static class TextUtil
 	{
+		private static readonly Regex RegexWhitespace = new Regex(@"\s+", RegexOptions.Compiled);
+
 		#region Methods
 		#region Encode/Decode
 		public static string Encode(string input)
@@ -303,6 +305,11 @@ namespace Yutaka.Text
 				html = html.Replace("  ", " ");
 
 			return html;
+		}
+
+		public static string ReplaceWhitespace(string input, string replacement)
+		{
+			return RegexWhitespace.Replace(input, replacement);
 		}
 
 		public static string StripExcessWhitespace(string str)
