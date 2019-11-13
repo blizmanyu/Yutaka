@@ -78,20 +78,25 @@ namespace Yutaka.Diagnostics
 			}
 		}
 
-		public static void KillProcess(string processName)
+		public static int KillProcess(string processName)
 		{
 			if (String.IsNullOrWhiteSpace(processName))
-				return;
+				return 0;
+
+			var killCount = 0;
 
 			foreach (var process in Process.GetProcessesByName(processName)) {
 				try {
 					process.Kill();
+					killCount++;
 					Thread.Sleep(DEFAULT_SLEEP_TIME);
 					process.Close();
 				}
 
 				catch (Exception) { }
 			}
+
+			return killCount;
 		}
 
 		public static void RefreshTrayArea()
