@@ -177,7 +177,7 @@ namespace Yutaka.IO
 
 		#region Delete
 		/// <summary>
-		/// Deletes all files that match a search pattern in a specified path, and optionally searches subdirectories.
+		/// Deletes all files that match a search pattern in a specified path, and optionally searches subdirectories. Returns the number of files deleted.
 		/// </summary>
 		/// <param name="folder">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
 		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
