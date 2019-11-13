@@ -40,15 +40,11 @@ namespace Yutaka.IO.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Process();
+			Test_Delete();
 			EndProgram();
 		}
 
-		private static void Process()
-		{
-			Console.Write("\n{0}", new DateTime());
-		}
-
+		#region Tests for FileUtil
 		// TODO: Include immediate parent folder in dest folder //
 		// TODO: Handle general Exception (in FileUtil.cs as well) //
 		// TODO: See what happens when file already exists at dest //
@@ -131,6 +127,65 @@ namespace Yutaka.IO.Tests
 			}
 		}
 
+		private static void Test_Delete()
+		{
+			int count;
+			string searchPattern;
+			SearchOption searchOption;
+			var folder = @"C:\TEMP\TEMP\";
+
+			#region Test 1
+			searchPattern = "*.png";
+			searchOption = SearchOption.TopDirectoryOnly;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 1
+
+			#region Test 2
+			searchPattern = "*.gif";
+			searchOption = SearchOption.TopDirectoryOnly;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 2
+
+			#region Test 3
+			searchPattern = "*";
+			searchOption = SearchOption.TopDirectoryOnly;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 3
+
+			#region Test 4
+			searchPattern = "*.png";
+			searchOption = SearchOption.AllDirectories;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 4
+
+			#region Test 5
+			searchPattern = "*.gif";
+			searchOption = SearchOption.AllDirectories;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 5
+
+			#region Test 6
+			searchPattern = "*";
+			searchOption = SearchOption.AllDirectories;
+			count = _fileUtil.Delete(folder, searchPattern, searchOption);
+			Console.Write("\nDeleted {0} files.", count);
+			#endregion Test 6
+		}
+		#endregion Tests for FileUtil
+
+		#region Misc Tests
+		private static void Process()
+		{
+			Console.Write("\n{0}", new DateTime());
+		}
+		#endregion Misc Tests
+
+		#region StartProgram & EndProgram
 		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
@@ -179,5 +234,6 @@ namespace Yutaka.IO.Tests
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
+		#endregion StartProgram & EndProgram
 	}
 }
