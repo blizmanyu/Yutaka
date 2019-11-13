@@ -6,12 +6,14 @@ namespace Yutaka.Diagnostics
 {
 	public class FfmpegUtil
 	{
+		public static string DefaultPaletteFolder = @"G:\TEMP\";
+
 		/// <summary>
 		/// Creates an animated GIF.
 		/// </summary>
 		/// <param name="startTime">Start time in decimal seconds.</param>
 		/// <param name="source">Full path of the source.</param>
-		/// <param name="destFolder">Destination folder. Defaults to G:\TEMP\&lt;filename&gt;\</param>
+		/// <param name="destFolder">Destination folder. Defaults to &lt;DefaultPaletteFolder&gt;</param>
 		/// <param name="overwriteAll">null: prompt for each. true: overwrite all. false: overwrite none.</param>
 		/// <param name="length">Default is 10. If length is less than .5, it will default to 10.</param>
 		/// <param name="fps">Default is 24. If length is less than 1, it will default to 24.</param>
@@ -53,7 +55,7 @@ namespace Yutaka.Diagnostics
 			// source //
 			args = String.Format("{0} -i \"{1}\"", args, source);
 			// palette //
-			args = String.Format("{0} -i \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} -i \"{1}\"", args, Path.Combine(DefaultPaletteFolder, NameWithoutExtension, startTime.ToString("00000.00'.png'")));
 			// fps & width //
 			if (fps < 1)
 				fps = 24;
@@ -62,7 +64,7 @@ namespace Yutaka.Diagnostics
 			args = String.Format("{0} -filter_complex \"fps={1},scale={2}:-1:flags=lanczos[x];[x][1:v]paletteuse\"", args, fps, width);
 			// destFolder //
 			if (String.IsNullOrWhiteSpace(destFolder))
-				destFolder = String.Format(@"G:\TEMP\{0}\", NameWithoutExtension);
+				destFolder = Path.Combine(DefaultPaletteFolder, NameWithoutExtension);
 			Directory.CreateDirectory(destFolder);
 			args = String.Format("{0} \"{1}.gif\"", args, Path.Combine(destFolder, startTime.ToString("00000.00")));
 			Console.Write("\n\n******************************\n");
@@ -132,9 +134,9 @@ namespace Yutaka.Diagnostics
 				width = 960;
 			args = String.Format("{0} -vf fps={1},scale={2}:-1:flags=lanczos,palettegen", args, fps, width);
 			// palette //
-			var destFolder = String.Format(@"G:\TEMP\{0}\", NameWithoutExtension);
+			var destFolder = Path.Combine(DefaultPaletteFolder, NameWithoutExtension);
 			Directory.CreateDirectory(destFolder);
-			args = String.Format("{0} \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} \"{1}\"", args, Path.Combine(DefaultPaletteFolder, NameWithoutExtension, startTime.ToString("00000.00'.png'")));
 			//Console.Write("\n\n******************************\n");
 			//Console.Write("args: {0}", args);
 			//Console.Write("\n******************************\n\n");
@@ -161,7 +163,7 @@ namespace Yutaka.Diagnostics
 		/// </summary>
 		/// <param name="startTime">Start time in decimal seconds.</param>
 		/// <param name="source">Full path of the source.</param>
-		/// <param name="destFolder">Destination folder. Defaults to G:\TEMP\&lt;filename&gt;\</param>
+		/// <param name="destFolder">Destination folder. Defaults to &lt;DefaultPaletteFolder&gt;</param>
 		/// <param name="overwriteAll">null: prompt for each. true: overwrite all. false: overwrite none.</param>
 		/// <param name="length">Default is 10. If length is less than .5, it will default to 10.</param>
 		/// <param name="fps">Default is 24. If length is less than 1, it will default to 24.</param>
@@ -203,7 +205,7 @@ namespace Yutaka.Diagnostics
 			// source //
 			args = String.Format("{0} -i \"{1}\"", args, source);
 			// palette //
-			args = String.Format("{0} -i \"G:\\TEMP\\{1}\\{2:00000.00}.png\"", args, NameWithoutExtension, startTime);
+			args = String.Format("{0} -i \"{1}\"", args, Path.Combine(DefaultPaletteFolder, NameWithoutExtension, startTime.ToString("00000.00'.png'")));
 			// fps & width //
 			if (fps < 1)
 				fps = 24;
@@ -212,7 +214,7 @@ namespace Yutaka.Diagnostics
 			args = String.Format("{0} -filter_complex \"fps={1},scale={2}:-1:flags=lanczos[x];[x][1:v]paletteuse\"", args, fps, width);
 			// destFolder //
 			if (String.IsNullOrWhiteSpace(destFolder))
-				destFolder = String.Format(@"G:\TEMP\{0}\", NameWithoutExtension);
+				destFolder = Path.Combine(DefaultPaletteFolder, NameWithoutExtension);
 			Directory.CreateDirectory(destFolder);
 			args = String.Format("{0} \"{1}-thumb.gif\"", args, Path.Combine(destFolder, startTime.ToString("00000.00")));
 			Console.Write("\n\n******************************\n");

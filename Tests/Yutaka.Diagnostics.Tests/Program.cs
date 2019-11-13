@@ -43,7 +43,7 @@ namespace Yutaka.Diagnostics.Tests
 		{
 			double startTime;
 			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
-			var filename = @"asdf";
+			var filename = @"asdf.mp4";
 			var source = Path.Combine(folder, filename);
 			var _fileUtil = new FileUtil();
 
@@ -62,20 +62,20 @@ namespace Yutaka.Diagnostics.Tests
 			//	}
 			//}
 
-			//for (int i = 3571; i < 3876; i += 10) {
-			//	startTime = i;
-			//	using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, source)) {
-			//		proc1.WaitForExit();
+			for (int i = 2578; i < 2878; i += 10) {
+				startTime = i;
+				using (var proc1 = FfmpegUtil.StartCreatingPalette(startTime, source)) {
+					proc1.WaitForExit();
 
-			//		using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, source, true)) {
-			//			proc2.WaitForExit();
+					using (var proc2 = FfmpegUtil.StartCreatingAnimatedGif(startTime, source, true)) {
+						proc2.WaitForExit();
 
-			//			using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, source, true)) {
-			//				proc3.WaitForExit();
-			//			}
-			//		}
-			//	}
-			//}
+						using (var proc3 = FfmpegUtil.StartCreatingThumbnail(startTime, source, true)) {
+							proc3.WaitForExit();
+						}
+					}
+				}
+			}
 
 			_fileUtil.CreateGalleryHtml(String.Format(@"G:\TEMP\{0}\", filename.Replace(".mp4", "")));
 		}
@@ -96,6 +96,16 @@ namespace Yutaka.Diagnostics.Tests
 			ProcessUtil.RestartComputer(createWindow: true);
 		}
 		#endregion Tests for ProcessUtil
+
+		#region Misc Tests
+		private static void Test_Path_Combine()
+		{
+			var DefaultPaletteFolder = @"G:\TEMP\";
+			var NameWithoutExtension = "NameWithoutExtension";
+			var startTime = 0.0;
+			Console.Write("\n\nPath: {0}\n\n", Path.Combine(DefaultPaletteFolder, NameWithoutExtension, startTime.ToString("00000.00'.png'")));
+		}
+		#endregion Misc Tests
 
 		#region Start & EndProgram
 		static void StartProgram()
