@@ -7,13 +7,14 @@ namespace Yutaka.Diagnostics
 {
 	public static class ProcessUtil
 	{
+		#region Fields
 		public const int DEFAULT_SLEEP_TIME = 2200;
 		public const int ONE_DAY_IN_SECONDS = 86400;
 		public const int TWO_DAYS_IN_SECONDS = 172800;
 		public const int THREE_DAYS_IN_SECONDS = 259200;
 		public const int FOUR_DAYS_IN_SECONDS = 345600;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
-		#region private struct RECT
+
 		[StructLayout(LayoutKind.Sequential)]
 		private struct RECT
 		{
@@ -22,9 +23,9 @@ namespace Yutaka.Diagnostics
 			public int right;
 			public int bottom;
 		}
-		#endregion private struct RECT
+		#endregion Fields
 
-		#region Utilities
+		#region Private Utilities
 		#region DLL Imports
 		[DllImport("user32.dll")]
 		private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
@@ -49,7 +50,7 @@ namespace Yutaka.Diagnostics
 				for (var y = 0; y < rect.bottom; y += 5)
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
 		}
-		#endregion Utilities
+		#endregion Private Utilities
 
 		#region Public Methods
 		public static int CloseProgram(string programName)
