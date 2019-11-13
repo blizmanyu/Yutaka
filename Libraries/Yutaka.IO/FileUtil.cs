@@ -82,136 +82,8 @@ namespace Yutaka.IO
 		}
 		#endregion Private Helpers
 
-		#region Move
-		/// <summary> Fast file move with big buffers
-		/// </summary>
-		/// <param name="source">Source file path</param> 
-		/// <param name="destination">Destination file path</param> 
-		public void FastMove(string source, string destination, bool deleteSource = true)
-		{
-			var array_length = BUFFER;
-			var dataArray = new byte[array_length];
-
-			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
-				using (var bwread = new BinaryReader(fsread)) {
-					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
-						using (var bwwrite = new BinaryWriter(fswrite)) {
-							for (; ; ) {
-								var read = bwread.Read(dataArray, 0, array_length);
-								if (0 == read)
-									break;
-								bwwrite.Write(dataArray, 0, read);
-							}
-						}
-					}
-				}
-			}
-
-			if (deleteSource)
-				TryDelete(source);
-		}
-
-		/// <summary> Time the Move
-		/// </summary> 
-		/// <param name="source">Source file path</param> 
-		/// <param name="destination">Destination file path</param> 
-		public void MoveTime(string source, string destination, bool delete = true)
-		{
-			var start_time = DateTime.Now;
-			FastMove(source, destination, delete);
-			var milliseconds = 1 + (int) ((DateTime.Now - start_time).TotalMilliseconds);
-			var size = new FileInfo(destination).Length;
-			// size time in milliseconds per sec
-			var tsize = size * 1000 / milliseconds;
-			if (tsize > ONE_GIGABYTE) {
-				tsize = tsize / ONE_GIGABYTE;
-				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
-			}
-			else if (tsize > ONE_MEGABYTE) {
-				tsize = tsize / ONE_MEGABYTE;
-				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
-			}
-			else if (tsize > ONE_KILOBYTE) {
-				tsize = tsize / ONE_KILOBYTE;
-				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
-			}
-			else
-				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
-		}
-
-		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(string sourceFilePath, string destFilePath) //
-		public void Move(FileInfo source, string destFilePath)
-		{
-			if (source == null)
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<source> is NULL", Environment.NewLine));
-			if (String.IsNullOrWhiteSpace(destFilePath))
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
-
-			try {
-				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
-				source.MoveTo(destFilePath);
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, destFilePath));
-			}
-		}
-
-		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(FileInfo source, string destFilePath) //
-		public void Move(string sourceFilePath, string destFilePath)
-		{
-			if (String.IsNullOrWhiteSpace(sourceFilePath))
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<sourceFilePath> is {1}", Environment.NewLine, sourceFilePath == null ? "NULL" : "Empty"));
-			if (String.IsNullOrWhiteSpace(destFilePath))
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
-
-			try {
-				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
-				new FileInfo(sourceFilePath).MoveTo(destFilePath);
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath='{3}', string destFilePath='{4}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, sourceFilePath, destFilePath));
-			}
-		}
-
-		public void Move(string source, string destination, bool deleteSource = true)
-		{
-			if (String.IsNullOrWhiteSpace(source))
-				throw new Exception("<source> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
-			if (String.IsNullOrWhiteSpace(destination))
-				throw new Exception("<destination> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
-			if (source.ToUpper().Equals(destination.ToUpper()))
-				return;
-
-			Directory.CreateDirectory(Path.GetDirectoryName(destination));
-
-			if (File.Exists(destination)) {
-				if (IsSameSize(source, destination)) {
-					if (deleteSource)
-						TryDelete(source);
-					return;
-				}
-
-				var extension = Path.GetExtension(source);
-				destination = destination.Replace(extension, String.Format("(2){0}", extension));
-				Move(source, destination, deleteSource);
-				return;
-			}
-
-			if (deleteSource) { // Move, not copy //
-				if (source.Substring(0, 1).ToUpper().Equals(destination.Substring(0, 1).ToUpper()))
-					new FileInfo(source).MoveTo(destination);
-				else
-					FastMove(source, destination, deleteSource);
-			}
-
-			else // Copy, not move //
-				FastMove(source, destination, deleteSource);
-		}
-		#endregion Move
-
 		#region Public Methods
+		#region Copy
 		public void CopyFile(FileInfo source, string dest, bool overwrite = false, TimestampOption tOption = TimestampOption.WindowsDefault)
 		{
 			if (source == null)
@@ -301,32 +173,10 @@ namespace Yutaka.IO
 				CopyFile(sourceInfo, dest);
 			}
 		}
+		#endregion Copy
 
-		public void CreateGalleryHtml(string folder)
-		{
-			#region Parameter Check
-			var errorMsg = "";
-
-			if (String.IsNullOrWhiteSpace(folder))
-				errorMsg = String.Format("{0}<folder> is required.{1}", errorMsg, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(errorMsg))
-				throw new Exception(String.Format("{0}{1}", errorMsg, Environment.NewLine));
-			#endregion Parameter Check
-
-			string temp;
-			var sb = new StringBuilder();
-			var files = Directory.EnumerateFiles(folder, "*thumb.gif", SearchOption.TopDirectoryOnly);
-			foreach (var file in files) {
-				temp = file.Replace("#", "%23");
-				sb.Append(String.Format("<a href='{0}' target='_blank'><img src='{1}' /></a>", temp.Replace("-thumb", ""), temp));
-			}
-
-			var dest = Path.Combine(folder, String.Format(@"{0}.html", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
-			Write(sb, dest);
-		}
-
-		public int DeleteAllThumbsDb(string folderPath, SearchOption searchOption=SearchOption.AllDirectories)
+		#region Delete
+		public int DeleteAllThumbsDb(string folderPath, SearchOption searchOption = SearchOption.AllDirectories)
 		{
 			var deletedCount = 0;
 			var files = Directory.EnumerateFiles(folderPath, "*", searchOption).Where(x => (x.Equals(".DS_Store")) || ((x.StartsWith("Desktop") || x.StartsWith("desktop")) && x.EndsWith(".ini")) || ((x.StartsWith("Thumbs") || x.StartsWith("thumbs")) && x.EndsWith(".db"))).ToList();
@@ -456,6 +306,175 @@ namespace Yutaka.IO
 
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.DeleteFiles(string folder='{3}', string extension='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, folder, extension));
 			}
+		}
+
+		public bool TryDelete(string path)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				return true;
+
+			try {
+				File.Delete(path);
+				return true;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
+		#endregion Delete
+
+		#region Move
+		/// <summary> Fast file move with big buffers
+		/// </summary>
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public void FastMove(string source, string destination, bool deleteSource = true)
+		{
+			var array_length = BUFFER;
+			var dataArray = new byte[array_length];
+
+			using (var fsread = new FileStream(source, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
+				using (var bwread = new BinaryReader(fsread)) {
+					using (var fswrite = new FileStream(destination, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
+						using (var bwwrite = new BinaryWriter(fswrite)) {
+							for (; ; ) {
+								var read = bwread.Read(dataArray, 0, array_length);
+								if (0 == read)
+									break;
+								bwwrite.Write(dataArray, 0, read);
+							}
+						}
+					}
+				}
+			}
+
+			if (deleteSource)
+				TryDelete(source);
+		}
+
+		/// <summary> Time the Move
+		/// </summary> 
+		/// <param name="source">Source file path</param> 
+		/// <param name="destination">Destination file path</param> 
+		public void MoveTime(string source, string destination, bool delete = true)
+		{
+			var start_time = DateTime.Now;
+			FastMove(source, destination, delete);
+			var milliseconds = 1 + (int) ((DateTime.Now - start_time).TotalMilliseconds);
+			var size = new FileInfo(destination).Length;
+			// size time in milliseconds per sec
+			var tsize = size * 1000 / milliseconds;
+			if (tsize > ONE_GIGABYTE) {
+				tsize = tsize / ONE_GIGABYTE;
+				Console.Write("\n{0} transferred at {1}gb/sec", source, tsize);
+			}
+			else if (tsize > ONE_MEGABYTE) {
+				tsize = tsize / ONE_MEGABYTE;
+				Console.Write("\n{0} transferred at {1}mb/sec", source, tsize);
+			}
+			else if (tsize > ONE_KILOBYTE) {
+				tsize = tsize / ONE_KILOBYTE;
+				Console.Write("\n{0} transferred at {1}kb/sec", source, tsize);
+			}
+			else
+				Console.Write("\n{0} transferred at {1}b/sec", source, tsize);
+		}
+
+		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(string sourceFilePath, string destFilePath) //
+		public void Move(FileInfo source, string destFilePath)
+		{
+			if (source == null)
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<source> is NULL", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(destFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
+
+			try {
+				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
+				source.MoveTo(destFilePath);
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(FileInfo source, string destFilePath='{3}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, destFilePath));
+			}
+		}
+
+		// DRY is ignored in favor of performance. Any changes in this method should also be made to Move(FileInfo source, string destFilePath) //
+		public void Move(string sourceFilePath, string destFilePath)
+		{
+			if (String.IsNullOrWhiteSpace(sourceFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<sourceFilePath> is {1}", Environment.NewLine, sourceFilePath == null ? "NULL" : "Empty"));
+			if (String.IsNullOrWhiteSpace(destFilePath))
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath, string destFilePath){0}<destFilePath> is {1}", Environment.NewLine, destFilePath == null ? "NULL" : "Empty"));
+
+			try {
+				Directory.CreateDirectory(Path.GetDirectoryName(destFilePath));
+				new FileInfo(sourceFilePath).MoveTo(destFilePath);
+			}
+
+			catch (Exception ex) {
+				throw new Exception(String.Format("Exception thrown in FileUtil.Move(string sourceFilePath='{3}', string destFilePath='{4}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, sourceFilePath, destFilePath));
+			}
+		}
+
+		public void Move(string source, string destination, bool deleteSource = true)
+		{
+			if (String.IsNullOrWhiteSpace(source))
+				throw new Exception("<source> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
+			if (String.IsNullOrWhiteSpace(destination))
+				throw new Exception("<destination> is required.\nException thrown in FileUtil.Move(string source, string destination, bool deleteSource = true).\n\n");
+			if (source.ToUpper().Equals(destination.ToUpper()))
+				return;
+
+			Directory.CreateDirectory(Path.GetDirectoryName(destination));
+
+			if (File.Exists(destination)) {
+				if (IsSameSize(source, destination)) {
+					if (deleteSource)
+						TryDelete(source);
+					return;
+				}
+
+				var extension = Path.GetExtension(source);
+				destination = destination.Replace(extension, String.Format("(2){0}", extension));
+				Move(source, destination, deleteSource);
+				return;
+			}
+
+			if (deleteSource) { // Move, not copy //
+				if (source.Substring(0, 1).ToUpper().Equals(destination.Substring(0, 1).ToUpper()))
+					new FileInfo(source).MoveTo(destination);
+				else
+					FastMove(source, destination, deleteSource);
+			}
+
+			else // Copy, not move //
+				FastMove(source, destination, deleteSource);
+		}
+		#endregion Move
+
+		public void CreateGalleryHtml(string folder)
+		{
+			#region Parameter Check
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(folder))
+				errorMsg = String.Format("{0}<folder> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg))
+				throw new Exception(String.Format("{0}{1}", errorMsg, Environment.NewLine));
+			#endregion Parameter Check
+
+			string temp;
+			var sb = new StringBuilder();
+			var files = Directory.EnumerateFiles(folder, "*thumb.gif", SearchOption.TopDirectoryOnly);
+			foreach (var file in files) {
+				temp = file.Replace("#", "%23");
+				sb.Append(String.Format("<a href='{0}' target='_blank'><img src='{1}' /></a>", temp.Replace("-thumb", ""), temp));
+			}
+
+			var dest = Path.Combine(folder, String.Format(@"{0}.html", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			Write(sb, dest);
 		}
 
 		/// <summary>
@@ -1108,21 +1127,6 @@ namespace Yutaka.IO
 				// Push the subdirectories onto the stack for traversal.
 				foreach (string subDir in subDirs)
 					dirs.Push(subDir);
-			}
-		}
-
-		public bool TryDelete(string path)
-		{
-			if (String.IsNullOrWhiteSpace(path))
-				return true;
-
-			try {
-				File.Delete(path);
-				return true;
-			}
-
-			catch (Exception) {
-				return false;
 			}
 		}
 
