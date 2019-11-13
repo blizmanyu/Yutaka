@@ -13,29 +13,31 @@ namespace Yutaka.Diagnostics
 		public const int THREE_DAYS_IN_SECONDS = 259200;
 		public const int FOUR_DAYS_IN_SECONDS = 345600;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
-
-		#region DLL Imports
+		#region private struct RECT
 		[StructLayout(LayoutKind.Sequential)]
-		public struct RECT
+		private struct RECT
 		{
 			public int left;
 			public int top;
 			public int right;
 			public int bottom;
 		}
+		#endregion private struct RECT
+
+		#region Utilities
+		#region DLL Imports
+		[DllImport("user32.dll")]
+		private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
 		[DllImport("user32.dll")]
-		public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-		[DllImport("user32.dll")]
-		public static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
+		private static extern IntPtr FindWindowEx(IntPtr hwndParent, IntPtr hwndChildAfter, string lpszClass,
 			string lpszWindow);
 
 		[DllImport("user32.dll")]
-		public static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
+		private static extern bool GetClientRect(IntPtr hWnd, out RECT lpRect);
 
 		[DllImport("user32.dll")]
-		public static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
+		private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 		#endregion DLL Imports
 
 		private static void RefreshTrayArea(IntPtr windowHandle)
@@ -47,6 +49,7 @@ namespace Yutaka.Diagnostics
 				for (var y = 0; y < rect.bottom; y += 5)
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
 		}
+		#endregion Utilities
 
 		#region Public Methods
 		public static int CloseProgram(string programName)
