@@ -41,7 +41,6 @@
   <ItemGroup>
     <Compile Include="FfmpegUtil.cs" />
     <Compile Include="ProcessUtil.cs" />
-    <Compile Include="ProcessHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
