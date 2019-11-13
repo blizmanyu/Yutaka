@@ -49,20 +49,25 @@ namespace Yutaka.Diagnostics
 		}
 
 		#region Public Methods
-		public static void CloseProgram(string programName)
+		public static int CloseProgram(string programName)
 		{
 			if (String.IsNullOrWhiteSpace(programName))
-				return;
+				return 0;
+
+			var closeCount = 0;
 
 			foreach (var process in Process.GetProcessesByName(programName)) {
 				try {
 					process.CloseMainWindow();
 					Thread.Sleep(DEFAULT_SLEEP_TIME);
 					process.Close();
+					closeCount++;
 				}
 
 				catch (Exception) { }
 			}
+
+			return closeCount;
 		}
 
 		public static float GetUpTime()
