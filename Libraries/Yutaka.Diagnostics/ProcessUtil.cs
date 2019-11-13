@@ -59,9 +59,9 @@ namespace Yutaka.Diagnostics
 			foreach (var process in Process.GetProcessesByName(programName)) {
 				try {
 					process.CloseMainWindow();
+					closeCount++;
 					Thread.Sleep(DEFAULT_SLEEP_TIME);
 					process.Close();
-					closeCount++;
 				}
 
 				catch (Exception) { }
