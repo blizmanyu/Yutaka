@@ -20,6 +20,8 @@ namespace RestartComputer
 					}
 				}
 
+				ProcessUtil.RefreshTrayArea();
+
 				foreach (var program in programs) {
 					if (ProcessUtil.KillProcess(program) > 0) {
 						Console.Write("\nKilled {0}", program);
@@ -27,6 +29,7 @@ namespace RestartComputer
 					}
 				}
 
+				ProcessUtil.RefreshTrayArea();
 				Console.Write("\nClosed {0} programs and killed {1}", closeCount, killCount);
 				ProcessUtil.RestartComputer();
 			}
