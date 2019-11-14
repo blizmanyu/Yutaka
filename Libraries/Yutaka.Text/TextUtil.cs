@@ -307,6 +307,31 @@ namespace Yutaka.Text
 			return html;
 		}
 
+		public static string RemoveExcessWhitespace(string input)
+		{
+			if (String.IsNullOrWhiteSpace(input))
+				return "";
+
+			input = input.Trim();
+
+			while (input.Contains("\r\n\r\n\r\n"))
+				input = input.Replace("\r\n\r\n\r\n", "\r\n\r\n");
+
+			while (input.Contains("\r\r\r"))
+				input = input.Replace("\r\r\r", "\r\r");
+
+			while (input.Contains("\n\n\n"))
+				input = input.Replace("\n\n\n", "\n\n");
+
+			while (input.Contains("\t\t"))
+				input = input.Replace("\t\t", "\t");
+
+			while (input.Contains("  "))
+				input = input.Replace("  ", " ");
+
+			return input.Trim();
+		}
+
 		public static string ReplaceWhitespace(string input, string replacement)
 		{
 			return RegexWhitespace.Replace(input, replacement);
