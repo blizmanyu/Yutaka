@@ -20,6 +20,78 @@ namespace Yutaka.Diagnostics
 		/// <param name="width">Default is 960. If length is less than 1, it will default to 960.</param>
 		/// <param name="createWindow">Whether to create a console window or not.</param>
 		/// <returns></returns>
+		public static bool CreateAnimatedGif(double startTime, string source, bool? overwriteAll = null, double length = -1, int fps = -1, int width = -1, string destFolder = null, bool createWindow = true, bool alsoCreateThumbnail = true)
+		{
+			#region Parameter Check
+			var errorMsg = "";
+
+			if (startTime < 0)
+				errorMsg = String.Format("{0}<startTime> must be at least 0.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(source))
+				errorMsg = String.Format("{0}<source> is required.{1}", errorMsg, Environment.NewLine);
+			else if (!File.Exists(source))
+				errorMsg = String.Format("{0}<source> doesn't exist.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg))
+				throw new Exception(String.Format("{0}{1}", errorMsg, Environment.NewLine));
+			#endregion Parameter Check
+
+			#region Defaults
+			var fi = new FileInfo(source);
+			var NameWithoutExtension = fi.Name.Replace(fi.Extension, "");
+			fi = null;
+			// length //
+			if (length < .5)
+				length = 10;
+			// fps & width //
+			if (fps < 1)
+				fps = 24;
+			if (width < 1)
+				width = 960;
+			// destFolder //
+			if (String.IsNullOrWhiteSpace(destFolder))
+				destFolder = Path.Combine(DefaultPaletteFolder, NameWithoutExtension);
+			Directory.CreateDirectory(destFolder);
+			#endregion Defaults
+
+			try {
+				using (var proc1 = StartCreatingPalette(startTime, source, length, fps, width, createWindow)) {
+					proc1.WaitForExit();
+
+					using (var proc2 = StartCreatingAnimatedGif(startTime, source, overwriteAll, length, fps, width, destFolder, createWindow)) {
+						proc2.WaitForExit();
+
+						if (alsoCreateThumbnail) {
+							using (var proc3 = StartCreatingThumbnail(startTime, source, overwriteAll, length, fps, width, destFolder, createWindow)) {
+								proc3.WaitForExit();
+							}
+						}
+					}
+				}
+
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}{2}Exception thrown in FfmpegUtil.CreateAnimatedGif(double startTime='{3}', string source='{4}', bool? overwriteAll='{5}', double length='{6}', int fps='{7}', int width='{8}', string destFolder='{9}', bool createWindow='{10}'){2}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, startTime, source, overwriteAll, length, fps, width, destFolder, createWindow));
+
+				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of FfmpegUtil.CreateAnimatedGif(double startTime='{3}', string source='{4}', bool? overwriteAll='{5}', double length='{6}', int fps='{7}', int width='{8}', string destFolder='{9}', bool createWindow='{10}'){2}{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startTime, source, overwriteAll, length, fps, width, destFolder, createWindow));
+			}
+		}
+
+		/// <summary>
+		/// Creates an animated GIF.
+		/// </summary>
+		/// <param name="startTime">Start time in decimal seconds.</param>
+		/// <param name="source">Full path of the source.</param>
+		/// <param name="destFolder">Destination folder. Defaults to &lt;DefaultPaletteFolder&gt;</param>
+		/// <param name="overwriteAll">null: prompt for each. true: overwrite all. false: overwrite none.</param>
+		/// <param name="length">Default is 10. If length is less than .5, it will default to 10.</param>
+		/// <param name="fps">Default is 24. If length is less than 1, it will default to 24.</param>
+		/// <param name="width">Default is 960. If length is less than 1, it will default to 960.</param>
+		/// <param name="createWindow">Whether to create a console window or not.</param>
+		/// <returns></returns>
 		public static Process StartCreatingAnimatedGif(double startTime, string source, bool? overwriteAll = null, double length = -1, int fps = -1, int width = -1, string destFolder = null, bool createWindow = true)
 		{
 			#region Parameter Check
