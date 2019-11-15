@@ -52,6 +52,7 @@
     <Compile Include="MvcUtil.cs" />
     <Compile Include="WebUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YuCookie.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
