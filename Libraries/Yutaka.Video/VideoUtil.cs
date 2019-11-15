@@ -118,7 +118,7 @@ namespace Yutaka.Video
 				for (var i = p3; i < end; i += GifLength)
 					CreateAnimatedGif(TimeSpan.FromSeconds(i), GifLength);
 
-				DeleteFiles(DestFolder, "png");
+				Delete(DestFolder, "*.png");
 			}
 
 			catch (PathTooLongException ex) {
