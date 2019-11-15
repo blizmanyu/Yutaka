@@ -55,8 +55,6 @@ namespace Yutaka.Data
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
 		#endregion CommandType
 
-		public SqlUtil() { }
-
 		public void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
