@@ -7,9 +7,53 @@ namespace Yutaka.Data
 {
 	public class SqlUtil
 	{
+		#region CommandBehavior
+		/// <summary>
+		/// When the command is executed, the associated <c>Connection</c> object is closed when the associated <c>DataReader</c> object is closed.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_CloseConnection = CommandBehavior.CloseConnection;
+		/// <summary>
+		/// The query may return multiple result sets. Execution of the query may affect the database state. <c>Default</c> sets no <c>CommandBehavior</c> flags, so calling <c>ExecuteReader(CommandBehavior.Default)</c> is functionally equivalent to calling <c>ExecuteReader()</c>.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_Default = CommandBehavior.Default;
+		/// <summary>
+		/// The query returns column and primary key information. The provider appends extra columns to the result set for existing primary key and timestamp columns.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_KeyInfo = CommandBehavior.KeyInfo;
+		/// <summary>
+		/// The query returns column information only. When using <c>SchemaOnly</c>, the .NET Framework Data Provider for SQL Server precedes the statement being executed with SET FMTONLY ON.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_SchemaOnly = CommandBehavior.SchemaOnly;
+		/// <summary>
+		/// Provides a way for the DataReader to handle rows that contain columns with large binary values. Rather than loading the entire row, SequentialAccess enables the DataReader to load data as a stream. You can then use the GetBytes or GetChars method to specify a byte location to start the read operation, and a limited buffer size for the data being returned.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_SequentialAccess = CommandBehavior.SequentialAccess;
+		/// <summary>
+		/// The query returns a single result set.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_SingleResult = CommandBehavior.SingleResult;
+		/// <summary>
+		/// The query is expected to return a single row of the first result set. Execution of the query may affect the database state. Some .NET Framework data providers may, but are not required to, use this information to optimize the performance of the command. When you specify SingleRow with the ExecuteReader() method of the OleDbCommand object, the .NET Framework Data Provider for OLE DB performs binding using the OLE DB IRow interface if it is available. Otherwise, it uses the IRowset interface. If your SQL statement is expected to return only a single row, specifying SingleRow can also improve application performance. It is possible to specify SingleRow when executing queries that are expected to return multiple result sets. In that case, where both a multi-result set SQL query and single row are specified, the result returned will contain only the first row of the first result set. The other result sets of the query will not be returned.
+		/// </summary>
+		public const CommandBehavior CommandBehavior_SingleRow = CommandBehavior.SingleRow;
+		#endregion CommandBehavior
+		#region CommandType
+		/// <summary>
+		/// The name of a stored procedure.
+		/// </summary>
+		public const CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
+		/// <summary>
+		/// The name of a table.
+		/// </summary>
+		public const CommandType CommandType_TableDirect = CommandType.TableDirect;
+		/// <summary>
+		/// An SQL text command. (Default)
+		/// </summary>
+		public const CommandType CommandType_Text = CommandType.Text;
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
+		#endregion CommandType
 
 		public SqlUtil() { }
 
@@ -268,7 +312,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public void TruncateTable(string connectionString, string database=null, string schema=null, string table=null)
+		public void TruncateTable(string connectionString, string database = null, string schema = null, string table = null)
 		{
 			if (String.IsNullOrWhiteSpace(connectionString))
 				throw new Exception(String.Format("<connectionString> is required.{0}", Environment.NewLine));
