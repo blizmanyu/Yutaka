@@ -35,11 +35,29 @@ namespace Yutaka.Diagnostics.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_CreateAnimatedGif();
+			Test_CreateAnimatedGif2();
 			EndProgram();
 		}
 
 		#region Tests for FfmpegUtil
+		// Created Nov 19, 2019, Modified: Nov 19, 2019 //
+		private static void Test_CreateAnimatedGif2()
+		{
+			double startTime;
+			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
+			var filename = @"asdf.mp4";
+			var source = Path.Combine(folder, filename);
+			var destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
+
+			for (int i = 0; i < 25; i += 10) {
+				startTime = i;
+				FfmpegUtil.CreateAnimatedGif(startTime, source, true, -1, -1, -1, null, true, true);
+			}
+
+			_fileUtil.CreateGalleryHtml(destFolder);
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+		}
+
 		private static void Test_CreateAnimatedGif()
 		{
 			double startTime;
