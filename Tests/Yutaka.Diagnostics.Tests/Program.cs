@@ -44,7 +44,7 @@ namespace Yutaka.Diagnostics.Tests
 		private static void Test_CreateAnimatedGif2()
 		{
 			double startTime;
-			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
+			var folder = @"G:\Projects\FileCopier2\Downloads\";
 			var filename = @"asdf.mp4";
 			var source = Path.Combine(folder, filename);
 			var destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));

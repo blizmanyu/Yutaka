@@ -62,7 +62,7 @@ namespace Yutaka.Diagnostics
 						proc2.WaitForExit();
 
 						if (alsoCreateThumbnail) {
-							using (var proc3 = StartCreatingThumbnail(startTime, source, overwriteAll, length, fps, width, destFolder, createWindow)) {
+							using (var proc3 = StartCreatingThumbnail(startTime, source, overwriteAll, length, fps, width / 2, destFolder, createWindow)) {
 								proc3.WaitForExit();
 							}
 						}
