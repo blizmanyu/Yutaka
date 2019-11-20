@@ -35,7 +35,7 @@ namespace Yutaka.Diagnostics.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_CreateAnimatedGif2();
+			Test_FileUtil_CreateGalleryHtml();
 			EndProgram();
 		}
 
@@ -49,13 +49,29 @@ namespace Yutaka.Diagnostics.Tests
 			var source = Path.Combine(folder, filename);
 			var destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
 
-			for (int i = 0; i < 25; i += 10) {
+			for (int i = 30; i < 300; i += 10) {
 				startTime = i;
-				FfmpegUtil.CreateAnimatedGif(startTime, source, true, -1, -1, -1, null, true, true);
+				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
+			}
+
+			for (int i = 352; i < 2340; i += 62) {
+				startTime = i;
+				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
+			}
+
+			for (int i = 2345; i < 2645; i += 10) {
+				startTime = i;
+				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
 			}
 
 			_fileUtil.CreateGalleryHtml(destFolder);
 			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+		}
+
+		private static void Test_FileUtil_CreateGalleryHtml()
+		{
+			var destFolder = @"asdf\";
+			_fileUtil.CreateGalleryHtml(destFolder);
 		}
 
 		private static void Test_CreateAnimatedGif()
