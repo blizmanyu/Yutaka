@@ -810,20 +810,6 @@ namespace Yutaka.Tests
 		}
 		#endregion Test Util.LocalTimeToGoogleInternalDate
 
-		#region Test FileUtilStatic.DeleteFiles
-		private static void Test_FileUtil_DeleteFiles()
-		{
-			var tests = new string[] {
-				@"C:\TEMP\test1\",
-			};
-
-			for (int i = 0; i < tests.Length; i++) {
-				totalCount++;
-				_fileUtil.DeleteFiles(tests[i], "gif");
-			}
-		}
-		#endregion Test FileUtilStatic.DeleteFiles
-
 		#region Test SqlUtil.ToXls
 		private static void Test_SqlUtil_ToXls()
 		{
