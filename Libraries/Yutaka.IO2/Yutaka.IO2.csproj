@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUtil.cs" />
+    <Compile Include="Enums.cs" />
     <Compile Include="YuFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
