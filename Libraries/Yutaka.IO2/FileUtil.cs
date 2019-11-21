@@ -108,7 +108,7 @@ namespace Yutaka.IO2
 						case OverwriteOption.KeepBoth:
 							//File.Copy(sourceFileName, destFileName, false);
 							return true;
-						case OverwriteOption.OverwriteIfDifferent:
+						case OverwriteOption.Smart:
 							//File.Copy(sourceFileName, destFileName, false);
 							return true;
 						default:
