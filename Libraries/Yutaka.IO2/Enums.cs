@@ -11,6 +11,6 @@
 		/// <summary>
 		/// If the files are the same, it will skip to save resources. Otherwise, it will rename to keep both files.
 		/// </summary>
-		Smart
+		Smart,
 	}
 }
