@@ -44,20 +44,12 @@ namespace Yutaka.Diagnostics.Tests
 		private static void Test_CreateAnimatedGif2()
 		{
 			double startTime;
-			var folder = @"G:\Projects\FileCopier2\Downloads\";
+			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
 			var filename = @"asdf.mp4";
 			var source = Path.Combine(folder, filename);
 			var destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
 
-			//for (int i = 30; i < 300; i += 10) {
-			//	startTime = i;
-			//	FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
-			//}
-
-			//_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-			//_fileUtil.CreateGalleryHtml(destFolder);
-
-			for (int i = 352; i < 3753; i += 62) {
+			for (int i = 30; i < 300; i += 10) {
 				startTime = i;
 				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
 			}
@@ -65,7 +57,15 @@ namespace Yutaka.Diagnostics.Tests
 			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
 			_fileUtil.CreateGalleryHtml(destFolder);
 
-			for (int i = 3758; i < 4058; i += 10) {
+			for (int i = 380; i < 2768; i += 90) {
+				startTime = i;
+				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
+			}
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+
+			for (int i = 2773; i < 3073; i += 10) {
 				startTime = i;
 				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
 			}
