@@ -14,6 +14,7 @@ namespace Yutaka.IO2
 		public string Extension;
 		public string FullName;
 		public string Name;
+		public string Root;
 		public long Size;
 
 		/// <summary>
@@ -51,6 +52,7 @@ namespace Yutaka.IO2
 				FullName = fi.FullName.Replace(ExtensionOrig, Extension);
 				Size = fi.Length;
 				Name = fi.Name.Replace(ExtensionOrig, Extension);
+				Root = Path.GetPathRoot(FullName);
 				fi = null;
 			}
 
