@@ -69,5 +69,18 @@ namespace Yutaka.IO2
 				#endregion Log
 			}
 		}
+
+		public override bool Equals(Object obj)
+		{
+			if ((obj == null) || !GetType().Equals(obj.GetType()))
+				return false;
+
+			return Size == ((YuFile) obj).Size;
+		}
+
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}
 	}
 }
