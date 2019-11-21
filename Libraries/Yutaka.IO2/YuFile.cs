@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Yutaka.IO2
 {
-    public class Class1
-    {
-    }
+	public class YuFile
+	{
+	}
 }
