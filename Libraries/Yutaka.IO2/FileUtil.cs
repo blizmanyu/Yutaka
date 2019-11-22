@@ -79,11 +79,11 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
-		/// WIP: Do not use yet!
+		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
-		/// <param name="overwriteOption"></param>
+		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
 		/// <returns></returns>
 		public static bool Copy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
@@ -96,7 +96,7 @@ namespace Yutaka.IO2
 				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(destFileName))
 				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
-			if (destFileName.Equals(sourceFileName))
+			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper()))
 				log = String.Format("{0}<sourceFileName> and <destFileName> are the same.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log)) {
@@ -107,27 +107,44 @@ namespace Yutaka.IO2
 			#endregion Input Check
 
 			try {
+				var destFileExists = File.Exists(destFileName);
+
 				switch (overwriteOption) {
+					#region case OverwriteOption.Overwrite:
 					case OverwriteOption.Overwrite:
-						//fi.copy
-						//File.Copy(sourceFileName, destFileName, true);
-						return true;
+						return FastCopy(sourceFileName, destFileName);
+					#endregion
+					#region case OverwriteOption.Skip:
 					case OverwriteOption.Skip:
-						File.Copy(sourceFileName, destFileName, false);
-						return true;
+						if (destFileExists)
+							return false;
+
+						return FastCopy(sourceFileName, destFileName);
+					#endregion
+					#region case OverwriteOption.KeepBoth:
 					case OverwriteOption.KeepBoth:
-						//File.Copy(sourceFileName, destFileName, false);
-						return true;
+						if (destFileExists)
+							return FastCopy(sourceFileName, AutoRename(destFileName));
+
+						return FastCopy(sourceFileName, destFileName);
+					#endregion
+					#region case OverwriteOption.Smart:
 					case OverwriteOption.Smart:
-						//File.Copy(sourceFileName, destFileName, false);
-						return true;
+						if (destFileExists) {
+							var fi1 = new FileInfo(sourceFileName);
+							var fi2 = new FileInfo(destFileName);
+
+							if (fi1.Length == fi2.Length)
+								return true;
+
+							return FastCopy(sourceFileName, AutoRename(destFileName));
+						}
+
+						return FastCopy(sourceFileName, destFileName);
+					#endregion
 					default:
 						return false;
 				}
-
-
-
-				return true;
 			}
 
 			catch (Exception ex) {
