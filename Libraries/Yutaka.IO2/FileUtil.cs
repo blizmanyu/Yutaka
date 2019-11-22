@@ -159,6 +159,37 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Permanently deletes the specified file.
+		/// </summary>
+		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+		public static void Delete(string path)
+		{
+			#region Input Check
+			if (String.IsNullOrWhiteSpace(path))
+				throw new Exception(String.Format("<path> is required.{0}Exception thrown in FileUtil.Delete(string path).{0}{0}", Environment.NewLine));
+			if (!File.Exists(path))
+				throw new Exception(String.Format("<path> doesn't exist.{0}Exception thrown in FileUtil.Delete(string path).{0}{0}", Environment.NewLine));
+			#endregion Input Check
+
+			try {
+				new FileInfo(path).Delete();
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.Delete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Delete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
