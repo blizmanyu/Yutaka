@@ -14,7 +14,7 @@ namespace Yutaka.IO2
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
 		/// <seealso cref="https://www.codeproject.com/Tips/777322/A-Faster-File-Copy"/>
-		private static void FastCopy(string sourceFileName, string destFileName)
+		private static bool FastCopy(string sourceFileName, string destFileName)
 		{
 			#region Input Check
 			var log = "";
@@ -31,7 +31,7 @@ namespace Yutaka.IO2
 			if (!String.IsNullOrWhiteSpace(log)) {
 				log = String.Format("{0}Exception thrown in FileUtil.FastCopy(string sourceFileName, string destFileName).{1}", log, Environment.NewLine);
 				Console.Write("\n{0}\n", log);
-				return;
+				return false;
 			}
 			#endregion Input Check
 
@@ -54,6 +54,8 @@ namespace Yutaka.IO2
 						}
 					}
 				}
+
+				return true;
 			}
 
 			catch (Exception ex) {
@@ -68,7 +70,7 @@ namespace Yutaka.IO2
 				Console.Write("\n{0}", log);
 				#endregion Log
 
-				return;
+				return false;
 			}
 		}
 
