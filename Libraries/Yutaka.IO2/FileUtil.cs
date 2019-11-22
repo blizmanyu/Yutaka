@@ -197,28 +197,6 @@ namespace Yutaka.IO2
 		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
 		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
-			#region Input Check
-			var log = "";
-
-			if (String.IsNullOrWhiteSpace(sourceFileName))
-				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
-			else if (!File.Exists(sourceFileName))
-				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(destFileName))
-				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in FileUtil.TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption).{1}", log, Environment.NewLine);
-				Console.Write("\n{0}", log);
-				return false;
-			}
-
-			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper())) {
-				Console.Write("\n<sourceFileName> and <destFileName> are the same.");
-				return true;
-			}
-			#endregion Input Check
-
 			try {
 				Copy(sourceFileName, destFileName, overwriteOption);
 				return true;
@@ -226,7 +204,7 @@ namespace Yutaka.IO2
 
 			catch (Exception ex) {
 				#region Log
-				log = "";
+				string log;
 
 				if (ex.InnerException == null)
 					log = String.Format("{0}{2}Exception thrown in FileUtil.TryCopy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
