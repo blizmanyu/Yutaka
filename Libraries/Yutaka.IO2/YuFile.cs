@@ -271,7 +271,7 @@ namespace Yutaka.IO2
 		#region Overrides
 		public override bool Equals(Object obj)
 		{
-			if ((obj == null) || !GetType().Equals(obj.GetType()))
+			if (obj == null || !GetType().Equals(obj.GetType()))
 				return false;
 
 			return Size == ((YuFile) obj).Size;
@@ -280,6 +280,16 @@ namespace Yutaka.IO2
 		public override int GetHashCode()
 		{
 			return Size.GetHashCode();
+		}
+
+		public static bool operator ==(YuFile x, YuFile y)
+		{
+			return x.Equals(y);
+		}
+
+		public static bool operator !=(YuFile x, YuFile y)
+		{
+			return !x.Equals(y);
 		}
 		#endregion Overrides
 		#endregion Methods
