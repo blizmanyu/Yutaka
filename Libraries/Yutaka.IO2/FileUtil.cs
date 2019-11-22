@@ -239,6 +239,33 @@ namespace Yutaka.IO2
 				return false;
 			}
 		}
+
+		/// <summary>
+		/// Permanently deletes the specified file.
+		/// </summary>
+		/// <param name="path"></param>
+		public static bool TryDelete(string path)
+		{
+			try {
+				Delete(path);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
 		#endregion Public Methods
 	}
 }
