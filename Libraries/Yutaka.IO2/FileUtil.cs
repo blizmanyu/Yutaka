@@ -53,35 +53,6 @@ namespace Yutaka.IO2
 				#endregion Log
 			}
 		}
-
-		/// <summary>
-		/// Fast file copy with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
-		/// </summary>
-		/// <param name="sourceFileName">The file to copy.</param>
-		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
-		/// <seealso cref="https://www.codeproject.com/Tips/777322/A-Faster-File-Copy"/>
-		private static bool TryFastCopy(string sourceFileName, string destFileName)
-		{
-			try {
-				FastCopy(sourceFileName, destFileName);
-				return true;
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.TryFastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryFastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName);
-
-				Console.Write("\n{0}\n", log);
-				#endregion Log
-
-				return false;
-			}
-		}
 		#endregion Private Methods
 
 		#region Public Methods
