@@ -130,21 +130,13 @@ namespace Yutaka.IO2
 		/// <param name="destFileName">The name of the new file to copy to.</param>
 		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
 		/// <returns></returns>
-		public bool CopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		public void CopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			#region Input Check
-			var log = "";
-
 			if (String.IsNullOrWhiteSpace(destFileName))
-				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
+				throw new Exception(String.Format("<destFileName> is required.{0}", Environment.NewLine));
 			if (FullName.ToUpper().Equals(destFileName.ToUpper()))
-				log = String.Format("{0}<this> and <destFileName> are the same.{1}", log, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in YuFile.CopyTo(string destFileName, OverwriteOption overwriteOption).{1}", log, Environment.NewLine);
-				Console.Write("\n{0}\n", log);
-				return false;
-			}
+				return;
 			#endregion Input Check
 
 			try {
@@ -153,51 +145,50 @@ namespace Yutaka.IO2
 				switch (overwriteOption) {
 					#region case OverwriteOption.Overwrite:
 					case OverwriteOption.Overwrite:
-						return FastCopyTo(destFileName);
+						FastCopyTo(destFileName);
+						break;
 					#endregion
 					#region case OverwriteOption.Skip:
 					case OverwriteOption.Skip:
-						if (destFileExists)
-							return false;
-
-						return FastCopyTo(destFileName);
+						if (!destFileExists)
+							FastCopyTo(destFileName);
+						break;
 					#endregion
 					#region case OverwriteOption.KeepBoth:
 					case OverwriteOption.KeepBoth:
 						if (destFileExists)
-							return FastCopyTo(FileUtil.AutoRename(destFileName));
-
-						return FastCopyTo(destFileName);
+							FastCopyTo(FileUtil.AutoRename(destFileName));
+						else
+							FastCopyTo(destFileName);
+						break;
 					#endregion
 					#region case OverwriteOption.Smart:
 					case OverwriteOption.Smart:
 						if (destFileExists) {
-							if (this.Equals(new YuFile(destFileName)))
-								return true;
-
-							return FastCopyTo(FileUtil.AutoRename(destFileName));
+							if (!this.Equals(new YuFile(destFileName)))
+								FastCopyTo(FileUtil.AutoRename(destFileName));
 						}
 
-						return FastCopyTo(destFileName);
+						else
+							FastCopyTo(destFileName);
+						break;
 					#endregion
 					default:
-						return false;
+						break;
 				}
 			}
 
 			catch (Exception ex) {
 				#region Log
-				log = "";
+				string log;
 
 				if (ex.InnerException == null)
 					log = String.Format("{0}{2}Exception thrown in YuFile.CopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
 				else
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.CopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
 
-				Console.Write("\n{0}", log);
+				throw new Exception(log);
 				#endregion Log
-
-				return false;
 			}
 		}
 
