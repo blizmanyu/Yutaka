@@ -251,6 +251,32 @@ namespace Yutaka.IO2
 			}
 		}
 
+		/// <summary>
+		/// Permanently deletes the file.
+		/// </summary>
+		public bool TryDelete()
+		{
+			try {
+				Delete();
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in YuFile.TryDelete(){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.TryDelete(){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
+
 		#region Overrides
 		public override bool Equals(Object obj)
 		{
