@@ -33,11 +33,27 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FastCopy();
+			Test_AutoRename();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
+		// Created Nov 21, 2019, Modified: Nov 21, 2019 //
+		private static void Test_AutoRename()
+		{
+			var tests = new string[] {
+				@"C:\TEMP\test.txt",
+				@"C:\TEMP\TEMP\test.txt",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				Console.Write("\n   {0}", FileUtil.AutoRename(test));
+			}
+
+		}
+
 		// Created Nov 21, 2019, Modified: Nov 21, 2019 //
 		private static void Test_FastCopy()
 		{

@@ -56,6 +56,24 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Returns a new filename with " - Copy" appended to it.
+		/// </summary>
+		/// <param name="filename"></param>
+		/// <returns></returns>
+		public static string AutoRename(string filename)
+		{
+			if (String.IsNullOrWhiteSpace(filename))
+				throw new Exception(String.Format("<filename> is required.{0}", Environment.NewLine));
+
+			var extension = Path.GetExtension(filename);
+
+			while (File.Exists(filename))
+				filename = filename.Replace(extension, String.Format(" - Copy{0}", extension));
+
+			return filename;
+		}
+
+		/// <summary>
 		/// WIP: Do not use yet!
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
