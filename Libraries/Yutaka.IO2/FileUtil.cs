@@ -91,11 +91,12 @@ namespace Yutaka.IO2
 				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(destFileName))
 				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
-			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper()))
-				log = String.Format("{0}<sourceFileName> and <destFileName> are the same.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in FileUtil.Copy(string sourceFileName, string destFileName, OverwriteOption overwriteOption).{1}", log, Environment.NewLine));
+
+			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper()))
+				return;
 			#endregion Input Check
 
 			try {
