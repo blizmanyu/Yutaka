@@ -5,6 +5,7 @@ namespace Yutaka.IO2
 {
 	public class YuFile
 	{
+		#region Fields
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public DateTime CreationTime;
 		public DateTime LastAccessTime;
@@ -16,7 +17,9 @@ namespace Yutaka.IO2
 		public string Name;
 		public string Root;
 		public long Size;
+		#endregion Fields
 
+		#region Constructor
 		/// <summary>
 		/// Initializes a new instance of the <see cref="YuFile"/> class, which acts as a wrapper for a file path.
 		/// </summary>
@@ -69,7 +72,9 @@ namespace Yutaka.IO2
 				#endregion Log
 			}
 		}
+		#endregion Constructor
 
+		#region Methods
 		public override bool Equals(Object obj)
 		{
 			if ((obj == null) || !GetType().Equals(obj.GetType()))
@@ -82,5 +87,6 @@ namespace Yutaka.IO2
 		{
 			return base.GetHashCode();
 		}
+		#endregion Methods
 	}
 }
