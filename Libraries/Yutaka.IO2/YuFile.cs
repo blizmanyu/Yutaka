@@ -147,7 +147,7 @@ namespace Yutaka.IO2
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
-		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
 		public void CopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			#region Input Check
@@ -237,7 +237,7 @@ namespace Yutaka.IO2
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
-		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
 		public bool TryCopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			try {
