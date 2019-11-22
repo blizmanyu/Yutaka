@@ -172,7 +172,7 @@ namespace Yutaka.IO2
 					#region case OverwriteOption.Smart:
 					case OverwriteOption.Smart:
 						if (destFileExists) {
-							if (Size == new FileInfo(destFileName).Length)
+							if (this.Equals(new YuFile(destFileName)))
 								return true;
 
 							return FastCopyTo(FileUtil.AutoRename(destFileName));
