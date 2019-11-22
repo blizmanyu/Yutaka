@@ -212,7 +212,7 @@ namespace Yutaka.IO2
 
 		public override int GetHashCode()
 		{
-			return base.GetHashCode();
+			return Size.GetHashCode();
 		}
 		#endregion Overrides
 		#endregion Methods
