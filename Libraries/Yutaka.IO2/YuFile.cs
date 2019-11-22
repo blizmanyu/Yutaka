@@ -310,6 +310,11 @@ namespace Yutaka.IO2
 		{
 			return !x.Equals(y);
 		}
+
+		public override string ToString()
+		{
+			return FullName;
+		}
 		#endregion Overrides
 		#endregion Methods
 	}
