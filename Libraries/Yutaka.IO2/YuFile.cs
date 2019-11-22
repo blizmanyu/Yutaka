@@ -125,6 +125,7 @@ namespace Yutaka.IO2
 		#endregion Utilities
 
 		#region Methods
+		#region Overrides
 		public override bool Equals(Object obj)
 		{
 			if ((obj == null) || !GetType().Equals(obj.GetType()))
@@ -137,6 +138,7 @@ namespace Yutaka.IO2
 		{
 			return base.GetHashCode();
 		}
+		#endregion Overrides
 		#endregion Methods
 	}
 }
