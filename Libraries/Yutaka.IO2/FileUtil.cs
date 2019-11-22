@@ -16,25 +16,6 @@ namespace Yutaka.IO2
 		/// <seealso cref="https://www.codeproject.com/Tips/777322/A-Faster-File-Copy"/>
 		private static bool FastCopy(string sourceFileName, string destFileName)
 		{
-			#region Input Check
-			var log = "";
-
-			if (String.IsNullOrWhiteSpace(sourceFileName))
-				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
-			else if (!File.Exists(sourceFileName))
-				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(destFileName))
-				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
-			if (destFileName.Equals(sourceFileName))
-				log = String.Format("{0}<sourceFileName> and <destFileName> are the same.{1}", log, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in FileUtil.FastCopy(string sourceFileName, string destFileName).{1}", log, Environment.NewLine);
-				Console.Write("\n{0}\n", log);
-				return false;
-			}
-			#endregion Input Check
-
 			int read;
 			var array_length = FIVE_HUNDRED_TWELVE_KB;
 			var dataArray = new byte[array_length];
@@ -60,7 +41,7 @@ namespace Yutaka.IO2
 
 			catch (Exception ex) {
 				#region Log
-				log = "";
+				string log;
 
 				if (ex.InnerException == null)
 					log = String.Format("{0}{2}Exception thrown in FileUtil.FastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName);
