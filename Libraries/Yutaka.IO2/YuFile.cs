@@ -82,18 +82,16 @@ namespace Yutaka.IO2
 		public void Debug()
 		{
 			Console.Write("\n");
-			Console.Write("\n UNIX_TIME: {0}", UNIX_TIME);
-			Console.Write("\n FIVE_HUNDRED_TWELVE_KB: {0}", FIVE_HUNDRED_TWELVE_KB);
-			Console.Write("\n CreationTime: {0}", CreationTime);
+			Console.Write("\n   CreationTime: {0}", CreationTime);
 			Console.Write("\n LastAccessTime: {0}", LastAccessTime);
-			Console.Write("\n LastWriteTime: {0}", LastWriteTime);
-			Console.Write("\n DirectoryName: {0}", DirectoryName);
-			Console.Write("\n ExtensionOrig: {0}", ExtensionOrig);
-			Console.Write("\n Extension: {0}", Extension);
-			Console.Write("\n FullName: {0}", FullName);
-			Console.Write("\n Name: {0}", Name);
-			Console.Write("\n Root: {0}", Root);
-			Console.Write("\n Size: {0}", Size);
+			Console.Write("\n  LastWriteTime: {0}", LastWriteTime);
+			Console.Write("\n  DirectoryName: {0}", DirectoryName);
+			Console.Write("\n  ExtensionOrig: {0}", ExtensionOrig);
+			Console.Write("\n      Extension: {0}", Extension);
+			Console.Write("\n       FullName: {0}", FullName);
+			Console.Write("\n           Name: {0}", Name);
+			Console.Write("\n           Root: {0}", Root);
+			Console.Write("\n           Size: {0}", Size);
 			Console.Write("\n");
 		}
 
