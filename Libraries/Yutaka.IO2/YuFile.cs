@@ -192,6 +192,29 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Permanently deletes the file.
+		/// </summary>
+		public void Delete()
+		{
+			try {
+				new FileInfo(FullName).Delete();
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in YuFile.Delete(){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.Delete(){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
