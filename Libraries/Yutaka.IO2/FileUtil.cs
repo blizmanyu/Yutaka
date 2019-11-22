@@ -80,7 +80,7 @@ namespace Yutaka.IO2
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
-		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
 		public static void Copy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			#region Input Check
@@ -227,7 +227,7 @@ namespace Yutaka.IO2
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
-		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
 		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			try {
