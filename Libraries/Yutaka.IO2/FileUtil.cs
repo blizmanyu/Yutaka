@@ -5,9 +5,12 @@ namespace Yutaka.IO2
 {
 	public static class FileUtil
 	{
+		#region Fields
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
+		#endregion Fields
 
+		#region Private Methods
 		/// <summary>
 		/// Fast file copy with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
 		/// </summary>
@@ -54,7 +57,9 @@ namespace Yutaka.IO2
 				return false;
 			}
 		}
+		#endregion Private Methods
 
+		#region Public Methods
 		/// <summary>
 		/// Returns a new filename with " - Copy" appended to it.
 		/// </summary>
@@ -140,5 +145,6 @@ namespace Yutaka.IO2
 				return false;
 			}
 		}
+		#endregion Public Methods
 	}
 }
