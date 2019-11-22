@@ -129,7 +129,6 @@ namespace Yutaka.IO2
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
 		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
-		/// <returns></returns>
 		public void CopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			#region Input Check
@@ -189,6 +188,43 @@ namespace Yutaka.IO2
 
 				throw new Exception(log);
 				#endregion Log
+			}
+		}
+
+		/// <summary>
+		/// Copies an existing file to a new file.
+		/// </summary>
+		/// <param name="destFileName">The name of the new file to copy to.</param>
+		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
+		public bool TryCopyTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			#region Input Check
+			if (String.IsNullOrWhiteSpace(destFileName)) {
+				Console.Write("\n<destFileName> is required.\nException thrown in YuFile.TryCopyTo(string destFileName, OverwriteOption overwriteOption");
+				return false;
+			}
+			if (FullName.ToUpper().Equals(destFileName.ToUpper()))
+				return true;
+			#endregion Input Check
+
+			try {
+				CopyTo(destFileName, overwriteOption);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in YuFile.TryCopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.TryCopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
 			}
 		}
 
