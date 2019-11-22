@@ -17,7 +17,7 @@ namespace Yutaka.IO2
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
 		/// <seealso cref="https://www.codeproject.com/Tips/777322/A-Faster-File-Copy"/>
-		private static bool FastCopy(string sourceFileName, string destFileName)
+		private static void FastCopy(string sourceFileName, string destFileName)
 		{
 			int read;
 			var array_length = FIVE_HUNDRED_TWELVE_KB;
@@ -38,8 +38,6 @@ namespace Yutaka.IO2
 						}
 					}
 				}
-
-				return true;
 			}
 
 			catch (Exception ex) {
@@ -51,10 +49,8 @@ namespace Yutaka.IO2
 				else
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.FastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName);
 
-				Console.Write("\n{0}", log);
+				throw new Exception(log);
 				#endregion Log
-
-				return false;
 			}
 		}
 		#endregion Private Methods
@@ -84,7 +80,6 @@ namespace Yutaka.IO2
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
 		/// <param name="overwriteOption">The <see cref="OverwriteOption"/> to use.</param>
-		/// <returns></returns>
 		public static void Copy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
 		{
 			#region Input Check
