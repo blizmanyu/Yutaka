@@ -7,6 +7,7 @@ namespace Yutaka.IO2
 	{
 		#region Fields
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
+		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		public DateTime CreationTime;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
@@ -73,6 +74,55 @@ namespace Yutaka.IO2
 			}
 		}
 		#endregion Constructor
+
+		#region Utilities
+		/// <summary>
+		/// Fast file copy with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
+		/// </summary>
+		/// <param name="sourceFileName">The file to copy.</param>
+		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
+		/// <seealso cref="https://www.codeproject.com/Tips/777322/A-Faster-File-Copy"/>
+		protected static bool FastCopy(string sourceFileName, string destFileName)
+		{
+			int read;
+			var array_length = FIVE_HUNDRED_TWELVE_KB;
+			var dataArray = new byte[array_length];
+
+			try {
+				using (var fsread = new FileStream(sourceFileName, FileMode.Open, FileAccess.Read, FileShare.None, array_length)) {
+					using (var bwread = new BinaryReader(fsread)) {
+						using (var fswrite = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.None, array_length)) {
+							using (var bwwrite = new BinaryWriter(fswrite)) {
+								for (; ; ) {
+									read = bwread.Read(dataArray, 0, array_length);
+									if (0 == read)
+										break;
+									bwwrite.Write(dataArray, 0, read);
+								}
+							}
+						}
+					}
+				}
+
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in YuFile.FastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.FastCopy(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
+		#endregion Utilities
 
 		#region Methods
 		public override bool Equals(Object obj)
