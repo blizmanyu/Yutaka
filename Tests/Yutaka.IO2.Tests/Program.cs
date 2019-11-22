@@ -33,7 +33,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_AutoRename();
+			Test_Debug();
 			EndProgram();
 		}
 
@@ -51,7 +51,6 @@ namespace Yutaka.IO2.Tests
 				Console.Write("\n{0}) {1}", ++totalCount, test);
 				Console.Write("\n   {0}", FileUtil.AutoRename(test));
 			}
-
 		}
 
 		// Created Nov 21, 2019, Modified: Nov 21, 2019 //
@@ -64,6 +63,16 @@ namespace Yutaka.IO2.Tests
 		#endregion Tests for FileUtil
 
 		#region Tests for YuFile
+		private static void Test_Debug()
+		{
+			var path = @"C:\TEMP\";
+
+			foreach (var test in Directory.EnumerateFiles(path)) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				new YuFile(test).Debug();
+			}
+		}
 		#endregion Tests for YuFile
 
 		#region Misc Tests
