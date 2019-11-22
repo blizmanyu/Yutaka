@@ -9,7 +9,7 @@ namespace Yutaka.IO2
 		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 
 		/// <summary>
-		/// Fast file copy with big buffers.
+		/// Fast file copy with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
@@ -21,6 +21,8 @@ namespace Yutaka.IO2
 
 			if (String.IsNullOrWhiteSpace(sourceFileName))
 				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
+			else if (!File.Exists(sourceFileName))
+				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(destFileName))
 				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
 			if (destFileName.Equals(sourceFileName))
@@ -84,6 +86,8 @@ namespace Yutaka.IO2
 
 			if (String.IsNullOrWhiteSpace(sourceFileName))
 				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
+			else if (!File.Exists(sourceFileName))
+				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(destFileName))
 				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
 			if (destFileName.Equals(sourceFileName))
@@ -97,26 +101,26 @@ namespace Yutaka.IO2
 			#endregion Input Check
 
 			try {
-				if (File.Exists(destFileName)) {
-					switch (overwriteOption) {
-						case OverwriteOption.Overwrite:
-							File.Copy(sourceFileName, destFileName, true);
-							return true;
-						case OverwriteOption.Skip:
-							File.Copy(sourceFileName, destFileName, false);
-							return true;
-						case OverwriteOption.KeepBoth:
-							//File.Copy(sourceFileName, destFileName, false);
-							return true;
-						case OverwriteOption.Smart:
-							//File.Copy(sourceFileName, destFileName, false);
-							return true;
-						default:
-							return false;
-					}
+				switch (overwriteOption) {
+					case OverwriteOption.Overwrite:
+						//fi.copy
+						//File.Copy(sourceFileName, destFileName, true);
+						return true;
+					case OverwriteOption.Skip:
+						File.Copy(sourceFileName, destFileName, false);
+						return true;
+					case OverwriteOption.KeepBoth:
+						//File.Copy(sourceFileName, destFileName, false);
+						return true;
+					case OverwriteOption.Smart:
+						//File.Copy(sourceFileName, destFileName, false);
+						return true;
+					default:
+						return false;
 				}
 
-				File.Copy(sourceFileName, destFileName);
+
+
 				return true;
 			}
 
