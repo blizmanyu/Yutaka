@@ -1,7 +1,5 @@
-﻿// RTL Support provided by Credo inc (www.credo.co.il  ||   info@credo.co.il)
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using iTextSharp.text;
@@ -83,131 +81,134 @@ namespace Yutaka.Pdf
 
 		protected void PrintItems<T>(Document doc, IList<T> items)
 		{
-			var productsTable = new PdfPTable(_catalogSettings.ShowSkuOnProductDetailsPage ? 5 : 4);
-			productsTable.RunDirection = PdfWriter.RUN_DIRECTION_LTR;
-			productsTable.WidthPercentage = 100f;
-			if (lang.Rtl) {
-				productsTable.SetWidths(_catalogSettings.ShowSkuOnProductDetailsPage
-					? new[] { 15, 10, 15, 15, 45 }
-					: new[] { 20, 10, 20, 50 });
-			}
-			else {
-				productsTable.SetWidths(_catalogSettings.ShowSkuOnProductDetailsPage
-					? new[] { 45, 15, 15, 10, 15 }
-					: new[] { 50, 20, 10, 20 });
-			}
+			//var productsTable = new PdfPTable(_catalogSettings.ShowSkuOnProductDetailsPage ? 5 : 4);
+			//productsTable.HeaderRows = 1;
+			//productsTable.RunDirection = PdfWriter.RUN_DIRECTION_LTR;
+			//productsTable.WidthPercentage = 100f;
+			//if (lang.Rtl) {
+			//	productsTable.SetWidths(_catalogSettings.ShowSkuOnProductDetailsPage
+			//		? new[] { 15, 10, 15, 15, 45 }
+			//		: new[] { 20, 10, 20, 50 });
+			//}
+			//else {
+			//	productsTable.SetWidths(_catalogSettings.ShowSkuOnProductDetailsPage
+			//		? new[] { 45, 15, 15, 10, 15 }
+			//		: new[] { 50, 20, 10, 20 });
+			//}
 
-			//product name
-			var cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductName", lang.Id), font));
-			cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
-			cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-			productsTable.AddCell(cellProductItem);
+			//#region Header
+			////product name
+			//var cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductName", lang.Id), font));
+			//cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//productsTable.AddCell(cellProductItem);
 
-			//SKU
-			if (_catalogSettings.ShowSkuOnProductDetailsPage) {
-				cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.SKU", lang.Id), font));
-				cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
-				cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-				productsTable.AddCell(cellProductItem);
-			}
+			////SKU
+			//if (_catalogSettings.ShowSkuOnProductDetailsPage) {
+			//	cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.SKU", lang.Id), font));
+			//	cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+			//	cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//	productsTable.AddCell(cellProductItem);
+			//}
 
-			//price
-			cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductPrice", lang.Id), font));
-			cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
-			cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-			productsTable.AddCell(cellProductItem);
+			////price
+			//cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductPrice", lang.Id), font));
+			//cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//productsTable.AddCell(cellProductItem);
 
-			//qty
-			cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductQuantity", lang.Id), font));
-			cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
-			cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-			productsTable.AddCell(cellProductItem);
+			////qty
+			//cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductQuantity", lang.Id), font));
+			//cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//productsTable.AddCell(cellProductItem);
 
-			//total
-			cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductTotal", lang.Id), font));
-			cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
-			cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-			productsTable.AddCell(cellProductItem);
+			////total
+			//cellProductItem = new PdfPCell(new Phrase(_localizationService.GetResource("PDFInvoice.ProductTotal", lang.Id), font));
+			//cellProductItem.BackgroundColor = BaseColor.LIGHT_GRAY;
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//productsTable.AddCell(cellProductItem);
+			//#endregion Header
 
-			foreach (var orderItem in orderItems) {
-				var p = orderItem.Product;
+			//var p = item.Product;
 
-				//a vendor should have access only to his products
-				if (vendorId > 0 && p.VendorId != vendorId)
-					continue;
+			////a vendor should have access only to his products
+			//if (vendorId > 0 && p.VendorId != vendorId)
+			//	continue;
 
-				var pAttribTable = new PdfPTable(1);
-				pAttribTable.RunDirection = PdfWriter.RUN_DIRECTION_LTR;
-				pAttribTable.DefaultCell.Border = Rectangle.NO_BORDER;
+			//var pAttribTable = new PdfPTable(1);
+			//pAttribTable.RunDirection = PdfWriter.RUN_DIRECTION_LTR;
+			//pAttribTable.DefaultCell.Border = Rectangle.NO_BORDER;
 
-				//product name
-				string name = p.GetLocalized(x => x.Name, lang.Id);
-				pAttribTable.AddCell(new Paragraph(name, font));
-				cellProductItem.AddElement(new Paragraph(name, font));
-				//attributes
-				if (!String.IsNullOrEmpty(orderItem.AttributeDescription)) {
-					var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(orderItem.AttributeDescription, true, true), AttributesFont);
-					pAttribTable.AddCell(attributesParagraph);
-				}
-				//rental info
-				if (orderItem.Product.IsRental) {
-					var rentalStartDate = orderItem.RentalStartDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalStartDateUtc.Value) : "";
-					var rentalEndDate = orderItem.RentalEndDateUtc.HasValue ? orderItem.Product.FormatRentalDate(orderItem.RentalEndDateUtc.Value) : "";
-					var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
-						rentalStartDate, rentalEndDate);
+			//#region Body
+			////product name
+			//string name = p.GetLocalized(x => x.Name, lang.Id);
+			//pAttribTable.AddCell(new Paragraph(name, font));
+			//cellProductItem.AddElement(new Paragraph(name, font));
+			////attributes
+			//if (!String.IsNullOrEmpty(item.AttributeDescription)) {
+			//	var attributesParagraph = new Paragraph(HtmlHelper.ConvertHtmlToPlainText(item.AttributeDescription, true, true), AttributesFont);
+			//	pAttribTable.AddCell(attributesParagraph);
+			//}
+			////rental info
+			//if (item.Product.IsRental) {
+			//	var rentalStartDate = item.RentalStartDateUtc.HasValue ? item.Product.FormatRentalDate(item.RentalStartDateUtc.Value) : "";
+			//	var rentalEndDate = item.RentalEndDateUtc.HasValue ? item.Product.FormatRentalDate(item.RentalEndDateUtc.Value) : "";
+			//	var rentalInfo = string.Format(_localizationService.GetResource("Order.Rental.FormattedDate"),
+			//		rentalStartDate, rentalEndDate);
 
-					var rentalInfoParagraph = new Paragraph(rentalInfo, AttributesFont);
-					pAttribTable.AddCell(rentalInfoParagraph);
-				}
-				productsTable.AddCell(pAttribTable);
+			//	var rentalInfoParagraph = new Paragraph(rentalInfo, AttributesFont);
+			//	pAttribTable.AddCell(rentalInfoParagraph);
+			//}
+			//productsTable.AddCell(pAttribTable);
 
-				//SKU
-				if (_catalogSettings.ShowSkuOnProductDetailsPage) {
-					var sku = p.FormatSku(orderItem.AttributesXml, _productAttributeParser);
-					cellProductItem = new PdfPCell(new Phrase(sku ?? String.Empty, font));
-					cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
-					productsTable.AddCell(cellProductItem);
-				}
+			////SKU
+			//if (_catalogSettings.ShowSkuOnProductDetailsPage) {
+			//	var sku = p.FormatSku(item.AttributesXml, _productAttributeParser);
+			//	cellProductItem = new PdfPCell(new Phrase(sku ?? String.Empty, font));
+			//	cellProductItem.HorizontalAlignment = Element.ALIGN_CENTER;
+			//	productsTable.AddCell(cellProductItem);
+			//}
 
-				//price
-				string unitPrice;
-				if (order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax) {
-					//including tax
-					var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceInclTax, order.CurrencyRate);
-					unitPrice = _priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, true);
-				}
-				else {
-					//excluding tax
-					var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.UnitPriceExclTax, order.CurrencyRate);
-					unitPrice = _priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, false);
-				}
-				cellProductItem = new PdfPCell(new Phrase(unitPrice, font));
-				cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
-				productsTable.AddCell(cellProductItem);
+			////price
+			//string unitPrice;
+			//if (order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax) {
+			//	//including tax
+			//	var unitPriceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(item.UnitPriceInclTax, order.CurrencyRate);
+			//	unitPrice = _priceFormatter.FormatPrice(unitPriceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, true);
+			//}
+			//else {
+			//	//excluding tax
+			//	var unitPriceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(item.UnitPriceExclTax, order.CurrencyRate);
+			//	unitPrice = _priceFormatter.FormatPrice(unitPriceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, false);
+			//}
+			//cellProductItem = new PdfPCell(new Phrase(unitPrice, font));
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
+			//productsTable.AddCell(cellProductItem);
 
-				//qty
-				cellProductItem = new PdfPCell(new Phrase(orderItem.Quantity.ToString(), font));
-				cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
-				productsTable.AddCell(cellProductItem);
+			////qty
+			//cellProductItem = new PdfPCell(new Phrase(item.Quantity.ToString(), font));
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
+			//productsTable.AddCell(cellProductItem);
 
-				//total
-				string subTotal;
-				if (order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax) {
-					//including tax
-					var priceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceInclTax, order.CurrencyRate);
-					subTotal = _priceFormatter.FormatPrice(priceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, true);
-				}
-				else {
-					//excluding tax
-					var priceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(orderItem.PriceExclTax, order.CurrencyRate);
-					subTotal = _priceFormatter.FormatPrice(priceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, false);
-				}
-				cellProductItem = new PdfPCell(new Phrase(subTotal, font));
-				cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
-				productsTable.AddCell(cellProductItem);
-			}
+			////total
+			//string subTotal;
+			//if (order.CustomerTaxDisplayType == TaxDisplayType.IncludingTax) {
+			//	//including tax
+			//	var priceInclTaxInCustomerCurrency = _currencyService.ConvertCurrency(item.PriceInclTax, order.CurrencyRate);
+			//	subTotal = _priceFormatter.FormatPrice(priceInclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, true);
+			//}
+			//else {
+			//	//excluding tax
+			//	var priceExclTaxInCustomerCurrency = _currencyService.ConvertCurrency(item.PriceExclTax, order.CurrencyRate);
+			//	subTotal = _priceFormatter.FormatPrice(priceExclTaxInCustomerCurrency, true, order.CustomerCurrencyCode, lang, false);
+			//}
+			//cellProductItem = new PdfPCell(new Phrase(subTotal, font));
+			//cellProductItem.HorizontalAlignment = Element.ALIGN_LEFT;
+			//productsTable.AddCell(cellProductItem);
+			//#endregion Body
 
-			doc.Add(productsTable);
+			//doc.Add(productsTable);
 		}
 		#endregion
 
@@ -246,7 +247,18 @@ namespace Yutaka.Pdf
 			doc.Add(dateTable);
 
 			// Items //
-			PrintItems(doc, items);
+			var type = items.ElementAt(0).GetType();
+
+			if (type.Equals(typeof(PdfSettings)))
+				Console.Write("\nThis is a PdfSettings!");
+			else if (type.Equals(typeof(AppDomain)))
+				Console.Write("\nThis is a AppDomain!");
+			else if (type.Equals(typeof(string)))
+				Console.Write("\nThis is a string!");
+			else
+				Console.Write("\nUnsupported type");
+
+			//PrintItems(doc, items);
 
 			doc.Close();
 		}
