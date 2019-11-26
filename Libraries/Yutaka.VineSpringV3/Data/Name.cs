@@ -1,4 +1,4 @@
-﻿namespace Yutaka.VineSpringV3
+﻿namespace Yutaka.VineSpring
 {
 	public class Name
 	{

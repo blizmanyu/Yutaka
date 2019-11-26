@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yutaka.VineSpringV3
+namespace Yutaka.VineSpring
 {
 	public class AlternateAddress : Address { }
 	public class BillingAddress : Address { }

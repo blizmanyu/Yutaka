@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Yutaka.VineSpringV3
+namespace Yutaka.VineSpring
 {
 	public class Product
 	{

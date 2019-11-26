@@ -41,7 +41,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "Programs\Fil
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.QuickBooks", "Libraries\Yutaka.QuickBooks\Yutaka.QuickBooks.csproj", "{1954C736-342D-4927-9881-7CB2129BAB11}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpringV3", "Libraries\Yutaka.VineSpringV3\Yutaka.VineSpringV3.csproj", "{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpring", "Libraries\Yutaka.VineSpringV3\Yutaka.VineSpring.csproj", "{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.WineShipping", "Libraries\Yutaka.WineShipping\Yutaka.WineShipping.csproj", "{01E94A65-93EB-4E54-A46C-5F76E3C58217}"
 EndProject

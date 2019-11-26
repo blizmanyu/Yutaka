@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Yutaka.VineSpringV3
+namespace Yutaka.VineSpring
 {
 	public class V3Util
 	{
