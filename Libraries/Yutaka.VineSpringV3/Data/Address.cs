@@ -2,6 +2,10 @@
 
 namespace Yutaka.VineSpringV3
 {
+	public class AlternateAddress : Address { }
+	public class BillingAddress : Address { }
+	public class ShippingAddress : Address { }
+
 	public class Address
 	{
 		public string Id;

@@ -34,30 +34,6 @@ namespace Yutaka.VineSpringV3
 		public string sku { get; set; }
 	}
 
-	public class ShippingAddress : Address
-	{
-		public string city { get; set; }
-		public bool isInternational { get; set; }
-		public string postalCode { get; set; }
-		public string customerId { get; set; }
-		public string name { get; set; }
-		public string id { get; set; }
-		public string state { get; set; }
-		public string line1 { get; set; }
-	}
-
-	public class BillingAddress : Address
-	{
-		public string city { get; set; }
-		public bool isInternational { get; set; }
-		public string postalCode { get; set; }
-		public string customerId { get; set; }
-		public string name { get; set; }
-		public string id { get; set; }
-		public string state { get; set; }
-		public string line1 { get; set; }
-	}
-
 	public class Note
 	{
 		public string message { get; set; }
