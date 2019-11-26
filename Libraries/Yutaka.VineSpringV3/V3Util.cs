@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Yutaka.VineSpringV3.Data20191126;
 
 namespace Yutaka.VineSpring
 {
@@ -67,8 +69,8 @@ namespace Yutaka.VineSpring
 					str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
 				if (!String.IsNullOrWhiteSpace(customer.Company))
 					str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
-				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
-					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
+				if (customer.Dob != null && customer.Dob > DOB_THRESHOLD)
+					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.Dob.Value.ToString(TIME_FORMAT));
 				if (customer.IsTaxExempt != null)
 					str = String.Format("{0}, \"isTaxExempt\": {1}", str, customer.IsTaxExempt.ToString().ToLower());
 				if (!String.IsNullOrWhiteSpace(customer.Phone))
@@ -196,8 +198,8 @@ namespace Yutaka.VineSpring
 					str = String.Format("{0}, \"altEmail\": \"{1}\"", str, customer.AltEmail);
 				if (!String.IsNullOrWhiteSpace(customer.Company))
 					str = String.Format("{0}, \"company\": \"{1}\"", str, customer.Company);
-				if (customer.DoB != null && customer.DoB > DOB_THRESHOLD)
-					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.DoB.Value.ToString(TIME_FORMAT));
+				if (customer.Dob != null && customer.Dob > DOB_THRESHOLD)
+					str = String.Format("{0}, \"dob\": \"{1}\"", str, customer.Dob.Value.ToString(TIME_FORMAT));
 				if (customer.IsTaxExempt != null)
 					str = String.Format("{0}, \"isTaxExempt\": {1}", str, customer.IsTaxExempt.ToString().ToLower());
 				if (!String.IsNullOrWhiteSpace(customer.Phone))
@@ -577,21 +579,21 @@ namespace Yutaka.VineSpring
 		{
 			if (order == null)
 				throw new Exception(String.Format("<order> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
-			if (String.IsNullOrWhiteSpace(order.id))
+			if (String.IsNullOrWhiteSpace(order.Id))
 				throw new Exception(String.Format("<order.id> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
 
 			try {
-				var endpoint = String.Format("orders/{0}", order.id);
+				var endpoint = String.Format("orders/{0}", order.Id);
 				Console.Write("\n{0}", endpoint);
 
-				var strContent = String.Format("{{ \"fulfillmentHouse\": \"{0}\"", order.fulfillmentHouse ?? "");
+				var strContent = String.Format("{{ \"fulfillmentHouse\": \"{0}\"", order.FulfillmentHouse ?? "");
 
-				if (order.shipDate != null && MIN_DATE < order.shipDate && order.shipDate < MAX_DATE)
-					strContent = String.Format("{0}, \"shipDate\": \"{1}\"", strContent, order.shipDate.Value.ToString(TIME_FORMAT));
-				if (!String.IsNullOrWhiteSpace(order.status))
-					strContent = String.Format("{0}, \"status\": \"{1}\"", strContent, order.status);
-				if (order.tags != null && order.tags.Count > 0)
-					strContent = String.Format("{0}, \"tags\": [ \"{1}\" ]", strContent, String.Join(",", order.tags));
+				if (order.ShipDate != null && MIN_DATE < order.ShipDate && order.ShipDate < MAX_DATE)
+					strContent = String.Format("{0}, \"shipDate\": \"{1}\"", strContent, order.ShipDate.Value.ToString(TIME_FORMAT));
+				if (!String.IsNullOrWhiteSpace(order.Status))
+					strContent = String.Format("{0}, \"status\": \"{1}\"", strContent, order.Status);
+				if (order.Tags != null && order.Tags.Length > 0)
+					strContent = String.Format("{0}, \"tags\": [ \"{1}\" ]", strContent, String.Join(",", order.Tags));
 
 				strContent = String.Format("{0} }}", strContent);
 				Console.Write("\n{0}", strContent);
@@ -613,9 +615,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.UpdateOrder(Order order='{3}')", ex.Message, ex.ToString(), Environment.NewLine, order.id));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.UpdateOrder(Order order='{3}')", ex.Message, ex.ToString(), Environment.NewLine, order.Id));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.id));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.Id));
 			}
 		}
 

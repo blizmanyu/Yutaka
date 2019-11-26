@@ -1,15 +1,16 @@
-﻿namespace Yutaka.VineSpring.Data20191126
+﻿namespace Yutaka.VineSpringV3.Data20191126
 {
 	public class Item
 	{
-		public decimal Total { get; set; }
+		public string ShipCompliantBrandKey { get; set; }
+		public int Total { get; set; }
 		public int Quantity { get; set; }
 		public string ProductId { get; set; }
-		public decimal Price { get; set; }
+		public int Price { get; set; }
 		public decimal Subtotal { get; set; }
-		public bool IsTaxExempt { get; set; }
 		public string Name { get; set; }
 		public decimal Discount { get; set; }
+		public string ShipCompliantProductKey { get; set; }
 		public string Sku { get; set; }
 	}
 }
