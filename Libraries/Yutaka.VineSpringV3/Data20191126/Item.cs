@@ -9,7 +9,7 @@
 		public decimal Subtotal { get; set; }
 		public bool IsTaxExempt { get; set; }
 		public string Name { get; set; }
-		public int Discount { get; set; }
+		public decimal Discount { get; set; }
 		public string Sku { get; set; }
 	}
 }
