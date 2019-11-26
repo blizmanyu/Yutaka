@@ -12,7 +12,7 @@ namespace Yutaka.VineSpringV3.Data20191126
 		public string Country { get; set; }
 		public string UpdatedBy { get; set; }
 		public string City { get; set; }
-		public bool IsInternational { get; set; }
+		public bool? IsInternational { get; set; }
 		public string PostalCode { get; set; }
 		public string Name { get; set; }
 		public string CustomerId { get; set; }

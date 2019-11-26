@@ -15,7 +15,7 @@ namespace Yutaka.VineSpringV3.Data20191126
 		public DateTime? Dob { get; set; }
 		public string Email { get; set; }
 		public string FullName { get; set; }
-		public bool IsTaxExempt { get; set; }
+		public bool? IsTaxExempt { get; set; }
 		public string Password { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
