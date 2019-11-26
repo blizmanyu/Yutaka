@@ -2,7 +2,6 @@
 
 namespace Yutaka.VineSpringV3.Data20191126
 {
-	public class AlternateAddress : Address { }
 	public class BillingAddress : Address { }
 	public class DefaultAddress : Address { }
 	public class ShippingAddress : Address { }
