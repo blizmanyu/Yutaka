@@ -44,13 +44,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data\Class1.cs" />
-    <Compile Include="Data\Item.cs" />
-    <Compile Include="Data\Product.cs" />
-    <Compile Include="Data\Order.cs" />
-    <Compile Include="Data\Name.cs" />
-    <Compile Include="Data\Address.cs" />
-    <Compile Include="Data\Customer.cs" />
+    <Compile Include="Data20191126\Class1.cs" />
+    <Compile Include="Data20191126\Item.cs" />
+    <Compile Include="Data20191126\Product.cs" />
+    <Compile Include="Data20191126\Order.cs" />
+    <Compile Include="Data20191126\Name.cs" />
+    <Compile Include="Data20191126\Address.cs" />
+    <Compile Include="Data20191126\Customer.cs" />
     <Compile Include="V3Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

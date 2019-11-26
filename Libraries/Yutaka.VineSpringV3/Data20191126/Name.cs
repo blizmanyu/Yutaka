@@ -1,4 +1,4 @@
-﻿namespace Yutaka.VineSpring
+﻿namespace Yutaka.VineSpring.Data20191126
 {
 	public class Name
 	{

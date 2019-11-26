@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Yutaka.VineSpring
+namespace Yutaka.VineSpring.Data20191126
 {
 	public class Display
 	{
@@ -20,18 +20,6 @@ namespace Yutaka.VineSpring
 		public string name { get; set; }
 		public string id { get; set; }
 		public bool requireShippingAddress { get; set; }
-	}
-
-	public class Item
-	{
-		public decimal total { get; set; }
-		public int quantity { get; set; }
-		public string productId { get; set; }
-		public int price { get; set; }
-		public decimal subtotal { get; set; }
-		public string name { get; set; }
-		public int discount { get; set; }
-		public string sku { get; set; }
 	}
 
 	public class Note
