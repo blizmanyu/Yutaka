@@ -65,10 +65,8 @@ namespace Yutaka.IO2
 			try {
 				if (Path.GetPathRoot(sourceFileName).ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper()))
 					new FileInfo(sourceFileName).MoveTo(destFileName);
-				else {
-					if (TryCopy(sourceFileName, destFileName, OverwriteOption.Overwrite))
-						TryDelete(sourceFileName);
-				}
+				else
+					FastCopy(sourceFileName, destFileName);
 			}
 
 			catch (Exception ex) {
