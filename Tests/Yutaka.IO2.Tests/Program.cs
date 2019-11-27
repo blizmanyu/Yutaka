@@ -33,7 +33,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Debug();
+			Test_Path_GetPathRoot();
 			EndProgram();
 		}
 
@@ -76,6 +76,13 @@ namespace Yutaka.IO2.Tests
 		#endregion Tests for YuFile
 
 		#region Misc Tests
+		private static void Test_Path_GetPathRoot()
+		{
+			var file1 = @"c:\alsdkfj\";
+			var file2 = @"C:\alsdkjf\";
+			Console.Write("\n{0}", Path.GetPathRoot(file1));
+			Console.Write("\n{0}", Path.GetPathRoot(file2));
+		}
 		#endregion Misc Tests
 
 		#region Start & EndProgram
