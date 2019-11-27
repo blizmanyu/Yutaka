@@ -11,7 +11,7 @@ namespace Yutaka.IO2
 		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		#endregion Fields
 
-		#region Private Methods
+		#region Utilities
 		/// <summary>
 		/// Fast file copy with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
 		/// </summary>
@@ -54,7 +54,7 @@ namespace Yutaka.IO2
 				#endregion Log
 			}
 		}
-		#endregion Private Methods
+		#endregion Utilities
 
 		#region Public Methods
 		/// <summary>
