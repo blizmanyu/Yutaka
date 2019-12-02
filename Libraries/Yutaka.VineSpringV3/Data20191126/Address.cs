@@ -2,10 +2,6 @@
 
 namespace Yutaka.VineSpringV3.Data20191126
 {
-	public class BillingAddress : Address { }
-	public class DefaultAddress : Address { }
-	public class ShippingAddress : Address { }
-
 	public class Address
 	{
 		public DateTime CreatedOn { get; set; }
@@ -24,4 +20,9 @@ namespace Yutaka.VineSpringV3.Data20191126
 		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
 	}
+
+	public class AlternateAddress : Address { }
+	public class BillingAddress : Address { }
+	public class DefaultAddress : Address { }
+	public class ShippingAddress : Address { }
 }

@@ -44,7 +44,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Data20191126\AlternateAddress.cs" />
     <Compile Include="Data20191126\Address.cs" />
     <Compile Include="Data20191126\Customer.cs" />
     <Compile Include="Data20191126\Discount.cs" />
