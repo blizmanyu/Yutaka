@@ -2,35 +2,35 @@
 {
 	public class Product
 	{
-		public string Id { get; set; }
-		public bool? CanView { get; set; }
 		public string AccountId { get; set; }
-		public string Teaser { get; set; }
-		public string ListImage { get; set; }
-		public int? DisplayOrder { get; set; }
-		public string Attributes { get; set; }
-		public string Description { get; set; }
+		public string Id { get; set; }
 		public string Name { get; set; }
+		public bool? CanView { get; set; }
+		public int? DisplayOrder { get; set; }
 		public string[] Tags { get; set; }
+		public string ListImage { get; set; }
 		public string DetailImage { get; set; }
+		public string Attributes { get; set; }
+		public string Teaser { get; set; }
+		public string Description { get; set; }
 		public Sku[] Skus { get; set; }
 	}
 
 	public class Sku
 	{
-		public string ShipCompliantBrandKey { get; set; }
-		public string ShippingPlanId { get; set; }
-		public Visibility Visibility { get; set; }
-		public bool? IsTaxExempt { get; set; }
-		public decimal? Price { get; set; }
-		public string Name { get; set; }
-		public Attributes Attributes { get; set; }
-		public string ShipCompliantProductKey { get; set; }
 		public string SkuStr { get; set; }
-		public Constraint Constraints { get; set; }
+		public string ShipCompliantProductKey { get; set; }
+		public string ShipCompliantBrandKey { get; set; }
+		public string Name { get; set; }
+		public decimal? Price { get; set; }
 		public decimal? RetailPrice { get; set; }
-		public Dimensions Dimensions { get; set; }
+		public string ShippingPlanId { get; set; }
+		public bool? IsTaxExempt { get; set; }
+		public Attributes Attributes { get; set; }
+		public Constraint Constraints { get; set; }
 		public CustomFields CustomFields { get; set; }
+		public Dimensions Dimensions { get; set; }
+		public Visibility Visibility { get; set; }
 	}
 
 	public class Visibility
