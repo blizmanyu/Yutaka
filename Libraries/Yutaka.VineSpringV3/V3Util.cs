@@ -37,6 +37,7 @@ namespace Yutaka.VineSpring
 		}
 		#endregion Constructor
 
+		#region Methods
 		public void DisplayResponse(Task<string> response, bool pretty=true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
@@ -762,5 +763,6 @@ namespace Yutaka.VineSpring
 			}
 		}
 		#endregion Products
+		#endregion Methods
 	}
 }
