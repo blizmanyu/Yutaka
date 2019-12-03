@@ -35,11 +35,11 @@
 
 	public class Visibility
 	{
-		public bool? CustomerView { get; set; }
-		public string AllocationMessage { get; set; }
-		public bool? CustomerPurchase { get; set; }
 		public bool? AdminView { get; set; }
+		public bool? CustomerView { get; set; }
+		public bool? CustomerPurchase { get; set; }
 		public bool? IsAllocated { get; set; }
+		public string AllocationMessage { get; set; }
 	}
 
 	public class Attributes
@@ -91,6 +91,9 @@
 
 	public class Dimensions
 	{
+		public decimal? Depth { get; set; }
+		public decimal? Height { get; set; }
+		public decimal? Length { get; set; }
 		public decimal? Weight { get; set; }
 	}
 
