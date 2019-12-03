@@ -26,8 +26,11 @@ namespace Yutaka.VineSpringV3.Data20191126
 
 	public class Name
 	{
+		public string Title { get; set; }
 		public string First { get; set; }
 		public string Last { get; set; }
 		public string Middle { get; set; }
+		public string Suffix { get; set; }
+		public string Nick { get; set; }
 	}
 }
