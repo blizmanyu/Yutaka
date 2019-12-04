@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -692,6 +693,34 @@ namespace Yutaka.VineSpring
 		#endregion Orders
 
 		#region Products
+		public IList<Product> GetAllProducts()
+		{
+			try {
+				var list = new List<Product>();
+				var response = ListAllProducts();
+				var products = JsonConvert.DeserializeObject<List<Product>>(response.Result);
+
+				foreach (var product in products)
+					list.Add(product);
+
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in V3Util.GetAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
 		public async Task<string> GetProduct(string productId)
 		{
 			try {
