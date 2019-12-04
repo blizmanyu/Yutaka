@@ -733,10 +733,17 @@ namespace Yutaka.VineSpring
 			}
 
 			catch (Exception ex) {
+				#region Log
+				string log;
+
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllProducts()", ex.Message, ex.ToString(), Environment.NewLine));
+					log = String.Format("{0}{2}Exception thrown in V3Util.ListAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllProducts()", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
 			}
 		}
 
