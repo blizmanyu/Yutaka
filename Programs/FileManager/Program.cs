@@ -39,9 +39,10 @@ namespace FileManager
 		{
 			StartProgram();
 
-			var source = @"E:\Pictures\";
-			var dest = @"G:\Pictures\";
 			var deleteFile = false;
+			string source, dest;
+			source = @"R:\WhatsApp\Media\WhatsApp Images\";
+			dest = @"G:\From Galaxy S9\";
 			Test_YuImage(source, dest, deleteFile);
 			Test_YuVideo(source, dest, deleteFile);
 
