@@ -88,8 +88,8 @@ namespace Yutaka.VineSpring.Data20191126
 	public class Constraint
 	{
 		public int? Increment { get; set; }
-		public int? Max { get; set; }
 		public int? Min { get; set; }
+		public int? Max { get; set; }
 	}
 
 	public class Dimensions
