@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using Yutaka.VineSpring.Data20191126;
 
 namespace Yutaka.VineSpring
