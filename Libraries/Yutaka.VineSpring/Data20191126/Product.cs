@@ -1,4 +1,6 @@
-﻿namespace Yutaka.VineSpring.Data20191126
+﻿using Newtonsoft.Json;
+
+namespace Yutaka.VineSpring.Data20191126
 {
 	public class Product
 	{
@@ -18,6 +20,7 @@
 
 	public class Sku
 	{
+		[JsonProperty("sku")]
 		public string SkuStr { get; set; }
 		public string ShipCompliantProductKey { get; set; }
 		public string ShipCompliantBrandKey { get; set; }
