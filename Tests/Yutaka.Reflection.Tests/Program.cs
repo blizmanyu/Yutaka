@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Rcw.Sql.ScarletWitch.VS20191126.Data;
 
 namespace Yutaka.Reflection.Tests
 {
@@ -35,7 +36,10 @@ namespace Yutaka.Reflection.Tests
 
 		private static void Process()
 		{
-
+			//var mapper = new Mapper<Product>();
+			Mapper.Map<Product>("VSData.Product");
+			//Mapper.Map<Product>(new VineSpring.Data20191126.Product());
+			//Mapper.Map(Product, new VineSpring.Data20191126.Product());
 		}
 
 		private static void StartProgram()

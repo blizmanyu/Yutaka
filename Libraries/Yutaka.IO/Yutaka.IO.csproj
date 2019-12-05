@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileUtilStatic.cs" />
+    <Compile Include="Mapper.cs" />
     <Compile Include="YuDrive.cs" />
     <Compile Include="YuFile.cs" />
     <Compile Include="YuVideo.cs" />
