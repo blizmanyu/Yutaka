@@ -33,11 +33,35 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Path_GetPathRoot();
+			DeleteAllThumbnailCache();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
+		// Created Dec 5, 2019, Modified: Dec 5, 2019 //
+		private static void DeleteAllThumbnailCache()
+		{
+			var folders = new string[] {
+				@"C:\",
+			};
+
+			int deletedThisIter;
+			var totalDeleted = 0;
+
+			foreach (var folder in folders) {
+				deletedThisIter = 0;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, folder);
+				deletedThisIter += FileUtil.Delete(folder, ".ds_store", SearchOption.AllDirectories);
+				deletedThisIter += FileUtil.Delete(folder, "thumbs*.db", SearchOption.AllDirectories);
+				deletedThisIter += FileUtil.Delete(folder, "desktop*.ini", SearchOption.AllDirectories);
+				totalDeleted += deletedThisIter;
+				Console.Write("\n   Deleted {0} files", deletedThisIter);
+			}
+
+			Console.Write("\n\nTotal Deleted: {0}", totalDeleted);
+		}
+
 		// Created Nov 21, 2019, Modified: Nov 21, 2019 //
 		private static void Test_AutoRename()
 		{
