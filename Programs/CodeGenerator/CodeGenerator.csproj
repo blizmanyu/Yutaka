@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{34086DBB-5664-4A4E-AE40-930B543F5112}</ProjectGuid>
+    <ProjectGuid>{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>Yutaka.Reflection.Tests</RootNamespace>
-    <AssemblyName>Yutaka.Reflection.Tests</AssemblyName>
+    <RootNamespace>CodeGenerator</RootNamespace>
+    <AssemblyName>CodeGenerator</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,15 +33,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EntityFramework">
-      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Rcw.Sql.ScarletWitch.VS20191126">
-      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\Rcw.Sql.ScarletWitch.VS20191126.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -50,15 +41,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.Data">
-      <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Yutaka.Reflection">
-      <HintPath>..\..\Libraries\Yutaka.Reflection\bin\Release\Yutaka.Reflection.dll</HintPath>
-    </Reference>
-    <Reference Include="Yutaka.VineSpring">
-      <HintPath>..\..\Libraries\Yutaka.VineSpring\bin\Release\Yutaka.VineSpring.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Yutaka.Reflection.Tests")]
+[assembly: AssemblyTitle("CodeGenerator")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Yutaka.Reflection.Tests")]
+[assembly: AssemblyProduct("CodeGenerator")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("34086dbb-5664-4a4e-ae40-930b543f5112")]
+[assembly: Guid("39f4fb4c-bdf6-477e-bd5c-f8aacd8b5dec")]
 
 // Version information for an assembly consists of the following four values:
 //
