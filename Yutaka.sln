@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpring", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Reflection", "Libraries\Yutaka.Reflection\Yutaka.Reflection.csproj", "{0BEC0BDB-565A-444A-881D-E755C214AC03}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Reflection.Tests", "Tests\Yutaka.Reflection.Tests\Yutaka.Reflection.Tests.csproj", "{34086DBB-5664-4A4E-AE40-930B543F5112}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{0BEC0BDB-565A-444A-881D-E755C214AC03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0BEC0BDB-565A-444A-881D-E755C214AC03}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0BEC0BDB-565A-444A-881D-E755C214AC03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34086DBB-5664-4A4E-AE40-930B543F5112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34086DBB-5664-4A4E-AE40-930B543F5112}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34086DBB-5664-4A4E-AE40-930B543F5112}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34086DBB-5664-4A4E-AE40-930B543F5112}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +194,7 @@ Global
 		{2A21E034-E5F4-4E6A-AB43-D77364F39210} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{9A2AFB29-EE17-4B59-9C68-EFF2DFF3A71A} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{0BEC0BDB-565A-444A-881D-E755C214AC03} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
+		{34086DBB-5664-4A4E-AE40-930B543F5112} = {2D4535E9-B792-47EC-B1D1-D62952932B87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
