@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -7,7 +6,7 @@ namespace Yutaka.IO
 {
 	public static class Mapper
 	{
-		public static void Map<TDest>(string sourceType)
+		public static string Map<TDest>(string sourceType)
 		{
 			var destType = typeof(TDest);
 			var sb = new StringBuilder();
@@ -23,8 +22,7 @@ namespace Yutaka.IO
 			sb.Append("\n\t\t}");
 			sb.Append("\n");
 
-			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
-			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+			return sb.ToString();
 		}
 	}
 }

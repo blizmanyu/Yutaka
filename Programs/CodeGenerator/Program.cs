@@ -1,5 +1,7 @@
 ﻿using System;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using Rcw.Sql.ScarletWitch.VS20191126.Data;
 using Yutaka.IO;
 
@@ -37,7 +39,17 @@ namespace CodeGenerator
 
 		private static void Process()
 		{
-			Mapper.Map<Product>("VSData.Product");
+			var sb = new StringBuilder();
+			sb.Append(Mapper.Map<Product>("VSData.Product"));
+			sb.Append(Mapper.Map<Product_Sku>("VSData.Product_Sku"));
+			sb.Append(Mapper.Map<Product_Sku_Attributes>("VSData.Product_Sku_Attributes"));
+			sb.Append(Mapper.Map<Product_Sku_Constraint>("VSData.Product_Sku_Constraint"));
+			sb.Append(Mapper.Map<Product_Sku_CustomFields>("VSData.Product_Sku_CustomFields"));
+			sb.Append(Mapper.Map<Product_Sku_Dimensions>("VSData.Product_Sku_Dimensions"));
+			sb.Append(Mapper.Map<Product_Sku_Visibility>("VSData.Product_Sku_Visibility"));
+
+			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
+			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
 		}
 
 		private static void StartProgram()
