@@ -26,6 +26,7 @@ namespace Yutaka.VineSpring.Data20191126
 
 	public class Name
 	{
+		public string CustomerId { get; set; }
 		public string Title { get; set; }
 		public string First { get; set; }
 		public string Last { get; set; }
