@@ -33,6 +33,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Rcw.Sql.ScarletWitch.VS20191126">
+      <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\Rcw.Sql.ScarletWitch.VS20191126.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -41,6 +50,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Yutaka.Data">
+      <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
@@ -48,6 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yutaka.IO\Yutaka.IO.csproj">
+      <Project>{EFE67BB5-CDA4-4B3E-89F1-60628003D560}</Project>
+      <Name>Yutaka.IO</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

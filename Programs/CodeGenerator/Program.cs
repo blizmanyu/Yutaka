@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using Rcw.Sql.ScarletWitch.VS20191126.Data;
+using Yutaka.IO;
 
 namespace CodeGenerator
 {
@@ -35,7 +37,7 @@ namespace CodeGenerator
 
 		private static void Process()
 		{
-
+			Mapper.Map<Product>("VSData.Product");
 		}
 
 		private static void StartProgram()
