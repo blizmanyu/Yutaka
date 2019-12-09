@@ -38,9 +38,19 @@ namespace Yutaka.VineSpring.Data20191126
 		public ShippingMethod ShippingMethod { get; set; }
 	}
 
-	public class OrderItem : Product
+	public class OrderItem
 	{
 		public string OrderId { get; set; }
+		public string ProductId { get; set; }
+		public int? Quantity { get; set; }
+		public decimal? Discount { get; set; }
+		public decimal? Price { get; set; }
+		public decimal? Subtotal { get; set; }
+		public decimal? Total { get; set; }
+		public string Name { get; set; }
+		public string ShipCompliantBrandKey { get; set; }
+		public string ShipCompliantProductKey { get; set; }
+		public string Sku { get; set; }
 	}
 
 	public class Note
