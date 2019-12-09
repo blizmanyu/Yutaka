@@ -38,6 +38,11 @@ namespace Yutaka.VineSpring.Data20191126
 		public ShippingMethod ShippingMethod { get; set; }
 	}
 
+	public class OrderItem : Product
+	{
+		public string OrderId { get; set; }
+	}
+
 	public class Note
 	{
 		public DateTime CreatedOn { get; set; }
