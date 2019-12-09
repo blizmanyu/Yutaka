@@ -15,8 +15,8 @@ namespace Yutaka.VineSpring
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
 		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00:00.000Z";
 		private readonly DateTime DOB_THRESHOLD;
-		private readonly DateTime MIN_DATE = new DateTime(2000,1,1);
-		private readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
+		private static readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
+		private static readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
 
 		public Uri BaseAddress;
 		public string ApiKey;
@@ -476,6 +476,41 @@ namespace Yutaka.VineSpring
 		#endregion Customers
 
 		#region Orders
+		public IList<Order> GetAllOrdersByDate(DateTime startDate, DateTime endDate, string paginationKey = null)
+		{
+			#region Input Validation
+			if (startDate < MIN_DATE || MAX_DATE < startDate)
+				startDate = MIN_DATE;
+			if (endDate < MIN_DATE || MAX_DATE < endDate)
+				endDate = MAX_DATE;
+			#endregion Input Validation
+
+			try {
+				var list = new List<Order>();
+				var response = ListAllOrdersByDate(startDate, endDate, paginationKey);
+				var orders = JsonConvert.DeserializeObject<List<Order>>(response.Result);
+
+				foreach (var order in orders)
+					list.Add(order);
+
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in V3Util.GetAllOrders().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetAllOrders().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
 		public async Task<string> ListAllOrdersByIds(string commaSeparatedIds, string paginationKey=null)
 		{
 			if (String.IsNullOrWhiteSpace(commaSeparatedIds))
@@ -508,18 +543,10 @@ namespace Yutaka.VineSpring
 		public async Task<string> ListAllOrdersByDate(DateTime startDate, DateTime endDate, string paginationKey = null)
 		{
 			#region Input Validation
-			var now = DateTime.Now;
-			var minDate = new DateTime(2000,1,1);
-			var maxDate = now.AddMonths(3);
-
-			if (startDate < minDate)
-				startDate = minDate;
-			if (startDate > now)
-				startDate = now;
-			if (endDate < minDate)
-				endDate = minDate;
-			if (endDate > maxDate)
-				endDate = maxDate;
+			if (startDate < MIN_DATE || MAX_DATE < startDate)
+				startDate = MIN_DATE;
+			if (endDate < MIN_DATE || MAX_DATE < endDate)
+				endDate = MAX_DATE;
 			#endregion Input Validation
 
 			try {
@@ -651,18 +678,10 @@ namespace Yutaka.VineSpring
 		public async Task<string> ListAllTransactionsByDate(DateTime startDate, DateTime endDate, string paginationKey = null)
 		{
 			#region Input Validation
-			var now = DateTime.Now;
-			var minDate = new DateTime(2000,1,1);
-			var maxDate = now.AddMonths(3);
-
-			if (startDate < minDate)
-				startDate = minDate;
-			if (startDate > now)
-				startDate = now;
-			if (endDate < minDate)
-				endDate = minDate;
-			if (endDate > maxDate)
-				endDate = maxDate;
+			if (startDate < MIN_DATE || MAX_DATE < startDate)
+				startDate = MIN_DATE;
+			if (endDate < MIN_DATE || MAX_DATE < endDate)
+				endDate = MAX_DATE;
 			#endregion Input Validation
 
 			try {
