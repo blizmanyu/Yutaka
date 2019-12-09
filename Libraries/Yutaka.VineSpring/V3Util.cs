@@ -15,8 +15,8 @@ namespace Yutaka.VineSpring
 		public const string PRODUCTION_URL      = @"https://api.vinespring.com/";
 		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00:00.000Z";
 		private readonly DateTime DOB_THRESHOLD;
-		private static readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
-		private static readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
+		public static readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
+		public static readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
 
 		public Uri BaseAddress;
 		public string ApiKey;
