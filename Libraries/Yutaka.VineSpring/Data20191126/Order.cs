@@ -32,7 +32,7 @@ namespace Yutaka.VineSpring.Data20191126
 		public string[] Tags { get; set; }
 		public Customer Customer { get; set; }
 		public Discount[] Discounts { get; set; }
-		public Item[] Items { get; set; }
+		public OrderItem[] Items { get; set; }
 		public Note[] Notes { get; set; }
 		public ShippingAddress ShippingAddress { get; set; }
 		public ShippingMethod ShippingMethod { get; set; }
