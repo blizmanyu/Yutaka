@@ -488,9 +488,9 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Order>();
 				var response = ListAllOrdersByDate(startDate, endDate, paginationKey);
-				var orders = JsonConvert.DeserializeObject<List<Order>>(response.Result);
+				var orders = JsonConvert.DeserializeObject<ListAllOrdersResponse>(response.Result);
 
-				foreach (var order in orders)
+				foreach (var order in orders.Orders)
 					list.Add(order);
 
 				return list;
