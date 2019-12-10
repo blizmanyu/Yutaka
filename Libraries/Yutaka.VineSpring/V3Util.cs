@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
@@ -493,6 +494,9 @@ namespace Yutaka.VineSpring
 				foreach (var order in orders.Orders)
 					list.Add(order);
 
+				if (!String.IsNullOrWhiteSpace(orders.PaginationKey))
+					list.AddRange(GetAllOrdersByDate(startDate, endDate, WebUtility.UrlDecode(orders.PaginationKey)));
+
 				return list;
 			}
 
@@ -555,7 +559,7 @@ namespace Yutaka.VineSpring
 				var endpoint = String.Format("orders?startDate={0}&endDate={1}", start, end);
 				if (!String.IsNullOrWhiteSpace(paginationKey))
 					endpoint = String.Format("{0}&paginationKey={1}", endpoint, paginationKey);
-				Console.Write("\n{0}", endpoint);
+				//Console.Write("\n{0}", endpoint);
 
 				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
 					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
