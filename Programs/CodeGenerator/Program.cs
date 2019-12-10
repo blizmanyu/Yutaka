@@ -40,13 +40,14 @@ namespace CodeGenerator
 		private static void Process()
 		{
 			var sb = new StringBuilder();
-			sb.Append(Mapper.Map<Product>("VSData.Product"));
-			sb.Append(Mapper.Map<Product_Sku>("VSData.Product_Sku"));
-			sb.Append(Mapper.Map<Product_Sku_Attributes>("VSData.Product_Sku_Attributes"));
-			sb.Append(Mapper.Map<Product_Sku_Constraint>("VSData.Product_Sku_Constraint"));
-			sb.Append(Mapper.Map<Product_Sku_CustomFields>("VSData.Product_Sku_CustomFields"));
-			sb.Append(Mapper.Map<Product_Sku_Dimensions>("VSData.Product_Sku_Dimensions"));
-			sb.Append(Mapper.Map<Product_Sku_Visibility>("VSData.Product_Sku_Visibility"));
+			sb.Append(Mapper.Map<Address>("VSData.Address"));
+			sb.Append(Mapper.Map<Customer>("VSData.Customer"));
+			sb.Append(Mapper.Map<Customer_Name>("VSData.Customer_Name"));
+			sb.Append(Mapper.Map<Order>("VSData.Order"));
+			sb.Append(Mapper.Map<Order_Discount>("VSData.Order_Discount"));
+			sb.Append(Mapper.Map<Order_Item>("VSData.Order_Item"));
+			sb.Append(Mapper.Map<Order_Note>("VSData.Order_Note"));
+			sb.Append(Mapper.Map<ShippingMethod>("VSData.ShippingMethod"));
 
 			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
 			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
