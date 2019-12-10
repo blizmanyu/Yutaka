@@ -21,7 +21,6 @@ namespace Yutaka.VineSpring.Data20191126
 		public DateTime UpdatedOn { get; set; }
 	}
 
-	public class AlternateAddress : Address { }
 	public class BillingAddress : Address { }
 	public class DefaultAddress : Address { }
 	public class ShippingAddress : Address { }

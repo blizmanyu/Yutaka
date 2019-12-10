@@ -52,16 +52,6 @@ public class Shippingmethod
 	public string carrierCode { get; set; }
 }
 
-public class Alternateaddress
-{
-	public string country { get; set; }
-	public string state { get; set; }
-	public string city { get; set; }
-	public bool isInternational { get; set; }
-	public string line1 { get; set; }
-	public string postalCode { get; set; }
-}
-
 public class Shippingaddress
 {
 	public string updatedBy { get; set; }
