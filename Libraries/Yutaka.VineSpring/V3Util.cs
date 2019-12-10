@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Yutaka.IO;
 using Yutaka.VineSpring.Data20191126;
 
 namespace Yutaka.VineSpring
@@ -37,8 +39,8 @@ namespace Yutaka.VineSpring
 		}
 		#endregion Constructor
 
-		#region Methods
-		public void DisplayResponse(Task<string> response, bool pretty=true)
+		#region Utilities
+		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
 				return;
@@ -53,6 +55,25 @@ namespace Yutaka.VineSpring
 				Console.Write("\n{0}", response.Result);
 		}
 
+		public void WriteToFile(Task<string> response, bool pretty = true)
+		{
+			if (response == null || String.IsNullOrWhiteSpace(response.Result))
+				return;
+
+			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+
+			if (pretty) {
+				dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
+				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+				new FileUtil().Write(formatted, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+			}
+
+			else
+				new FileUtil().Write(response.Result, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+		}
+		#endregion Utilities
+
+		#region Methods
 		#region Customers
 		public async Task<string> CreateCustomer(Customer customer)
 		{

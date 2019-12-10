@@ -1,12 +1,5 @@
 ﻿using System;
 
-public class Rootobject
-{
-	public bool hasMore { get; set; }
-	public string paginationKey { get; set; }
-	public Order[] orders { get; set; }
-}
-
 public class Order
 {
 	public string status { get; set; }
@@ -41,15 +34,6 @@ public class Order
 	public string complianceDetail { get; set; }
 	public string source { get; set; }
 	public Note[] notes { get; set; }
-}
-
-public class Shippingmethod
-{
-	public string name { get; set; }
-	public string id { get; set; }
-	public bool requireShippingAddress { get; set; }
-	public Alternateaddress alternateAddress { get; set; }
-	public string carrierCode { get; set; }
 }
 
 public class Shippingaddress
