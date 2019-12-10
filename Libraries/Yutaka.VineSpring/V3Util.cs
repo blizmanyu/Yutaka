@@ -510,6 +510,7 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Order>();
 				var response = ListAllOrdersByDate(startDate, endDate, paginationKey);
+				WriteToFile(response);
 				var orders = JsonConvert.DeserializeObject<ListAllOrdersResponse>(response.Result);
 
 				foreach (var order in orders.Orders)
