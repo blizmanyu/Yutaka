@@ -153,7 +153,7 @@ namespace Yutaka.VineSpring.Data
 
 	public class AlternateAddress
 	{
-		public string OrderId { get; set; }
+		public string ShippingMethodId { get; set; }
 		public bool? IsInternational { get; set; }
 		public string Line1 { get; set; }
 		public string Line2 { get; set; }
