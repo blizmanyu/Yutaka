@@ -9,8 +9,6 @@ namespace Yutaka.VineSpring.Data
 		public string Id { get; set; }
 		public bool? IsCommitted { get; set; }
 		public bool? IsCompliant { get; set; }
-		public bool? IsLockedForDraft { get; set; }
-		public bool? IsV2Import { get; set; }
 		public Customer Customer { get; set; }
 		public DateTime? ShipDate { get; set; }
 		public decimal? CalculatedShipping { get; set; }
@@ -25,71 +23,61 @@ namespace Yutaka.VineSpring.Data
 		public ShippingAddress ShippingAddress { get; set; }
 		public ShippingMethod ShippingMethod { get; set; }
 		public string AccountId { get; set; }
-		public string CampaignId { get; set; }
 		public string ComplianceDetail { get; set; }
 		public string CustomerId { get; set; }
 		public string FulfillmentDetail { get; set; }
 		public string FulfillmentHouse { get; set; }
 		public string FullName { get; set; }
-		public string GiftMessage { get; set; }
-		public string LockedReasonCode { get; set; }
 		public string OrderNumber { get; set; }
 		public string SalesRep { get; set; }
 		public string ShipCompliantStatus { get; set; }
-		public string ShippingInstructions { get; set; }
 		public string Source { get; set; }
 		public string Status { get; set; }
 		public string TrackingNumber { get; set; }
 		public string Type { get; set; }
 		public string[] Tags { get; set; }
-		public string UpdatedBy { get; set; }
-		public DateTime? UpdatedOn { get; set; }
 	}
 	#endregion Order
 
-	#region public class Customer
+	#region public class Customer, BillingAddress, Name
 	public class Customer
 	{
+		public string OrderId { get; set; }
 		public string Email { get; set; }
 		public BillingAddress BillingAddress { get; set; }
 		public DateTime? Dob { get; set; }
 		public Name Name { get; set; }
-		public string FullName { get; set; }
 		public string Phone { get; set; }
 	}
 
-	#region public class Name
-	public class Name
-	{
-		public string First { get; set; }
-		public string Last { get; set; }
-		public string Middle { get; set; }
-		public string Nick { get; set; }
-		public string Suffix { get; set; }
-		public string Title { get; set; }
-	}
-	#endregion Name
-
-	#region public class BillingAddress
 	public class BillingAddress
 	{
 		public DateTime CreatedOn { get; set; }
 		public string Id { get; set; }
+		public string OrderId { get; set; }
 		public bool? IsInternational { get; set; }
-		public string City { get; set; }
-		public string Country { get; set; }
-		public string CustomerId { get; set; }
-		public string Line1 { get; set; }
-		public string Line2 { get; set; }
 		public string Name { get; set; }
 		public string Organization { get; set; }
-		public string Phone { get; set; }
-		public string PostalCode { get; set; }
+		public string Line1 { get; set; }
+		public string Line2 { get; set; }
+		public string City { get; set; }
 		public string State { get; set; }
+		public string Country { get; set; }
+		public string PostalCode { get; set; }
+		public string Phone { get; set; }
+		public string CustomerId { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime? UpdatedOn { get; set; }
 	}
-	#endregion BillingAddress
+
+	public class Name
+	{
+		public string OrderId { get; set; }
+		public string First { get; set; }
+		public string Middle { get; set; }
+		public string Last { get; set; }
+		public string Nick { get; set; }
+	}
 	#endregion Customer
 
 	#region public class Discount
@@ -130,60 +118,49 @@ namespace Yutaka.VineSpring.Data
 	}
 	#endregion Note
 
-	#region public class ShippingMethod
-	public class ShippingMethod
-	{
-		public string Id { get; set; }
-		public AlternateAddress AlternateAddress { get; set; }
-		public bool? IsAdminDefault { get; set; }
-		public bool? RequireShippingAddress { get; set; }
-		public Display Display { get; set; }
-		public int? DisplayOrder { get; set; }
-		public string CarrierCode { get; set; }
-		public string Name { get; set; }
-		public string ZoneTableId { get; set; }
-	}
-
-	#region public class Display
-	public class Display
-	{
-		public bool? Admins { get; set; }
-		public bool? ClubMembers { get; set; }
-		public bool? Customers { get; set; }
-	}
-	#endregion Display
-
-	#region public class AlternateAddress
-	public class AlternateAddress
-	{
-		public bool? IsInternational { get; set; }
-		public string Line1 { get; set; }
-		public string City { get; set; }
-		public string State { get; set; }
-		public string Country { get; set; }
-		public string PostalCode { get; set; }
-	}
-	#endregion AlternateAddress
-	#endregion ShippingMethod
-
 	#region public class ShippingAddress
 	public class ShippingAddress
 	{
-		public DateTime? CreatedOn { get; set; }
+		public DateTime CreatedOn { get; set; }
 		public string Id { get; set; }
+		public string OrderId { get; set; }
 		public bool? IsInternational { get; set; }
-		public string City { get; set; }
-		public string Country { get; set; }
-		public string CustomerId { get; set; }
-		public string Line1 { get; set; }
-		public string Line2 { get; set; }
 		public string Name { get; set; }
 		public string Organization { get; set; }
-		public string Phone { get; set; }
-		public string PostalCode { get; set; }
+		public string Line1 { get; set; }
+		public string Line2 { get; set; }
+		public string City { get; set; }
 		public string State { get; set; }
+		public string Country { get; set; }
+		public string PostalCode { get; set; }
+		public string Phone { get; set; }
+		public string CustomerId { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime? UpdatedOn { get; set; }
 	}
 	#endregion ShippingAddress
+
+	#region public class ShippingMethod, AlternateAddress
+	public class ShippingMethod
+	{
+		public string OrderId { get; set; }
+		public string Id { get; set; }
+		public AlternateAddress AlternateAddress { get; set; }
+		public bool? RequireShippingAddress { get; set; }
+		public string CarrierCode { get; set; }
+		public string Name { get; set; }
+	}
+
+	public class AlternateAddress
+	{
+		public string OrderId { get; set; }
+		public bool? IsInternational { get; set; }
+		public string Line1 { get; set; }
+		public string Line2 { get; set; }
+		public string City { get; set; }
+		public string State { get; set; }
+		public string Country { get; set; }
+		public string PostalCode { get; set; }
+	}
+	#endregion ShippingMethod
 }
