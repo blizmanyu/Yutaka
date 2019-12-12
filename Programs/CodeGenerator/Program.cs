@@ -40,14 +40,16 @@ namespace CodeGenerator
 		private static void Process()
 		{
 			var sb = new StringBuilder();
-			sb.Append(Mapper.Map<Address>("VSData.Address"));
-			sb.Append(Mapper.Map<Customer>("VSData.Customer"));
-			sb.Append(Mapper.Map<Customer_Name>("VSData.Customer_Name"));
 			sb.Append(Mapper.Map<Order>("VSData.Order"));
+			sb.Append(Mapper.Map<Order_Customer>("VSData.Order_Customer"));
+			sb.Append(Mapper.Map<Order_Customer_BillingAddress>("VSData.Order_Customer_BillingAddress"));
+			sb.Append(Mapper.Map<Order_Customer_Name>("VSData.Order_Customer_Name"));
 			sb.Append(Mapper.Map<Order_Discount>("VSData.Order_Discount"));
 			sb.Append(Mapper.Map<Order_Item>("VSData.Order_Item"));
 			sb.Append(Mapper.Map<Order_Note>("VSData.Order_Note"));
-			sb.Append(Mapper.Map<ShippingMethod>("VSData.ShippingMethod"));
+			sb.Append(Mapper.Map<Order_ShippingAddress>("VSData.Order_ShippingAddress"));
+			sb.Append(Mapper.Map<Order_ShippingMethod>("VSData.Order_ShippingMethod"));
+			sb.Append(Mapper.Map<Order_ShippingMethod_AlternateAddress>("VSData.Order_ShippingMethod_AlternateAddress"));
 
 			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
 			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
