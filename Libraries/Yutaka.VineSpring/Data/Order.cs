@@ -52,7 +52,7 @@ namespace Yutaka.VineSpring.Data
 
 	public class BillingAddress
 	{
-		public DateTime CreatedOn { get; set; }
+		public DateTime? CreatedOn { get; set; }
 		public string Id { get; set; }
 		public string OrderId { get; set; }
 		public bool? IsInternational { get; set; }
@@ -111,7 +111,7 @@ namespace Yutaka.VineSpring.Data
 	#region public class Note
 	public class Note
 	{
-		public DateTime CreatedOn { get; set; }
+		public DateTime? CreatedOn { get; set; }
 		public string Email { get; set; }
 		public string OrderId { get; set; }
 		public string Message { get; set; }
@@ -121,7 +121,7 @@ namespace Yutaka.VineSpring.Data
 	#region public class ShippingAddress
 	public class ShippingAddress
 	{
-		public DateTime CreatedOn { get; set; }
+		public DateTime? CreatedOn { get; set; }
 		public string Id { get; set; }
 		public string OrderId { get; set; }
 		public bool? IsInternational { get; set; }
@@ -153,7 +153,7 @@ namespace Yutaka.VineSpring.Data
 
 	public class AlternateAddress
 	{
-		public string ShippingMethodId { get; set; }
+		public string OrderId { get; set; }
 		public bool? IsInternational { get; set; }
 		public string Line1 { get; set; }
 		public string Line2 { get; set; }
