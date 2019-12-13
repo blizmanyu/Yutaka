@@ -1739,8 +1739,8 @@ namespace Yutaka.Tests
 					Console.Write("\n     CreationTime: {0}", vid.CreationTime);
 					Console.Write("\n   LastAccessTime: {0}", vid.LastAccessTime);
 					Console.Write("\n    LastWriteTime: {0}", vid.LastWriteTime);
-					Console.Write("\n     MediaCreated: {0}", vid.MediaCreated);
-					Console.Write("\n     DateReleased: {0}", vid.DateReleased);
+					//Console.Write("\n     MediaCreated: {0}", vid.MediaCreated);
+					//Console.Write("\n     DateReleased: {0}", vid.DateReleased);
 					Console.Write("\n      MinDateTime: {0}", vid.MinDateTime);
 					Console.Write("\n");
 					Console.Write("\n   ParentFolder: {0}", vid.ParentFolder);
