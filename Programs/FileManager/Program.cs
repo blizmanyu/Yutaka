@@ -41,12 +41,49 @@ namespace FileManager
 
 			var deleteFile = false;
 			string source, dest;
-			source = @"R:\DCIM\Game media\";
+			source = @"R:\Notifications\";
 			dest = @"G:\From Galaxy S9\";
-			Test_YuImage(source, dest, deleteFile);
-			Test_YuVideo(source, dest, deleteFile);
+			//Test_YuImage(source, dest, deleteFile);
+			//Test_YuVideo(source, dest, deleteFile);
+			MoveAllFiles(source, dest, deleteFile);
 
 			EndProgram();
+		}
+
+		private static void MoveAllFiles(string source, string dest, bool deleteFile = false)
+		{
+			consoleOut = !deleteFile;
+			Directory.CreateDirectory(dest);
+
+			YuFile fi;
+			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
+			var filesCount = files.Count;
+
+			for (int i = 0; i < filesCount; i++) {
+				fi = new YuFile(files[i]);
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}/{1} ({2})", ++totalCount, filesCount, ((double) totalCount / filesCount).ToString("p2"));
+					Console.Write("\n{0}", files[i]);
+					Console.Write("\n     CreationTime: {0}", fi.CreationTime);
+					Console.Write("\n        DateTaken: {0}", fi.DateTaken);
+					Console.Write("\n   LastAccessTime: {0}", fi.LastAccessTime);
+					Console.Write("\n    LastWriteTime: {0}", fi.LastWriteTime);
+					Console.Write("\n      MinDateTime: {0}", fi.MinDateTime);
+					Console.Write("\n");
+					Console.Write("\n   DirectoryName: {0}", fi.DirectoryName);
+					Console.Write("\n   ParentFolder: {0}", fi.ParentFolder);
+					Console.Write("\n   NewFolder: {0}", fi.NewFolder);
+					Console.Write("\n   NewFilename: {0}", fi.NewFilename);
+				}
+
+				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
+				_fileUtil.Move(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.NewFilename), deleteFile);
+				_fileUtil.Redate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.NewFilename), fi.MinDateTime);
+			}
+
+			var count = _fileUtil.DeleteAllThumbsDb(source);
+			Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		}
 
 		private static void Test_YuVideo(string source, string dest, bool deleteFile = false)
