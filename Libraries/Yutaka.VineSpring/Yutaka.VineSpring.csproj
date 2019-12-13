@@ -49,9 +49,7 @@
   <ItemGroup>
     <Compile Include="Data20191126\Address.cs" />
     <Compile Include="Data20191126\Customer.cs" />
-    <Compile Include="Data20191126\ListAllOrdersResponse.cs" />
     <Compile Include="Data20191126\ListAllProductsResponse.cs" />
-    <Compile Include="Data20191126\Order.cs" />
     <Compile Include="Data20191126\Product.cs" />
     <Compile Include="Data20191126\ShippingMethod.cs" />
     <Compile Include="Data\ListAllOrdersResponse.cs" />

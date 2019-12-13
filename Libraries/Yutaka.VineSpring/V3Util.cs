@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yutaka.IO;
+using Yutaka.VineSpring.Data;
 using Yutaka.VineSpring.Data20191126;
 
 namespace Yutaka.VineSpring
@@ -75,7 +76,7 @@ namespace Yutaka.VineSpring
 
 		#region Methods
 		#region Customers
-		public async Task<string> CreateCustomer(Customer customer)
+		public async Task<string> CreateCustomer(Data20191126.Customer customer)
 		{
 			if (customer == null)
 				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
@@ -206,7 +207,7 @@ namespace Yutaka.VineSpring
 			}
 		}
 
-		public async Task<string> UpdateCustomer(Customer customer)
+		public async Task<string> UpdateCustomer(Data20191126.Customer customer)
 		{
 			if (customer == null)
 				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
@@ -510,7 +511,7 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Order>();
 				var response = ListAllOrdersByDate(startDate, endDate, paginationKey);
-				WriteToFile(response);
+				//WriteToFile(response);
 				var orders = JsonConvert.DeserializeObject<ListAllOrdersResponse>(response.Result);
 
 				foreach (var order in orders.Orders)

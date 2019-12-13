@@ -1,4 +1,6 @@
-﻿namespace Yutaka.VineSpring.Data20191126
+﻿using Yutaka.VineSpring.Data;
+
+namespace Yutaka.VineSpring.Data20191126
 {
 	public class ListAllOrdersResponse
 	{
