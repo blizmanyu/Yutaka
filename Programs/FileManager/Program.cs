@@ -41,11 +41,11 @@ namespace FileManager
 
 			var deleteFile = false;
 			string source, dest;
-			source = @"R:\Notifications\";
+			source = @"R:\DCIM\Game media\";
 			dest = @"G:\From Galaxy S9\";
-			//Test_YuImage(source, dest, deleteFile);
-			//Test_YuVideo(source, dest, deleteFile);
-			MoveAllFiles(source, dest, deleteFile);
+			Test_YuImage(source, dest, deleteFile);
+			Test_YuVideo(source, dest, deleteFile);
+			//MoveAllFiles(source, dest, deleteFile);
 
 			EndProgram();
 		}
