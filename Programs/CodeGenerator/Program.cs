@@ -2,7 +2,7 @@
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Rcw.Sql.ScarletWitch.VS20191126.Data;
+using Rcw.Sql.Hulk.Import.Data;
 using Yutaka.IO;
 
 namespace CodeGenerator

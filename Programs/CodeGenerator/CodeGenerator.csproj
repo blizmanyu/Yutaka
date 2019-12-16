@@ -39,6 +39,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Rcw.Sql.Hulk.Import">
+      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.Import\bin\Release\Rcw.Sql.Hulk.Import.dll</HintPath>
+    </Reference>
     <Reference Include="Rcw.Sql.ScarletWitch.VS20191126">
       <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\Rcw.Sql.ScarletWitch.VS20191126.dll</HintPath>
     </Reference>
