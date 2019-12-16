@@ -173,7 +173,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public void StartJob(string connectionString, string jobId)
+		public void StartJob(string connectionString, string jobId, string stepName=null)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand()) {
@@ -182,6 +182,10 @@ namespace Yutaka.Data
 						cmd.CommandType = CommandType.StoredProcedure;
 						cmd.CommandText = "msdb.dbo.sp_start_job";
 						cmd.Parameters.AddWithValue("@job_id", jobId);
+
+						if (!String.IsNullOrWhiteSpace(stepName))
+							cmd.Parameters.AddWithValue("@step_name", stepName);
+
 						conn.Open();
 						cmd.ExecuteNonQuery();
 					}
