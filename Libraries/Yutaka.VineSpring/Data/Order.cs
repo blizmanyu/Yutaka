@@ -111,7 +111,7 @@ namespace Yutaka.VineSpring.Data
 	#region public class Note
 	public class Note
 	{
-		public DateTime? CreatedOn { get; set; }
+		public DateTime CreatedOn { get; set; }
 		public string Email { get; set; }
 		public string OrderId { get; set; }
 		public string Message { get; set; }
