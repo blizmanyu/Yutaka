@@ -42,6 +42,9 @@
     <Reference Include="Rcw.Sql.Hulk.Import">
       <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.Import\bin\Release\Rcw.Sql.Hulk.Import.dll</HintPath>
     </Reference>
+    <Reference Include="Rcw.Sql.Hulk.IntranetData">
+      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Rcw.Sql.Hulk.IntranetData.dll</HintPath>
+    </Reference>
     <Reference Include="Rcw.Sql.ScarletWitch.VS20191126">
       <HintPath>..\..\..\Rcw.Sql\ScarletWitch\Rcw.Sql.ScarletWitch.VS20191126\bin\Release\Rcw.Sql.ScarletWitch.VS20191126.dll</HintPath>
     </Reference>
@@ -55,6 +58,15 @@
     <Reference Include="System.Xml" />
     <Reference Include="Yutaka.Data">
       <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Net">
+      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Text">
+      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Text.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Utils">
+      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
