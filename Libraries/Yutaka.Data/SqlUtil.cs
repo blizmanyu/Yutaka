@@ -109,6 +109,20 @@ namespace Yutaka.Data
 				}
 			}
 
+			catch (SqlException ex) {
+				var log = String.Format("Exception thrown in SqlUtil.ExecuteScalar().{0}", Environment.NewLine);
+
+				for (int i = 0; i < ex.Errors.Count; i++) {
+					log = String.Format("{0}Index #{1}{2}", log, i, Environment.NewLine);
+					log = String.Format("{0}Message: {1}{2}", log, ex.Errors[i].Message, Environment.NewLine);
+					log = String.Format("{0}LineNumber: {1}{2}", log, ex.Errors[i].LineNumber, Environment.NewLine);
+					log = String.Format("{0}Source: {1}{2}", log, ex.Errors[i].Source, Environment.NewLine);
+					log = String.Format("{0}Procedure: {1}{2}", log, ex.Errors[i].Procedure, Environment.NewLine);
+				}
+
+				throw new Exception(log);
+			}
+
 			catch (Exception ex) {
 				if (ex.InnerException == null)
 					throw new Exception(String.Format("{0}{2}Exception thrown in SqlUtil.ExecuteScalar().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine));
