@@ -45,6 +45,25 @@ namespace Yutaka.IO.Tests
 		}
 
 		#region Tests for FileUtil
+		#region Test DeleteAllThumbsDb 2019 1002 1419
+		private static void Test_DeleteAllThumbsDb()
+		{
+			consoleOut = true;
+			var count = 0;
+			var tests = new string[] {
+				@"\\DC-RCW\Public\",
+				@"\\DC-RCW\Private\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				count = _fileUtil.DeleteAllThumbsDb(tests[i]);
+				Console.Write("\n   Count: {0}", count);
+			}
+		}
+		#endregion Test DeleteAllThumbsDb 2019 1002 1419
+
 		// TODO: Include immediate parent folder in dest folder //
 		// TODO: Handle general Exception (in FileUtil.cs as well) //
 		// TODO: See what happens when file already exists at dest //
