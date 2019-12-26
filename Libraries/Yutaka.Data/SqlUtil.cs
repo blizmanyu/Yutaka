@@ -79,7 +79,7 @@ namespace Yutaka.Data
 				return false;
 			}
 
-			catch (Exception ex) {
+			catch (Exception) {
 				if (retries > 0) {
 					Thread.Sleep(2200);
 					return CanExecute(connectionString, --retries);
