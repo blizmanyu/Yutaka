@@ -216,19 +216,6 @@ namespace Yutaka.Data
 			}
 		}
 
-		public bool IsServerConnected(string connectionString)
-		{
-			using (var conn = new SqlConnection(connectionString)) {
-				try {
-					conn.Open();
-					return true;
-				}
-				catch (SqlException) {
-					return false;
-				}
-			}
-		}
-
 		public void StartJob(string connectionString, string jobId, string stepName=null)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
@@ -406,6 +393,22 @@ namespace Yutaka.Data
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil.TruncateTable(string connectionString, string database='{3}', string schema='{4}', string table='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, database, schema, table));
 			}
 		}
+
+		#region Deprecated
+		[Obsolete("Deprecated Dec 26, 2019. Use CanExecute(string connectionString, int retries = 1) instead.", true)]
+		public bool IsServerConnected(string connectionString)
+		{
+			using (var conn = new SqlConnection(connectionString)) {
+				try {
+					conn.Open();
+					return true;
+				}
+				catch (SqlException) {
+					return false;
+				}
+			}
+		}
+		#endregion Deprecated
 
 		#region Commented Out Jan, 10, 2019
 		//public void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
