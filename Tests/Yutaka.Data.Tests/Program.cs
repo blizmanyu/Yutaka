@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using NLog;
-using Yutaka.Data;
 
 namespace Yutaka.Data.Tests
 {
@@ -33,9 +32,26 @@ namespace Yutaka.Data.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//Process();
+			Test_CanExecute();
 			EndProgram();
 		}
+
+		#region Test CanExecute() - 2019 1226 1514
+		private static void Test_CanExecute()
+		{
+			var tests = new string[] {
+				null,
+				"",
+				"asdf",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) '{1}'", ++totalCount, test ?? "null");
+				Console.Write("\n--> {0}", _sqlUtil.CanExecute(test));
+				Console.Write("\n");
+			}
+		}
+		#endregion Test CanExecute()
 
 		#region Test ToXls()
 		private static void Test_ToXls()
