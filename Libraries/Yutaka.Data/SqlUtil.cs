@@ -96,7 +96,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public Object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
@@ -110,19 +110,10 @@ namespace Yutaka.Data
 			}
 
 			catch (Exception ex) {
-				var p = "";
-
-				if (parameters != null && parameters.Length > 0) {
-					for (int i = 0; i < parameters.Length; i++)
-						p = String.Format("{0}{1}: {2}; ", p, parameters[i].ParameterName, parameters[i].Value);
-
-					p = String.Format("{0}{1}", p, Environment.NewLine);
-				}
-
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in RcwEmailService.ExecuteScalar(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.Message, ex.ToString(), Environment.NewLine, p, commandText, commandType));
-
-				throw new Exception(String.Format("{0}{2}{3}{2}Exception thrown in INNER EXCEPTION of RcwEmailService.ExecuteScalar(string connectionString, string commandText='{4}', CommandType commandType='{5}'){2}{1}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, p, commandText, commandType));
+					throw new Exception(String.Format("{0}{2}Exception thrown in SqlUtil.ExecuteScalar().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil.ExecuteScalar().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
 		}
 
