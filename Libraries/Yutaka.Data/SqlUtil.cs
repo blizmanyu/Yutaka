@@ -64,6 +64,9 @@ namespace Yutaka.Data
 		/// <returns>True if it can connect and execute. False otherwise.</returns>
 		public bool CanExecute(string connectionString, int retries = 1)
 		{
+			if (String.IsNullOrWhiteSpace(connectionString))
+				return false;
+
 			try {
 				var result = ExecuteScalar(connectionString, "SELECT 1");
 
