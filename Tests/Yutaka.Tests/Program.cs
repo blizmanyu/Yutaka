@@ -12,7 +12,6 @@ using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NLog;
-using Yutaka.Data;
 using Yutaka.Images;
 using Yutaka.IO;
 using Yutaka.Net;
@@ -48,7 +47,6 @@ namespace Yutaka.Tests
 		private static List<string> bots = new List<string> { "bot", "crawler", "spider", "80legs", "baidu", "yahoo! slurp", "ia_archiver", "mediapartners-google", "lwp-trivial", "nederland.zoek", "ahoy", "anthill", "appie", "arale", "araneo", "ariadne", "atn_worldwide", "atomz", "bjaaland", "ukonline", "calif", "combine", "cosmos", "cusco", "cyberspyder", "digger", "grabber", "downloadexpress", "ecollector", "ebiness", "esculapio", "esther", "felix ide", "hamahakki", "kit-fireball", "fouineur", "freecrawl", "desertrealm", "gcreep", "golem", "griffon", "gromit", "gulliver", "gulper", "whowhere", "havindex", "hotwired", "htdig", "ingrid", "informant", "inspectorwww", "iron33", "teoma", "ask jeeves", "jeeves", "image.kapsi.net", "kdd-explorer", "label-grabber", "larbin", "linkidator", "linkwalker", "lockon", "marvin", "mattie", "mediafox", "merzscope", "nec-meshexplorer", "udmsearch", "moget", "motor", "muncher", "muninn", "muscatferret", "mwdsearch", "sharp-info-agent", "webmechanic", "netscoop", "newscan-online", "objectssearch", "orbsearch", "packrat", "pageboy", "parasite", "patric", "pegasus", "phpdig", "piltdownman", "pimptrain", "plumtreewebaccessor", "getterrobo-plus", "raven", "roadrunner", "robbie", "robocrawl", "robofox", "webbandit", "scooter", "search-au", "searchprocess", "senrigan", "shagseeker", "site valet", "skymob", "slurp", "snooper", "speedy", "curl_image_client", "suke", "www.sygol.com", "tach_bw", "templeton", "titin", "topiclink", "udmsearch", "urlck", "valkyrie libwww-perl", "verticrawl", "victoria", "webscout", "voyager", "crawlpaper", "webcatcher", "t-h-u-n-d-e-r-s-t-o-n-e", "webmoose", "pagesinventory", "webquest", "weborama", "fetcher", "webreaper", "webwalker", "winona", "occam", "robi", "fdse", "jobo", "rhcs", "gazz", "dwcp", "yeti", "fido", "wlm", "wolp", "wwwc", "xget", "legs", "curl", "webs", "wget", "sift", "cmc" };
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
-		private static SqlUtil _sqlUtil = new SqlUtil();
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static WebUtil _webUtil = new WebUtil();
 		private static int errorCount = 0;
@@ -397,18 +395,6 @@ namespace Yutaka.Tests
 			Console.Write("\n       ToString().GetHashCode: {0}", now.ToString().GetHashCode().ToString("x"));
 		}
 		#endregion Test DateTime 2019 0927 1703
-
-		#region Test_SqlUtil_TruncateTable - 2019 0905 1909
-		private static void Test_SqlUtil_TruncateTable()
-		{
-			var conStr = "";
-			var database = "";
-			var schema = "dbo";
-			var table = "";
-
-			_sqlUtil.TruncateTable(conStr, database, schema, table);
-		}
-		#endregion Test_SqlUtil_TruncateTable - 2019 0905 1909
 
 		//private static void Test_V3Util_CreateCustomer()
 		//{
@@ -788,13 +774,6 @@ namespace Yutaka.Tests
 			Process.Start("explorer.exe", @"C:\Temp\");
 		}
 		#endregion Test Util.LocalTimeToGoogleInternalDate
-
-		#region Test SqlUtil.ToXls
-		private static void Test_SqlUtil_ToXls()
-		{
-
-		}
-		#endregion Test SqlUtil.ToXls
 
 		#region Test VideoUtil.CreateVersion1
 		//private static void Test_VideoUtil_CreateVersion1()
