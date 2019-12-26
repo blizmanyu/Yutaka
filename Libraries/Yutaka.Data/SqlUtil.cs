@@ -2,6 +2,7 @@
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Threading;
 
 namespace Yutaka.Data
 {
@@ -54,6 +55,56 @@ namespace Yutaka.Data
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
 		#endregion CommandType
+
+		/// <summary>
+		/// Checks whether or not we can connect and execute a simple query on the SQL Server.
+		/// </summary>
+		/// <param name="connectionString">The connection string used to open the SQL Server database.</param>
+		/// <param name="retries">The number of retry attempts. Default is 1.</param>
+		/// <returns>True if it can connect and execute. False otherwise.</returns>
+		public bool CanExecute(string connectionString, int retries = 1)
+		{
+			try {
+				var result = ExecuteScalar(connectionString, "SELECT 1");
+
+				if (result == null)
+					return false;
+
+				if ((int) result == 1)
+					return true;
+
+				return false;
+			}
+
+			catch (Exception ex) {
+				if (retries > 0) {
+					Thread.Sleep(2200);
+					return CanExecute(connectionString, --retries);
+				}
+
+				string log;
+
+				if (ex is SqlException exc) {
+					log = String.Format("Exception thrown in SqlUtil.CanExecute().{0}", Environment.NewLine);
+
+					for (int i = 0; i < exc.Errors.Count; i++) {
+						log = String.Format("{0}Index #{1}{2}", log, i, Environment.NewLine);
+						log = String.Format("{0}Message: {1}{2}", log, exc.Errors[i].Message, Environment.NewLine);
+						log = String.Format("{0}LineNumber: {1}{2}", log, exc.Errors[i].LineNumber, Environment.NewLine);
+						log = String.Format("{0}Source: {1}{2}", log, exc.Errors[i].Source, Environment.NewLine);
+						log = String.Format("{0}Procedure: {1}{2}", log, exc.Errors[i].Procedure, Environment.NewLine);
+					}
+				}
+
+				else if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in SqlUtil.CanExecute().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil.CanExecute().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				return false;
+			}
+		}
 
 		public void ExecuteNonQuery(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
