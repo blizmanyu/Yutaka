@@ -33,14 +33,28 @@ namespace Yutaka.Data.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Process();
+			//Process();
 			EndProgram();
 		}
 
-		private static void Process()
+		#region Test ToXls()
+		private static void Test_ToXls()
 		{
 
 		}
+		#endregion Test ToXls()
+
+		#region Test TruncateTable() - 2019 0905 1909
+		private static void Test_TruncateTable()
+		{
+			var conStr = "";
+			var database = "";
+			var schema = "dbo";
+			var table = "";
+
+			_sqlUtil.TruncateTable(conStr, database, schema, table);
+		}
+		#endregion Test TruncateTable()
 
 		private static void StartProgram()
 		{
