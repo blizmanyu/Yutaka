@@ -57,6 +57,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.VineSpring", "Librar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGenerator", "Programs\CodeGenerator\CodeGenerator.csproj", "{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Data.Tests", "Tests\Yutaka.Data.Tests\Yutaka.Data.Tests.csproj", "{F89C604F-6C2C-4712-BB25-CC313996000E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -159,6 +161,10 @@ Global
 		{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F89C604F-6C2C-4712-BB25-CC313996000E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F89C604F-6C2C-4712-BB25-CC313996000E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F89C604F-6C2C-4712-BB25-CC313996000E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F89C604F-6C2C-4712-BB25-CC313996000E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -188,6 +194,7 @@ Global
 		{2A21E034-E5F4-4E6A-AB43-D77364F39210} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{9A2AFB29-EE17-4B59-9C68-EFF2DFF3A71A} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 		{39F4FB4C-BDF6-477E-BD5C-F8AACD8B5DEC} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
+		{F89C604F-6C2C-4712-BB25-CC313996000E} = {2D4535E9-B792-47EC-B1D1-D62952932B87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
