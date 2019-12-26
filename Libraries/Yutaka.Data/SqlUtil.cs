@@ -96,7 +96,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public object ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public object ExecuteScalar(string connectionString, string commandText, CommandType commandType = CommandType.Text, params SqlParameter[] parameters)
 		{
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
