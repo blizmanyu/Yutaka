@@ -175,7 +175,6 @@ namespace Yutaka.Tests
 			EndProgram();
 		}
 
-
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()
 		{
@@ -295,26 +294,6 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test TextUtil.ToTitleCaseSmart 2019 1016 1223
-
-		#region Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
-		private static void Test_FileUtil_DeleteAllThumbsDb()
-		{
-			consoleOut = true;
-			var count = 0;
-			var tests = new string[] {
-				//@"Z:\Downloads\",
-				//@"Z:\Users\",
-				@"Z:\",
-			};
-
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				count = _fileUtil.DeleteAllThumbsDb(tests[i]);
-				Console.Write("\n   Count: {0}", count);
-			}
-		}
-		#endregion Test FileUtil.DeleteAllThumbsDb 2019 1002 1419
 
 		#region Test FileUtil.EnumerateFiles 2019 1002 1419
 		private static void Test_FileUtil_EnumerateFiles()
