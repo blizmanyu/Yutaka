@@ -74,6 +74,10 @@ namespace Yutaka.Diagnostics
 			return closeCount;
 		}
 
+		/// <summary>
+		/// Gets the System Uptime in seconds.
+		/// </summary>
+		/// <returns></returns>
 		public static float GetUpTime()
 		{
 			using (var uptime = new PerformanceCounter("System", "System Up Time")) {
