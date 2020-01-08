@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Yutaka.DateTime
 {
-	public class DtUtil
+	public static class DtUtil
 	{
+		public static readonly DateTime UNIX_TIME = 
 	}
 }
