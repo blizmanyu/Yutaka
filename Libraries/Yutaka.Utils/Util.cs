@@ -2,10 +2,11 @@
 
 namespace Yutaka.Utils
 {
+	[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil instead.", false)]
 	public static class Util
 	{
-		private static DateTime dateTimeThreshold = new DateTime(1900, 1, 1);
-		private static DateTime unixTime = new DateTime(1970, 1, 1);
+		private static readonly DateTime dateTimeThreshold = new DateTime(1900, 1, 1);
+		private static readonly DateTime unixTime = new DateTime(1970, 1, 1);
 
 		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.ConvertToRelativeTimeString(DateTime dt) instead.", false)]
 		public static string GetRelativeDateTimeString(DateTime dt)
@@ -31,7 +32,7 @@ namespace Yutaka.Utils
 			}
 		}
 
-		// Google InternalDate //
+		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.ConvertToLocalTime(long googleInternalDate) instead.", false)]
 		public static DateTime GoogleInternalDateToUtc(long internalDate)
 		{
 			if (internalDate < 0)
@@ -49,6 +50,7 @@ namespace Yutaka.Utils
 			}
 		}
 
+		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.ConvertToUtcTime(long googleInternalDate) instead.", false)]
 		public static DateTime GoogleInternalDateToLocalTime(long internalDate)
 		{
 			if (internalDate < 0)
@@ -66,6 +68,7 @@ namespace Yutaka.Utils
 			}
 		}
 
+		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.LocalTimeToGoogleInternalDate(DateTime dt) instead.", false)]
 		public static long LocalTimeToGoogleInternalDate(DateTime dt)
 		{
 			if (dt == null || dt < dateTimeThreshold)
@@ -83,6 +86,7 @@ namespace Yutaka.Utils
 			}
 		}
 
+		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.UtcToGoogleInternalDate(DateTime dt) instead.", false)]
 		public static long UtcToGoogleInternalDate(DateTime dt)
 		{
 			if (dt == null || dt < dateTimeThreshold)
@@ -99,6 +103,5 @@ namespace Yutaka.Utils
 				throw new Exception(String.Format("{0}{2}{2}Exception thrown in INNER EXCEPTION of Util.UtcToGoogleInternalDate(DateTime dt='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, dt));
 			}
 		}
-		// END Google InternalDate //
 	}
 }
