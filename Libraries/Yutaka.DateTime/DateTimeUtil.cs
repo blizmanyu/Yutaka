@@ -52,6 +52,11 @@ namespace Yutaka
 		{
 			return TimeZoneInfo.ConvertTime(dt, sourceTimeZone, destinationTimeZone);
 		}
+
+		public static DateTime ConvertToLocalTime(long googleInternalDate)
+		{
+			return UNIX_EPOCH.AddMilliseconds(googleInternalDate).ToLocalTime();
+		}
 		#endregion ConvertToLocalTime()
 
 		#region ConvertToUtcTime() Overloads
@@ -91,6 +96,11 @@ namespace Yutaka
 			}
 
 			return TimeZoneInfo.ConvertTimeToUtc(dt, sourceTimeZone);
+		}
+
+		public static DateTime ConvertToUtcTime(long googleInternalDate)
+		{
+			return UNIX_EPOCH.AddMilliseconds(googleInternalDate);
 		}
 		#endregion ConvertToUtcTime()
 
@@ -159,6 +169,19 @@ namespace Yutaka
 			return String.Format("{0:M/d/yy}, {1}", dt, time);
 		}
 		#endregion ConvertToRelativeTimeString()
+
+		#region Google Time
+
+		public static long LocalTimeToGoogleInternalDate(DateTime dt)
+		{
+			return (long) (dt.ToUniversalTime() - UNIX_EPOCH).TotalMilliseconds;
+		}
+
+		public static long UtcToGoogleInternalDate(DateTime dt)
+		{
+			return (long) (dt - UNIX_EPOCH).TotalMilliseconds;
+		}
+		#endregion Google Time
 		#endregion Methods
 	}
 }
