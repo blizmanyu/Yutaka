@@ -480,6 +480,17 @@ namespace Yutaka.IO
 			Write(sb, dest);
 		}
 
+		public void CreateGalleryHtmlInEachSubfolder(string path)
+		{
+			foreach (var folder in Directory.GetDirectories(path)) {
+				try {
+					CreateGalleryHtml(folder);
+				}
+
+				catch (Exception) { }
+			}
+		}
+
 		/// <summary>
 		/// Returns an IEnumerable of audio FileInfos that matches a specified search patthern and search subdirectory option.
 		/// </summary>
