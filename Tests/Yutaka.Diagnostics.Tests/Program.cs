@@ -35,11 +35,18 @@ namespace Yutaka.Diagnostics.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_CreateAnimatedGif2();
+			Test_FileUtil_CreateGalleryHtmlInEachSubfolder();
 			EndProgram();
 		}
 
 		#region Tests for FfmpegUtil
+		// Created Jan 9, 2020, Modified: Jan 9, 2020 //
+		private static void Test_FileUtil_CreateGalleryHtmlInEachSubfolder()
+		{
+			var path = @"asdf";
+			_fileUtil.CreateGalleryHtmlInEachSubfolder(path);
+		}
+
 		// Created Nov 19, 2019, Modified: Nov 19, 2019 //
 		private static void Test_CreateAnimatedGif2()
 		{
