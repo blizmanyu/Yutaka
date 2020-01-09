@@ -472,11 +472,11 @@ namespace Yutaka.IO
 			var sb = new StringBuilder();
 			var files = Directory.EnumerateFiles(folder, "*thumb.gif", SearchOption.TopDirectoryOnly);
 			foreach (var file in files) {
-				temp = file.Replace("#", "%23");
+				temp = Path.GetFileName(file).Replace("#", "%23");
 				sb.Append(String.Format("<a href='{0}' target='_blank'><img src='{1}' /></a>", temp.Replace("-thumb", ""), temp));
 			}
 
-			var dest = Path.Combine(folder, String.Format(@"{0}.html", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var dest = Path.Combine(folder, String.Format(@"_{0}.html", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			Write(sb, dest);
 		}
 
