@@ -35,73 +35,82 @@ namespace Yutaka.Diagnostics.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_FileUtil_CreateGalleryHtmlInEachSubfolder();
+			Test_CreateAnimatedGif2();
 			EndProgram();
 		}
 
-		#region Tests for FfmpegUtil
-		// Created Jan 9, 2020, Modified: Jan 9, 2020 //
+		// Modified Nov 19, 2019 // Created Nov 19, 2019 //
+		private static void Test_CreateAnimatedGif2()
+		{
+			double i, startTime, duration;
+			string folder, filename, source, destFolder;
+
+			#region Video 1
+			startTime = 0.0;
+			duration = 0;
+			folder = @"asdf\";
+			filename = @"asdf";
+			source = Path.Combine(folder, filename);
+			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
+
+			// 1st 5min //
+			for (i = startTime; i < startTime + 300; i += 10)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+
+			// Middle //
+			for (i = startTime + 350; i < duration-305; i += 60)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+
+			// Last 5min //
+			for (i = duration - 300; i < duration; i += 10)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+			#endregion Video 1
+
+			#region Video 2
+			startTime = 0.0;
+			duration = 0;
+			folder = @"asdf\";
+			filename = @"asdf";
+			source = Path.Combine(folder, filename);
+			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
+
+			// 1st 5min //
+			for (i = startTime; i < startTime + 300; i += 10)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+
+			// Middle //
+			for (i = startTime + 350; i < duration - 305; i += 60)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+
+			// Last 5min //
+			for (i = duration - 300; i < duration; i += 10)
+				FfmpegUtil.CreateAnimatedGif(i, source, false, -1, -1, -1, null, true, true);
+
+			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
+			_fileUtil.CreateGalleryHtml(destFolder);
+			#endregion Video 2
+		}
+
+		// Modified Jan 9, 2020 // Created Jan 9, 2020 //
 		private static void Test_FileUtil_CreateGalleryHtmlInEachSubfolder()
 		{
 			var path = @"asdf";
 			_fileUtil.CreateGalleryHtmlInEachSubfolder(path);
-		}
-
-		// Created Nov 19, 2019, Modified: Nov 19, 2019 //
-		private static void Test_CreateAnimatedGif2()
-		{
-			double startTime;
-			string folder, filename, source, destFolder;
-			folder = @"asdf\";
-			filename = @"asdf.mp4";
-			source = Path.Combine(folder, filename);
-			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
-
-			for (int i = 4; i < 3924; i += 10) {
-				startTime = i;
-				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
-
-				if (i > 4 && i % 300 == 4) {
-					_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-					_fileUtil.CreateGalleryHtml(destFolder);
-				}
-			}
-
-			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-			_fileUtil.CreateGalleryHtml(destFolder);
-
-			filename = @"asdf.mp4";
-			source = Path.Combine(folder, filename);
-			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
-
-			for (int i = 9; i < 4929; i += 10) {
-				startTime = i;
-				FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
-
-				if (i > 9 && i % 300 == 9) {
-					_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-					_fileUtil.CreateGalleryHtml(destFolder);
-				}
-			}
-
-			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-			_fileUtil.CreateGalleryHtml(destFolder);
-
-			//for (int i = 380; i < 2768; i += 90) {
-			//	startTime = i;
-			//	FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
-			//}
-
-			//_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
-			//_fileUtil.CreateGalleryHtml(destFolder);
-
-			//for (int i = 2773; i < 3073; i += 10) {
-			//	startTime = i;
-			//	FfmpegUtil.CreateAnimatedGif(startTime, source, false, -1, -1, -1, null, true, true);
-			//}
-
-			//_fileUtil.CreateGalleryHtml(destFolder);
-			//_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
 		}
 
 		private static void Test_FileUtil_CreateGalleryHtml()
@@ -113,7 +122,7 @@ namespace Yutaka.Diagnostics.Tests
 		private static void Test_CreateAnimatedGif()
 		{
 			double startTime;
-			var folder = @"G:\Projects\FileCopier2\Videos\Jful\";
+			var folder = @"asdf\";
 			var filename = @"asdf.mp4";
 			var source = Path.Combine(folder, filename);
 			var destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
@@ -151,9 +160,7 @@ namespace Yutaka.Diagnostics.Tests
 			_fileUtil.CreateGalleryHtml(destFolder);
 			_fileUtil.Delete(destFolder, "*.png", SearchOption.TopDirectoryOnly);
 		}
-		#endregion Tests for FfmpegUtil
 
-		#region Tests for ProcessUtil
 		private static void Test_GetUpTime()
 		{
 			Console.Write("\nUp Time: {0}", ProcessUtil.GetUpTime());
@@ -167,9 +174,7 @@ namespace Yutaka.Diagnostics.Tests
 			ProcessUtil.RestartComputer(remoteCompName: "laksjdf");
 			ProcessUtil.RestartComputer(createWindow: true);
 		}
-		#endregion Tests for ProcessUtil
 
-		#region Misc Tests
 		private static void Test_Path_Combine()
 		{
 			var DefaultPaletteFolder = @"G:\TEMP\";
@@ -177,7 +182,6 @@ namespace Yutaka.Diagnostics.Tests
 			var startTime = 0.0;
 			Console.Write("\n\nPath: {0}\n\n", Path.Combine(DefaultPaletteFolder, NameWithoutExtension, startTime.ToString("00000.00'.png'")));
 		}
-		#endregion Misc Tests
 
 		#region Start & EndProgram
 		static void StartProgram()
