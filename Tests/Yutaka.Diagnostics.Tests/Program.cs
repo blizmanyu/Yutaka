@@ -47,9 +47,9 @@ namespace Yutaka.Diagnostics.Tests
 
 			#region Video 1
 			startTime = 0.0;
-			duration = 0;
+			duration = 1585;
 			folder = @"asdf\";
-			filename = @"asdf";
+			filename = @"asdf.mp4";
 			source = Path.Combine(folder, filename);
 			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
 
@@ -76,10 +76,10 @@ namespace Yutaka.Diagnostics.Tests
 			#endregion Video 1
 
 			#region Video 2
-			startTime = 0.0;
-			duration = 0;
+			startTime = 30.0;
+			duration = 2162;
 			folder = @"asdf\";
-			filename = @"asdf";
+			filename = @"asdf.mp4";
 			source = Path.Combine(folder, filename);
 			destFolder = Path.Combine(@"G:\TEMP\", filename.Replace(".mp4", ""));
 
