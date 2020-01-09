@@ -7,6 +7,7 @@ namespace Yutaka.Utils
 		private static DateTime dateTimeThreshold = new DateTime(1900, 1, 1);
 		private static DateTime unixTime = new DateTime(1970, 1, 1);
 
+		[Obsolete("Deprecated Jan 9, 2020: Use Yutaka.DateTime.DateTimeUtil.ConvertToRelativeTimeString(DateTime dt) instead.", false)]
 		public static string GetRelativeDateTimeString(DateTime dt)
 		{
 			if (dt == null || dt < dateTimeThreshold)
