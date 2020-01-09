@@ -130,6 +130,17 @@ namespace Yutaka
 		/// </summary>
 		/// <param name="dt">The dateTime to convert.</param>
 		/// <param name="sourceTimeZone">The time zone of dateTime.</param>
+		/// <returns>A string that represents time that corresponds to the dateTime parameter in local time zone.</returns>
+		public static string ConvertToRelativeTimeString(DateTime dt, TimeZoneInfo sourceTimeZone)
+		{
+			return ConvertToRelativeTimeString(dt, sourceTimeZone, TimeZoneInfo.Local);
+		}
+
+		/// <summary>
+		/// Converts the date and time to current local date and time
+		/// </summary>
+		/// <param name="dt">The dateTime to convert.</param>
+		/// <param name="sourceTimeZone">The time zone of dateTime.</param>
 		/// <param name="destinationTimeZone">The time zone to convert dateTime to.</param>
 		/// <returns>A string that represents time that corresponds to the dateTime parameter in local time zone.</returns>
 		public static string ConvertToRelativeTimeString(DateTime dt, TimeZoneInfo sourceTimeZone, TimeZoneInfo destinationTimeZone)
