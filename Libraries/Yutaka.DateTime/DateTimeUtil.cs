@@ -7,6 +7,7 @@ namespace Yutaka
 		public static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 
 		#region Methods
+		#region ConvertToLocalTime() Overloads
 		/// <summary>
 		/// Converts the date and time to current local date and time
 		/// </summary>
@@ -51,7 +52,9 @@ namespace Yutaka
 		{
 			return TimeZoneInfo.ConvertTime(dt, sourceTimeZone, destinationTimeZone);
 		}
+		#endregion ConvertToLocalTime()
 
+		#region ConvertToUtcTime() Overloads
 		/// <summary>
 		/// Converts the date and time to Coordinated Universal Time (UTC)
 		/// </summary>
@@ -89,6 +92,39 @@ namespace Yutaka
 
 			return TimeZoneInfo.ConvertTimeToUtc(dt, sourceTimeZone);
 		}
+		#endregion ConvertToUtcTime()
+
+		#region ConvertToRelativeTimeString() Overloads
+		/// <summary>
+		/// Converts the date and time to current local date and time
+		/// </summary>
+		/// <param name="dt">The date and time (respesents local system time or UTC time) to convert.</param>
+		/// <returns>A DateTime value that represents time that corresponds to the dateTime parameter in customer time zone.</returns>
+		public static string ConvertToRelativeTimeString(DateTime dt)
+		{
+			return ConvertToRelativeTimeString(dt, dt.Kind);
+		}
+
+		/// <summary>
+		/// Converts the date and time to current local date and time
+		/// </summary>
+		/// <param name="dt">The date and time (respesents local system time or UTC time) to convert.</param>
+		/// <param name="sourceDateTimeKind">The source datetimekind</param>
+		/// <returns>A DateTime value that represents time that corresponds to the dateTime parameter in customer time zone.</returns>
+		public static string ConvertToRelativeTimeString(DateTime dt, DateTimeKind sourceDateTimeKind)
+		{
+			dt = ConvertToLocalTime(dt, sourceDateTimeKind);
+			var time = dt.ToString("h:mmtt").ToLower();
+
+			if (dt.Date == DateTime.Today)
+				return String.Format("Today, {0}", time);
+
+			if (dt.Year == DateTime.Now.Year) // This Year //
+				return String.Format("{0:MMM d}, {1}", dt, time);
+
+			return String.Format("{0:M/d/yy}, {1}", dt, time);
+		}
+		#endregion ConvertToRelativeTimeString()
 		#endregion Methods
 	}
 }
