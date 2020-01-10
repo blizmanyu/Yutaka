@@ -169,9 +169,26 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			//Tests_ProcessHelper_RestartComputer();
+			Test_DateTime();
 			EndProgram();
 		}
+
+		#region Test DateTime - 2020 0109 1555
+		private static void Test_DateTime()
+		{
+			var tests = new DateTime[] {
+				DateTime.Now,
+				DateTime.UtcNow,
+				DateTime.Parse("1/1/2020"),
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) '{1}'", ++totalCount, test);
+				Console.Write("\n--> {0}", test.Kind);
+				Console.Write("\n");
+			}
+		}
+		#endregion Test DateTime
 
 		#region Test QB20191021Util 2019 1021 1643
 		private static void Test_QB20191021Util()
