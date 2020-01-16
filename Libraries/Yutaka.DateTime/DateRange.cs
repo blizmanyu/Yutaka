@@ -45,55 +45,55 @@ namespace Yutaka
 		/// ThisWeek date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange ThisWeek = new DateRange("ThisWeek", 0);
+		public static readonly DateRange ThisWeek = new DateRange("This Week", 0);
 
 		/// <summary>
 		/// Last7Days date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange Last7Days = new DateRange("Last7Days", 1);
+		public static readonly DateRange Last7Days = new DateRange("Last 7 Days", 1);
 
 		/// <summary>
 		/// ThisMonth date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange ThisMonth = new DateRange("ThisMonth", 2);
+		public static readonly DateRange ThisMonth = new DateRange("This Month", 2);
 
 		/// <summary>
 		/// Last30Days date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange Last30Days = new DateRange("Last30Days", 3);
+		public static readonly DateRange Last30Days = new DateRange("Last 30 Days", 3);
 
 		/// <summary>
 		/// ThisQuarter date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange ThisQuarter = new DateRange("ThisQuarter", 4);
+		public static readonly DateRange ThisQuarter = new DateRange("This Quarter", 4);
 
 		/// <summary>
 		/// Last3Months date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange Last3Months = new DateRange("Last3Months", 5);
+		public static readonly DateRange Last3Months = new DateRange("Last 3 Months", 5);
 
 		/// <summary>
 		/// ThisYear date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange ThisYear = new DateRange("ThisYear", 6);
+		public static readonly DateRange ThisYear = new DateRange("This Year", 6);
 
 		/// <summary>
 		/// Last12Months date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange Last12Months = new DateRange("Last12Months", 7);
+		public static readonly DateRange Last12Months = new DateRange("Last 12 Months", 7);
 
 		/// <summary>
 		/// AllTime date range.
 		/// </summary>
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
-		public static readonly DateRange AllTime = new DateRange("AllTime", 8);
+		public static readonly DateRange AllTime = new DateRange("All Time", 8);
 
 		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2104:DoNotDeclareReadOnlyMutableReferenceTypes", Justification = "Type is immutable")]
 		private static readonly IList<DateRange> allDateRanges = new List<DateRange> { ThisWeek, Last7Days, ThisMonth, Last30Days, ThisQuarter, Last3Months, ThisYear, Last12Months, AllTime }.AsReadOnly();
@@ -262,31 +262,31 @@ namespace Yutaka
 			if (rangeName == null)
 				throw new ArgumentNullException(nameof(rangeName));
 
-			if (rangeName.Equals("ThisWeek", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("This Week", StringComparison.OrdinalIgnoreCase))
 				return ThisWeek;
 
-			if (rangeName.Equals("Last7Days", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("Last 7 Days", StringComparison.OrdinalIgnoreCase))
 				return Last7Days;
 
-			if (rangeName.Equals("ThisMonth", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("This Month", StringComparison.OrdinalIgnoreCase))
 				return ThisMonth;
 
-			if (rangeName.Equals("Last30Days", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("Last 30 Days", StringComparison.OrdinalIgnoreCase))
 				return Last30Days;
 
-			if (rangeName.Equals("ThisQuarter", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("This Quarter", StringComparison.OrdinalIgnoreCase))
 				return ThisQuarter;
 
-			if (rangeName.Equals("Last3Months", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("Last 3 Months", StringComparison.OrdinalIgnoreCase))
 				return Last3Months;
 
-			if (rangeName.Equals("ThisYear", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("This Year", StringComparison.OrdinalIgnoreCase))
 				return ThisYear;
 
-			if (rangeName.Equals("Last12Months", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("Last 12 Months", StringComparison.OrdinalIgnoreCase))
 				return Last12Months;
 
-			if (rangeName.Equals("AllTime", StringComparison.OrdinalIgnoreCase))
+			if (rangeName.Equals("All Time", StringComparison.OrdinalIgnoreCase))
 				return AllTime;
 
 			throw new ArgumentException($"Unknown date range: {rangeName}");
@@ -449,23 +449,23 @@ namespace Yutaka
 		public static DateTime StartDate(this DateRange range)
 		{
 			switch (range.Name) {
-				case "ThisWeek":
+				case "This Week":
 					return DateTimeUtil.GetBeginningOfWeek();
-				case "Last7Days":
+				case "Last 7 Days":
 					return DateTime.Today.AddDays(-7);
-				case "ThisMonth":
+				case "This Month":
 					return DateTimeUtil.GetBeginningOfMonth();
-				case "Last30Days":
+				case "Last 30 Days":
 					return DateTime.Today.AddDays(-30);
-				case "ThisQuarter":
+				case "This Quarter":
 					return DateTimeUtil.GetBeginningOfQuarter();
-				case "Last3Months":
+				case "Last 3 Months":
 					return DateTime.Today.AddMonths(-3);
-				case "ThisYear":
+				case "This Year":
 					return DateTimeUtil.GetBeginningOfYear();
-				case "Last12Months":
+				case "Last 12 Months":
 					return DateTime.Today.AddMonths(-12);
-				case "AllTime":
+				case "All Time":
 					return new DateTime(2000, 1, 1);
 
 				default:
@@ -476,19 +476,19 @@ namespace Yutaka
 		public static DateTime EndDate(this DateRange range)
 		{
 			switch (range.Name) {
-				case "ThisWeek":
+				case "This Week":
 					return DateTimeUtil.GetEndOfWeek();
-				case "ThisMonth":
+				case "This Month":
 					return DateTimeUtil.GetEndOfMonth();
-				case "ThisQuarter":
+				case "This Quarter":
 					return DateTimeUtil.GetEndOfQuarter();
-				case "ThisYear":
-				case "AllTime":
+				case "This Year":
+				case "All Time":
 					return DateTimeUtil.GetEndOfYear();
-				case "Last7Days":
-				case "Last30Days":
-				case "Last3Months":
-				case "Last12Months":
+				case "Last 7 Days":
+				case "Last 30 Days":
+				case "Last 3 Months":
+				case "Last 12 Months":
 					return DateTime.Today;
 
 				default:
