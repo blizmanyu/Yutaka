@@ -170,8 +170,19 @@ namespace Yutaka
 		}
 		#endregion ConvertToRelativeTimeString()
 
-		#region Google Time
+		public static DateTime GetBeginningOfWeek()
+		{
+			var today = DateTime.Today;
+			return today.AddDays(DayOfWeek.Sunday - today.DayOfWeek);
+		}
 
+		public static DateTime GetEndOfWeek()
+		{
+			var today = DateTime.Today;
+			return today.AddDays(DayOfWeek.Saturday - today.DayOfWeek);
+		}
+
+		#region Google Time
 		public static long LocalTimeToGoogleInternalDate(DateTime dt)
 		{
 			return (long) (dt.ToUniversalTime() - UNIX_EPOCH).TotalMilliseconds;
