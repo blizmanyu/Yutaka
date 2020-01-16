@@ -446,6 +446,11 @@ namespace Yutaka
 
 	public static class DateRangeExtension
 	{
+		/// <summary>
+		/// Gets the StartDate of the specified <see cref="T:Yutaka.DateRange"/>.
+		/// </summary>
+		/// <param name="range">The <see cref="T:Yutaka.DateRange"/> to get the StartDate from.</param>
+		/// <returns>A <see langword="DateTime" /> object representing the start date of the <see cref="T:Yutaka.DateRange"/>.</returns>
 		public static DateTime StartDate(this DateRange range)
 		{
 			switch (range.Name) {
@@ -473,6 +478,11 @@ namespace Yutaka
 			}
 		}
 
+		/// <summary>
+		/// Gets the EndDate of the specified <see cref="T:Yutaka.DateRange"/>.
+		/// </summary>
+		/// <param name="range">The <see cref="T:Yutaka.DateRange"/> to get the EndDate from.</param>
+		/// <returns>A <see langword="DateTime" /> object representing the end date of the <see cref="T:Yutaka.DateRange"/>.</returns>
 		public static DateTime EndDate(this DateRange range)
 		{
 			switch (range.Name) {
