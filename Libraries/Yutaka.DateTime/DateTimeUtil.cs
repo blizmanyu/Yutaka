@@ -194,6 +194,20 @@ namespace Yutaka
 			return new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
 		}
 
+		public static DateTime GetBeginningOfQuarter()
+		{
+			var today = DateTime.Today;
+			var quarterNumber = (today.Month - 1) / 3 + 1;
+			return new DateTime(today.Year, (quarterNumber - 1) * 3 + 1, 1);
+		}
+
+		public static DateTime GetEndOfQuarter()
+		{
+			var today = DateTime.Today;
+			var quarterNumber = (today.Month - 1) / 3 + 1;
+			return new DateTime(today.Year, (quarterNumber - 1) * 3 + 1, 1).AddMonths(3).AddDays(-1);
+		}
+
 		#region Google Time
 		public static long LocalTimeToGoogleInternalDate(DateTime dt)
 		{
