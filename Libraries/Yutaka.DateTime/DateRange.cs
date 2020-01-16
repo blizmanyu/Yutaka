@@ -472,5 +472,28 @@ namespace Yutaka
 					throw new ArgumentException("Invalid DateRange.");
 			}
 		}
+
+		public static DateTime EndDate(this DateRange range)
+		{
+			switch (range.Name) {
+				case "ThisWeek":
+					return DateTimeUtil.GetEndOfWeek();
+				case "ThisMonth":
+					return DateTimeUtil.GetEndOfMonth();
+				case "ThisQuarter":
+					return DateTimeUtil.GetEndOfQuarter();
+				case "ThisYear":
+				case "AllTime":
+					return DateTimeUtil.GetEndOfYear();
+				case "Last7Days":
+				case "Last30Days":
+				case "Last3Months":
+				case "Last12Months":
+					return DateTime.Today;
+
+				default:
+					throw new ArgumentException("Invalid DateRange.");
+			}
+		}
 	}
 }
