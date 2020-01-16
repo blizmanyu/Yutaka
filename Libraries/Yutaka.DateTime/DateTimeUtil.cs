@@ -208,6 +208,16 @@ namespace Yutaka
 			return new DateTime(today.Year, (quarterNumber - 1) * 3 + 1, 1).AddMonths(3).AddDays(-1);
 		}
 
+		public static DateTime GetBeginningOfYear()
+		{
+			return new DateTime(DateTime.Today.Year, 1, 1);
+		}
+
+		public static DateTime GetEndOfYear()
+		{
+			return new DateTime(DateTime.Today.Year, 12, 31);
+		}
+
 		#region Google Time
 		public static long LocalTimeToGoogleInternalDate(DateTime dt)
 		{
