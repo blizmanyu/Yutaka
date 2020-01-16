@@ -182,6 +182,18 @@ namespace Yutaka
 			return today.AddDays(DayOfWeek.Saturday - today.DayOfWeek);
 		}
 
+		public static DateTime GetBeginningOfMonth()
+		{
+			var today = DateTime.Today;
+			return new DateTime(today.Year, today.Month, 1);
+		}
+
+		public static DateTime GetEndOfMonth()
+		{
+			var today = DateTime.Today;
+			return new DateTime(today.Year, today.Month, 1).AddMonths(1).AddDays(-1);
+		}
+
 		#region Google Time
 		public static long LocalTimeToGoogleInternalDate(DateTime dt)
 		{
