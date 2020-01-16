@@ -443,4 +443,34 @@ namespace Yutaka
 		}
 		#endregion
 	}
+
+	public static class DateRangeExtension
+	{
+		public static DateTime StartDate(this DateRange range)
+		{
+			switch (range.Name) {
+				case "ThisWeek":
+					return DateTimeUtil.GetBeginningOfWeek();
+				case "Last7Days":
+					return DateTime.Today.AddDays(-7);
+				case "ThisMonth":
+					return DateTimeUtil.GetBeginningOfMonth();
+				case "Last30Days":
+					return DateTime.Today.AddDays(-30);
+				case "ThisQuarter":
+					return DateTimeUtil.GetBeginningOfQuarter();
+				case "Last3Months":
+					return DateTime.Today.AddMonths(-3);
+				case "ThisYear":
+					return DateTimeUtil.GetBeginningOfYear();
+				case "Last12Months":
+					return DateTime.Today.AddMonths(-12);
+				case "AllTime":
+					return new DateTime(2000, 1, 1);
+
+				default:
+					throw new ArgumentException("Invalid DateRange.");
+			}
+		}
+	}
 }
