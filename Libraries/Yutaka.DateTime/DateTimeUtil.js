@@ -1,4 +1,22 @@
-﻿function GetBeginningOfQuarter() {
+﻿function GetToday() {
+	var now = new Date();
+	return new Date(now.getFullYear(), now.getMonth(), now.getDate());
+}
+
+function GetBeginningOfWeek() {
+	var today = GetToday();
+	var day = today.getDay();
+	var diff = today.getDate() - day;
+	return new Date(today.setDate(diff));
+}
+
+function GetEndOfWeek() {
+	var today = GetToday();
+	var beginningOfWeek = GetBeginningOfWeek();
+	return new Date(today.setDate(beginningOfWeek.getDate() + 6));
+}
+
+function GetBeginningOfQuarter() {
 	var now = new Date();
 	var quarter = Math.floor((now.getMonth() / 3));
 	return new Date(now.getFullYear(), quarter * 3, 1);
