@@ -79,10 +79,18 @@ namespace Yutaka
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
-			var minified = phone.Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Replace(" ", "");
+			var startsWithPlus = false;
 
-			while (minified.Contains(" "))
-				minified = minified.Replace(" ", "");
+			if (phone.StartsWith("+"))
+				startsWithPlus = true;
+
+			var minified = phone.Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Replace(" ", "");
+			//while (minified.Contains(" "))
+			//	minified = minified.Replace(" ", "");
+
+
+			if (startsWithPlus)
+				return String.Format("+{0}", minified);
 
 			return minified;
 		}
