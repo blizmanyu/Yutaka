@@ -172,6 +172,7 @@ namespace Yutaka.Text
 			}
 		}
 
+		[Obsolete("Deprecated Jan 28, 2020. Use PhoneUtil.Minify() instead.", false)]
 		public static string StripPhone(string phone)
 		{
 			if (String.IsNullOrWhiteSpace(phone))
