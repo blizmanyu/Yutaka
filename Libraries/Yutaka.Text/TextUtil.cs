@@ -148,28 +148,23 @@ namespace Yutaka.Text
 			return String.Format("{0} ext.{1}", phone, ext);
 		}
 
+		[Obsolete("Deprecated Jan 28, 2020. Use PhoneUtil.IsValid() instead.", false)]
 		public static bool IsValidPhone(string phone)
 		{
 			if (String.IsNullOrWhiteSpace(phone))
-				throw new ArgumentNullException("phone");
+				return false;
 
-			try {
-				phone = StripPhone(phone);
+			phone = StripPhone(phone);
 
-				if (phone.Length < 10)
-					return false;
+			if (phone.Length < 10)
+				return false;
 
-				if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") || phone.Contains("4444444") ||
-					phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") || phone.Contains("8888888") || phone.Contains("9999999") ||
-					phone.Contains("123456789") || phone.Contains("987654321"))
-					return false;
+			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
+				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") ||
+				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
+				return false;
 
-				return true;
-			}
-
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in TextUtil.IsValidPhone(string phone={3}){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, phone));
-			}
+			return true;
 		}
 
 		[Obsolete("Deprecated Jan 28, 2020. Use PhoneUtil.Minify() instead.", false)]
