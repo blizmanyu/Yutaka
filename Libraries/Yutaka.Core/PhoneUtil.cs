@@ -13,6 +13,11 @@ namespace Yutaka
 		//	if (String.IsNullOrWhiteSpace(phone))
 		//		return "";
 
+		//	var startsWithPlus = false;
+
+		//	if (phone.StartsWith("+"))
+		//		startsWithPlus = true;
+
 		//	var minified = Minify(phone);
 		//	var substring = minified.Substring(1);
 		//	var minifiedLength = minified.Length;
@@ -79,20 +84,18 @@ namespace Yutaka
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
+			phone = phone.Replace(" ", "");
 			var startsWithPlus = false;
 
 			if (phone.StartsWith("+"))
 				startsWithPlus = true;
 
-			var minified = phone.Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Replace(" ", "");
-			//while (minified.Contains(" "))
-			//	minified = minified.Replace(" ", "");
-
+			phone = phone.Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Replace(" ", "");
 
 			if (startsWithPlus)
-				return String.Format("+{0}", minified);
+				return String.Format("+{0}", phone);
 
-			return minified;
+			return phone;
 		}
 	}
 }
