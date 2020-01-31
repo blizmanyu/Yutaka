@@ -8,109 +8,104 @@ namespace Yutaka
 {
 	public static class PhoneUtil
 	{
-		public static string Beautify(string phone)
-		{
-			if (String.IsNullOrWhiteSpace(phone))
-				return "";
+		//public static string Beautify(string phone)
+		//{
+		//	if (String.IsNullOrWhiteSpace(phone))
+		//		return "";
 
-			var minified = Minify(phone);
-			var minifiedLength = minified.Length;
+		//	var minified = Minify(phone);
+		//	var minifiedLength = minified.Length;
 
-			if (minifiedLength < 7)
-				return phone;
+		//	if (minifiedLength < 7)
+		//		return phone;
 
-			var startsWithPlus = false;
+		//	var result = "";
 
-			if (phone.StartsWith("+")) {
-				startsWithPlus = true;
-				minified = minified.Substring(1);
-			}
+		//	if (phone.StartsWith("+")) {
+		//		result = "+";
+		//		minified = minified.Substring(1);
+		//	}
 
-			#region Check for extension
-			string ext;
-			string[] split;
-			minified = minified.ToUpper();
+		//	#region Check for extension
+		//	var ext = "";
+		//	string[] split;
+		//	minified = minified.ToUpper();
 
-			if (minified.Contains("EXT.")) {
-				split = minified.Split(new string[] { "EXT." }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	if (minified.Contains("EXT.")) {
+		//		split = minified.Split(new string[] { "EXT." }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("EXT")) {
-				split = minified.Split(new string[] { "EXT" }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("EXT")) {
+		//		split = minified.Split(new string[] { "EXT" }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("EX.")) {
-				split = minified.Split(new string[] { "EX." }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("EX.")) {
+		//		split = minified.Split(new string[] { "EX." }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("XT.")) {
-				split = minified.Split(new string[] { "XT." }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("XT.")) {
+		//		split = minified.Split(new string[] { "XT." }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("EX")) {
-				split = minified.Split(new string[] { "EX" }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("EX")) {
+		//		split = minified.Split(new string[] { "EX" }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("XT")) {
-				split = minified.Split(new string[] { "XT" }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("XT")) {
+		//		split = minified.Split(new string[] { "XT" }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("E.")) {
-				split = minified.Split(new string[] { "E." }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
+		//	else if (minified.Contains("E.")) {
+		//		split = minified.Split(new string[] { "E." }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
 
-			else if (minified.Contains("X.")) {
-				split = minified.Split(new string[] { "X." }, StringSplitOptions.None);
-				minified = split[0];
-				ext = split[1];
-			}
-			#endregion Check for extension
+		//	else if (minified.Contains("X.")) {
+		//		split = minified.Split(new string[] { "X." }, StringSplitOptions.None);
+		//		minified = split[0].Trim();
+		//		ext = split[1].Trim();
+		//	}
+		//	#endregion Check for extension
 
+		//	if (minifiedLength == 7 && minified.All(Char.IsDigit))
+		//		phone = String.Format("{0}-{1}", minified.Substring(0, 3), minified.Substring(3, 4));
 
+		//	else if (minifiedLength == 10 && minified.All(Char.IsDigit))
+		//		phone = String.Format("({0}) {1}-{2}", minified.Substring(0, 3), minified.Substring(3, 3), minified.Substring(6, 4));
 
-			//if (minifiedLength == 7 && minified.All(Char.IsDigit))
-			//	phone = String.Format("{0}-{1}", minified.Substring(0, 3), minified.Substring(3, 4));
+		//	else if (minifiedLength == 11) {
+		//		if (minified.All(Char.IsDigit))
+		//			phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 1), minified.Substring(1, 3), minified.Substring(4, 3), minified.Substring(7, 4));
+		//		else if (substring.All(Char.IsDigit))
+		//			phone = String.Format("{0}-{1}-{2}", minified.Substring(0, 4), minified.Substring(4, 3), minified.Substring(7, 4));
+		//	}
 
-			//else if (minifiedLength == 10 && minified.All(Char.IsDigit))
-			//	phone = String.Format("({0}) {1}-{2}", minified.Substring(0, 3), minified.Substring(3, 3), minified.Substring(6, 4));
+		//	else if (minifiedLength == 12 && substring.All(Char.IsDigit))
+		//		phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 2), minified.Substring(2, 3), minified.Substring(5, 3), minified.Substring(8, 4));
 
-			//else if (minifiedLength == 11) {
-			//	if (minified.All(Char.IsDigit))
-			//		phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 1), minified.Substring(1, 3), minified.Substring(4, 3), minified.Substring(7, 4));
-			//	else if (substring.All(Char.IsDigit))
-			//		phone = String.Format("{0}-{1}-{2}", minified.Substring(0, 4), minified.Substring(4, 3), minified.Substring(7, 4));
-			//}
+		//	else if (minifiedLength == 13 && substring.All(Char.IsDigit))
+		//		phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 3), minified.Substring(3, 3), minified.Substring(6, 3), minified.Substring(9, 4));
 
-			//else if (minifiedLength == 12 && substring.All(Char.IsDigit))
-			//	phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 2), minified.Substring(2, 3), minified.Substring(5, 3), minified.Substring(8, 4));
+		//	result = String.Format("{0}{1}", result, minified);
 
-			//else if (minifiedLength == 13 && substring.All(Char.IsDigit))
-			//	phone = String.Format("{0} ({1}) {2}-{3}", minified.Substring(0, 3), minified.Substring(3, 3), minified.Substring(6, 3), minified.Substring(9, 4));
+		//	if (String.IsNullOrWhiteSpace(ext))
+		//		return result;
 
-			//if (String.IsNullOrWhiteSpace(ext))
-			//	return phone;
-
-			//return String.Format("{0} ext.{1}", phone, ext);
-
-			if (startsWithPlus)
-				return String.Format("+{0}", minified);
-
-			return phone;
-		}
+		//	return String.Format("{0} ext.{1}", result, ext);
+		//}
 
 		/// <summary>
 		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence of similar/bogus
