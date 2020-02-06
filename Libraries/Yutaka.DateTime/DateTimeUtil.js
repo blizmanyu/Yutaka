@@ -3,6 +3,18 @@
 	return new Date(now.getFullYear(), now.getMonth(), now.getDate());
 }
 
+function AddDays(x) {
+	var today = GetToday();
+	today.setDate(today.getDate() + x);
+	return today;
+}
+
+function AddMonths(x) {
+	var today = GetToday();
+	today.setMonth(today.getMonth() + x);
+	return today;
+}
+
 function GetBeginningOfWeek() {
 	var today = GetToday();
 	var day = today.getDay();
@@ -25,12 +37,6 @@ function GetBeginningOfQuarter() {
 function GetEndOfQuarter() {
 	var beginningOfQuarter = GetBeginningOfQuarter();
 	return new Date(beginningOfQuarter.getFullYear(), beginningOfQuarter.getMonth() + 3, 0);
-}
-
-function AddMonths(x) {
-	var now = new Date();
-	now.setMonth(now.getMonth() + x);
-	return now;
 }
 
 function GetBeginningOfYear() {
