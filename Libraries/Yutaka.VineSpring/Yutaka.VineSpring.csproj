@@ -55,7 +55,7 @@
     <Compile Include="Data\ListAllCustomersResponse.cs" />
     <Compile Include="Data\ListAllOrdersResponse.cs" />
     <Compile Include="Data\Order.cs" />
-    <Compile Include="Data\Response.cs" />
+    <Compile Include="Data\ListAllResponse.cs" />
     <Compile Include="V3Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
