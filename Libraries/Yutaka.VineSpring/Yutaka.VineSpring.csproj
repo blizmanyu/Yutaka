@@ -52,8 +52,10 @@
     <Compile Include="Data20191126\ListAllProductsResponse.cs" />
     <Compile Include="Data20191126\Product.cs" />
     <Compile Include="Data20191126\ShippingMethod.cs" />
+    <Compile Include="Data\ListAllCustomersResponse.cs" />
     <Compile Include="Data\ListAllOrdersResponse.cs" />
     <Compile Include="Data\Order.cs" />
+    <Compile Include="Data\Response.cs" />
     <Compile Include="V3Util.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
