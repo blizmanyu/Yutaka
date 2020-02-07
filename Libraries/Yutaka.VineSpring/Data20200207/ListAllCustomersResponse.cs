@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yutaka.VineSpring.Data
+namespace Yutaka.VineSpring.Data20200207
 {
 	public class ListAllCustomersResponse : ListAllResponse
 	{
