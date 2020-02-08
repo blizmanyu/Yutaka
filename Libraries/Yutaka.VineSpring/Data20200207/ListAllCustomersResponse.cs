@@ -6,9 +6,11 @@ namespace Yutaka.VineSpring.Data20200207
 
 	public class CustomerName
 	{
+		public string CustomerId { get; set; }
 		public string First { get; set; }
 		public string Middle { get; set; }
 		public string Last { get; set; }
+		public string Nick { get; set; }
 	}
 
 	public class Customer
