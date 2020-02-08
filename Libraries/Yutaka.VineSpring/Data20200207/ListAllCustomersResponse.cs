@@ -12,11 +12,11 @@ namespace Yutaka.VineSpring.Data20200207
 		public DateTime? CreatedOn { get; set; }
 		public string Id { get; set; }
 		public bool? IsTaxExempt { get; set; }
+		public CustomerDefaultAddress DefaultAddress { get; set; }
+		public CustomerName Name { get; set; }
 		public DateTime? CustomerSince { get; set; }
 		public DateTime? Dob { get; set; }
 		public decimal? LifetimeValue { get; set; }
-		public DefaultAddress DefaultAddress { get; set; }
-		public Name Name { get; set; }
 		public string AccountId { get; set; }
 		public string AuthToken { get; set; }
 		public string Company { get; set; }
@@ -31,14 +31,14 @@ namespace Yutaka.VineSpring.Data20200207
 		public DateTime? UpdatedOn { get; set; }
 	}
 
-	public class Name
+	public class CustomerName
 	{
 		public string First { get; set; }
 		public string Middle { get; set; }
 		public string Last { get; set; }
 	}
 
-	public class DefaultAddress
+	public class CustomerDefaultAddress
 	{
 		public DateTime? CreatedOn { get; set; }
 		public string Id { get; set; }
