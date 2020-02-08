@@ -54,7 +54,7 @@
     <Compile Include="Data20191126\ShippingMethod.cs" />
     <Compile Include="Data20200207\Address.cs" />
     <Compile Include="Data20200207\ListAllResponse.cs" />
-    <Compile Include="Data20200207\ListAllCustomersResponse.cs" />
+    <Compile Include="Data20200207\Customer.cs" />
     <Compile Include="Data\ListAllOrdersResponse.cs" />
     <Compile Include="Data\Order.cs" />
     <Compile Include="Data\ListAllResponse.cs" />
