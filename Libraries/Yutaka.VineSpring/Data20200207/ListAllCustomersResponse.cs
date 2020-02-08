@@ -2,11 +2,6 @@
 
 namespace Yutaka.VineSpring.Data20200207
 {
-	public class ListAllCustomersResponse : ListAllResponse
-	{
-		public Customer[] Customers { get; set; }
-	}
-
 	public class Customer
 	{
 		public DateTime? CreatedOn { get; set; }
