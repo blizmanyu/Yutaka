@@ -2,6 +2,15 @@
 
 namespace Yutaka.VineSpring.Data20200207
 {
+	public class CustomerDefaultAddress : Address { }
+
+	public class CustomerName
+	{
+		public string First { get; set; }
+		public string Middle { get; set; }
+		public string Last { get; set; }
+	}
+
 	public class Customer
 	{
 		public DateTime? CreatedOn { get; set; }
@@ -25,13 +34,4 @@ namespace Yutaka.VineSpring.Data20200207
 		public string UpdatedBy { get; set; }
 		public DateTime? UpdatedOn { get; set; }
 	}
-
-	public class CustomerName
-	{
-		public string First { get; set; }
-		public string Middle { get; set; }
-		public string Last { get; set; }
-	}
-
-	public class CustomerDefaultAddress : Address { }
 }
