@@ -6,6 +6,7 @@ using Nop.Web.Models.RcwInventory;
 using Rcw.Sql.Hulk.Import.Data;
 using Rcw.Sql.Hulk.IntranetData.Data;
 using Yutaka.IO;
+using Yutaka.VineSpring.Data20200207;
 
 namespace CodeGenerator
 {
@@ -42,8 +43,9 @@ namespace CodeGenerator
 		private static void Process()
 		{
 			var sb = new StringBuilder();
-			sb.Append(Mapper.Map<InventoryAabModel>("InventoryAabView"));
-			//sb.Append(Mapper.Map<Order_Customer>("VSData.Order_Customer"));
+			//sb.Append(Mapper.Map<InventoryAabModel>("InventoryAabView"));
+			sb.Append(Mapper.Map<CustomerDefaultAddress>("CustomerDefaultAddress"));
+			sb.Append(Mapper.Map<CustomerName>("CustomerName"));
 			//sb.Append(Mapper.Map<Order_Customer_BillingAddress>("VSData.Order_Customer_BillingAddress"));
 			//sb.Append(Mapper.Map<Order_Customer_Name>("VSData.Order_Customer_Name"));
 			//sb.Append(Mapper.Map<Order_Discount>("VSData.Order_Discount"));

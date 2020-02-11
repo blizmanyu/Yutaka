@@ -71,6 +71,9 @@
     <Reference Include="Yutaka.Utils">
       <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.VineSpring">
+      <HintPath>..\..\Libraries\Yutaka.VineSpring\bin\Release\Yutaka.VineSpring.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Program.cs" />
