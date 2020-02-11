@@ -92,8 +92,15 @@ namespace Yutaka.VineSpring
 				//WriteToFile(response);
 				var customers = JsonConvert.DeserializeObject<ListAllCustomersResponse>(response.Result);
 
-				foreach (var customer in customers.Customers)
+				foreach (var customer in customers.Customers) {
+					if (customer.CreatedOn == null)
+						customer.CreatedOn = customer.CustomerSince ?? customer.UpdatedOn;
+					if (customer.CustomerSince == null)
+						customer.CustomerSince = customer.CreatedOn ?? customer.UpdatedOn;
+					if (customer.UpdatedOn == null)
+						customer.UpdatedOn = customer.CreatedOn ?? customer.CustomerSince;
 					list.Add(customer);
+				}
 
 				if (!String.IsNullOrWhiteSpace(customers.PaginationKey))
 					list.AddRange(GetAllCustomers(startDate, endDate, WebUtility.UrlDecode(customers.PaginationKey)));
