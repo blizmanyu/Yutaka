@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using Yutaka.IO;
 using Yutaka.VineSpring.Data;
 using Yutaka.VineSpring.Data20191126;
+using Yutaka.VineSpring.Data20200207;
 
 namespace Yutaka.VineSpring
 {
@@ -30,7 +31,7 @@ namespace Yutaka.VineSpring
 		public V20200207Util(string apiKey = null, string baseAddress = null)
 		{
 			if (String.IsNullOrWhiteSpace(apiKey))
-				throw new Exception(String.Format("<apiKey> is required. Exception thrown in Constructor V3Util(string apiKey = null, Uri baseAddress = null).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<apiKey> is required. Exception thrown in Constructor V20200207Util(string apiKey = null, Uri baseAddress = null).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(baseAddress))
 				baseAddress = MOCK_SERVER_URL;
 
@@ -76,12 +77,82 @@ namespace Yutaka.VineSpring
 
 		#region Methods
 		#region Customers
+		public IList<Data20200207.Customer> GetAllCustomers(DateTime startDate, DateTime endDate, string paginationKey = null)
+		{
+			#region Input Validation
+			if (startDate < MIN_DATE || MAX_DATE < startDate)
+				startDate = MIN_DATE;
+			if (endDate < MIN_DATE || MAX_DATE < endDate)
+				endDate = MAX_DATE;
+			#endregion Input Validation
+
+			try {
+				var list = new List<Data20200207.Customer>();
+				var response = ListAllCustomers(startDate, endDate, paginationKey);
+				//WriteToFile(response);
+				var customers = JsonConvert.DeserializeObject<ListAllCustomersResponse>(response.Result);
+
+				foreach (var customer in customers.Customers)
+					list.Add(customer);
+
+				if (!String.IsNullOrWhiteSpace(customers.PaginationKey))
+					list.AddRange(GetAllCustomers(startDate, endDate, WebUtility.UrlDecode(customers.PaginationKey)));
+
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in V20200207Util.GetAllCustomers().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetAllCustomers().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		public async Task<string> ListAllCustomers(DateTime updatedOnStartDate, DateTime updatedOnEndDate, string paginationKey=null)
+		{
+			if (updatedOnStartDate < MIN_DATE)
+				updatedOnStartDate = MIN_DATE;
+			if (updatedOnEndDate > MAX_DATE)
+				updatedOnEndDate = MAX_DATE;
+
+			try {
+				var str = String.Format("customers?updatedOnStartDate={0}&updatedOnEndDate={1}", updatedOnStartDate.ToString(TIME_FORMAT), updatedOnEndDate.ToString(TIME_FORMAT));
+				if (!String.IsNullOrWhiteSpace(paginationKey))
+					str = String.Format("{0}&paginationKey={1}", str, paginationKey);
+				Console.Write("\n{0}", str);
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseAddress }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+					using (var response = await httpClient.GetAsync(str)) {
+						var responseData = await response.Content.ReadAsStringAsync();
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllCustomers(DateTime updatedOnStartDate, DateTime updatedOnEndDate, string paginationKey)", ex.Message, ex.ToString(), Environment.NewLine));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllCustomers(DateTime updatedOnStartDate, DateTime updatedOnEndDate, string paginationKey)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+			}
+		}
+
 		public async Task<string> CreateCustomer(Data20191126.Customer customer)
 		{
 			if (customer == null)
-				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customer> is required. Exception thrown in V20200207Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customer.Email))
-				throw new Exception(String.Format("<customer.Email> is required. Exception thrown in V3Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customer.Email> is required. Exception thrown in V20200207Util.CreateCustomer(Customer customer).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("{{ \"email\": \"{0}\"", customer.Email);
@@ -118,16 +189,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V3Util.CreateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Email));
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V20200207Util.CreateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Email));
 				else
-					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.CreateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Email));
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.CreateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Email));
 			}
 		}
 
 		public async Task<string> DeleteCustomer(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.DeleteCustomer(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.DeleteCustomer(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}", customerId);
@@ -145,16 +216,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.DeleteCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.DeleteCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.DeleteCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.DeleteCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
 		public async Task<string> GetCustomer(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.GetCustomer(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.GetCustomer(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}", customerId);
@@ -172,16 +243,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.GetCustomer(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetCustomer(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
 		public async Task<string> ResetPassword(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
-				throw new Exception(String.Format("<email> is required. Exception thrown in V3Util.ResetPassword(string email).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<email> is required. Exception thrown in V20200207Util.ResetPassword(string email).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("{{ \"email\": \"{0}\" }}", email);
@@ -201,18 +272,18 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V3Util.ResetPassword(string email)", ex.Message, ex.ToString(), Environment.NewLine, email));
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in V20200207Util.ResetPassword(string email)", ex.Message, ex.ToString(), Environment.NewLine, email));
 				else
-					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.ResetPassword(string email)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
+					throw new Exception(String.Format("{0}{2}Email: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ResetPassword(string email)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, email));
 			}
 		}
 
 		public async Task<string> UpdateCustomer(Data20191126.Customer customer)
 		{
 			if (customer == null)
-				throw new Exception(String.Format("<customer> is required. Exception thrown in V3Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customer> is required. Exception thrown in V20200207Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customer.Id))
-				throw new Exception(String.Format("<customer.Id> is required. Exception thrown in V3Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customer.Id> is required. Exception thrown in V20200207Util.UpdateCustomer(Customer customer).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("{{ \"fullName\": \"{0}\"", customer.FullName);
@@ -252,19 +323,19 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in V3Util.UpdateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Id));
+					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in V20200207Util.UpdateCustomer(Customer customer)", ex.Message, ex.ToString(), Environment.NewLine, customer.Id));
 				else
-					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Id));
+					throw new Exception(String.Format("{0}{2}Id: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.UpdateCustomer(Customer customer)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customer.Id));
 			}
 		}
 
 		#region Address
-		public async Task<string> CreateAddress(Address address, string customerId)
+		public async Task<string> CreateAddress(Data20191126.Address address, string customerId)
 		{
 			if (address == null)
-				throw new Exception(String.Format("<address> is required. Exception thrown in V3Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<address> is required. Exception thrown in V20200207Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.CreateAddress(Address address, string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = "{  \"address\": { ";
@@ -303,18 +374,18 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V3Util.CreateAddress(Address address, string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V20200207Util.CreateAddress(Address address, string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.CreateAddress(Address address, string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.CreateAddress(Address address, string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
 		public async Task<string> DeleteAddress(string addressId, string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(addressId))
-				throw new Exception(String.Format("<addressId> is required. Exception thrown in V3Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<addressId> is required. Exception thrown in V20200207Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.DeleteAddress(string addressId, string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}/addresses/{1}", customerId, addressId);
@@ -332,16 +403,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.Message, ex.ToString(), Environment.NewLine, addressId, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.Message, ex.ToString(), Environment.NewLine, addressId, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, addressId, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.DeleteAddress(string addressId='{3}', string customerId='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, addressId, customerId));
 			}
 		}
 
 		public async Task<string> ListAllAddresses(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.ListAllAddresses(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.ListAllAddresses(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}/addresses", customerId);
@@ -359,20 +430,20 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V3Util.ListAllAddresses(string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V20200207Util.ListAllAddresses(string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllAddresses(string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllAddresses(string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
-		public async Task<string> UpdateAddress(Address address, string customerId)
+		public async Task<string> UpdateAddress(Data20191126.Address address, string customerId)
 		{
 			if (address == null)
-				throw new Exception(String.Format("<address> is required. Exception thrown in V3Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<address> is required. Exception thrown in V20200207Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(address.Id))
-				throw new Exception(String.Format("<address.Id> is required. Exception thrown in V3Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<address.Id> is required. Exception thrown in V20200207Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.UpdateAddress(Address address, string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = "{  \"address\": { ";
@@ -407,9 +478,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V3Util.UpdateAddress(Address address, string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in V20200207Util.UpdateAddress(Address address, string customerId)", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateAddress(Address address, string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}CustomerId: {3}{2}Exception thrown in INNER EXCEPTION of V20200207Util.UpdateAddress(Address address, string customerId)", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 		#endregion Address
@@ -417,7 +488,7 @@ namespace Yutaka.VineSpring
 		public async Task<string> ListAllAllocations(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.ListAllAllocations(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.ListAllAllocations(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}/allocations", customerId);
@@ -435,16 +506,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllAllocations(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllAllocations(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllAllocations(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllAllocations(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
 		public async Task<string> ListAllNotes(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.ListAllNotes(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.ListAllNotes(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}/notes", customerId);
@@ -464,16 +535,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllNotes(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllNotes(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllNotes(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllNotes(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 
 		public async Task<string> ListAllRecentOrders(string customerId)
 		{
 			if (String.IsNullOrWhiteSpace(customerId))
-				throw new Exception(String.Format("<customerId> is required. Exception thrown in V3Util.ListAllRecentOrders(string customerId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<customerId> is required. Exception thrown in V20200207Util.ListAllRecentOrders(string customerId).{0}", Environment.NewLine));
 
 			try {
 				var str = String.Format("customers/{0}/orders", customerId);
@@ -491,9 +562,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllRecentOrders(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllRecentOrders(string customerId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, customerId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllRecentOrders(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllRecentOrders(string customerId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId));
 			}
 		}
 		#endregion Customers
@@ -528,9 +599,9 @@ namespace Yutaka.VineSpring
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in V3Util.GetAllOrders().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in V20200207Util.GetAllOrders().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetAllOrders().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetAllOrders().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
 				throw new Exception(log);
@@ -541,7 +612,7 @@ namespace Yutaka.VineSpring
 		public async Task<string> ListAllOrdersByIds(string commaSeparatedIds, string paginationKey=null)
 		{
 			if (String.IsNullOrWhiteSpace(commaSeparatedIds))
-				throw new Exception(String.Format("<commaSeparatedIds> is required. Exception thrown in V3Util.ListAllOrdersByIds(string commaSeparatedIds, string paginationKey).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<commaSeparatedIds> is required. Exception thrown in V20200207Util.ListAllOrdersByIds(string commaSeparatedIds, string paginationKey).{0}", Environment.NewLine));
 
 			try {
 				var endpoint = String.Format("orders?ids={0}", commaSeparatedIds.Replace(",", "%2C"));
@@ -561,9 +632,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.Message, ex.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.Message, ex.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllOrdersByIds(string commaSeparatedIds='{3}', string paginationKey='{4}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commaSeparatedIds, paginationKey));
 			}
 		}
 
@@ -596,16 +667,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllOrdersByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 			}
 		}
 
 		public async Task<string> GetOrder(string orderId)
 		{
 			if (String.IsNullOrWhiteSpace(orderId))
-				throw new Exception(String.Format("<orderId> is required. Exception thrown in V3Util.GetOrder(string orderId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<orderId> is required. Exception thrown in V20200207Util.GetOrder(string orderId).{0}", Environment.NewLine));
 
 			try {
 				var endpoint = String.Format("orders/{0}", orderId);
@@ -623,18 +694,18 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetOrder(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.GetOrder(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetOrder(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetOrder(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
 			}
 		}
 
 		public async Task<string> UpdateOrder(Order order)
 		{
 			if (order == null)
-				throw new Exception(String.Format("<order> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<order> is required. Exception thrown in V20200207Util.UpdateOrder(Order order).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(order.Id))
-				throw new Exception(String.Format("<order.id> is required. Exception thrown in V3Util.UpdateOrder(Order order).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<order.id> is required. Exception thrown in V20200207Util.UpdateOrder(Order order).{0}", Environment.NewLine));
 
 			try {
 				var endpoint = String.Format("orders/{0}", order.Id);
@@ -669,16 +740,16 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.UpdateOrder(Order order='{3}')", ex.Message, ex.ToString(), Environment.NewLine, order.Id));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.UpdateOrder(Order order='{3}')", ex.Message, ex.ToString(), Environment.NewLine, order.Id));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.Id));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.UpdateOrder(Order order='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, order.Id));
 			}
 		}
 
 		public async Task<string> ListAllTransactionsByOrderId(string orderId)
 		{
 			if (String.IsNullOrWhiteSpace(orderId))
-				throw new Exception(String.Format("<orderId> is required. Exception thrown in V3Util.ListAllTransactionsByOrderId(string orderId).{0}", Environment.NewLine));
+				throw new Exception(String.Format("<orderId> is required. Exception thrown in V20200207Util.ListAllTransactionsByOrderId(string orderId).{0}", Environment.NewLine));
 
 			try {
 				var endpoint = String.Format("orders/{0}/transactions", orderId);
@@ -696,9 +767,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, orderId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllTransactionsByOrderId(string orderId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, orderId));
 			}
 		}
 
@@ -731,9 +802,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllTransactionsByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllTransactionsByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.Message, ex.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllTransactionsByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllTransactionsByDate(DateTime startDate='{3}', DateTime endDate='{4}', string paginationKey='{5}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, startDate, endDate, paginationKey));
 			}
 		}
 		#endregion Orders
@@ -757,9 +828,9 @@ namespace Yutaka.VineSpring
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in V3Util.GetAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in V20200207Util.GetAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
 				throw new Exception(log);
@@ -784,9 +855,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetProduct(string productId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, productId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.GetProduct(string productId='{3}')", ex.Message, ex.ToString(), Environment.NewLine, productId));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetProduct(string productId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, productId));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.GetProduct(string productId='{3}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, productId));
 			}
 		}
 
@@ -810,9 +881,9 @@ namespace Yutaka.VineSpring
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in V3Util.ListAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in V20200207Util.ListAllProducts().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllProducts().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
 				throw new Exception(log);
@@ -837,9 +908,9 @@ namespace Yutaka.VineSpring
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.ListAllTags()", ex.Message, ex.ToString(), Environment.NewLine));
+					throw new Exception(String.Format("{0}{2}Exception thrown in V20200207Util.ListAllTags()", ex.Message, ex.ToString(), Environment.NewLine));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.ListAllTags()", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V20200207Util.ListAllTags()", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine));
 			}
 		}
 		#endregion Products
