@@ -99,6 +99,7 @@ namespace Yutaka.VineSpring
 						customer.CustomerSince = customer.CreatedOn ?? customer.UpdatedOn;
 					if (customer.UpdatedOn == null)
 						customer.UpdatedOn = customer.CreatedOn ?? customer.CustomerSince;
+					customer.Name.CustomerId = customer.Id;
 					list.Add(customer);
 				}
 
