@@ -173,33 +173,31 @@ namespace Yutaka
 		/// Attempts to detect extensions within a string and splits it if it finds it.
 		/// </summary>
 		/// <param name="phone">The phone number to split.</param>
-		/// <returns>A string[] containing the phone number and extension. string[1] will be NULL if if there is no extension.</returns>
+		/// <returns>A string[] containing the phone number and extension.</returns>
 		public static string[] SplitExtension(string phone)
 		{
 			if (String.IsNullOrWhiteSpace(phone))
-				return new string[] { "" };
+				return new string[] { "", "" };
 
 			phone = phone.Replace(" ", "");
-			var upper = phone.ToUpper();
+			var lower = phone.ToLower();
 
-			if (upper.Contains("EXT."))
-				return upper.Split(new string[] { "EXT." }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("EXT"))
-				return upper.Split(new string[] { "EXT" }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("EX."))
-				return upper.Split(new string[] { "EX." }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("XT."))
-				return upper.Split(new string[] { "XT." }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("EX"))
-				return upper.Split(new string[] { "EX" }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("XT"))
-				return upper.Split(new string[] { "XT" }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("E."))
-				return upper.Split(new string[] { "E." }, StringSplitOptions.RemoveEmptyEntries);
-			if (upper.Contains("X."))
-				return upper.Split(new string[] { "X." }, StringSplitOptions.RemoveEmptyEntries);
+			if (lower.Contains("ext."))
+				return lower.Split(new string[] { "ext." }, StringSplitOptions.None);
+			if (lower.Contains("ext"))
+				return lower.Split(new string[] { "ext" }, StringSplitOptions.None);
+			if (lower.Contains("ex."))
+				return lower.Split(new string[] { "ex." }, StringSplitOptions.None);
+			if (lower.Contains("xt."))
+				return lower.Split(new string[] { "xt." }, StringSplitOptions.None);
+			if (lower.Contains("xt"))
+				return lower.Split(new string[] { "xt" }, StringSplitOptions.None);
+			if (lower.Contains("e."))
+				return lower.Split(new string[] { "e." }, StringSplitOptions.None);
+			if (lower.Contains("x."))
+				return lower.Split(new string[] { "x." }, StringSplitOptions.None);
 
-			return new string[] { phone };
+			return new string[] { phone, "" };
 		}
 	}
 }
