@@ -141,18 +141,28 @@ namespace Yutaka
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
-			phone = phone.Replace(" ", "");
 			var startsWithPlus = false;
+			var hasExtension = false;
+			var split = SplitExtension(phone);
+			split[0] = split[0].Replace(" ", "");
 
-			if (phone.StartsWith("+"))
+			if (split[1] != null && !String.IsNullOrWhiteSpace(split[1])) {
+				hasExtension = true;
+				split[1] = split[1].Replace(" ", "").Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
+			}
+
+			if (split[0].StartsWith("+"))
 				startsWithPlus = true;
 
-			phone = phone.Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Replace(" ", "");
+			split[0] = split[0].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
 
 			if (startsWithPlus)
-				return String.Format("+{0}", phone);
+				split[0] = String.Format("+{0}", split[0]);
 
-			return phone;
+			if (hasExtension)
+				return String.Format("{0}ext{1}", split[0], split[1]);
+
+			return split[0];
 		}
 
 		/// <summary>
