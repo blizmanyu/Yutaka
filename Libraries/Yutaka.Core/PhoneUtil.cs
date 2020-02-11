@@ -154,5 +154,38 @@ namespace Yutaka
 
 			return phone;
 		}
+
+		/// <summary>
+		/// Attempts to detect extensions within a string and splits it if it finds it.
+		/// </summary>
+		/// <param name="phone">The phone number to split.</param>
+		/// <returns>A string[] containing the phone number and extension. string[1] will be NULL if if there is no extension.</returns>
+		public static string[] SplitExtension(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				return new string[] { "" };
+
+			phone = phone.Replace(" ", "");
+			var upper = phone.ToUpper();
+
+			if (upper.Contains("EXT."))
+				return upper.Split(new string[] { "EXT." }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("EXT"))
+				return upper.Split(new string[] { "EXT" }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("EX."))
+				return upper.Split(new string[] { "EX." }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("XT."))
+				return upper.Split(new string[] { "XT." }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("EX"))
+				return upper.Split(new string[] { "EX" }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("XT"))
+				return upper.Split(new string[] { "XT" }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("E."))
+				return upper.Split(new string[] { "E." }, StringSplitOptions.RemoveEmptyEntries);
+			if (upper.Contains("X."))
+				return upper.Split(new string[] { "X." }, StringSplitOptions.RemoveEmptyEntries);
+
+			return new string[] { phone };
+		}
 	}
 }
