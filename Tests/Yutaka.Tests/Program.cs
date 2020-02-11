@@ -169,9 +169,19 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_DateTime();
+			TestReplace();
 			EndProgram();
 		}
+
+		#region Test Replace - Feb 11, 2020
+		private static void TestReplace()
+		{
+			var test = "   (   1   2   3   )   4   5   6   -   7   8   9   0   ";
+			Console.Write("\n{0}", test);
+			test = test.Replace(" ", "");
+			Console.Write("\n{0}", test);
+		}
+		#endregion Test Replace - Feb 11, 2020
 
 		#region Test DateTime - 2020 0109 1555
 		private static void Test_DateTime()
