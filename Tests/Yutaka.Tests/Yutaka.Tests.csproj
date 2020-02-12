@@ -78,8 +78,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.Core">
-      <HintPath>..\..\Libraries\Yutaka.Core\bin\Debug\Yutaka.Core.dll</HintPath>
+    <Reference Include="Yutaka.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Yutaka.Core\bin\Release\Yutaka.Core.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Images">
       <HintPath>..\..\Libraries\Yutaka.Images\bin\Release\Yutaka.Images.dll</HintPath>
