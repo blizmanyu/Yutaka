@@ -181,7 +181,6 @@ namespace Yutaka
 			if (String.IsNullOrWhiteSpace(phone))
 				return new string[] { "", "" };
 
-			phone = phone.Replace(" ", "");
 			var lower = phone.ToLower();
 
 			if (lower.Contains("ext."))
@@ -190,6 +189,8 @@ namespace Yutaka
 				return lower.Split(new string[] { "ext" }, StringSplitOptions.None);
 			if (lower.Contains("ex."))
 				return lower.Split(new string[] { "ex." }, StringSplitOptions.None);
+			if (lower.Contains("ex "))
+				return lower.Split(new string[] { "ex " }, StringSplitOptions.None);
 			if (lower.Contains("xt."))
 				return lower.Split(new string[] { "xt." }, StringSplitOptions.None);
 			if (lower.Contains("xt"))
