@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Yutaka
 {
 	public static class PhoneUtil
 	{
+		private static readonly Regex Whitespace = new Regex(@"\s+", RegexOptions.Compiled);
+
 		//public static string Beautify(string phone)
 		//{
 		//	if (String.IsNullOrWhiteSpace(phone))
@@ -145,23 +148,22 @@ namespace Yutaka
 			var hasExtension = false;
 			var split = SplitExtension(phone);
 
-			if (String.IsNullOrWhiteSpace(split[0]))
-				return phone;
+			if (!String.IsNullOrWhiteSpace(split[0])) {
+				if (split[0].StartsWith("+"))
+					startsWithPlus = true;
 
-			split[0] = split[0].Replace(" ", "");
+				split[0] = Whitespace.Replace(split[0], "");
+				split[0] = split[0].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
 
-			if (split.Length > 1 && !String.IsNullOrWhiteSpace(split[1])) {
-				hasExtension = true;
-				split[1] = split[1].Replace(" ", "").Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
+				if (startsWithPlus)
+					split[0] = String.Format("+{0}", split[0]);
 			}
 
-			if (split[0].StartsWith("+"))
-				startsWithPlus = true;
-
-			split[0] = split[0].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
-
-			if (startsWithPlus)
-				split[0] = String.Format("+{0}", split[0]);
+			if (!String.IsNullOrWhiteSpace(split[1])) {
+				hasExtension = true;
+				split[1] = Whitespace.Replace(split[1], "");
+				split[1] = split[1].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
+			}
 
 			if (hasExtension)
 				return String.Format("{0}ext{1}", split[0], split[1]);
