@@ -170,9 +170,29 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_PhoneUtil_Minify();
+			Test_PhoneUtil_IsValid();
 			EndProgram();
 		}
+
+		#region Test PhoneUtil.IsValid() - Feb 11, 2020
+		private static void Test_PhoneUtil_IsValid()
+		{
+			var tests = new string[] {
+				"123",
+				"9879879879",
+				"laksdfjlaskdfjlsakdjf",
+				"9879879879laksdjflaskdjasdlkfj",
+				"laskdjflaskdjflsadkjf9879879879",
+				"987987laskdjlsadkjflsdkjf9879",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				Console.Write("\n   {0}", PhoneUtil.IsValid(test));
+			}
+		}
+		#endregion Test PhoneUtil.IsValid() - Feb 11, 2020
 
 		#region Test PhoneUtil.Minify() - Feb 11, 2020
 		private static void Test_PhoneUtil_Minify()
