@@ -9,6 +9,7 @@ namespace Yutaka
 {
 	public static class PhoneUtil
 	{
+		private static readonly Regex TenDigits = new Regex(@"\d{10}", RegexOptions.Compiled);
 		private static readonly Regex Whitespace = new Regex(@"\s+", RegexOptions.Compiled);
 
 		//public static string Beautify(string phone)
@@ -129,6 +130,9 @@ namespace Yutaka
 			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
 				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") ||
 				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
+				return false;
+
+			if (!TenDigits.IsMatch(phone))
 				return false;
 
 			return true;
