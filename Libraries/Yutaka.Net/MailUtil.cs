@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.Net
 {
 	public class MailUtil
 	{
+		private static readonly Regex Whitespace = new Regex(@"\s+", RegexOptions.Compiled);
+
 		public MailUtil() { }
 
+		/// <summary>
+		/// Cleans an email address by removing all whitespaces. If an email is in all-caps, it will change it to all-lowercase.
+		/// </summary>
+		/// <param name="email">The email address to clean.</param>
+		/// <returns>The cleaned email address.</returns>
 		public string Clean(string email)
 		{
 			if (String.IsNullOrWhiteSpace(email))
 				return "";
 
-			while (email.Contains(" "))
-				email = email.Replace(" ", "");
+			email = Whitespace.Replace(email, "");
 
-			if (email == email.ToUpper())
+			if (email.Equals(email.ToUpper()))
 				email = email.ToLower();
 
 			return email;
