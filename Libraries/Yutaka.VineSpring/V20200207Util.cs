@@ -89,7 +89,7 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Data20200207.Customer>();
 				var response = ListAllCustomers(startDate, endDate, paginationKey);
-				WriteToFile(response); // Debug //
+				//WriteToFile(response); // Debug //
 				var customers = JsonConvert.DeserializeObject<ListAllCustomersResponse>(response.Result);
 
 				foreach (var customer in customers.Customers) {
