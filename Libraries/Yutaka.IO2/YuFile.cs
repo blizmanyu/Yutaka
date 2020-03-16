@@ -1,13 +1,18 @@
 ﻿using System;
 using System.IO;
+using System.Drawing;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.IO2
 {
 	public class YuFile
 	{
 		#region Fields
+		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		private static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
+		private static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
-		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		public DateTime CreationTime;
 		public DateTime DateTaken;
 		public DateTime LastAccessTime;
