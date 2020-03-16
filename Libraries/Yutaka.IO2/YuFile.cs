@@ -19,7 +19,6 @@ namespace Yutaka.IO2
 		public DateTime? DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
-		public DateTime MaxDateTime;
 		public DateTime MinDateTime;
 		public string DirectoryName;
 		protected string ExtensionOrig;
