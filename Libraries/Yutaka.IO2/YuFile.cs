@@ -86,6 +86,7 @@ namespace Yutaka.IO2
 				Root = Path.GetPathRoot(FullName);
 
 				SetDateTaken();
+				SetMinDateTime();
 
 				if (isReadOnly) {
 					fi.IsReadOnly = true;
@@ -200,6 +201,27 @@ namespace Yutaka.IO2
 				DateTaken = null;
 			}
 		}
+
+		/// <summary>
+		/// Sets MinDateTime. Prioritize DateTaken if its valid.
+		/// </summary>
+		/// <returns></returns>
+		protected void SetMinDateTime()
+		{
+			MinDateTime = MaxDateTimeThreshold;
+
+			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
+				MinDateTime = DateTaken.Value; // prioritize DateTaken //
+
+			else {
+				if (MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
+					MinDateTime = CreationTime;
+				if (MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
+					MinDateTime = LastWriteTime;
+				if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
+					MinDateTime = LastAccessTime;
+			}
+		}
 		#endregion Utilities
 
 		#region Methods
@@ -290,29 +312,6 @@ namespace Yutaka.IO2
 
 				throw new Exception(log);
 				#endregion Log
-			}
-		}
-
-		/// <summary>
-		/// Gets the min DateTime. Prioritize DateTaken if its valid.
-		/// </summary>
-		/// <returns></returns>
-		public DateTime GetMinDateTime()
-		{
-			MinDateTime = MaxDateTimeThreshold;
-
-			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
-				return DateTaken.Value; // prioritize DateTaken //
-
-			else {
-				if (MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
-					MinDateTime = CreationTime;
-				if (MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
-					MinDateTime = LastWriteTime;
-				if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
-					MinDateTime = LastAccessTime;
-
-				return MinDateTime;
 			}
 		}
 
