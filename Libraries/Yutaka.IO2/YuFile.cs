@@ -265,6 +265,31 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Gets the DateTaken WITHOUT loading the whole image.
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetDateTaken()
+		{
+			try {
+				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
+					using (var img = Image.FromStream(fs, false, false)) {
+						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
+						var dateTaken = Regex_Colon.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+
+						if (DateTime.TryParse(dateTaken, out var result))
+							return result;
+						else
+							return new DateTime();
+					}
+				}
+			}
+
+			catch (Exception) {
+				return new DateTime();
+			}
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
