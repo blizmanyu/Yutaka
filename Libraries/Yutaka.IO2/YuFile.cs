@@ -14,11 +14,13 @@ namespace Yutaka.IO2
 		private static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public DateTime CreationTime;
-		public DateTime DateTaken;
+		public DateTime? DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MaxDateTime;
+		public DateTime MaxDateTimeThreshold;
 		public DateTime MinDateTime;
+		public DateTime MinDateTimeThreshold;
 		public string DirectoryName;
 		protected string ExtensionOrig;
 		public string Extension;
@@ -75,6 +77,8 @@ namespace Yutaka.IO2
 					}
 				}
 				#endregion LastWriteTime = fi.LastWriteTime;
+				MaxDateTimeThreshold = DateTime.Now.AddDays(1);
+				MinDateTimeThreshold = UNIX_TIME;
 				DirectoryName = fi.DirectoryName;
 				ExtensionOrig = fi.Extension;
 				Extension = ExtensionOrig.ToLower();
@@ -268,7 +272,7 @@ namespace Yutaka.IO2
 		/// Gets the DateTaken WITHOUT loading the whole image.
 		/// </summary>
 		/// <returns></returns>
-		public DateTime GetDateTaken()
+		public DateTime? GetDateTaken()
 		{
 			try {
 				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
@@ -279,13 +283,13 @@ namespace Yutaka.IO2
 						if (DateTime.TryParse(dateTaken, out var result))
 							return result;
 						else
-							return new DateTime();
+							return null;
 					}
 				}
 			}
 
 			catch (Exception) {
-				return new DateTime();
+				return null;
 			}
 		}
 
