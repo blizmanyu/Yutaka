@@ -12,15 +12,15 @@ namespace Yutaka.IO2
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		private static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		private static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
+		protected static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public DateTime CreationTime;
 		public DateTime? DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MaxDateTime;
-		public DateTime MaxDateTimeThreshold;
 		public DateTime MinDateTime;
-		public DateTime MinDateTimeThreshold;
 		public string DirectoryName;
 		protected string ExtensionOrig;
 		public string Extension;
@@ -77,8 +77,6 @@ namespace Yutaka.IO2
 					}
 				}
 				#endregion LastWriteTime = fi.LastWriteTime;
-				MaxDateTimeThreshold = DateTime.Now.AddDays(1);
-				MinDateTimeThreshold = UNIX_TIME;
 				DirectoryName = fi.DirectoryName;
 				ExtensionOrig = fi.Extension;
 				Extension = ExtensionOrig.ToLower();
