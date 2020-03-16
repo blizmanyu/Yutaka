@@ -294,6 +294,29 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Gets the min DateTime. Prioritize DateTaken if its valid.
+		/// </summary>
+		/// <returns></returns>
+		public DateTime GetMinDateTime()
+		{
+			MinDateTime = MaxDateTimeThreshold;
+
+			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
+				return DateTaken.Value; // prioritize DateTaken //
+
+			else {
+				if (MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
+					MinDateTime = CreationTime;
+				if (MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
+					MinDateTime = LastWriteTime;
+				if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
+					MinDateTime = LastAccessTime;
+
+				return MinDateTime;
+			}
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
