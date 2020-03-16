@@ -52,12 +52,7 @@ namespace Yutaka.IO2
 						CreationTime = fi.LastWriteTime;
 					}
 					catch (Exception) {
-						try {
-							CreationTime = fi.LastAccessTime;
-						}
-						catch (Exception) {
-							CreationTime = new DateTime();
-						}
+						CreationTime = fi.LastAccessTime;
 					}
 				}
 				#endregion CreationTime = fi.CreationTime;
@@ -71,12 +66,7 @@ namespace Yutaka.IO2
 						LastWriteTime = fi.CreationTime;
 					}
 					catch (Exception) {
-						try {
-							LastWriteTime = fi.LastAccessTime;
-						}
-						catch (Exception) {
-							LastWriteTime = new DateTime();
-						}
+						LastWriteTime = fi.LastAccessTime;
 					}
 				}
 				#endregion LastWriteTime = fi.LastWriteTime;
