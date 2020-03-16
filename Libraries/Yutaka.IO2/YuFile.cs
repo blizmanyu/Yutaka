@@ -87,6 +87,8 @@ namespace Yutaka.IO2
 				Name = fi.Name.Replace(ExtensionOrig, Extension);
 				Root = Path.GetPathRoot(FullName);
 
+				SetDateTaken();
+
 				if (isReadOnly) {
 					fi.IsReadOnly = true;
 					fi.Refresh();
@@ -173,6 +175,31 @@ namespace Yutaka.IO2
 				#endregion Log
 
 				return false;
+			}
+		}
+
+		/// <summary>
+		/// Sets the DateTaken WITHOUT loading the whole image.
+		/// </summary>
+		/// <returns></returns>
+		protected void SetDateTaken()
+		{
+			try {
+				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
+					using (var img = Image.FromStream(fs, false, false)) {
+						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
+						var dateTaken = Regex_Colon.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+
+						if (DateTime.TryParse(dateTaken, out var result))
+							DateTaken = result;
+						else
+							DateTaken = null;
+					}
+				}
+			}
+
+			catch (Exception) {
+				DateTaken = null;
 			}
 		}
 		#endregion Utilities
@@ -265,31 +292,6 @@ namespace Yutaka.IO2
 
 				throw new Exception(log);
 				#endregion Log
-			}
-		}
-
-		/// <summary>
-		/// Gets the DateTaken WITHOUT loading the whole image.
-		/// </summary>
-		/// <returns></returns>
-		public DateTime? GetDateTaken()
-		{
-			try {
-				using (var fs = new FileStream(FullName, FileMode.Open, FileAccess.Read)) {
-					using (var img = Image.FromStream(fs, false, false)) {
-						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
-						var dateTaken = Regex_Colon.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
-
-						if (DateTime.TryParse(dateTaken, out var result))
-							return result;
-						else
-							return null;
-					}
-				}
-			}
-
-			catch (Exception) {
-				return null;
 			}
 		}
 
