@@ -34,14 +34,31 @@ namespace Yutaka.IO2
 				throw new Exception(String.Format("<filename> is required. Exception thrown in constructor YuFile(string filename).{0}{0}", Environment.NewLine));
 
 			try {
+				var isReadOnly = false;
 				var fi = new FileInfo(filename);
-				fi.IsReadOnly = false;
+
+				if (fi.IsReadOnly) {
+					isReadOnly = true;
+					fi.IsReadOnly = false;
+					fi.Refresh();
+				}
+
 				#region CreationTime = fi.CreationTime;
 				try {
 					CreationTime = fi.CreationTime;
 				}
 				catch (Exception) {
-					CreationTime = new DateTime();
+					try {
+						CreationTime = fi.LastWriteTime;
+					}
+					catch (Exception) {
+						try {
+							CreationTime = fi.LastAccessTime;
+						}
+						catch (Exception) {
+							CreationTime = new DateTime();
+						}
+					}
 				}
 				#endregion CreationTime = fi.CreationTime;
 				LastAccessTime = fi.LastAccessTime;
@@ -50,7 +67,17 @@ namespace Yutaka.IO2
 					LastWriteTime = fi.LastWriteTime;
 				}
 				catch (Exception) {
-					LastWriteTime = new DateTime();
+					try {
+						LastWriteTime = fi.CreationTime;
+					}
+					catch (Exception) {
+						try {
+							LastWriteTime = fi.LastAccessTime;
+						}
+						catch (Exception) {
+							LastWriteTime = new DateTime();
+						}
+					}
 				}
 				#endregion LastWriteTime = fi.LastWriteTime;
 				DirectoryName = fi.DirectoryName;
@@ -60,6 +87,12 @@ namespace Yutaka.IO2
 				Size = fi.Length;
 				Name = fi.Name.Replace(ExtensionOrig, Extension);
 				Root = Path.GetPathRoot(FullName);
+
+				if (isReadOnly) {
+					fi.IsReadOnly = true;
+					fi.Refresh();
+				}
+
 				fi = null;
 			}
 
@@ -68,9 +101,9 @@ namespace Yutaka.IO2
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in constructor YuFile(string filename='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename);
+					log = String.Format("{0}{2}Exception thrown in Constructor YuFile(string filename='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of constructor YuFile(string filename='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor YuFile(string filename='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename);
 
 				Console.Write("\n{0}", log);
 				#endregion Log
