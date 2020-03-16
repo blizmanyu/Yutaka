@@ -9,6 +9,7 @@ namespace Yutaka.IO2
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		public DateTime CreationTime;
+		public DateTime DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MaxDateTime;
