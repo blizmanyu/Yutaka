@@ -11,6 +11,8 @@ namespace Yutaka.IO2
 		public DateTime CreationTime;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
+		public DateTime MaxDateTime;
+		public DateTime MinDateTime;
 		public string DirectoryName;
 		protected string ExtensionOrig;
 		public string Extension;
