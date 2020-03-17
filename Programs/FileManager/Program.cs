@@ -25,14 +25,14 @@ namespace FileManager
 		#endregion
 
 		const string TIMESTAMP = @"[HH:mm:ss] ";
-		private static DateTime startTime = DateTime.Now;
+		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly double errorPerThreshold = 0.07;
+		private static readonly int errorCountThreshold = 7;
 		private static FileUtil _fileUtil = new FileUtil();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
-		private static int errorCountThreshold = 7;
-		private static double errorPerThreshold = 0.07;
 		#endregion
 
 		static void Main(string[] args)
