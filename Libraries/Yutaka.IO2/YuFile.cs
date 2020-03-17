@@ -12,10 +12,11 @@ namespace Yutaka.IO2
 		#region Fields
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
-		private static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
-		private static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		protected static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		protected static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		#region protected static readonly string[][] SpecialFolders = new string[][] {
 		protected static readonly string[][] SpecialFolders = new string[][] {
 			new string[] { "babystepsanddownwarddogs", @"zz\BareSolesBearSoul\", },
@@ -139,7 +140,6 @@ namespace Yutaka.IO2
 			new string[] { "Apps", @"Apps\", },
 		};
 		#endregion protected static readonly string[][] SpecialFolders
-		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		public DateTime CreationTime;
 		public DateTime? DateTaken;
 		public DateTime LastAccessTime;
@@ -150,8 +150,8 @@ namespace Yutaka.IO2
 		public string Extension;
 		public string FullName;
 		public string Name;
-		public string ParentFolder;
 		public string NewFolder;
+		public string ParentFolder;
 		public string Root;
 		public long Size;
 		#endregion Fields
@@ -207,11 +207,11 @@ namespace Yutaka.IO2
 				ExtensionOrig = fi.Extension;
 				Extension = ExtensionOrig.ToLower();
 				FullName = fi.FullName.Replace(ExtensionOrig, Extension);
-				Size = fi.Length;
 				Name = fi.Name.Replace(ExtensionOrig, Extension);
 				NewFolder = "";
 				ParentFolder = fi.Directory.Name;
 				Root = Path.GetPathRoot(FullName);
+				Size = fi.Length;
 
 				SetDateTaken();
 				SetMinDateTime();

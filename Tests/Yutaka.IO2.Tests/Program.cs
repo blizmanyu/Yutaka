@@ -89,7 +89,7 @@ namespace Yutaka.IO2.Tests
 		#region Tests for YuFile
 		private static void Test_Debug()
 		{
-			var path = @"C:\TEMP\";
+			var path = @"Q:\DCIM\Screenshots\";
 
 			foreach (var test in Directory.EnumerateFiles(path)) {
 				Console.Write("\n");
