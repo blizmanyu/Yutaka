@@ -214,6 +214,7 @@ namespace Yutaka.IO2
 
 				SetDateTaken();
 				SetMinDateTime();
+				SetNewFolder();
 
 				if (isReadOnly) {
 					fi.IsReadOnly = true;
