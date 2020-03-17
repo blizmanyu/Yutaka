@@ -260,7 +260,7 @@ namespace Yutaka.IO2
 			Console.Write("\n   ParentFolder: {0}", ParentFolder);
 			Console.Write("\n      NewFolder: {0}", NewFolder);
 			Console.Write("\n           Root: {0}", Root);
-			Console.Write("\n           Size: {0}", Size);
+			Console.Write("\n           Size: {0:n0}", Size);
 			Console.Write("\n");
 		}
 
