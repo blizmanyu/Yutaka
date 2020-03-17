@@ -11,6 +11,7 @@ namespace Yutaka.IO2
 	{
 		#region Fields
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
 		private static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		private static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
@@ -246,11 +247,11 @@ namespace Yutaka.IO2
 		public void Debug()
 		{
 			Console.Write("\n");
-			Console.Write("\n   CreationTime: {0}", CreationTime);
-			Console.Write("\n      DateTaken: {0}", DateTaken);
-			Console.Write("\n LastAccessTime: {0}", LastAccessTime);
-			Console.Write("\n  LastWriteTime: {0}", LastWriteTime);
-			Console.Write("\n    MinDateTime: {0}", MinDateTime);
+			Console.Write("\n   CreationTime: {0}", CreationTime.ToString(FORMAT));
+			Console.Write("\n      DateTaken: {0:yyyy-MM-dd HH:mm:ss.fff}", DateTaken);
+			Console.Write("\n LastAccessTime: {0}", LastAccessTime.ToString(FORMAT));
+			Console.Write("\n  LastWriteTime: {0}", LastWriteTime.ToString(FORMAT));
+			Console.Write("\n    MinDateTime: {0}", MinDateTime.ToString(FORMAT));
 			Console.Write("\n  DirectoryName: {0}", DirectoryName);
 			Console.Write("\n  ExtensionOrig: {0}", ExtensionOrig);
 			Console.Write("\n      Extension: {0}", Extension);
