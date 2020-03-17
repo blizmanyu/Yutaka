@@ -33,7 +33,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			DeleteAllThumbnailCache();
+			Test_Debug();
 			EndProgram();
 		}
 
