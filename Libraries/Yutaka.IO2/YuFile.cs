@@ -1,9 +1,9 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Collections.Generic;
 
 namespace Yutaka.IO2
 {
@@ -348,6 +348,36 @@ namespace Yutaka.IO2
 				if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
 					MinDateTime = LastAccessTime;
 			}
+		}
+
+		protected void SetNewFolder()
+		{
+			int result;
+			var fullnameUpper = FullName.ToUpper();
+			var parentFolderUpper = ParentFolder.ToUpper();
+			var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
+
+			#region Special Folders
+			for (int i = 0; i < SpecialFolders.Length; i++) {
+				if (Regex.IsMatch(FullName, String.Format(@"[^a-zA-Z]{0}[^a-zA-Z]", SpecialFolders[i][0]), RegexOptions.IgnoreCase)) {
+					if (SpecialFolders[i][1].ToUpper().Contains(parentFolderUpper))
+						NewFolder = SpecialFolders[i][1];
+					else if (bypassList.Exists(x => x.Equals(parentFolderUpper) || int.TryParse(ParentFolder, out result)))
+						NewFolder = SpecialFolders[i][1];
+					else
+						NewFolder = String.Format(@"{0}{1}\", SpecialFolders[i][1], ParentFolder);
+
+					return; // only match one, then return //
+				}
+			}
+			#endregion Special Folders
+
+			#region Default: Everything else
+			if (bypassList.Exists(x => x.Equals(parentFolderUpper)) || int.TryParse(ParentFolder, out result))
+				NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+			else
+				NewFolder = String.Format(@"{0}{1}\{2}\", NewFolder, MinDateTime.Year, ParentFolder);
+			#endregion Default: Everything else
 		}
 		#endregion Utilities
 
