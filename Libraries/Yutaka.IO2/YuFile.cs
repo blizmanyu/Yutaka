@@ -292,6 +292,23 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Fast file move with big buffers. If &lt;destFileName&gt; exists, it will be overwritten.
+		/// </summary>
+		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
+		protected void FastMoveTo(string destFileName)
+		{
+			if (Root.ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper())) {
+				new FileInfo(destFileName).Delete();
+				new FileInfo(FullName).MoveTo(destFileName);
+			}
+
+			else {
+				FastCopyTo(destFileName);
+				TryDelete();
+			}
+		}
+
+		/// <summary>
 		/// Sets the DateTaken WITHOUT loading the whole image.
 		/// </summary>
 		/// <returns></returns>
