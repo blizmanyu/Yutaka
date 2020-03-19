@@ -7,7 +7,7 @@ namespace Yutaka.IO2.Tests
 {
 	class Program
 	{
-		private static bool consoleOut = true; // default = false //
+		private static readonly bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -33,7 +33,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Debug();
+			Test_FileInfo_MoveTo();
 			EndProgram();
 		}
 
@@ -100,6 +100,29 @@ namespace Yutaka.IO2.Tests
 		#endregion Tests for YuFile
 
 		#region Misc Tests
+		private static void Test_FileInfo_MoveTo()
+		{
+			var file1 = @"C:\TEMP\test file 1.txt";
+			var file2 = @"C:\TEMP\test file 2.txt";
+
+			try {
+				new FileInfo(file1).MoveTo(file2);
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Test_FileInfo_MoveTo(){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Test_FileInfo_MoveTo(){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+			}
+		}
+
 		private static void Test_Path_GetPathRoot()
 		{
 			var file1 = @"c:\alsdkfj\";
