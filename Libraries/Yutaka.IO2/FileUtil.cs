@@ -164,37 +164,6 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
-		/// Permanently deletes the specified file.
-		/// </summary>
-		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
-		public static void Delete(string path)
-		{
-			#region Input Check
-			if (String.IsNullOrWhiteSpace(path))
-				throw new Exception(String.Format("<path> is required.{0}Exception thrown in FileUtil.Delete(string path).{0}{0}", Environment.NewLine));
-			if (!File.Exists(path))
-				throw new Exception(String.Format("<path> doesn't exist.{0}Exception thrown in FileUtil.Delete(string path).{0}{0}", Environment.NewLine));
-			#endregion Input Check
-
-			try {
-				new FileInfo(path).Delete();
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.Delete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Delete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
-
-				throw new Exception(log);
-				#endregion Log
-			}
-		}
-
-		/// <summary>
 		/// Deletes all files that match a search pattern in a specified path, and optionally searches subdirectories. Returns the number of files deleted.
 		/// </summary>
 		/// <param name="folderPath">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
@@ -256,13 +225,13 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
-		/// Permanently deletes the specified file.
+		/// Deletes the specified file.
 		/// </summary>
-		/// <param name="path"></param>
+		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
 		public static bool TryDelete(string path)
 		{
 			try {
-				Delete(path);
+				new FileInfo(path).Delete();
 				return true;
 			}
 
