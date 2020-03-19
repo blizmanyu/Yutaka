@@ -10,6 +10,7 @@
 		OverwriteIfDifferentSize,
 		OverwriteIfDifferentSizeOrSourceNewer,
 		Rename,
+		RenameIfDifferentSize,
 		Skip,
 	}
 }
