@@ -7,8 +7,8 @@ namespace Yutaka.IO2
 	public static class FileUtil
 	{
 		#region Fields
+		const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
-		public static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		#endregion Fields
 
 		#region Utilities
