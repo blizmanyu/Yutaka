@@ -408,8 +408,24 @@ namespace Yutaka.IO2
 						FastCopyTo(destFileName);
 						return;
 					#endregion
-					#region case OverwriteOption.Skip:
-					case OverwriteOption.Skip:
+					#region case OverwriteOption.OverwriteIfSourceNewer:
+					case OverwriteOption.OverwriteIfSourceNewer:
+						if (LastWriteTime > new FileInfo(destFileName).LastWriteTime)
+							FastCopyTo(destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSize:
+					case OverwriteOption.OverwriteIfDifferentSize:
+						if (Size != new FileInfo(destFileName).Length)
+							FastCopyTo(destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+					case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+						var destFile = new FileInfo(destFileName);
+						if (Size != destFile.Length || LastWriteTime > destFile.LastWriteTime)
+							FastCopyTo(destFileName);
+						destFile = null;
 						return;
 					#endregion
 					#region case OverwriteOption.Rename:
@@ -417,10 +433,14 @@ namespace Yutaka.IO2
 						CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
 						return;
 					#endregion
-					#region case OverwriteOption.OverwriteIfDifferentSize:
-					case OverwriteOption.OverwriteIfDifferentSize:
-						if (!this.Equals(new YuFile(destFileName)))
+					#region case OverwriteOption.RenameIfDifferentSize:
+					case OverwriteOption.RenameIfDifferentSize:
+						if (Size != new FileInfo(destFileName).Length)
 							CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
+						return;
+					#endregion
+					#region case OverwriteOption.Skip:
+					case OverwriteOption.Skip:
 						return;
 					#endregion
 					default:
