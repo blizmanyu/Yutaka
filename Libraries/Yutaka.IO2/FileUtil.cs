@@ -130,6 +130,7 @@ namespace Yutaka.IO2
 						var destFile = new FileInfo(destFileName);
 						if (sourceFile.Length != destFile.Length || sourceFile.LastWriteTime > destFile.LastWriteTime)
 							FastCopy(sourceFileName, destFileName);
+						sourceFile = null;
 						destFile = null;
 						return;
 					#endregion
@@ -195,6 +196,90 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Moves a specified file to a new location, providing the option to specify a new file name.
+		/// </summary>
+		/// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
+		/// <param name="destFileName">The new path and name for the file.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
+		public static void Move(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(sourceFileName))
+				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
+			else if (!File.Exists(sourceFileName))
+				log = String.Format("{0}<sourceFileName> doesn't exist.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(destFileName))
+				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in FileUtil.Move(string sourceFileName, string destFileName, OverwriteOption overwriteOption).{1}", log, Environment.NewLine));
+
+			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper()))
+				return;
+			#endregion Input Check
+
+			if (File.Exists(destFileName)) {
+				string ext, newExt;
+				switch (overwriteOption) {
+					#region case OverwriteOption.Overwrite:
+					case OverwriteOption.Overwrite:
+						FastMove(sourceFileName, destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfSourceNewer:
+					case OverwriteOption.OverwriteIfSourceNewer:
+						if (new FileInfo(sourceFileName).LastWriteTime > new FileInfo(destFileName).LastWriteTime)
+							FastMove(sourceFileName, destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSize:
+					case OverwriteOption.OverwriteIfDifferentSize:
+						if (new FileInfo(sourceFileName).Length != new FileInfo(destFileName).Length)
+							FastMove(sourceFileName, destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+					case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+						var sourceFile = new FileInfo(sourceFileName);
+						var destFile = new FileInfo(destFileName);
+						if (sourceFile.Length != destFile.Length || sourceFile.LastWriteTime > destFile.LastWriteTime)
+							FastMove(sourceFileName, destFileName);
+						sourceFile = null;
+						destFile = null;
+						return;
+					#endregion
+					#region case OverwriteOption.Rename:
+					case OverwriteOption.Rename:
+						ext = Path.GetExtension(destFileName);
+						newExt = String.Format(" Copy{0}", ext);
+						Move(sourceFileName, destFileName.Replace(ext, newExt), overwriteOption);
+						return;
+					#endregion
+					#region case OverwriteOption.RenameIfDifferentSize:
+					case OverwriteOption.RenameIfDifferentSize:
+						if (new FileInfo(sourceFileName).Length != new FileInfo(destFileName).Length) {
+							ext = Path.GetExtension(destFileName);
+							newExt = String.Format(" Copy{0}", ext);
+							Move(sourceFileName, destFileName.Replace(ext, newExt), overwriteOption);
+						}
+						return;
+					#endregion
+					#region case OverwriteOption.Skip:
+					case OverwriteOption.Skip:
+						return;
+					#endregion
+					default:
+						throw new Exception(String.Format("Unsupported OverwriteOption.{0}", Environment.NewLine));
+				}
+			}
+
+			else
+				FastMove(sourceFileName, destFileName);
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="sourceFileName">The file to copy.</param>
@@ -247,54 +332,6 @@ namespace Yutaka.IO2
 				#endregion Log
 
 				return false;
-			}
-		}
-
-		/// <summary>
-		/// Moves a specified file to a new location, providing the option to specify a new file name.
-		/// </summary>
-		/// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
-		/// <param name="destFileName">The path to move the file to, which can specify a different file name.</param>
-		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
-		public static void Move(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
-		{
-			#region Input Check
-			var log = "";
-
-			if (String.IsNullOrWhiteSpace(sourceFileName))
-				log = String.Format("{0}<sourceFileName> is required.{1}", log, Environment.NewLine);
-			else if (!File.Exists(sourceFileName))
-				log = String.Format("{0}File '{2}' doesn't exist.{1}", log, Environment.NewLine, sourceFileName);
-			if (String.IsNullOrWhiteSpace(destFileName))
-				log = String.Format("{0}<destFileName> is required.{1}", log, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(log))
-				throw new Exception(String.Format("{0}Exception thrown in FileUtil.Move(string sourceFileName, string destFileName, OverwriteOption overwriteOption).{1}", log, Environment.NewLine));
-
-			if (destFileName.ToUpper().Equals(sourceFileName.ToUpper()))
-				return;
-			#endregion Input Check
-
-			try {
-				if (Path.GetPathRoot(sourceFileName).ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper()))
-					new FileInfo(sourceFileName).MoveTo(destFileName);
-				else {
-					if (TryCopy(sourceFileName, destFileName, overwriteOption))
-						TryDelete(sourceFileName);
-				}
-			}
-
-			catch (Exception ex) {
-				#region Log
-				log = "";
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.Move(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Move(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-
-				throw new Exception(log);
-				#endregion Log
 			}
 		}
 		#endregion Public Methods
