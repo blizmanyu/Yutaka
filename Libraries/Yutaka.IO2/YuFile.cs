@@ -402,6 +402,7 @@ namespace Yutaka.IO2
 			#endregion Input Check
 
 			if (File.Exists(destFileName)) {
+				string ext, newExt;
 				switch (overwriteOption) {
 					#region case OverwriteOption.Overwrite:
 					case OverwriteOption.Overwrite:
@@ -430,13 +431,18 @@ namespace Yutaka.IO2
 					#endregion
 					#region case OverwriteOption.Rename:
 					case OverwriteOption.Rename:
-						CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
+						ext = Path.GetExtension(destFileName);
+						newExt = String.Format(" Copy{0}", ext);
+						CopyTo(destFileName.Replace(ext, newExt), overwriteOption);
 						return;
 					#endregion
 					#region case OverwriteOption.RenameIfDifferentSize:
 					case OverwriteOption.RenameIfDifferentSize:
-						if (Size != new FileInfo(destFileName).Length)
-							CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
+						if (Size != new FileInfo(destFileName).Length) {
+							ext = Path.GetExtension(destFileName);
+							newExt = String.Format(" Copy{0}", ext);
+							CopyTo(destFileName.Replace(ext, newExt), overwriteOption);
+						}
 						return;
 					#endregion
 					#region case OverwriteOption.Skip:
