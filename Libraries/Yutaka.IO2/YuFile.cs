@@ -298,7 +298,8 @@ namespace Yutaka.IO2
 		protected void FastMoveTo(string destFileName)
 		{
 			if (Root.ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper())) {
-				new FileInfo(destFileName).Delete();
+				if (File.Exists(destFileName))
+					new FileInfo(destFileName).Delete();
 				new FileInfo(FullName).MoveTo(destFileName);
 			}
 
