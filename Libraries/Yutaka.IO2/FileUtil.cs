@@ -47,24 +47,15 @@ namespace Yutaka.IO2
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
 		private static void FastMove(string sourceFileName, string destFileName)
 		{
-			try {
-				if (Path.GetPathRoot(sourceFileName).ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper()))
-					new FileInfo(sourceFileName).MoveTo(destFileName);
-				else
-					FastCopy(sourceFileName, destFileName);
+			if (Path.GetPathRoot(sourceFileName).ToUpper().Equals(Path.GetPathRoot(destFileName).ToUpper())) {
+				if (File.Exists(destFileName))
+					new FileInfo(destFileName).Delete();
+				new FileInfo(sourceFileName).MoveTo(destFileName);
 			}
 
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.FastMove(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.FastMove(string sourceFileName='{3}', string destFileName='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName);
-
-				throw new Exception(log);
-				#endregion Log
+			else {
+				FastCopy(sourceFileName, destFileName);
+				new FileInfo(sourceFileName).Delete();
 			}
 		}
 		#endregion Utilities
