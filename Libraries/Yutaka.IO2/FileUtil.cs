@@ -143,16 +143,16 @@ namespace Yutaka.IO2
 							FastCopy(sourceFileName, destFileName);
 						break;
 					#endregion
-					#region case OverwriteOption.KeepBoth:
-					case OverwriteOption.KeepBoth:
+					#region case OverwriteOption.Rename:
+					case OverwriteOption.Rename:
 						if (destFileExists)
 							FastCopy(sourceFileName, AutoRename(destFileName));
 						else
 							FastCopy(sourceFileName, destFileName);
 						break;
 					#endregion
-					#region case OverwriteOption.Smart:
-					case OverwriteOption.Smart:
+					#region case OverwriteOption.OverwriteIfDifferentSize:
+					case OverwriteOption.OverwriteIfDifferentSize:
 						if (destFileExists) {
 							var fi1 = new FileInfo(sourceFileName);
 							var fi2 = new FileInfo(destFileName);

@@ -412,13 +412,13 @@ namespace Yutaka.IO2
 					case OverwriteOption.Skip:
 						return;
 					#endregion
-					#region case OverwriteOption.KeepBoth:
-					case OverwriteOption.KeepBoth:
+					#region case OverwriteOption.Rename:
+					case OverwriteOption.Rename:
 						CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
 						return;
 					#endregion
-					#region case OverwriteOption.Smart:
-					case OverwriteOption.Smart:
+					#region case OverwriteOption.OverwriteIfDifferentSize:
+					case OverwriteOption.OverwriteIfDifferentSize:
 						if (!this.Equals(new YuFile(destFileName)))
 							CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
 						return;

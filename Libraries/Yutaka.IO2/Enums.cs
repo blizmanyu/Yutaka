@@ -1,16 +1,15 @@
 ﻿namespace Yutaka.IO2
 {
 	/// <summary>
-	/// Specifies whether to overwrite, skip, keep both, or use the "smart" algorithm.
+	/// Specifies whether to overwrite, rename, skip, keep both, or use a "smart" algorithm.
 	/// </summary>
 	public enum OverwriteOption
 	{
 		Overwrite,
+		OverwriteIfSourceNewer,
+		OverwriteIfDifferentSize,
+		OverwriteIfDifferentSizeOrSourceNewer,
+		Rename,
 		Skip,
-		KeepBoth,
-		/// <summary>
-		/// If the files are the same, it will skip to save resources. Otherwise, it will rename to keep both files.
-		/// </summary>
-		Smart,
 	}
 }
