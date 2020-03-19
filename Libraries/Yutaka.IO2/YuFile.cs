@@ -10,13 +10,13 @@ namespace Yutaka.IO2
 	public class YuFile
 	{
 		#region Fields
+		const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
 		const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		protected static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
-		protected static readonly int FIVE_HUNDRED_TWELVE_KB = (int) Math.Pow(2, 19);
 		#region protected static readonly string[][] SpecialFolders = new string[][] {
 		protected static readonly string[][] SpecialFolders = new string[][] {
 			new string[] { "babystepsanddownwarddogs", @"zz\BareSolesBearSoul\", },
