@@ -104,63 +104,62 @@ namespace Yutaka.IO2
 				return;
 			#endregion Input Check
 
-			try {
-				var destFileExists = File.Exists(destFileName);
-
+			if (File.Exists(destFileName)) {
+				string ext, newExt;
 				switch (overwriteOption) {
 					#region case OverwriteOption.Overwrite:
 					case OverwriteOption.Overwrite:
 						FastCopy(sourceFileName, destFileName);
-						break;
+						return;
 					#endregion
-					#region case OverwriteOption.Skip:
-					case OverwriteOption.Skip:
-						if (!destFileExists)
+					#region case OverwriteOption.OverwriteIfSourceNewer:
+					case OverwriteOption.OverwriteIfSourceNewer:
+						if (new FileInfo(sourceFileName).LastWriteTime > new FileInfo(destFileName).LastWriteTime)
 							FastCopy(sourceFileName, destFileName);
-						break;
-					#endregion
-					#region case OverwriteOption.Rename:
-					case OverwriteOption.Rename:
-						if (destFileExists)
-							FastCopy(sourceFileName, AutoRename(destFileName));
-						else
-							FastCopy(sourceFileName, destFileName);
-						break;
+						return;
 					#endregion
 					#region case OverwriteOption.OverwriteIfDifferentSize:
 					case OverwriteOption.OverwriteIfDifferentSize:
-						if (destFileExists) {
-							var fi1 = new FileInfo(sourceFileName);
-							var fi2 = new FileInfo(destFileName);
-
-							if (fi1.Length != fi2.Length)
-								FastCopy(sourceFileName, AutoRename(destFileName));
-
-							fi1 = null;
-							fi2 = null;
-						}
-
-						else
+						if (new FileInfo(sourceFileName).Length != new FileInfo(destFileName).Length)
 							FastCopy(sourceFileName, destFileName);
-						break;
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+					case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+						var sourceFile = new FileInfo(sourceFileName);
+						var destFile = new FileInfo(destFileName);
+						if (sourceFile.Length != destFile.Length || sourceFile.LastWriteTime > destFile.LastWriteTime)
+							FastCopy(sourceFileName, destFileName);
+						destFile = null;
+						return;
+					#endregion
+					#region case OverwriteOption.Rename:
+					case OverwriteOption.Rename:
+						ext = Path.GetExtension(destFileName);
+						newExt = String.Format(" Copy{0}", ext);
+						Copy(sourceFileName, destFileName.Replace(ext, newExt), overwriteOption);
+						return;
+					#endregion
+					#region case OverwriteOption.RenameIfDifferentSize:
+					case OverwriteOption.RenameIfDifferentSize:
+						if (new FileInfo(sourceFileName).Length != new FileInfo(destFileName).Length) {
+							ext = Path.GetExtension(destFileName);
+							newExt = String.Format(" Copy{0}", ext);
+							Copy(sourceFileName, destFileName.Replace(ext, newExt), overwriteOption);
+						}
+						return;
+					#endregion
+					#region case OverwriteOption.Skip:
+					case OverwriteOption.Skip:
+						return;
 					#endregion
 					default:
-						break;
+						throw new Exception(String.Format("Unsupported OverwriteOption.{0}", Environment.NewLine));
 				}
 			}
 
-			catch (Exception ex) {
-				#region Log
-				log = "";
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.Copy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Copy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-
-				throw new Exception(log);
-				#endregion Log
-			}
+			else
+				FastCopy(sourceFileName, destFileName);
 		}
 
 		/// <summary>
