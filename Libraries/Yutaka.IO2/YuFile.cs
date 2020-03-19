@@ -383,57 +383,35 @@ namespace Yutaka.IO2
 				return;
 			#endregion Input Check
 
-			try {
-				var destFileExists = File.Exists(destFileName);
-
+			if (File.Exists(destFileName)) {
 				switch (overwriteOption) {
 					#region case OverwriteOption.Overwrite:
 					case OverwriteOption.Overwrite:
 						FastCopyTo(destFileName);
-						break;
+						return;
 					#endregion
 					#region case OverwriteOption.Skip:
 					case OverwriteOption.Skip:
-						if (!destFileExists)
-							FastCopyTo(destFileName);
-						break;
+						return;
 					#endregion
 					#region case OverwriteOption.KeepBoth:
 					case OverwriteOption.KeepBoth:
-						if (destFileExists)
-							FastCopyTo(FileUtil.AutoRename(destFileName));
-						else
-							FastCopyTo(destFileName);
-						break;
+						CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
+						return;
 					#endregion
 					#region case OverwriteOption.Smart:
 					case OverwriteOption.Smart:
-						if (destFileExists) {
-							if (!this.Equals(new YuFile(destFileName)))
-								FastCopyTo(FileUtil.AutoRename(destFileName));
-						}
-
-						else
-							FastCopyTo(destFileName);
-						break;
+						if (!this.Equals(new YuFile(destFileName)))
+							CopyTo(String.Format("{0} Copy", destFileName), overwriteOption);
+						return;
 					#endregion
 					default:
-						break;
+						throw new Exception(String.Format("Unsupported OverwriteOption.{0}", Environment.NewLine));
 				}
 			}
 
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in YuFile.CopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.CopyTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
-
-				throw new Exception(log);
-				#endregion Log
-			}
+			else
+				FastCopyTo(destFileName);
 		}
 
 		/// <summary>
