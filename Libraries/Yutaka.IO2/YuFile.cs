@@ -459,6 +459,77 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Moves a specified file to a new location, providing the option to specify a new file name.
+		/// </summary>
+		/// <param name="destFileName">The path to move the file to, which can specify a different file name.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
+		public void MoveTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			#region Input Check
+			if (String.IsNullOrWhiteSpace(destFileName))
+				throw new Exception(String.Format("<destFileName> is required.{0}", Environment.NewLine));
+			if (FullName.ToUpper().Equals(destFileName.ToUpper()))
+				return;
+			#endregion Input Check
+
+			if (File.Exists(destFileName)) {
+				string ext, newExt;
+				switch (overwriteOption) {
+					#region case OverwriteOption.Overwrite:
+					case OverwriteOption.Overwrite:
+						FastMoveTo(destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfSourceNewer:
+					case OverwriteOption.OverwriteIfSourceNewer:
+						if (LastWriteTime > new FileInfo(destFileName).LastWriteTime)
+							FastMoveTo(destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSize:
+					case OverwriteOption.OverwriteIfDifferentSize:
+						if (Size != new FileInfo(destFileName).Length)
+							FastMoveTo(destFileName);
+						return;
+					#endregion
+					#region case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+					case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
+						var destFile = new FileInfo(destFileName);
+						if (Size != destFile.Length || LastWriteTime > destFile.LastWriteTime)
+							FastMoveTo(destFileName);
+						destFile = null;
+						return;
+					#endregion
+					#region case OverwriteOption.Rename:
+					case OverwriteOption.Rename:
+						ext = Path.GetExtension(destFileName);
+						newExt = String.Format(" Copy{0}", ext);
+						MoveTo(destFileName.Replace(ext, newExt), overwriteOption);
+						return;
+					#endregion
+					#region case OverwriteOption.RenameIfDifferentSize:
+					case OverwriteOption.RenameIfDifferentSize:
+						if (Size != new FileInfo(destFileName).Length) {
+							ext = Path.GetExtension(destFileName);
+							newExt = String.Format(" Copy{0}", ext);
+							MoveTo(destFileName.Replace(ext, newExt), overwriteOption);
+						}
+						return;
+					#endregion
+					#region case OverwriteOption.Skip:
+					case OverwriteOption.Skip:
+						return;
+					#endregion
+					default:
+						throw new Exception(String.Format("Unsupported OverwriteOption.{0}", Environment.NewLine));
+				}
+			}
+
+			else
+				FastMoveTo(destFileName);
+		}
+
+		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
 		/// <param name="destFileName">The name of the new file to copy to.</param>
