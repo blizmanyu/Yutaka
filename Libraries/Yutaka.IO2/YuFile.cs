@@ -11,7 +11,7 @@ namespace Yutaka.IO2
 	{
 		#region Fields
 		const int FIVE_HUNDRED_TWELVE_KB = 524288;
-		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
+		const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.propertyitem.id //
 		const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
