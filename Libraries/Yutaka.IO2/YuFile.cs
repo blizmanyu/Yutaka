@@ -164,7 +164,7 @@ namespace Yutaka.IO2
 		public YuFile(string filename = null)
 		{
 			if (String.IsNullOrWhiteSpace(filename))
-				throw new Exception(String.Format("<filename> is required. Exception thrown in constructor YuFile(string filename).{0}{0}", Environment.NewLine));
+				throw new Exception(String.Format("<filename> is required.{0}Exception thrown in Constructor YuFile(string filename).{0}{0}", Environment.NewLine));
 
 			try {
 				var isReadOnly = false;
@@ -312,7 +312,6 @@ namespace Yutaka.IO2
 		/// <summary>
 		/// Sets the DateTaken WITHOUT loading the whole image.
 		/// </summary>
-		/// <returns></returns>
 		protected void SetDateTaken()
 		{
 			try {
