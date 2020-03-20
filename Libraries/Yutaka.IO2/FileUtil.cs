@@ -334,6 +334,36 @@ namespace Yutaka.IO2
 				return false;
 			}
 		}
+
+		/// <summary>
+		/// Moves a specified file to a new location, providing the option to specify a new file name.
+		/// </summary>
+		/// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
+		/// <param name="destFileName">The new path and name for the file.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
+		/// <returns>True if the move succeeded. False otherwise.</returns>
+		public static bool TryMove(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			try {
+				Move(sourceFileName, destFileName, overwriteOption);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryMove(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryMove(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
 		#endregion Public Methods
 	}
 }
