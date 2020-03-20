@@ -33,7 +33,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_TryWrite();
+			Test_YuImage();
 			EndProgram();
 		}
 
@@ -144,6 +144,27 @@ namespace Yutaka.IO2.Tests
 			}
 		}
 		#endregion Tests for YuFile
+
+		#region Tests for YuImage
+		// Created Mar 20, 2020, Modified: Mar 20, 2020 //
+		private static void Test_YuImage()
+		{
+			var tests = new string[] {
+				@"C:\Pictures\2020\jacket1.jpg",
+				@"C:\Pictures\2020\jacket2.jpg",
+				@"C:\Pictures\2020\jacket3.jpg",
+			};
+
+			YuImage img;
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				img = new YuImage(test);
+				img.Debug();
+				Console.Write("\n");
+			}
+		}
+		#endregion Tests for YuImage
 
 		#region Misc Tests
 		private static void Test_FileInfo_MoveTo()
