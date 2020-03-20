@@ -354,6 +354,42 @@ namespace Yutaka.IO2
 			}
 		}
 		#endregion Move
+
+		#region Redate
+		/// <summary>
+		/// Sets the CreationTime, LastWriteTime, and LastAccessTime to the specified DateTime.
+		/// </summary>
+		/// <param name="filename">The file to set.</param>
+		/// <param name="dt">The new DateTime to set the file to.</param>
+		public static void Redate(string filename, DateTime dt)
+		{
+			if (String.IsNullOrWhiteSpace(filename))
+				return;
+			if (dt < MinDateTimeThreshold || MaxDateTimeThreshold < dt)
+				return;
+
+			var isReadOnly = false;
+			var fi = new FileInfo(filename);
+
+			if (fi.IsReadOnly) {
+				isReadOnly = true;
+				fi.IsReadOnly = false;
+				fi.Refresh();
+			}
+
+			fi.CreationTime = dt;
+			fi.LastAccessTime = dt;
+			fi.LastWriteTime = dt;
+
+			if (isReadOnly) {
+				fi.IsReadOnly = true;
+				fi.Refresh();
+			}
+
+			fi = null;
+		}
+
+		#endregion Redate
 		#endregion Public Methods
 	}
 }
