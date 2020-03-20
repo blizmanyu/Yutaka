@@ -389,6 +389,45 @@ namespace Yutaka.IO2
 			fi = null;
 		}
 
+		/// <summary>
+		/// Sets the CreationTime, LastWriteTime, and LastAccessTime to the specified DateTime.
+		/// </summary>
+		/// <param name="filename">The file to set.</param>
+		/// <param name="dt">The new DateTime to set the file to.</param>
+		/// <returns>True if the redate succeeded. False otherwise.</returns>
+		public static bool TryRedate(string filename, DateTime dt)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(filename))
+				log = String.Format("{0}<filename> is required.{1}", log, Environment.NewLine);
+			if (dt < MinDateTimeThreshold || MaxDateTimeThreshold < dt)
+				log = String.Format("{0}<dt> must be between '{2}' and '{3}'.{1}", log, Environment.NewLine, MinDateTimeThreshold.ToString("MMM d, yyyy"), MaxDateTimeThreshold.ToString("MMM d, yyyy HH:mm tt"));
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}Exception thrown in FileUtil.TryRedate(string filename, DateTime dt).{1}{1}", log, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Check
+
+			try {
+				Redate(filename, dt);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryRedate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename, dt);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryRedate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filename, dt);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+				return false;
+			}
+		}
 		#endregion Redate
 		#endregion Public Methods
 	}
