@@ -9,6 +9,8 @@ namespace Yutaka.IO2
 		#region Fields
 		const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
+		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
+		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
 		#endregion Fields
 
 		#region Utilities
@@ -61,24 +63,7 @@ namespace Yutaka.IO2
 		#endregion Utilities
 
 		#region Public Methods
-		/// <summary>
-		/// Returns a new filename with " - Copy" appended to it.
-		/// </summary>
-		/// <param name="filename"></param>
-		/// <returns></returns>
-		public static string AutoRename(string filename)
-		{
-			if (String.IsNullOrWhiteSpace(filename))
-				throw new Exception(String.Format("<filename> is required.{0}", Environment.NewLine));
-
-			var extension = Path.GetExtension(filename);
-
-			while (File.Exists(filename))
-				filename = filename.Replace(extension, String.Format(" - Copy{0}", extension));
-
-			return filename;
-		}
-
+		#region Copy
 		/// <summary>
 		/// Copies an existing file to a new file.
 		/// </summary>
@@ -164,6 +149,37 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Copies an existing file to a new file.
+		/// </summary>
+		/// <param name="sourceFileName">The file to copy.</param>
+		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
+		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			try {
+				Copy(sourceFileName, destFileName, overwriteOption);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryCopy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryCopy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
+		#endregion Copy
+
+		#region Delete
+		/// <summary>
 		/// Deletes all files that match a search pattern in a specified path, and optionally searches subdirectories. Returns the number of files deleted.
 		/// </summary>
 		/// <param name="folderPath">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
@@ -195,6 +211,35 @@ namespace Yutaka.IO2
 			return count;
 		}
 
+		/// <summary>
+		/// Deletes the specified file.
+		/// </summary>
+		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+		public static bool TryDelete(string path)
+		{
+			try {
+				new FileInfo(path).Delete();
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
+		#endregion Delete
+
+		#region Move
 		/// <summary>
 		/// Moves a specified file to a new location, providing the option to specify a new file name.
 		/// </summary>
@@ -280,62 +325,6 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
-		/// Copies an existing file to a new file.
-		/// </summary>
-		/// <param name="sourceFileName">The file to copy.</param>
-		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
-		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
-		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
-		{
-			try {
-				Copy(sourceFileName, destFileName, overwriteOption);
-				return true;
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.TryCopy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryCopy(string sourceFileName='{3}', string destFileName='{4}', OverwriteOption overwriteOption='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, sourceFileName, destFileName, overwriteOption.ToString());
-
-				Console.Write("\n{0}", log);
-				#endregion Log
-
-				return false;
-			}
-		}
-
-		/// <summary>
-		/// Deletes the specified file.
-		/// </summary>
-		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
-		public static bool TryDelete(string path)
-		{
-			try {
-				new FileInfo(path).Delete();
-				return true;
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
-
-				Console.Write("\n{0}", log);
-				#endregion Log
-
-				return false;
-			}
-		}
-
-		/// <summary>
 		/// Moves a specified file to a new location, providing the option to specify a new file name.
 		/// </summary>
 		/// <param name="sourceFileName">The name of the file to move. Can include a relative or absolute path.</param>
@@ -364,6 +353,7 @@ namespace Yutaka.IO2
 				return false;
 			}
 		}
+		#endregion Move
 		#endregion Public Methods
 	}
 }
