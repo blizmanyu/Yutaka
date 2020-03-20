@@ -43,7 +43,15 @@ namespace Yutaka.IO2.Tests
 		{
 			var filename = @"asdf";
 			var dt = new DateTime();
-			FileUtil.Redate(filename, dt);
+			totalCount++;
+			if (!FileUtil.TryRedate(filename, dt))
+				errorCount++;
+
+			filename = @"asdf";
+			dt = DateTime.Now;
+			totalCount++;
+			if (!FileUtil.TryRedate(filename, dt))
+				errorCount++;
 		}
 
 		// Created Dec 5, 2019, Modified: Dec 5, 2019 //
