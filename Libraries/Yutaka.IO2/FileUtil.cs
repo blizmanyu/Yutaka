@@ -363,10 +363,12 @@ namespace Yutaka.IO2
 		/// <param name="dt">The new DateTime to set the file to.</param>
 		public static void Redate(string filename, DateTime dt)
 		{
+			#region Input Check
 			if (String.IsNullOrWhiteSpace(filename))
 				throw new Exception(String.Format("<filename> is required.{0}Exception thrown in FileUtil.Redate(string filename, DateTime dt).{0}{0}", Environment.NewLine));
 			if (dt < MinDateTimeThreshold || MaxDateTimeThreshold < dt)
 				throw new Exception(String.Format("<dt> must be between '{1}' and '{2}'.{0}Exception thrown in FileUtil.Redate(string filename, DateTime dt).{0}{0}", Environment.NewLine, MinDateTimeThreshold.ToString("MMM d, yyyy"), MaxDateTimeThreshold.ToString("MMM d, yyyy HH:mm tt")));
+			#endregion Input Check
 
 			var isReadOnly = false;
 			var fi = new FileInfo(filename);
