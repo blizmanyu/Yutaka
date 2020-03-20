@@ -364,9 +364,9 @@ namespace Yutaka.IO2
 		public static void Redate(string filename, DateTime dt)
 		{
 			if (String.IsNullOrWhiteSpace(filename))
-				return;
+				throw new Exception(String.Format("<filename> is required.{0}Exception thrown in FileUtil.Redate(string filename, DateTime dt).{0}{0}", Environment.NewLine));
 			if (dt < MinDateTimeThreshold || MaxDateTimeThreshold < dt)
-				return;
+				throw new Exception(String.Format("<dt> must be between '{1}' and '{2}'.{0}Exception thrown in FileUtil.Redate(string filename, DateTime dt).{0}{0}", Environment.NewLine, MinDateTimeThreshold.ToString("MMM d, yyyy"), MaxDateTimeThreshold.ToString("MMM d, yyyy HH:mm tt")));
 
 			var isReadOnly = false;
 			var fi = new FileInfo(filename);
