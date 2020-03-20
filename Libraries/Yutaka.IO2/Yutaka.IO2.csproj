@@ -45,6 +45,7 @@
     <Compile Include="Enums.cs" />
     <Compile Include="YuFile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="YuImage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
