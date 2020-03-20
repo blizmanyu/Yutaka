@@ -33,12 +33,38 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Write();
+			Test_TryWrite();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
-		// Created Mar 19, 2020, Modified: Mar 19, 2020 //
+		// Created Mar 20, 2020, Modified: Mar 20, 2020 //
+		private static void Test_TryWrite()
+		{
+			object value;
+			string path;
+			var testFolder = @"C:\temp";
+
+			value = "";
+			path = "";
+			Console.Write("\n{0}) path: {1}", ++totalCount, path);
+			if (!FileUtil.TryWrite(value, path))
+				errorCount++;
+
+			value = "test 2020 0320 0126 0001";
+			path = Path.Combine(testFolder, String.Format("{0}.txt", value));
+			Console.Write("\n{0}) path: {1}", ++totalCount, path);
+			if (!FileUtil.TryWrite(value, path))
+				errorCount++;
+
+			value = "test 2020 0320 0126 0010";
+			path = Path.Combine(testFolder, @"1\2\3", String.Format("{0}.txt", value));
+			Console.Write("\n{0}) path: {1}", ++totalCount, path);
+			if (!FileUtil.TryWrite(value, path))
+				errorCount++;
+		}
+
+		// Created Mar 20, 2020, Modified: Mar 20, 2020 //
 		private static void Test_Write()
 		{
 			object value;
