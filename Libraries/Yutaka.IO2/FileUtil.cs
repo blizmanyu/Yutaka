@@ -463,6 +463,58 @@ namespace Yutaka.IO2
 			using (var sw = new StreamWriter(path, append, encoding, bufferSize))
 				sw.Write(value);
 		}
+
+		/// <summary>
+		/// Fast file write with big buffers. Writes the text representation of an object to the text stream by calling the ToString method on that object.
+		/// </summary>
+		/// <param name="value">The object to write.</param>
+		/// <param name="path">The complete file path to write to.</param>
+		/// <param name="append">true to append data to the file; false to overwrite the file. If the specified file does not exist, this parameter has no effect, and the constructor creates a new file.</param>
+		/// <param name="encoding">The character encoding to use.</param>
+		/// <param name="bufferSize">The buffer size, in bytes.</param>
+		/// <returns>True if the redate succeeded. False otherwise.</returns>
+		public static bool TryWrite(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
+		{
+			#region Input Check
+			var log = "";
+
+			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
+				log = String.Format("{0}<value> is required.{1}", log, Environment.NewLine);
+
+			if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}<path> is required.{1}", log, Environment.NewLine);
+			else
+				Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}Exception thrown in FileUtil.TryWrite(object value, string path, bool append, Encoding encoding, int bufferSize).{1}{1}", log, Environment.NewLine);
+				return false;
+			}
+
+			if (encoding == null)
+				encoding = Encoding.Default;
+
+			if (bufferSize < 4096)
+				bufferSize = 4096;
+			#endregion Input Check
+
+			try {
+				Write(value, path, append, encoding, bufferSize);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.TryWrite(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}', int bufferSize='{7}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, value, path, append, encoding, bufferSize);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryWrite(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}', int bufferSize='{7}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, value, path, append, encoding, bufferSize);
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+				return false;
+			}
+		}
 		#endregion Write
 		#endregion Public Methods
 	}
