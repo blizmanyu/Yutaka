@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 
 namespace Yutaka.IO2
 {
@@ -431,6 +432,38 @@ namespace Yutaka.IO2
 			}
 		}
 		#endregion Redate
+
+		#region Write
+		/// <summary>
+		/// Fast file write with big buffers. Writes the text representation of an object to the text stream by calling the ToString method on that object.
+		/// </summary>
+		/// <param name="value">The object to write.</param>
+		/// <param name="path">The complete file path to write to.</param>
+		/// <param name="append">true to append data to the file; false to overwrite the file. If the specified file does not exist, this parameter has no effect, and the constructor creates a new file.</param>
+		/// <param name="encoding">The character encoding to use.</param>
+		/// <param name="bufferSize">The buffer size, in bytes.</param>
+		public static void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
+		{
+			#region Input Check
+			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
+				throw new Exception(String.Format("<value> is required.{0}Exception thrown in FileUtil.Write(object value, string path, bool append, Encoding encoding, int bufferSize).{0}{0}", Environment.NewLine));
+
+			if (String.IsNullOrWhiteSpace(path))
+				throw new Exception(String.Format("<path> is required.{0}Exception thrown in FileUtil.Write(object value, string path, bool append, Encoding encoding, int bufferSize).{0}{0}", Environment.NewLine));
+			else
+				Directory.CreateDirectory(Path.GetDirectoryName(path));
+
+			if (encoding == null)
+				encoding = Encoding.Default;
+
+			if (bufferSize < 4096)
+				bufferSize = 4096;
+			#endregion Input Check
+
+			using (var sw = new StreamWriter(path, append, encoding, bufferSize))
+				sw.Write(value);
+		}
+		#endregion Write
 		#endregion Public Methods
 	}
 }
