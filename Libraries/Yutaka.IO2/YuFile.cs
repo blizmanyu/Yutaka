@@ -583,6 +583,35 @@ namespace Yutaka.IO2
 			}
 		}
 
+		/// <summary>
+		/// Moves a specified file to a new location, providing the option to specify a new file name.
+		/// </summary>
+		/// <param name="destFileName">The path to move the file to, which can specify a different file name.</param>
+		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
+		/// <returns>True if the move succeeded. False otherwise.</returns>
+		public bool TryMoveTo(string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		{
+			try {
+				MoveTo(destFileName, overwriteOption);
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in YuFile.TryMoveTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of YuFile.TryMoveTo(string destFileName='{3}', OverwriteOption overwriteOption='{4}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destFileName, overwriteOption.ToString());
+
+				Console.Write("\n{0}", log);
+				#endregion Log
+
+				return false;
+			}
+		}
+
 		#region Overrides
 		public override bool Equals(Object obj)
 		{
