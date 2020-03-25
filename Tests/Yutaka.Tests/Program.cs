@@ -177,23 +177,37 @@ namespace Yutaka.Tests
 		#region Test GmailSmtpClient.TrySend() - Mar 25, 2020
 		private static void Test_GmailSmtpClient_TrySend()
 		{
+			string response, subject, body;
 			var username = "asdf";
 			var password = "asdf";
 			var gmailSmtpClient = new GmailSmtpClient(username, password);
-
 			var from = "asdf";
 			var recipients = "asdf";
-			var subject = "asdf";
-			var body = "asdf";
+
+			subject = "Test 2020 0325 0318";
+			body = subject;
 
 			totalCount++;
-			if (gmailSmtpClient.TrySend(from, recipients, subject, body, out var response))
+			if (gmailSmtpClient.TrySend(from, recipients, subject, body, out response))
 				Console.Write("\n{0}", response);
 			else {
 				errorCount++;
 				Console.Write("\n{0}", response);
 			}
 
+			subject = "Test 2020 0325 0318b";
+			body = subject;
+			var msg = new MailMessage(from, recipients, subject, body) {
+				IsBodyHtml = true,
+			};
+
+			totalCount++;
+			if (gmailSmtpClient.TrySend(msg, out response))
+				Console.Write("\n{0}", response);
+			else {
+				errorCount++;
+				Console.Write("\n{0}", response);
+			}
 		}
 		#endregion Test GmailSmtpClient.TrySend() - Mar 25, 2020
 
