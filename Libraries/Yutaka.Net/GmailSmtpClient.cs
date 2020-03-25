@@ -116,7 +116,9 @@ namespace Yutaka.Net
 			#endregion Input Check
 
 			try {
-				Send(from, recipients, subject, body);
+				Send(new MailMessage(from, recipients, subject, body) {
+					IsBodyHtml = true,
+				});
 				response = "Success";
 				return true;
 			}
