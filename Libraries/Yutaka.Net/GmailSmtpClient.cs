@@ -134,5 +134,22 @@ namespace Yutaka.Net
 				return false;
 			}
 		}
+
+		/// <summary>
+		/// Returns whether a string is a valid email address or not.
+		/// </summary>
+		/// <param name="emailAddress">The email address to check.</param>
+		/// <returns>True if valid. False otherwise.</returns>
+		private bool IsValid(string emailAddress)
+		{
+			try {
+				var email = new MailAddress(emailAddress);
+				return true;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
 	}
 }
