@@ -33,5 +33,31 @@ namespace Yutaka.Net
 			Host = "smtp.gmail.com";
 			Port = 587;
 		}
+
+		/// <summary>
+		/// Sends the specified message to Gmail's SMTP server for delivery.
+		/// </summary>
+		/// <param name="message">A <see cref="MailMessage"/> that contains the message to send.</param>
+		/// <param name="response">Response message containing the result.</param>
+		/// <returns>True if succeeded. False otherwise.</returns>
+		public bool TrySend(MailMessage message, out string response)
+		{
+			try {
+				Send(message);
+				response = "Success";
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					response = String.Format("{0}{2}Exception thrown in GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+				#endregion Log
+
+				return false;
+			}
+		}
 	}
 }
