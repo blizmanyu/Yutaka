@@ -104,6 +104,8 @@ namespace Yutaka.Net
 
 			if (String.IsNullOrWhiteSpace(from))
 				response = String.Format("{0}<from> is required.{1}", response, Environment.NewLine);
+			else if (!IsValid(from))
+				response = String.Format("{0}<from> isn't a valid email address.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(recipients))
 				response = String.Format("{0}<recipients> is required.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(subject) && String.IsNullOrWhiteSpace(body))
