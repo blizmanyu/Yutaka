@@ -38,10 +38,30 @@ namespace Yutaka.Net
 		/// Sends the specified message to Gmail's SMTP server for delivery.
 		/// </summary>
 		/// <param name="message">A <see cref="MailMessage"/> that contains the message to send.</param>
-		/// <param name="response">Response message containing the result.</param>
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
 		/// <returns>True if succeeded. False otherwise.</returns>
 		public bool TrySend(MailMessage message, out string response)
 		{
+			#region Input Check
+			response = "";
+
+			if (message == null)
+				response = String.Format("{0}<message> is required.{1}", response, Environment.NewLine);
+			else {
+				if (message.From == null || String.IsNullOrWhiteSpace(message.From.Address))
+					response = String.Format("{0}<From> is required.{1}", response, Environment.NewLine);
+				if (message.To == null || message.To.Count < 1 || String.IsNullOrWhiteSpace(message.To[0].Address))
+					response = String.Format("{0}At least 1 recipient is required.{1}", response, Environment.NewLine);
+				if (String.IsNullOrWhiteSpace(message.Subject) && String.IsNullOrWhiteSpace(message.Body))
+					response = String.Format("{0}Subject OR Body is required.{1}", response, Environment.NewLine);
+			}
+
+			if (!String.IsNullOrWhiteSpace(response)) {
+				response = String.Format("{0}Exception thrown in TrySend(MailMessage message, out string response).{1}{1}", response, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Check
+
 			try {
 				Send(message);
 				response = "Success";
@@ -50,10 +70,18 @@ namespace Yutaka.Net
 
 			catch (Exception ex) {
 				#region Log
+				var from = message.From.Address;
+				var recipients = String.Join("; ", message.To);
+				var subject = message.Subject ?? "";
+				var body = message.Body ?? "";
+
+				if (body.Length > 200)
+					body = body.Substring(0, 200);
+
 				if (ex.InnerException == null)
-					response = String.Format("{0}{2}Exception thrown in GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					response = String.Format("{0}{2}From: '{3}'{2}Recipients: '{4}'{2}Subject: '{5}'{2}Body: '{6}'{2}Exception thrown in GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, from, recipients, subject, body);
 				else
-					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+					response = String.Format("{0}{2}From: '{3}'{2}Recipients: '{4}'{2}Subject: '{5}'{2}Body: '{6}'{2}Exception thrown in INNER EXCEPTION of GmailSmtpClient.TrySend(MailMessage message, out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, from, recipients, subject, body);
 				#endregion Log
 
 				return false;
