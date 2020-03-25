@@ -170,9 +170,32 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_PhoneUtil_IsValid();
+			Test_GmailSmtpClient_TrySend();
 			EndProgram();
 		}
+
+		#region Test GmailSmtpClient.TrySend() - Mar 25, 2020
+		private static void Test_GmailSmtpClient_TrySend()
+		{
+			var username = "asdf";
+			var password = "asdf";
+			var gmailSmtpClient = new GmailSmtpClient(username, password);
+
+			var from = "asdf";
+			var recipients = "asdf";
+			var subject = "asdf";
+			var body = "asdf";
+
+			totalCount++;
+			if (gmailSmtpClient.TrySend(from, recipients, subject, body, out var response))
+				Console.Write("\n{0}", response);
+			else {
+				errorCount++;
+				Console.Write("\n{0}", response);
+			}
+
+		}
+		#endregion Test GmailSmtpClient.TrySend() - Mar 25, 2020
 
 		#region Test PhoneUtil.IsValid() - Feb 11, 2020
 		private static void Test_PhoneUtil_IsValid()
