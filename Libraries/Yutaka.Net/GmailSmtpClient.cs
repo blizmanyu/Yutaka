@@ -38,7 +38,7 @@ namespace Yutaka.Net
 		/// Sends the specified message to Gmail's SMTP server for delivery.
 		/// </summary>
 		/// <param name="message">A <see cref="MailMessage"/> that contains the message to send.</param>
-		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages. This value is blank on success.</param>
 		/// <returns>True if succeeded. False otherwise.</returns>
 		public bool TrySend(MailMessage message, out string response)
 		{
@@ -64,7 +64,6 @@ namespace Yutaka.Net
 
 			try {
 				Send(message);
-				response = "Success";
 				return true;
 			}
 
