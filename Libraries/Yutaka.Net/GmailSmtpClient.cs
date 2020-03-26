@@ -4,6 +4,9 @@ using System.Net.Mail;
 
 namespace Yutaka.Net
 {
+	/// <summary>
+	/// Allows applications to send email by using Gmail's SMTP server.
+	/// </summary>
 	public class GmailSmtpClient : SmtpClient
 	{
 		/// <summary>
@@ -38,7 +41,7 @@ namespace Yutaka.Net
 		/// Sends the specified message to Gmail's SMTP server for delivery.
 		/// </summary>
 		/// <param name="message">A <see cref="MailMessage"/> that contains the message to send.</param>
-		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages. This value is blank on success.</param>
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
 		/// <returns>True if succeeded. False otherwise.</returns>
 		public bool TrySend(MailMessage message, out string response)
 		{
@@ -64,6 +67,7 @@ namespace Yutaka.Net
 
 			try {
 				Send(message);
+				response = "Success";
 				return true;
 			}
 
@@ -94,7 +98,7 @@ namespace Yutaka.Net
 		/// <param name="recipients">A string that contains the addresses that the message is sent to. Multiple email addresses must be separated with a comma character (",").</param>
 		/// <param name="subject">A string that contains the subject line for the message.</param>
 		/// <param name="body">A string that contains the message body.</param>
-		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages. This value is blank on success.</param>
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
 		/// <returns>True if succeeded. False otherwise.</returns>
 		public bool TrySend(string from, string recipients, string subject, string body, out string response)
 		{
@@ -126,6 +130,7 @@ namespace Yutaka.Net
 				Send(new MailMessage(from, recipients, subject, body) {
 					IsBodyHtml = true,
 				});
+				response = "Success";
 				return true;
 			}
 
