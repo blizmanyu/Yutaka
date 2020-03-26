@@ -92,10 +92,10 @@ namespace Yutaka.Net
 		/// Sends the specified email message to Gmail's SMTP server for delivery. The message sender, recipients, subject, and message body are specified using <see cref="String"/> objects.
 		/// </summary>
 		/// <param name="from">A string that contains the address information of the message sender.</param>
-		/// <param name="recipients">A string that contains the addresses that the message is sent to.</param>
+		/// <param name="recipients">A string that contains the addresses that the message is sent to. Multiple email addresses must be separated with a comma character (",").</param>
 		/// <param name="subject">A string that contains the subject line for the message.</param>
 		/// <param name="body">A string that contains the message body.</param>
-		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages. This value is blank on success.</param>
 		/// <returns>True if succeeded. False otherwise.</returns>
 		public bool TrySend(string from, string recipients, string subject, string body, out string response)
 		{
@@ -104,12 +104,18 @@ namespace Yutaka.Net
 
 			if (String.IsNullOrWhiteSpace(from))
 				response = String.Format("{0}<from> is required.{1}", response, Environment.NewLine);
-			else if (!IsValid(from))
-				response = String.Format("{0}<from> isn't a valid email address.{1}", response, Environment.NewLine);
+			else {
+				try {
+					var e = new MailAddress(from);
+				}
+				catch {
+					response = String.Format("{0}<from> isn't a valid email address.{1}", response, Environment.NewLine);
+				}
+			}
 			if (String.IsNullOrWhiteSpace(recipients))
 				response = String.Format("{0}<recipients> is required.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(subject) && String.IsNullOrWhiteSpace(body))
-				response = String.Format("{0}<subject> OR <body> are required.{1}", response, Environment.NewLine);
+				response = String.Format("{0}<subject> OR <body> is required.{1}", response, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(response)) {
 				response = String.Format("{0}Exception thrown in TrySend(string from, string recipients, string subject, string body, out string response).{1}{1}", response, Environment.NewLine);
@@ -121,7 +127,6 @@ namespace Yutaka.Net
 				Send(new MailMessage(from, recipients, subject, body) {
 					IsBodyHtml = true,
 				});
-				response = "Success";
 				return true;
 			}
 
