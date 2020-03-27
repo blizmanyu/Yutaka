@@ -174,7 +174,221 @@ namespace Yutaka.Tests
 			EndProgram();
 		}
 
-		#region Test GmailSmtpClient.TrySend() - Mar 25, 2020
+		#region Base36 Tests
+		// Created Sep 30, 2019 // Modified Sep 30, 2019 //
+		private static void Test_Base36_EncodeIP()
+		{
+			string encoded, decoded;
+			var tests = new string[] {
+				"0.0.0.0",
+				"0.0.0.1",
+				"0.0.1.0",
+				"0.1.0.0",
+				"1.0.0.0",
+				"1.255.255.255",
+				"10.255.255.255",
+				"100.255.255.255",
+				"107.184.169.245",
+				"255.255.255.255",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				encoded = Base36.EncodeIP(tests[i]);
+				Console.Write("\n   Encoded: {0}", encoded);
+				decoded = Base36.DecodeIP(encoded);
+				Console.Write("\n   Decoded: {0}", decoded);
+			}
+
+		}
+
+		// Created Sep 30, 2019 // Modified Sep 30, 2019 //
+		private static void Test_Base36_DumbEncode()
+		{
+			string encoded, decoded;
+			var tests = new string[] { "blizmanyu@gmail.com", "yblizman@rcw1.com", };
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				encoded = Base36.DumbEncode(tests[i]);
+				Console.Write("\n   Encoded: {0}", encoded);
+				decoded = Base36.DumbDecode(encoded);
+				Console.Write("\n   Decoded: {0}", decoded);
+			}
+
+		}
+
+		// Created Sep 27, 2019 // Modified Sep 27, 2019 //
+		private static void Test201909271804()
+		{
+			long parsed;
+			string[] split;
+			var tests = new string[] { "0.0.0.0", "0.0.0.1", "1.1.1.1", "255.255.255.255", };
+
+			for (int i = 0; i < tests.Length; i++) {
+				split = tests[i].Split('.');
+				parsed = long.Parse(tests[i].Replace(".", ""));
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				Console.Write("\n   Encoded: {0}", Base36.Encode(parsed));
+				Console.Write("\n     Hexed: ");
+
+				for (int j = 0; j < split.Length; j++) {
+					Console.Write("{0}", int.Parse(split[j]).ToString("x"));
+				}
+			}
+
+		}
+		#endregion Base36 Tests
+
+		#region DateTime Tests
+		// Created Mar 26, 2020 // Modified Mar 26, 2020 //
+		private static void Test_DateTime()
+		{
+
+		}
+
+		// Created Jan 9, 2020 // Modified Jan 9, 2020 //
+		private static void Test_DateTime_Kind()
+		{
+			var tests = new DateTime[] {
+				DateTime.Now,
+				DateTime.UtcNow,
+				DateTime.Parse("1/1/2020"),
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) '{1}'", ++totalCount, test);
+				Console.Write("\n--> {0}", test.Kind);
+				Console.Write("\n");
+			}
+		}
+
+		// Created Sep 27, 2019 // Modified Sep 27, 2019 //
+		private static void TestDateTime201909271703()
+		{
+			var now = DateTime.UtcNow;
+			Console.Write("\n");
+			Console.Write("\nToString('yyyyMMddHHmmssfff'): {0}", now.ToString("yyyyMMddHHmmssfff"));
+			Console.Write("\n                        Ticks: {0}", now.Ticks);
+			Console.Write("\n                  GetHashCode: {0}", now.GetHashCode().ToString("x"));
+			Console.Write("\n       ToString().GetHashCode: {0}", now.ToString().GetHashCode().ToString("x"));
+		}
+		#endregion DateTime Tests
+
+		#region DriveInfo Tests
+		private static void TestDriveInfo()
+		{
+			var allDrives = DriveInfo.GetDrives().Where(x => x.DriveType.Equals(DriveType.Fixed));
+
+			foreach (var d in allDrives) {
+				Console.Write("\n============================");
+				Console.Write("\n                Name: {0}", d.Name);
+				Console.Write("\n           DriveType: {0}", d.DriveType);
+				if (d.IsReady) {
+					Console.Write("\n         VolumeLabel: {0}", d.VolumeLabel);
+					Console.Write("\n         DriveFormat: {0}", d.DriveFormat);
+					Console.Write("\n                 10%:  {0:n2} GB ({1:n0} bytes)", d.TotalSize * .1 / 1024.0 / 1024.0 / 1024.0, d.TotalSize * .1);
+					Console.Write("\n  AvailableFreeSpace: {0:n2} GB ( {1:n0} bytes)", d.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0, d.AvailableFreeSpace);
+					Console.Write("\n           TotalSize: {0:n2} GB ({1:n0} bytes)", d.TotalSize / 1024.0 / 1024.0 / 1024.0, d.TotalSize);
+					Console.Write("\n       RootDirectory: {0}", d.RootDirectory);
+				}
+			}
+		}
+		#endregion DriveInfo Tests
+
+		#region FileUtil Tests
+		private static void Test_FileUtil_GetFrameRateAndGetWidth()
+		{
+			var DirectoryName = @"asdf\";
+			var Name = @"asdf";
+			var frameRate = _fileUtil.GetFrameRate(DirectoryName, Name);
+			var frameWidth = _fileUtil.GetFrameWidth(DirectoryName, Name);
+
+			Console.Write("\n");
+			Console.Write("\nframeRate: {0}", frameRate);
+			Console.Write("\nframeWidth: {0}", frameWidth);
+		}
+
+		// Created Oct 2, 2019 // Modified Oct 2, 2019 //
+		private static void Test_FileUtil_EnumerateFiles()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				@"Z:\Downloads\",
+				@"Z:\Users\",
+			};
+
+			for (int i = 0; i < tests.Length; i++) {
+				Console.Write("\n==============================");
+				Console.Write("\n{0}) {1}", i + 1, tests[i]);
+				var files = _fileUtil.EnumerateFiles(tests[i], "desktop*.ini", SearchOption.AllDirectories);
+				Console.Write("\n   files.Count: {0}", files.Count());
+
+				foreach (var v in files)
+					Console.Write("\n   {0}", v);
+			}
+		}
+
+		private static void Test_FileUtil_IsStringInList()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				"",
+				"asdf",
+				"ASDF",
+			};
+
+			var lists = new List<String>[] {
+				new List<String> { "" },
+				new List<String> { "asdf" },
+				new List<String> { "ASDF" },
+			};
+
+			bool result;
+			var _fileUtil = new FileUtil();
+
+			for (int i = 0; i < tests.Length; i++) {
+				for (int j = 0; j < lists.Length; j++) {
+					totalCount++;
+					Console.Write("\n");
+					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", lists[j]), _fileUtil.IsStringInList(tests[i], lists[j]));
+				}
+			}
+		}
+
+		private static void Test_FileUtil_IsStringInArray()
+		{
+			consoleOut = true;
+			var tests = new string[] {
+				"",
+				"asdf",
+				"ASDF",
+			};
+
+			var arrays = new List<string[]> {
+				new string[] { "", },
+				new string[] { "asdf", },
+				new string[] { "ASDF", },
+			};
+
+			bool result;
+			var _fileUtil = new FileUtil();
+
+			for (int i = 0; i < tests.Length; i++) {
+				for (int j = 0; j < arrays.Count; j++) {
+					totalCount++;
+					Console.Write("\n");
+					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", arrays[j]), _fileUtil.IsStringInArray(tests[i], arrays[j]));
+				}
+			}
+		}
+		#endregion FileUtil Tests
+
+		#region GmailSmtpClient Tests
+		// Created Mar 25, 2020 // Modified Mar 25, 2020 //
 		private static void Test_GmailSmtpClient_TrySend()
 		{
 			string response, subject, body;
@@ -209,8 +423,27 @@ namespace Yutaka.Tests
 				Console.Write("\n{0}", response);
 			}
 		}
-		#endregion Test GmailSmtpClient.TrySend() - Mar 25, 2020
+		#endregion GmailSmtpClient Tests
 
+		#region Path Tests
+		// Created Oct 22, 2019 // Modified Oct 22, 2019 //
+		private static void Test_2019_1022_2342()
+		{
+			var tests = new string[] {
+				@"C:\lasdkfj\",
+				@"D:\asldkfj\",
+				@"https://www.rarecoinwholesalers.com/",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				Console.Write("\n  '{0}'", Path.GetPathRoot(test));
+			}
+		}
+		#endregion Path Tests
+
+		#region PhoneUtil Tests
 		#region Test PhoneUtil.IsValid() - Feb 11, 2020
 		private static void Test_PhoneUtil_IsValid()
 		{
@@ -245,35 +478,10 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test PhoneUtil.Minify() - Feb 11, 2020
+		#endregion PhoneUtil Tests
 
-		#region Test Replace - Feb 11, 2020
-		private static void TestReplace()
-		{
-			var test = "   (   1   2   3   )   4   5   6   -   7   8   9   0   ";
-			Console.Write("\n{0}", test);
-			test = test.Replace(" ", "");
-			Console.Write("\n{0}", test);
-		}
-		#endregion Test Replace - Feb 11, 2020
-
-		#region Test DateTime - 2020 0109 1555
-		private static void Test_DateTime()
-		{
-			var tests = new DateTime[] {
-				DateTime.Now,
-				DateTime.UtcNow,
-				DateTime.Parse("1/1/2020"),
-			};
-
-			foreach (var test in tests) {
-				Console.Write("\n{0}) '{1}'", ++totalCount, test);
-				Console.Write("\n--> {0}", test.Kind);
-				Console.Write("\n");
-			}
-		}
-		#endregion Test DateTime
-
-		#region Test QB20191021Util 2019 1021 1643
+		#region QB20191021Util Tests
+		// Created Oct 21, 2019 // Modified Oct 21, 2019 //
 		private static void Test_QB20191021Util()
 		{
 			var now = DateTime.Now;
@@ -294,9 +502,8 @@ namespace Yutaka.Tests
 				}
 			}
 		}
-		#endregion Test QB20191021Util 2019 1021 1643
 
-		#region Test Qb20191023Util 2019 1023 1639
+		// Created Oct 23, 2019 // Modified Oct 23, 2019 //
 		private static void Test_Qb20191023Util()
 		{
 			DateTime? dtFrom, dtTo;
@@ -310,26 +517,47 @@ namespace Yutaka.Tests
 				_qb20191023Util.CloseConnection();
 			}
 		}
-		#endregion Test Qb20191023Util 2019 1023 1639
+		#endregion QB20191021Util Tests
 
-		#region Test 2019 1022 2342
-		private static void Test_2019_1022_2342()
+		#region String Tests
+		// Created Feb 11, 2020 // Modified Feb 11, 2020 //
+		private static void TestReplace()
 		{
-			var tests = new string[] {
-				@"C:\lasdkfj\",
-				@"D:\asldkfj\",
-				@"https://www.rarecoinwholesalers.com/",
-			};
+			var test = "   (   1   2   3   )   4   5   6   -   7   8   9   0   ";
+			Console.Write("\n{0}", test);
+			test = test.Replace(" ", "");
+			Console.Write("\n{0}", test);
+		}
+		#endregion String Tests
 
-			foreach (var test in tests) {
+		#region TextUtil Tests
+		// Created Oct 16, 2019 // Modified Oct 16, 2019 //
+		private static void Test_TextUtil_ToTitleCaseSmart()
+		{
+			string[] tests = {
+				null, "", "a tale of two cities", "gROWL to the rescue",
+				"inside the US government", "sports and MLB baseball",
+				"The Return of Sherlock Holmes", "UNICEF and children", "UNICEF AND CHILDREN",
+				"Old McDonald", "old mcdonald", "OLD MCDONALD", };
+
+			for (int i = 0; i < tests.Length; i++) {
 				Console.Write("\n");
-				Console.Write("\n{0}) {1}", ++totalCount, test);
-				Console.Write("\n  '{0}'", Path.GetPathRoot(test));
+				Console.Write("\n{0}) {1}", ++totalCount, tests[i] ?? "NULL");
+				Console.Write("\n   {0}", TextUtil.ToTitleCaseSmart(tests[i]));
 			}
 		}
-		#endregion Test 2019 1022 2342
 
-		#region Test VideoUtil
+		private static void Test_TextUtil_BeautifyJson()
+		{
+			var str = "{\"email\":\"test@test.com\",\"accountId\":\"acct_55e743f3123e3b057094768a\",\"updatedBy\":\"api - Key2019-0819-1603\",\"id\":\"cust_5d5c94136607c400012685cc\",\"authToken\":\"f992c1681c2dcf9da10ec591cd9b8f0a5b1d011aae9200ef9b2fc5e15334392d\",\"updatedOn\":\"2019-08-21T00:45:07.543Z\",\"createdOn\":\"2019-08-21T00:45:07.543Z\",\"customerSince\":\"2019-08-21T00:45:07.543Z\",\"newPassword\":\"53ed1982b33a0385390a\"}";
+			Console.Write("\n");
+			Console.Write("\n{0}", str);
+			Console.Write("\n");
+			Console.Write("\n{0}", TextUtil.BeautifyJson(str));
+		}
+		#endregion TextUtil Tests
+
+		#region VideoUtil Tests
 		private static void Test_VideoUtil()
 		{
 			var source = @"asdf";
@@ -342,21 +570,7 @@ namespace Yutaka.Tests
 			Console.Write("\nframeRate: {0}", _videoUtil.FrameRate);
 			Console.Write("\nframeWidth: {0}", _videoUtil.FrameWidth);
 		}
-		#endregion Test VideoUtil
-
-		#region Test FileUtil.GetFrameRateAndGetWidth
-		private static void Test_FileUtil_GetFrameRateAndGetWidth()
-		{
-			var DirectoryName = @"asdf\";
-			var Name = @"asdf";
-			var frameRate = _fileUtil.GetFrameRate(DirectoryName, Name);
-			var frameWidth = _fileUtil.GetFrameWidth(DirectoryName, Name);
-
-			Console.Write("\n");
-			Console.Write("\nframeRate: {0}", frameRate);
-			Console.Write("\nframeWidth: {0}", frameWidth);
-		}
-		#endregion Test FileUtil.GetFrameRateAndGetWidth
+		#endregion VideoUtil Tests
 
 		#region Get All Extended Properties
 		private static void GetAllExtendedProperties()
@@ -376,126 +590,6 @@ namespace Yutaka.Tests
 		}
 		#endregion Get All Extended Properties
 
-		#region Test TextUtil.ToTitleCaseSmart 2019 1016 1223
-		private static void Test_TextUtil_ToTitleCaseSmart()
-		{
-			string[] tests = {
-				null, "", "a tale of two cities", "gROWL to the rescue",
-				"inside the US government", "sports and MLB baseball",
-				"The Return of Sherlock Holmes", "UNICEF and children", "UNICEF AND CHILDREN",
-				"Old McDonald", "old mcdonald", "OLD MCDONALD", };
-
-			for (int i=0; i< tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", ++totalCount, tests[i] ?? "NULL");
-				Console.Write("\n   {0}", TextUtil.ToTitleCaseSmart(tests[i]));
-			}
-		}
-		#endregion Test TextUtil.ToTitleCaseSmart 2019 1016 1223
-
-		#region Test FileUtil.EnumerateFiles 2019 1002 1419
-		private static void Test_FileUtil_EnumerateFiles()
-		{
-			consoleOut = true;
-			var tests = new string[] {
-				@"Z:\Downloads\",
-				@"Z:\Users\",
-			};
-
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n==============================");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				var files = _fileUtil.EnumerateFiles(tests[i], "desktop*.ini", SearchOption.AllDirectories);
-				Console.Write("\n   files.Count: {0}", files.Count());
-
-				foreach (var v in files)
-					Console.Write("\n   {0}", v);
-			}
-		}
-		#endregion Test FileUtil.EnumerateFiles 2019 1002 1419
-
-		#region Test Base36.EncodeIP 2019 0930 0312
-		private static void Test_Base36_EncodeIP()
-		{
-			string encoded, decoded;
-			var tests = new string[] {
-				"0.0.0.0",
-				"0.0.0.1",
-				"0.0.1.0",
-				"0.1.0.0",
-				"1.0.0.0",
-				"1.255.255.255",
-				"10.255.255.255",
-				"100.255.255.255",
-				"107.184.169.245",
-				"255.255.255.255",
-			};
-
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				encoded = Base36.EncodeIP(tests[i]);
-				Console.Write("\n   Encoded: {0}", encoded);
-				decoded = Base36.DecodeIP(encoded);
-				Console.Write("\n   Decoded: {0}", decoded);
-			}
-
-		}
-		#endregion Test Base36.EncodeIP 2019 0930 0312
-
-		#region Test Base36.DumbEncode 2019 0930 0251
-		private static void Test_Base36_DumbEncode()
-		{
-			string encoded, decoded;
-			var tests = new string[] { "blizmanyu@gmail.com", "yblizman@rcw1.com", };
-
-			for (int i = 0; i < tests.Length; i++) {
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				encoded = Base36.DumbEncode(tests[i]);
-				Console.Write("\n   Encoded: {0}", encoded);
-				decoded = Base36.DumbDecode(encoded);
-				Console.Write("\n   Decoded: {0}", decoded);
-			}
-
-		}
-		#endregion Test Base36.DumbEncode 2019 0930 0251
-
-		#region Test DateTime 2019 0927 1804
-		private static void Test201909271804()
-		{
-			long parsed;
-			string[] split;
-			var tests = new string[] { "0.0.0.0", "0.0.0.1", "1.1.1.1", "255.255.255.255", };
-
-			for (int i = 0; i < tests.Length; i++) {
-				split = tests[i].Split('.');
-				parsed = long.Parse(tests[i].Replace(".", ""));
-				Console.Write("\n");
-				Console.Write("\n{0}) {1}", i + 1, tests[i]);
-				Console.Write("\n   Encoded: {0}", Base36.Encode(parsed));
-				Console.Write("\n     Hexed: ");
-
-				for (int j = 0; j < split.Length; j++) {
-					Console.Write("{0}", int.Parse(split[j]).ToString("x"));
-				}
-			}
-
-		}
-		#endregion Test DateTime 2019 0927 1804
-
-		#region Test DateTime 2019 0927 1703
-		private static void TestDateTime201909271703()
-		{
-			var now = DateTime.UtcNow;
-			Console.Write("\n");
-			Console.Write("\nToString('yyyyMMddHHmmssfff'): {0}", now.ToString("yyyyMMddHHmmssfff"));
-			Console.Write("\n                        Ticks: {0}", now.Ticks);
-			Console.Write("\n                  GetHashCode: {0}", now.GetHashCode().ToString("x"));
-			Console.Write("\n       ToString().GetHashCode: {0}", now.ToString().GetHashCode().ToString("x"));
-		}
-		#endregion Test DateTime 2019 0927 1703
-
 		//private static void Test_V3Util_CreateCustomer()
 		//{
 		//	var apiKey = "asdfasdf";
@@ -514,34 +608,6 @@ namespace Yutaka.Tests
 		//	else
 		//		Console.Write("\n{0}: {1}", json["type"], json["message"]);
 		//}
-
-		private static void Test_TextUtil_BeautifyJson()
-		{
-			var str = "{\"email\":\"test@test.com\",\"accountId\":\"acct_55e743f3123e3b057094768a\",\"updatedBy\":\"api - Key2019-0819-1603\",\"id\":\"cust_5d5c94136607c400012685cc\",\"authToken\":\"f992c1681c2dcf9da10ec591cd9b8f0a5b1d011aae9200ef9b2fc5e15334392d\",\"updatedOn\":\"2019-08-21T00:45:07.543Z\",\"createdOn\":\"2019-08-21T00:45:07.543Z\",\"customerSince\":\"2019-08-21T00:45:07.543Z\",\"newPassword\":\"53ed1982b33a0385390a\"}";
-			Console.Write("\n");
-			Console.Write("\n{0}", str);
-			Console.Write("\n");
-			Console.Write("\n{0}", TextUtil.BeautifyJson(str));
-		}
-
-		private static void TestDriveInfo()
-		{
-			var allDrives = DriveInfo.GetDrives().Where(x => x.DriveType.Equals(DriveType.Fixed));
-
-			foreach (var d in allDrives) {
-				Console.Write("\n============================");
-				Console.Write("\n                Name: {0}", d.Name);
-				Console.Write("\n           DriveType: {0}", d.DriveType);
-				if (d.IsReady) {
-					Console.Write("\n         VolumeLabel: {0}", d.VolumeLabel);
-					Console.Write("\n         DriveFormat: {0}", d.DriveFormat);
-					Console.Write("\n                 10%:  {0:n2} GB ({1:n0} bytes)", d.TotalSize * .1 / 1024.0 / 1024.0 / 1024.0, d.TotalSize * .1);
-					Console.Write("\n  AvailableFreeSpace: {0:n2} GB ( {1:n0} bytes)", d.AvailableFreeSpace / 1024.0 / 1024.0 / 1024.0, d.AvailableFreeSpace);
-					Console.Write("\n           TotalSize: {0:n2} GB ({1:n0} bytes)", d.TotalSize / 1024.0 / 1024.0 / 1024.0, d.TotalSize);
-					Console.Write("\n       RootDirectory: {0}", d.RootDirectory);
-				}
-			}
-		}
 
 		private static void EnumerableSorter()
 		{
@@ -676,64 +742,6 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test FileInfo Properties
-
-		#region Test FileUtil.IsStringInList
-		private static void Test_FileUtil_IsStringInList()
-		{
-			consoleOut = true;
-			var tests = new string[] {
-				"",
-				"asdf",
-				"ASDF",
-			};
-
-			var lists = new List<String>[] {
-				new List<String> { "" },
-				new List<String> { "asdf" },
-				new List<String> { "ASDF" },
-			};
-
-			bool result;
-			var _fileUtil = new FileUtil();
-
-			for (int i = 0; i < tests.Length; i++) {
-				for (int j = 0; j < lists.Length; j++) {
-					totalCount++;
-					Console.Write("\n");
-					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", lists[j]), _fileUtil.IsStringInList(tests[i], lists[j]));
-				}
-			}
-		}
-		#endregion Test FileUtil.IsStringInList
-
-		#region Test FileUtil.IsStringInArray
-		private static void Test_FileUtil_IsStringInArray()
-		{
-			consoleOut = true;
-			var tests = new string[] {
-				"",
-				"asdf",
-				"ASDF",
-			};
-
-			var arrays = new List<string[]> {
-				new string[] { "", },
-				new string[] { "asdf", },
-				new string[] { "ASDF", },
-			};
-
-			bool result;
-			var _fileUtil = new FileUtil();
-
-			for (int i = 0; i < tests.Length; i++) {
-				for (int j = 0; j < arrays.Count; j++) {
-					totalCount++;
-					Console.Write("\n");
-					Console.Write("\n{0}) Is '{1}' in [{2}]? {3}", totalCount, tests[i], String.Join(", ", arrays[j]), _fileUtil.IsStringInArray(tests[i], arrays[j]));
-				}
-			}
-		}
-		#endregion Test FileUtil.IsStringInArray
 
 		#region Test_NewDateTimeMinValue
 		private static void Test_NewDateTimeMinValue()
