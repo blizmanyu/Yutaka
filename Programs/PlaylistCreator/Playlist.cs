@@ -109,6 +109,7 @@ namespace PlaylistCreator
 			new SongFileInfo("Hirai Ken", "Even If"),
 			new SongFileInfo("Hirai Ken", "Hitomi wo Tojite"),
 			new SongFileInfo("I WiSH", "asu e no tobira"),
+			new SongFileInfo("Kubota Toshinobu", "La La La Love Song"),
 			new SongFileInfo("Mr.Children", "Everything (It's you)"),
 			new SongFileInfo("Mr.Children", "hana"),
 			new SongFileInfo("Mr.Children", "kuchibue"),
