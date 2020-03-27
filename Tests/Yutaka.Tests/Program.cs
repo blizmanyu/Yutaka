@@ -42,20 +42,21 @@ namespace Yutaka.Tests
 		const string TIMESTAMP = @"[HH:mm:ss] ";
 
 		// PIVs //
+		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly DateTime UnixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 		private static readonly Guid CLSID_Shell = Guid.Parse("13709620-C279-11CE-A49E-444553540000");
-		private static DateTime startTime = DateTime.Now;
+		private static readonly List<string> bots = new List<string> { "bot", "crawler", "spider", "80legs", "baidu", "yahoo! slurp", "ia_archiver", "mediapartners-google", "lwp-trivial", "nederland.zoek", "ahoy", "anthill", "appie", "arale", "araneo", "ariadne", "atn_worldwide", "atomz", "bjaaland", "ukonline", "calif", "combine", "cosmos", "cusco", "cyberspyder", "digger", "grabber", "downloadexpress", "ecollector", "ebiness", "esculapio", "esther", "felix ide", "hamahakki", "kit-fireball", "fouineur", "freecrawl", "desertrealm", "gcreep", "golem", "griffon", "gromit", "gulliver", "gulper", "whowhere", "havindex", "hotwired", "htdig", "ingrid", "informant", "inspectorwww", "iron33", "teoma", "ask jeeves", "jeeves", "image.kapsi.net", "kdd-explorer", "label-grabber", "larbin", "linkidator", "linkwalker", "lockon", "marvin", "mattie", "mediafox", "merzscope", "nec-meshexplorer", "udmsearch", "moget", "motor", "muncher", "muninn", "muscatferret", "mwdsearch", "sharp-info-agent", "webmechanic", "netscoop", "newscan-online", "objectssearch", "orbsearch", "packrat", "pageboy", "parasite", "patric", "pegasus", "phpdig", "piltdownman", "pimptrain", "plumtreewebaccessor", "getterrobo-plus", "raven", "roadrunner", "robbie", "robocrawl", "robofox", "webbandit", "scooter", "search-au", "searchprocess", "senrigan", "shagseeker", "site valet", "skymob", "slurp", "snooper", "speedy", "curl_image_client", "suke", "www.sygol.com", "tach_bw", "templeton", "titin", "topiclink", "udmsearch", "urlck", "valkyrie libwww-perl", "verticrawl", "victoria", "webscout", "voyager", "crawlpaper", "webcatcher", "t-h-u-n-d-e-r-s-t-o-n-e", "webmoose", "pagesinventory", "webquest", "weborama", "fetcher", "webreaper", "webwalker", "winona", "occam", "robi", "fdse", "jobo", "rhcs", "gazz", "dwcp", "yeti", "fido", "wlm", "wolp", "wwwc", "xget", "legs", "curl", "webs", "wget", "sift", "cmc" };
+		private static readonly double errorPerThreshold = 0.07;
+		private static readonly int errorCountThreshold = 7;
+		private static int errorCount = 0;
+		private static int totalCount = 0;
 		private static FileUtil _fileUtil = new FileUtil();
-		private static List<string> bots = new List<string> { "bot", "crawler", "spider", "80legs", "baidu", "yahoo! slurp", "ia_archiver", "mediapartners-google", "lwp-trivial", "nederland.zoek", "ahoy", "anthill", "appie", "arale", "araneo", "ariadne", "atn_worldwide", "atomz", "bjaaland", "ukonline", "calif", "combine", "cosmos", "cusco", "cyberspyder", "digger", "grabber", "downloadexpress", "ecollector", "ebiness", "esculapio", "esther", "felix ide", "hamahakki", "kit-fireball", "fouineur", "freecrawl", "desertrealm", "gcreep", "golem", "griffon", "gromit", "gulliver", "gulper", "whowhere", "havindex", "hotwired", "htdig", "ingrid", "informant", "inspectorwww", "iron33", "teoma", "ask jeeves", "jeeves", "image.kapsi.net", "kdd-explorer", "label-grabber", "larbin", "linkidator", "linkwalker", "lockon", "marvin", "mattie", "mediafox", "merzscope", "nec-meshexplorer", "udmsearch", "moget", "motor", "muncher", "muninn", "muscatferret", "mwdsearch", "sharp-info-agent", "webmechanic", "netscoop", "newscan-online", "objectssearch", "orbsearch", "packrat", "pageboy", "parasite", "patric", "pegasus", "phpdig", "piltdownman", "pimptrain", "plumtreewebaccessor", "getterrobo-plus", "raven", "roadrunner", "robbie", "robocrawl", "robofox", "webbandit", "scooter", "search-au", "searchprocess", "senrigan", "shagseeker", "site valet", "skymob", "slurp", "snooper", "speedy", "curl_image_client", "suke", "www.sygol.com", "tach_bw", "templeton", "titin", "topiclink", "udmsearch", "urlck", "valkyrie libwww-perl", "verticrawl", "victoria", "webscout", "voyager", "crawlpaper", "webcatcher", "t-h-u-n-d-e-r-s-t-o-n-e", "webmoose", "pagesinventory", "webquest", "weborama", "fetcher", "webreaper", "webwalker", "winona", "occam", "robi", "fdse", "jobo", "rhcs", "gazz", "dwcp", "yeti", "fido", "wlm", "wolp", "wwwc", "xget", "legs", "curl", "webs", "wget", "sift", "cmc" };
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static MailUtil _mailUtil = new MailUtil();
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static WebUtil _webUtil = new WebUtil();
-		private static int errorCount = 0;
-		private static int totalCount = 0;
-		private static int errorCountThreshold = 7;
-		private static double errorPerThreshold = 0.07;
 		#region private static string[][] Apps = new string[][] {
-		private static string[][] Apps = new string[][] {
+		private static readonly string[][] Apps = new string[][] {
 			new string[] { "Messenger", @"Apps\Messenger\", },
 			new string[] { "Cash App", @"Apps\Cash App\", },
 			new string[] { "Facebook", @"Apps\Facebook\", },
@@ -170,7 +171,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_GmailSmtpClient_TrySend();
+			Test202003261724();
 			EndProgram();
 		}
 
@@ -245,9 +246,14 @@ namespace Yutaka.Tests
 
 		#region DateTime Tests
 		// Created Mar 26, 2020 // Modified Mar 26, 2020 //
-		private static void Test_DateTime()
+		private static void Test202003261724()
 		{
-
+			var now = DateTime.UtcNow;
+			Console.Write("\n");
+			Console.Write("\n    ToString: {0}", now.ToString("yyyyMMddHHmmssfff"));
+			Console.Write("\n       Ticks: {0}", (Int64) now.Subtract(UnixTime).Ticks);
+			Console.Write("\nMilliseconds: {0}", (Int64) now.Subtract(UnixTime).TotalMilliseconds);
+			Console.Write("\n     Seconds: {0}", (Int64) now.Subtract(UnixTime).TotalSeconds);
 		}
 
 		// Created Jan 9, 2020 // Modified Jan 9, 2020 //
