@@ -1,38 +1,38 @@
-﻿//using System;
-//using System.Diagnostics;
-//using System.IO;
-//using System.Linq;
-//using System.Runtime.InteropServices;
-//using System.Text.RegularExpressions;
-//using NLog;
-//using Yutaka.IO2;
+﻿using System;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Runtime.InteropServices;
+using System.Text.RegularExpressions;
+using NLog;
+using Yutaka.IO2;
 
 namespace FileManagerNet462
 {
 	class Program
 	{
-		//// Config/Settings //
-		//const string PROGRAM_NAME = "FileManagerNet462";
-		//private static bool consoleOut = true; // default = false //
+		// Config/Settings //
+		const string PROGRAM_NAME = "FileManagerNet462";
+		private static bool consoleOut = true; // default = false //
 
-		//#region Fields
-		//#region Static Externs
-		//[DllImport("kernel32.dll")]
-		//static extern IntPtr GetConsoleWindow();
-		//[DllImport("user32.dll")]
-		//static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-		//const int SW_HIDE = 0;
-		//#endregion
+		#region Fields
+		#region Static Externs
+		[DllImport("kernel32.dll")]
+		static extern IntPtr GetConsoleWindow();
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		const int SW_HIDE = 0;
+		#endregion
 
-		//const string TIMESTAMP = @"[HH:mm:ss] ";
-		//private static readonly DateTime startTime = DateTime.Now;
-		//private static readonly double errorPerThreshold = 0.07;
-		//private static readonly int errorCountThreshold = 7;
-		//private static Logger logger = LogManager.GetCurrentClassLogger();
-		//private static Stopwatch stopwatch = new Stopwatch();
-		//private static int errorCount = 0;
-		//private static int totalCount = 0;
-		//#endregion
+		const string TIMESTAMP = @"[HH:mm:ss] ";
+		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly double errorPerThreshold = 0.07;
+		private static readonly int errorCountThreshold = 7;
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static Stopwatch stopwatch = new Stopwatch();
+		private static int errorCount = 0;
+		private static int totalCount = 0;
+		#endregion
 
 		static void Main(string[] args)
 		{
@@ -49,41 +49,31 @@ namespace FileManagerNet462
 			//EndProgram();
 		}
 
-		//private static void MoveAllFiles(string source, string dest, bool deleteFile = false)
-		//{
-		//	consoleOut = !deleteFile;
-		//	Directory.CreateDirectory(dest);
+		private static void MoveAllFiles(string source, string dest, bool deleteFile = false)
+		{
+			consoleOut = !deleteFile;
+			Directory.CreateDirectory(dest);
 
-		//	YuFile fi;
-		//	var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
-		//	var filesCount = files.Count;
+			YuFile fi;
+			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
+			var filesCount = files.Count;
 
-		//	for (var i = 0; i < filesCount; i++) {
-		//		fi = new YuFile(files[i]);
-		//		if (consoleOut) {
-		//			Console.Write("\n");
-		//			Console.Write("\n{0}/{1} ({2})", ++totalCount, filesCount, ((double) totalCount / filesCount).ToString("p2"));
-		//			Console.Write("\n{0}", files[i]);
-		//			Console.Write("\n     CreationTime: {0}", fi.CreationTime);
-		//			Console.Write("\n        DateTaken: {0}", fi.DateTaken);
-		//			Console.Write("\n   LastAccessTime: {0}", fi.LastAccessTime);
-		//			Console.Write("\n    LastWriteTime: {0}", fi.LastWriteTime);
-		//			Console.Write("\n      MinDateTime: {0}", fi.MinDateTime);
-		//			Console.Write("\n");
-		//			Console.Write("\n   DirectoryName: {0}", fi.DirectoryName);
-		//			Console.Write("\n   ParentFolder: {0}", fi.ParentFolder);
-		//			Console.Write("\n   NewFolder: {0}", fi.NewFolder);
-		//			Console.Write("\n   NewFilename: {0}", fi.NewFilename);
-		//		}
+			for (var i = 0; i < filesCount; i++) {
+				fi = new YuFile(files[i]);
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}/{1} ({2})", ++totalCount, filesCount, ((double) totalCount / filesCount).ToString("p2"));
+					fi.Debug();
+				}
 
-		//		Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
-		//		FileUtil.Move(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.NewFilename), deleteFile);
-		//		FileUtil.Redate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.NewFilename), fi.MinDateTime);
-		//	}
+				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
+				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize))
+					FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime);
+			}
 
-		//	var count = FileUtil.DeleteAllThumbsDb(source);
-		//	Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
-		//}
+			//var count = FileUtil.DeleteAllThumbsDb(source);
+			//Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
+		}
 
 		//private static void Test_YuVideo(string source, string dest, bool deleteFile = false)
 		//{
@@ -195,61 +185,61 @@ namespace FileManagerNet462
 		//	Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
 		//}
 
-		//#region Start & EndProgram
-		//private static void StartProgram()
-		//{
-		//	var log = String.Format("Starting {0} program", PROGRAM_NAME);
-		//	logger.Info(log);
+		#region Start & EndProgram
+		private static void StartProgram()
+		{
+			var log = String.Format("Starting {0} program", PROGRAM_NAME);
+			logger.Info(log);
 
-		//	if (consoleOut) {
-		//		Console.Clear();
-		//		Console.Write("{0}{1}", DateTime.Now.ToString(TIMESTAMP), log);
-		//	}
+			if (consoleOut) {
+				Console.Clear();
+				Console.Write("{0}{1}", DateTime.Now.ToString(TIMESTAMP), log);
+			}
 
-		//	else {
-		//		var handle = GetConsoleWindow();
-		//		ShowWindow(handle, SW_HIDE); // hide window //
-		//	}
-		//}
+			else {
+				var handle = GetConsoleWindow();
+				ShowWindow(handle, SW_HIDE); // hide window //
+			}
+		}
 
-		//private static void EndProgram()
-		//{
-		//	var endTime = DateTime.Now;
-		//	var ts = endTime - startTime;
-		//	var errorPer = (double) errorCount / totalCount;
+		private static void EndProgram()
+		{
+			var endTime = DateTime.Now;
+			var ts = endTime - startTime;
+			var errorPer = (double) errorCount / totalCount;
 
-		//	if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
-		//		logger.Error("The number of errors is above the threshold.");
+			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
+				logger.Error("The number of errors is above the threshold.");
 
-		//		if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
-		//			//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
-		//		}
-		//	}
+				if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
+					//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+				}
+			}
 
-		//	var log = new string[4];
-		//	log[0] = "Ending program";
-		//	log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
-		//	log[2] = String.Format("Total: {0}", totalCount);
-		//	log[3] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
+			var log = new string[4];
+			log[0] = "Ending program";
+			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
+			log[2] = String.Format("Total: {0}", totalCount);
+			log[3] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
 
-		//	logger.Info(log[0]);
-		//	logger.Info(log[1]);
-		//	logger.Info(log[2]);
-		//	logger.Info(log[3]);
+			logger.Info(log[0]);
+			logger.Info(log[1]);
+			logger.Info(log[2]);
+			logger.Info(log[3]);
 
-		//	if (consoleOut) {
-		//		var timestamp = DateTime.Now.ToString(TIMESTAMP);
-		//		Console.Write("\n");
-		//		Console.Write("\n{0}{1}", timestamp, log[0]);
-		//		Console.Write("\n{0}{1}", timestamp, log[1]);
-		//		Console.Write("\n{0}{1}", timestamp, log[2]);
-		//		Console.Write("\n{0}{1}", timestamp, log[3]);
-		//		Console.Write("\n.... Press any key to close the program ....");
-		//		Console.ReadKey(true);
-		//	}
+			if (consoleOut) {
+				var timestamp = DateTime.Now.ToString(TIMESTAMP);
+				Console.Write("\n");
+				Console.Write("\n{0}{1}", timestamp, log[0]);
+				Console.Write("\n{0}{1}", timestamp, log[1]);
+				Console.Write("\n{0}{1}", timestamp, log[2]);
+				Console.Write("\n{0}{1}", timestamp, log[3]);
+				Console.Write("\n.... Press any key to close the program ....");
+				Console.ReadKey(true);
+			}
 
-		//	Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
-		//}
-		//#endregion Start & EndProgram
+			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
+		}
+		#endregion Start & EndProgram
 	}
 }
