@@ -12,7 +12,7 @@ namespace PlaylistCreator
 		const string srcFolder = @"C:\Music\00 Genres\";
 		const string playlistFolder = @"C:\Music\01 Playlists\";
 		private static readonly bool doEnglish = true;
-		private static readonly bool doJPopFallWinter = true;
+		private static readonly bool doJPopFallWinter = false;
 		private static readonly bool doJPopSpringSummer = true;
 		private static readonly DateTime newSongThreshold = DateTime.Now.AddYears(-2);
 		private static readonly HashSet<string> supportedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".mp3", ".m4a", ".wma" };
