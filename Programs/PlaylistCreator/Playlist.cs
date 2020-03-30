@@ -186,7 +186,7 @@ namespace PlaylistCreator
 						AllSongsCount = AllSongs.Count;
 
 						// Step 2: Create GoodList //
-						GoodList = AllSongs.Where(x => GoodEnglishSongs.Contains(x)).ToList();
+						GoodList = AllSongs.Where(x => GoodEnglishSongs.Contains(x)).OrderBy(x => x.Title).ThenBy(x => x.Artist).ToList();
 						AllSongs = AllSongs.Except(GoodList).ToList();
 						GoodListCount = GoodList.Count;
 
