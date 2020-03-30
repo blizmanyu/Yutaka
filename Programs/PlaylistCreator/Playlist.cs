@@ -63,6 +63,7 @@ namespace PlaylistCreator
 			new SongFileInfo("The Temper Trap", "Love Lost"),
 			new SongFileInfo("Three Days Grace", "Never Too Late"),
 			new SongFileInfo("U2", "With Or Without You"),
+			new SongFileInfo("Yola Recoba", "Wicked Game"),
 			new SongFileInfo("Zedd", "Clarity"),
 		};
 		#endregion GoodEnglishSongs
