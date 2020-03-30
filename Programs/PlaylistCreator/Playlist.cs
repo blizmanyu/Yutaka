@@ -350,7 +350,7 @@ namespace PlaylistCreator
 				throw new Exception(String.Format("<destFolder> is required.{0}Exception thrown in Playlist.WriteForITunes(string destFolder).{0}", Environment.NewLine));
 
 			try {
-				var dest = String.Format("{0}{1} {2:yyyy MMdd HHmm ssff}.txt", destFolder, Name, DateTime.Now);
+				var dest = String.Format("{0}{1} {2:yyyy MMdd HHmm}.txt", destFolder, Name, DateTime.Now);
 				var content = "Name\tArtist\tComposer\tAlbum\tGrouping\tGenre\tSize\tTime\tDisc Number\tDisc Count\tTrack Number\tTrack Count\tYear\tDate Modified\tDate Added\tBit Rate\tSample Rate\tVolume Adjustment\tKind\tEqualizer\tComments\tPlays\tLast Played\tSkips\tLast Skipped\tMy Rating\tLocation";
 
 				foreach (var song in ThePlaylist)
@@ -379,7 +379,7 @@ namespace PlaylistCreator
 
 		public void WriteForWinamp(string destFolder)
 		{
-			var dest = String.Format("{0}{1} {2:yyyy MMdd HHmm ssff}.m3u", destFolder, Name, DateTime.Now);
+			var dest = String.Format("{0}{1} {2:yyyy MMdd HHmm}.m3u", destFolder, Name, DateTime.Now);
 			var content = "#EXTM3U";
 
 			foreach (var song in ThePlaylist) {
