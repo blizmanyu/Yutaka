@@ -186,23 +186,28 @@ namespace PlaylistCreator
 						AllSongsCount = AllSongs.Count;
 
 						// Step 2: Create GoodList //
-						GoodList = AllSongs.Where(x => GoodEnglishSongs.Contains(x))
-							.OrderBy(x => x.Title).ThenBy(y => y.Artist).ToList();
+						GoodList = AllSongs.Where(x => GoodEnglishSongs.Contains(x)).ToList();
+						AllSongs = AllSongs.Except(GoodList).ToList();
 						GoodListCount = GoodList.Count;
 
 						// Step 3: Create NewList // Ignored for J-Pop lists //
+						NewList = AllSongs.Where(x => x.Date > NewSongThreshold).ToList();
+						AllSongs = AllSongs.Except(NewList).ToList();
+						NewListCount = NewList.Count;
+
 						// Step 4: Create NewPlusGoodList // Ignored for J-Pop lists //
+						NewPlusGoodList = NewList.Union(GoodList).OrderBy(x => x.Title).ThenBy(x => x.Artist).ToList();
+						NewPlusGoodListCount = NewPlusGoodList.Count;
 
 						// Step 5: Create ThePlaylist //
-						AllSongs = AllSongs.Except(GoodList).ToList();
 						AllSongs = AllSongs.OrderBy(x => x.Title).ThenBy(y => y.Artist).ToList();
 						goodInd = 0;
 
 						for (int i = 0; i < AllSongs.Count; i++) {
-							if (goodInd == GoodListCount)
+							if (goodInd == NewPlusGoodListCount)
 								goodInd = 0;
 
-							ThePlaylist.Add(GoodList[goodInd++]);
+							ThePlaylist.Add(NewPlusGoodList[goodInd++]);
 							ThePlaylist.Add(AllSongs[i++]);
 
 							try {
