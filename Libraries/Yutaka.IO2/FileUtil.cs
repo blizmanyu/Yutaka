@@ -208,9 +208,10 @@ namespace Yutaka.IO2
 			#endregion Input Check
 
 			var count = 0;
+			string response;
 
 			Directory.EnumerateFiles(path, searchPattern, searchOption).AsParallel().ForAll(x => {
-				if (TryDelete(x))
+				if (TryDelete(x, out response))
 					count++;
 			});
 
@@ -251,23 +252,35 @@ namespace Yutaka.IO2
 		/// Deletes the specified file.
 		/// </summary>
 		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
-		public static bool TryDelete(string path)
+		/// <param name="response">The response containing the result with any <see cref="Exception"/> messages.</param>
+		/// <returns>True if path was deleted successfully; otherwise, False.</returns>
+		public static bool TryDelete(string path, out string response)
 		{
+			#region Input Check
+			response = "";
+
+			if (String.IsNullOrWhiteSpace(path))
+				response = String.Format("{0}<path> is required.{1}", response, Environment.NewLine);
+			else if (!File.Exists(path))
+				response = String.Format("{0}File '{2}' doesn't exist.{1}", response, Environment.NewLine, path);
+
+			if (!String.IsNullOrWhiteSpace(response)) {
+				response = String.Format("{0}Returning TRUE.{1}{1}", response, Environment.NewLine);
+				return true; // returns true because the end result of the file not existing is true
+			}
+			#endregion Input Check
+
 			try {
-				new FileInfo(path).Delete();
+				File.Delete(path);
 				return true;
 			}
 
 			catch (Exception ex) {
 				#region Log
-				string log;
-
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
+					response = String.Format("{0}{2}Exception thrown in FileUtil.TryDelete(string path='{3}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryDelete(string path='{3}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
-
-				Console.Write("\n{0}", log);
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.TryDelete(string path='{3}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
 				#endregion Log
 
 				return false;
