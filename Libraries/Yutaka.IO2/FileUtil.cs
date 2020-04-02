@@ -209,6 +209,36 @@ namespace Yutaka.IO2
 		}
 
 		/// <summary>
+		/// Deletes all cache files in a specified path, and optionally searches subdirectories. Cache files are ".ds_store", "desktop.ini", and "thumbs.db". Returns the number of files deleted.
+		/// </summary>
+		/// <param name="path">The relative or absolute path to the directory to search. This string is NOT case-sensitive.</param>
+		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories. The default value is &lt;TopDirectoryOnly&gt;.</param>
+		/// <returns>The number of files deleted.</returns>
+		public static int DeleteAllCacheFiles(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}<path> is required.{1}", log, Environment.NewLine);
+			else if (!Directory.Exists(path))
+				log = String.Format("{0}Path '{2}' doesn't exist.{1}", log, Environment.NewLine, path);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.DeleteAllCacheFiles(string folderPath, string searchPattern = '*', SearchOption searchOption = SearchOption.TopDirectoryOnly).{1}{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
+				return 0;
+			}
+			#endregion Input Check
+
+			var count = 0;
+			count += Delete(path, ".ds_store", searchOption);
+			count += Delete(path, "desktop*.ini", searchOption);
+			count += Delete(path, "thumbs*.db", searchOption);
+			return count;
+		}
+
+		/// <summary>
 		/// Deletes the specified file.
 		/// </summary>
 		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
