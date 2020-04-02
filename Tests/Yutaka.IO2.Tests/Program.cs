@@ -33,11 +33,19 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_YuImage();
+			Test_DeleteAllCacheFiles();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
+		// Created Apr 2, 2020, Modified: Apr 2, 2020 //
+		private static void Test_DeleteAllCacheFiles()
+		{
+			var folderPath = @"C:\TEMP\TEMP";
+			var count = FileUtil.DeleteAllCacheFiles(folderPath, SearchOption.AllDirectories);
+			Console.Write("\nDeleted {0} file(s).", count);
+		}
+
 		// Created Mar 20, 2020, Modified: Mar 20, 2020 //
 		private static void Test_TryWrite()
 		{
