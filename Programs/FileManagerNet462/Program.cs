@@ -71,8 +71,8 @@ namespace FileManagerNet462
 					FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime);
 			}
 
-			//var count = FileUtil.DeleteAllThumbsDb(source);
-			//Console.Write("\n\nDeleted {0} 'Thumbs.db's.", count);
+			var count = FileUtil.DeleteAllCacheFiles(source);
+			Console.Write("\n\nDeleted {0} cache files", count);
 		}
 
 		//private static void Test_YuVideo(string source, string dest, bool deleteFile = false)
