@@ -183,25 +183,34 @@ namespace Yutaka.IO2
 		/// <summary>
 		/// Deletes all files that match a search pattern in a specified path, and optionally searches subdirectories. Returns the number of files deleted.
 		/// </summary>
-		/// <param name="folderPath">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
-		/// <param name="searchPattern">The search string to match against the names of files in &lt;folderPath&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
-		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories.</param>
+		/// <param name="path">The relative or absolute path to the directory to search. This string is NOT case-sensitive.</param>
+		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
+		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories. The default value is &lt;TopDirectoryOnly&gt;.</param>
 		/// <returns>The number of files deleted.</returns>
-		public static int Delete(string folderPath, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		public static int Delete(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			#region Input Check
-			if (String.IsNullOrWhiteSpace(folderPath))
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}<path> is required.{1}", log, Environment.NewLine);
+			else if (!Directory.Exists(path))
+				log = String.Format("{0}Path '{2}' doesn't exist.{1}", log, Environment.NewLine, path);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.Delete(string path, string searchPattern = '*', SearchOption searchOption = SearchOption.TopDirectoryOnly).{1}{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
 				return 0;
-			if (!Directory.Exists(folderPath))
-				return 0;
+			}
+
 			if (String.IsNullOrWhiteSpace(searchPattern))
 				searchPattern = "*";
 			#endregion Input Check
 
 			var count = 0;
 
-			Directory.EnumerateFiles(folderPath, searchPattern, searchOption).AsParallel().ForAll(path => {
-				if (TryDelete(path))
+			Directory.EnumerateFiles(path, searchPattern, searchOption).AsParallel().ForAll(x => {
+				if (TryDelete(x))
 					count++;
 			});
 
