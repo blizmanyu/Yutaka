@@ -201,12 +201,8 @@ namespace Yutaka.IO2
 			var count = 0;
 
 			Directory.EnumerateFiles(folderPath, searchPattern, searchOption).AsParallel().ForAll(path => {
-				try {
-					File.Delete(path);
+				if (TryDelete(path))
 					count++;
-				}
-
-				catch (Exception) { }
 			});
 
 			return count;
