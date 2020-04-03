@@ -25,8 +25,8 @@ namespace Yutaka.IO
 		public DateTime MinDateTime;
 		public DateTime MinDateTimeThreshold = UNIX_TIME;
 		public DateTime OldThreshold = DateTime.Now.AddYears(-7);
-		#region public string[][] SpecialFolders = new string[][] {
-		public string[][] SpecialFolders = new string[][] {
+		#region protected static readonly string[][] SpecialFolders = new string[][] {
+		protected static readonly string[][] SpecialFolders = new string[][] {
 			new string[] { "babystepsanddownwarddogs", @"zz\BareSolesBearSoul\", },
 			new string[] { "PreciousO23_Bucket", @"zz\Olga\", },
 			new string[] { "BareSolesBearSoul", @"zz\BareSolesBearSoul\", },
@@ -35,7 +35,6 @@ namespace Yutaka.IO
 			new string[] { "United Airlines", @"Documents\Itineraries\", },
 			new string[] { "Clash of Clans", @"Games\Clash of Clans\", },
 			new string[] { "UnitedAirlines", @"Documents\Itineraries\", },
-			new string[] { "Brian Viveros", @"Brian Viveros\", },
 			new string[] { "Clash Royale", @"Games\Clash Royale\", },
 			new string[] { "ClashOfClans", @"Games\Clash of Clans\", },
 			new string[] { "Confirmation", @"Documents\Receipts\", },
@@ -113,6 +112,7 @@ namespace Yutaka.IO
 			new string[] { "Delta", @"Documents\Itineraries\", },
 			new string[] { "Gmail", @"Apps\Gmail\", },
 			new string[] { "Happn", @"zz\Happn\", },
+			new string[] { "Hinge", @"zz\Hinge\", },
 			new string[] { "Maxim", @"Documents\Maxim\", },
 			new string[] { "Sarah", @"zz\Sarah\", },
 			new string[] { "Scans", @"Documents\Scans\", },
@@ -147,7 +147,7 @@ namespace Yutaka.IO
 			new string[] { "Games", @"Games\", },
 			new string[] { "Apps", @"Apps\", },
 		};
-		#endregion public string[][] SpecialFolders
+		#endregion protected static readonly string[][] SpecialFolders
 		public long Size;
 		public string DirectoryName;
 		public string Extension;
