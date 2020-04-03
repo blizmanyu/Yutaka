@@ -36,17 +36,48 @@ namespace FileManagerNet462
 
 		static void Main(string[] args)
 		{
-			//StartProgram();
+			StartProgram();
 
-			//var deleteFile = false;
-			//string source, dest;
-			//source = @"R:\DCIM\Game media\";
-			//dest = @"G:\From Galaxy S9\";
+			var deleteFile = false;
+			string source, dest;
+			source = @"E:\asdf\";
+			dest = @"G:\TEMP\";
 			//Test_YuImage(source, dest, deleteFile);
 			//Test_YuVideo(source, dest, deleteFile);
-			////MoveAllFiles(source, dest, deleteFile);
+			CopyAllFiles(source, dest, deleteFile);
+			MoveAllFiles(source, dest, deleteFile);
 
-			//EndProgram();
+			EndProgram();
+		}
+
+		private static void CopyAllFiles(string source, string dest, bool deleteFile = false)
+		{
+			consoleOut = !deleteFile;
+			Directory.CreateDirectory(dest);
+
+			YuFile fi;
+			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
+			var filesCount = files.Count;
+
+			for (var i = 0; i < filesCount; i++) {
+				fi = new YuFile(files[i]);
+				if (consoleOut) {
+					Console.Write("\n");
+					Console.Write("\n{0}/{1} ({2})", ++totalCount, filesCount, ((double) totalCount / filesCount).ToString("p2"));
+					fi.Debug();
+				}
+
+				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
+				if (FileUtil.TryCopy(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
+					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
+						continue;
+					else
+						errorCount++;
+				}
+
+				else
+					errorCount++;
+			}
 		}
 
 		private static void MoveAllFiles(string source, string dest, bool deleteFile = false)
@@ -67,8 +98,15 @@ namespace FileManagerNet462
 				}
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
-				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize))
-					FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime);
+				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
+					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
+						continue;
+					else
+						errorCount++;
+				}
+
+				else
+					errorCount++;
 			}
 
 			var count = FileUtil.DeleteAllCacheFiles(source);
