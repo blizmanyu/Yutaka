@@ -27,7 +27,6 @@ namespace Yutaka.IO2
 			new string[] { "United Airlines", @"Documents\Itineraries\", },
 			new string[] { "Clash of Clans", @"Games\Clash of Clans\", },
 			new string[] { "UnitedAirlines", @"Documents\Itineraries\", },
-			new string[] { "Brian Viveros", @"Brian Viveros\", },
 			new string[] { "Clash Royale", @"Games\Clash Royale\", },
 			new string[] { "ClashOfClans", @"Games\Clash of Clans\", },
 			new string[] { "Confirmation", @"Documents\Receipts\", },
