@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Yutaka.IO2
 {
@@ -445,8 +446,9 @@ namespace Yutaka.IO2
 		/// </summary>
 		/// <param name="filename">The file to set.</param>
 		/// <param name="dt">The new DateTime to set the file to.</param>
-		/// <returns>True if the redate succeeded. False otherwise.</returns>
-		public static bool TryRedate(string filename, DateTime dt)
+		/// <param name="retry">Whether to retry or not when the file is locked. Default is True.</param>
+		/// <returns>True if file dates were re-set successfully; otherwise, False.</returns>
+		public static bool TryRedate(string filename, DateTime dt, bool retry=true)
 		{
 			#region Input Check
 			var log = "";
@@ -468,6 +470,10 @@ namespace Yutaka.IO2
 			}
 
 			catch (Exception ex) {
+				if (retry && ex.Message.EndsWith(" because it is being used by another process.")) {
+					Thread.Sleep(1000);
+					return TryRedate(filename, dt, false);
+				}
 				#region Log
 				if (ex.InnerException == null)
 					log = String.Format("{0}{2}Exception thrown in FileUtil.TryRedate(string filename='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filename, dt);
