@@ -105,6 +105,7 @@ namespace Yutaka.IO2
 			new string[] { "Delta", @"Documents\Itineraries\", },
 			new string[] { "Gmail", @"Apps\Gmail\", },
 			new string[] { "Happn", @"zz\Happn\", },
+			new string[] { "Hinge", @"zz\Hinge\", },
 			new string[] { "Maxim", @"Documents\Maxim\", },
 			new string[] { "Sarah", @"zz\Sarah\", },
 			new string[] { "Scans", @"Documents\Scans\", },
