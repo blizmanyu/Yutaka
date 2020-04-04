@@ -59,7 +59,7 @@ namespace Yutaka.IO2
 
 			else {
 				FastCopy(sourceFileName, destFileName);
-				new FileInfo(sourceFileName).Delete();
+				File.Delete(sourceFileName);
 			}
 		}
 		#endregion Utilities
@@ -316,6 +316,7 @@ namespace Yutaka.IO2
 			#endregion Input Check
 
 			if (File.Exists(destFileName)) {
+				FileInfo sourceFile;
 				string ext, newExt;
 				switch (overwriteOption) {
 					#region case OverwriteOption.Overwrite:
@@ -337,9 +338,13 @@ namespace Yutaka.IO2
 					#endregion
 					#region case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
 					case OverwriteOption.OverwriteIfDifferentSizeOrSourceNewer:
-						var sourceFile = new FileInfo(sourceFileName);
+						sourceFile = new FileInfo(sourceFileName);
 						var destFile = new FileInfo(destFileName);
-						if (sourceFile.Length != destFile.Length || sourceFile.LastWriteTime > destFile.LastWriteTime)
+						if (sourceFile.Length == destFile.Length && sourceFile.LastWriteTime == destFile.LastWriteTime) {
+							sourceFile = null;
+							File.Delete(sourceFileName);
+						}
+						else
 							FastMove(sourceFileName, destFileName);
 						sourceFile = null;
 						destFile = null;
@@ -354,7 +359,12 @@ namespace Yutaka.IO2
 					#endregion
 					#region case OverwriteOption.RenameIfDifferentSize:
 					case OverwriteOption.RenameIfDifferentSize:
-						if (new FileInfo(sourceFileName).Length != new FileInfo(destFileName).Length) {
+						sourceFile = new FileInfo(sourceFileName);
+						if (sourceFile.Length == new FileInfo(destFileName).Length) {
+							sourceFile = null;
+							File.Delete(sourceFileName);
+						}
+						else {
 							ext = Path.GetExtension(destFileName);
 							newExt = String.Format(" Copy{0}", ext);
 							Move(sourceFileName, destFileName.Replace(ext, newExt), overwriteOption);
