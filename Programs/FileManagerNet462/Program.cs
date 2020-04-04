@@ -34,6 +34,7 @@ namespace FileManagerNet462
 		private static int totalCount = 0;
 		#endregion
 
+		// TODO: if total size is over 1GB, warn! // Fix/improve YuFile.SetNewFolder() //
 		static void Main(string[] args)
 		{
 			StartProgram();
