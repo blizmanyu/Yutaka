@@ -13,7 +13,7 @@ namespace FileManagerNet462
 	{
 		// Config/Settings //
 		const string PROGRAM_NAME = "FileManagerNet462";
-		private static readonly bool consoleOut = true; // default = false //
+		private static bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -38,14 +38,21 @@ namespace FileManagerNet462
 		{
 			StartProgram();
 
+			var deleteFiles = false;
+			consoleOut = !deleteFiles;
 			var dest = @"asdfasdf\";
 			var sources = new string[] {
 				@"asdfasdf\",
 			};
 
-			foreach (var source in sources) {
-				CopyAllFiles(source, dest);
-				//MoveAllFiles(source, dest);
+			if (deleteFiles) {
+				foreach (var source in sources)
+					MoveAllFiles(source, dest);
+			}
+
+			else {
+				foreach (var source in sources)
+					CopyAllFiles(source, dest);
 			}
 
 			//var count = FileUtil.DeleteAllCacheFiles(@"G:\Pictures\2020\", SearchOption.AllDirectories);
@@ -67,11 +74,11 @@ namespace FileManagerNet462
 			for (var i = 0; i < filesCount; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
-				if (consoleOut) {
-					Console.Write("\n");
-					Console.Write("\n{3} {0}/{1} ({2})", ++curCount, filesCount, ((double) curCount / filesCount).ToString("p2"), source);
+				Console.Write("\n");
+				Console.Write("\n{3} {0}/{1} ({2})", ++curCount, filesCount, ((double) curCount / filesCount).ToString("p2"), source);
+
+				if (consoleOut)
 					fi.Debug();
-				}
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryCopy(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
@@ -102,11 +109,11 @@ namespace FileManagerNet462
 			for (var i = 0; i < filesCount; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
-				if (consoleOut) {
-					Console.Write("\n");
-					Console.Write("\n{3} {0}/{1} ({2})", ++curCount, filesCount, ((double) curCount / filesCount).ToString("p2"), source);
+				Console.Write("\n");
+				Console.Write("\n{3} {0}/{1} ({2})", ++curCount, filesCount, ((double) curCount / filesCount).ToString("p2"), source);
+
+				if (consoleOut)
 					fi.Debug();
-				}
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
