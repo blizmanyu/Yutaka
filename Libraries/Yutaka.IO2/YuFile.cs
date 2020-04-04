@@ -358,6 +358,13 @@ namespace Yutaka.IO2
 
 		protected void SetNewFolder()
 		{
+			if (MinDateTime < ReallyOldThreshold)
+				NewFolder = @"ReallyOld\";
+			else if (MinDateTime < OldThreshold)
+				NewFolder = @"Old\";
+
+			NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+
 			int result;
 			var fullnameUpper = FullName.ToUpper();
 			var parentFolderUpper = ParentFolder.ToUpper();
@@ -367,11 +374,11 @@ namespace Yutaka.IO2
 			for (int i = 0; i < SpecialFolders.Length; i++) {
 				if (Regex.IsMatch(FullName, String.Format(@"[^a-zA-Z]{0}[^a-zA-Z]", SpecialFolders[i][0]), RegexOptions.IgnoreCase)) {
 					if (SpecialFolders[i][1].ToUpper().Contains(parentFolderUpper))
-						NewFolder = SpecialFolders[i][1];
+						NewFolder = String.Format("{0}{1}", NewFolder, SpecialFolders[i][1]);
 					else if (bypassList.Exists(x => x.Equals(parentFolderUpper) || int.TryParse(ParentFolder, out result)))
-						NewFolder = SpecialFolders[i][1];
+						NewFolder = String.Format("{0}{1}", NewFolder, SpecialFolders[i][1]);
 					else
-						NewFolder = String.Format(@"{0}{1}\", SpecialFolders[i][1], ParentFolder);
+						NewFolder = String.Format(@"{0}{1}{2}\", NewFolder, SpecialFolders[i][1], ParentFolder);
 
 					return; // only match one, then return //
 				}
@@ -380,9 +387,9 @@ namespace Yutaka.IO2
 
 			#region Default: Everything else
 			if (bypassList.Exists(x => x.Equals(parentFolderUpper)) || int.TryParse(ParentFolder, out result))
-				NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+				;
 			else
-				NewFolder = String.Format(@"{0}{1}\{2}\", NewFolder, MinDateTime.Year, ParentFolder);
+				NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
 			#endregion Default: Everything else
 		}
 		#endregion Utilities
