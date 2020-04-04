@@ -16,6 +16,8 @@ namespace Yutaka.IO2
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		protected static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
+		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
 		#region protected static readonly string[][] SpecialFolders = new string[][] {
 		protected static readonly string[][] SpecialFolders = new string[][] {
