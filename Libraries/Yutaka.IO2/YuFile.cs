@@ -19,6 +19,7 @@ namespace Yutaka.IO2
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		protected static readonly string[] Suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 		#region protected static readonly string[][] SpecialFolders = new string[][] {
 		protected static readonly string[][] SpecialFolders = new string[][] {
 			new string[] { "babystepsanddownwarddogs", @"zz\BareSolesBearSoul\", },
