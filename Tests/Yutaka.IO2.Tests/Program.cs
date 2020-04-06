@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
-using Yutaka.IO2;
 
 namespace Yutaka.IO2.Tests
 {
@@ -21,6 +22,15 @@ namespace Yutaka.IO2.Tests
 		// Constants //
 		const string PROGRAM_NAME = "Yutaka.Diagnostics.Tests";
 		const string TIMESTAMP = @"[HH:mm:ss] ";
+		private const decimal ONE_KB = 1024m;
+		private const decimal NNF_KB = 1023488m;
+		private const decimal ONE_MB = 1048576m;
+		private const decimal NNF_MB = 1048051712m;
+		private const decimal ONE_GB = 1073741824m;
+		private const decimal NNF_GB = 1073204953088m;
+		private const decimal ONE_TB = 1099511627776m;
+		private const decimal NNF_TB = 1098961871962112m;
+		private const decimal ONE_PB = 1125899906842624m;
 
 		// PIVs //
 		private static DateTime startTime = DateTime.Now;
@@ -33,11 +43,62 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_DeleteAllCacheFiles();
+			Test_BytesToString();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
+		// Created Apr 6, 2020, Modified: Apr 6, 2020 //
+		private static void Test_BytesToString()
+		{
+			var tests = new long[] { 999, 1000, 1001, 1023, 1024, 1025, 9999, 10000, 10001, 99999, 100000, 100001, 999999, 1000000, 1000001, 1023487, 1023488, 1023489, 1048575, 1048576, 1048577, 9999999, 10000000, 10000001, 99999999, 100000000, 100000001, 999999999, 1000000000, 1000000001, 1048051711, 1048051712, 1048051713, 1073741823, 1073741824, 1073741825, 9999999999, 10000000000, 10000000001, 99999999999, 100000000000, 100000000001, 999999999999, 1000000000000, 1000000000001, 1073204953087, 1073204953088, 1073204953089, 1099511627775, 1099511627776, 1099511627777, 9999999999999, 10000000000000, 10000000000001, 99999999999999, 100000000000000, 100000000000001, 999999999999999, 1000000000000000, 1000000000000001, 1098961871962111, 1098961871962112, 1098961871962113, 1125899906842623, 1125899906842624, 1125899906842625, 9999999999999999, 10000000000000000, 10000000000000001, 99999999999999999, 100000000000000000, 100000000000000001, 999999999999999999, 1000000000000000000, 1000000000000000001, 1152921504606846975, 1152921504606846976, 1152921504606846977, };
+			Console.Write("\n");
+			foreach (var test in tests)
+				Console.Write("\n{0}) {1} ({2:n0})", ++totalCount, FileUtil.BytesToString(test), test);
+		}
+
+		// Created Apr 6, 2020, Modified: Apr 6, 2020 //
+		private static void BytesToStringHelper()
+		{
+			var list = new List<decimal>();
+			var test1 = 1000m;
+			var test2 = 1024m;
+			while (0 < test1 && test1 < long.MaxValue) {
+				list.Add(test1 - 1);
+				list.Add(test1);
+				list.Add(test1 + 1);
+				if (0 < test2 && test2 < long.MaxValue) {
+					list.Add(test2 - 1);
+					list.Add(test2);
+					list.Add(test2 + 1);
+					test2 *= 1024m;
+				}
+				test1 *= 10m;
+			}
+
+			decimal temp;
+			temp = ONE_KB * 999.5m;
+			list.Add(temp - 1);
+			list.Add(temp);
+			list.Add(temp + 1);
+			temp = ONE_MB * 999.5m;
+			list.Add(temp - 1);
+			list.Add(temp);
+			list.Add(temp + 1);
+			temp = ONE_GB * 999.5m;
+			list.Add(temp - 1);
+			list.Add(temp);
+			list.Add(temp + 1);
+			temp = ONE_TB * 999.5m;
+			list.Add(temp - 1);
+			list.Add(temp);
+			list.Add(temp + 1);
+
+			list = list.OrderBy(x => x).ToList();
+			Console.Write("\n");
+			Console.Write("{0}", String.Join(", ", list));
+		}
+
 		// Created Apr 2, 2020, Modified: Apr 2, 2020 //
 		private static void Test_DeleteAllCacheFiles()
 		{
