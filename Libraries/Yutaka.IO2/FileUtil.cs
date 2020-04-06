@@ -13,6 +13,7 @@ namespace Yutaka.IO2
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		private static readonly string[] Suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 		#endregion Fields
 
 		#region Utilities
