@@ -581,6 +581,88 @@ namespace Yutaka.IO2
 			}
 		}
 		#endregion Write
+
+		/// <summary>
+		/// Converts bytes to a more human-readable unit.
+		/// </summary>
+		/// <param name="bytes">The bytes to convert.</param>
+		/// <returns></returns>
+		public static string BytesToString(long bytes)
+		{
+			if (bytes == 0)
+				return "0 bytes";
+			if (bytes < 1000)
+				return String.Format("{0} bytes", bytes);
+
+			string unit;
+			decimal temp;
+
+			#region KB
+			if (bytes < 1023488) { // 999.5 KiB //
+				temp = (decimal) bytes / 1024;
+				unit = "KB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:f0} {1}", temp, unit);
+			}
+			#endregion KB
+
+			#region MB
+			if (bytes < 1048051712) { // 999.5 MiB //
+				temp = (decimal) bytes / 1024 / 1024;
+				unit = "MB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:f0} {1}", temp, unit);
+			}
+			#endregion MB
+
+			#region GB
+			if (bytes < 1073204953088) { // 999.5 GiB //
+				temp = (decimal) bytes / 1024 / 1024 / 1024;
+				unit = "GB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:f0} {1}", temp, unit);
+			}
+			#endregion GB
+
+			#region TB
+			if (bytes < 1098961871962110) { // 999.5 TiB //
+				temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024;
+				unit = "TB";
+
+				if (temp < 10)
+					return String.Format("{0:n2} {1}", temp, unit);
+				if (temp < 100)
+					return String.Format("{0:n1} {1}", temp, unit);
+
+				return String.Format("{0:f0} {1}", temp, unit);
+			}
+			#endregion TB
+
+			temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024 / 1024;
+			unit = "PB";
+
+			if (temp < 10)
+				return String.Format("{0:n2} {1}", temp, unit);
+			if (temp < 100)
+				return String.Format("{0:n1} {1}", temp, unit);
+
+			return String.Format("{0:f0} {1}", temp, unit);
+		}
 		#endregion Public Methods
 	}
 }
