@@ -10,10 +10,14 @@ namespace Yutaka.IO2
 	{
 		#region Fields
 		const int FIVE_HUNDRED_TWELVE_KB = 524288;
+		private const decimal ONE_KB = 1024m;
+		private const decimal ONE_MB = 1048576m;
+		private const decimal ONE_GB = 1073741824m;
+		private const decimal ONE_TB = 1099511627776m;
+		private const decimal ONE_PB = 1125899906842624m;
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
-		private static readonly string[] Suffixes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 		#endregion Fields
 
 		#region Utilities
@@ -640,7 +644,7 @@ namespace Yutaka.IO2
 			#endregion GB
 
 			#region TB
-			if (bytes < 1098961871962110) { // 999.5 TiB //
+			if (bytes < 1098961871962112) { // 999.5 TiB //
 				temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024;
 				unit = "TB";
 
