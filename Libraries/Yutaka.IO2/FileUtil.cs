@@ -600,10 +600,11 @@ namespace Yutaka.IO2
 
 			string unit;
 			decimal temp;
+			var decimalBytes = (decimal) bytes;
 
 			#region KB
 			if (bytes < 1023488) { // 999.5 KiB //
-				temp = (decimal) bytes / 1024;
+				temp = decimalBytes / ONE_KB;
 				unit = "KB";
 
 				if (temp < 10)
@@ -617,7 +618,7 @@ namespace Yutaka.IO2
 
 			#region MB
 			if (bytes < 1048051712) { // 999.5 MiB //
-				temp = (decimal) bytes / 1024 / 1024;
+				temp = decimalBytes / ONE_MB;
 				unit = "MB";
 
 				if (temp < 10)
@@ -631,7 +632,7 @@ namespace Yutaka.IO2
 
 			#region GB
 			if (bytes < 1073204953088) { // 999.5 GiB //
-				temp = (decimal) bytes / 1024 / 1024 / 1024;
+				temp = decimalBytes / ONE_GB;
 				unit = "GB";
 
 				if (temp < 10)
@@ -645,7 +646,7 @@ namespace Yutaka.IO2
 
 			#region TB
 			if (bytes < 1098961871962112) { // 999.5 TiB //
-				temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024;
+				temp = decimalBytes / ONE_TB;
 				unit = "TB";
 
 				if (temp < 10)
@@ -657,7 +658,7 @@ namespace Yutaka.IO2
 			}
 			#endregion TB
 
-			temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024 / 1024;
+			temp = decimalBytes / ONE_PB;
 			unit = "PB";
 
 			if (temp < 10)
