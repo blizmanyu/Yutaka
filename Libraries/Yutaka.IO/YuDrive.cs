@@ -62,10 +62,11 @@ namespace Yutaka.IO
 
 			string unit;
 			decimal temp;
+			var decimalBytes = (decimal) bytes;
 
 			#region KB
-			if (bytes < 1000000) {
-				temp = (decimal) bytes / 1024;
+			if (bytes < 1023488) { // 999.5 KiB //
+				temp = decimalBytes / ONE_KB;
 				unit = "KB";
 
 				if (temp < 10)
@@ -73,13 +74,13 @@ namespace Yutaka.IO
 				if (temp < 100)
 					return String.Format("{0:n1} {1}", temp, unit);
 
-				return String.Format("{0:n0}  {1}", temp, unit);
+				return String.Format("{0:f0} {1}", temp, unit);
 			}
 			#endregion KB
 
 			#region MB
-			if (bytes < 1000000000) {
-				temp = (decimal) bytes / 1024 / 1024;
+			if (bytes < 1048051712) { // 999.5 MiB //
+				temp = decimalBytes / ONE_MB;
 				unit = "MB";
 
 				if (temp < 10)
@@ -87,13 +88,13 @@ namespace Yutaka.IO
 				if (temp < 100)
 					return String.Format("{0:n1} {1}", temp, unit);
 
-				return String.Format("{0:n0}  {1}", temp, unit);
+				return String.Format("{0:f0} {1}", temp, unit);
 			}
 			#endregion MB
 
 			#region GB
-			if (bytes < 1000000000000) {
-				temp = (decimal) bytes / 1024 / 1024 / 1024;
+			if (bytes < 1073204953088) { // 999.5 GiB //
+				temp = decimalBytes / ONE_GB;
 				unit = "GB";
 
 				if (temp < 10)
@@ -101,13 +102,13 @@ namespace Yutaka.IO
 				if (temp < 100)
 					return String.Format("{0:n1} {1}", temp, unit);
 
-				return String.Format("{0:n0}  {1}", temp, unit);
+				return String.Format("{0:f0} {1}", temp, unit);
 			}
 			#endregion GB
 
 			#region TB
-			if (bytes < 1000000000000000) {
-				temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024;
+			if (bytes < 1098961871962112) { // 999.5 TiB //
+				temp = decimalBytes / ONE_TB;
 				unit = "TB";
 
 				if (temp < 10)
@@ -115,11 +116,11 @@ namespace Yutaka.IO
 				if (temp < 100)
 					return String.Format("{0:n1} {1}", temp, unit);
 
-				return String.Format("{0:n0}  {1}", temp, unit);
+				return String.Format("{0:f0} {1}", temp, unit);
 			}
 			#endregion TB
 
-			temp = (decimal) bytes / 1024 / 1024 / 1024 / 1024 / 1024;
+			temp = decimalBytes / ONE_PB;
 			unit = "PB";
 
 			if (temp < 10)
@@ -127,7 +128,7 @@ namespace Yutaka.IO
 			if (temp < 100)
 				return String.Format("{0:n1} {1}", temp, unit);
 
-			return String.Format("{0:n0}  {1}", temp, unit);
+			return String.Format("{0:f0} {1}", temp, unit);
 		}
 
 		public void WriteToConsole()
