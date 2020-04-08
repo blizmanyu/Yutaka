@@ -6,6 +6,12 @@ namespace Yutaka.IO
 {
 	public class YuDrive
 	{
+		protected const decimal ONE_KB = 1024m;
+		protected const decimal ONE_MB = 1048576m;
+		protected const decimal ONE_GB = 1073741824m;
+		protected const decimal ONE_TB = 1099511627776m;
+		protected const decimal ONE_PB = 1125899906842624m;
+
 		public void Debug()
 		{
 			var drives = DriveInfo.GetDrives();
