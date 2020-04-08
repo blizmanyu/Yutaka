@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace SpeedTester
@@ -11,6 +13,9 @@ namespace SpeedTester
 		#region Fields
 		private const string TIMESTAMP = "HH:mmtt";
 		private static readonly DateTime StartTime = DateTime.Now;
+		private static readonly HashSet<string> imageExtensionsHashSet = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".ai", ".bmp", ".eps", ".exif", ".gif", ".ico", ".jpeg", ".jpg", ".nef", ".png", ".psd", ".svg", ".tiff", ".webp", };
+		private static readonly Regex imageExtensionsRegex = new Regex(".ai|.bmp|.eps|.exif|.gif|.ico|.jpeg|.jpg|.nef|.png|.psd|.svg|.tiff|.webp", RegexOptions.IgnoreCase | RegexOptions.Multiline | RegexOptions.Compiled);
+		private static readonly string[] imageExtensionsArray = { ".ai", ".bmp", ".eps", ".exif", ".gif", ".ico", ".jpeg", ".jpg", ".nef", ".png", ".psd", ".svg", ".tiff", ".webp", };
 		private static Stopwatch sw = new Stopwatch();
 		#endregion Fields
 
