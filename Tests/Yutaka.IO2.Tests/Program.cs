@@ -43,11 +43,30 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_BytesToString();
+			Test_GetDirectorySize();
 			EndProgram();
 		}
 
 		#region Tests for FileUtil
+		// Created Apr 8, 2020, Modified: Apr 8, 2020 //
+		private static void Test_GetDirectorySize()
+		{
+			var tests = new string[] {
+				@"asdfasdf",
+				@"asdfasdf",
+			};
+
+			long result;
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				result = FileUtil.GetDirectorySize(test, SearchOption.AllDirectories);
+				Console.Write("\n  Size: {0} ({1:n0} bytes)", FileUtil.BytesToString(result), result);
+				Console.Write("\n");
+			}
+		}
+
 		// Created Apr 6, 2020, Modified: Apr 6, 2020 //
 		private static void Test_BytesToString()
 		{
