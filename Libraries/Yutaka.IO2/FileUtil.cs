@@ -586,6 +586,7 @@ namespace Yutaka.IO2
 		}
 		#endregion Write
 
+		#region Other
 		/// <summary>
 		/// Converts bytes to a more human-readable unit.
 		/// </summary>
@@ -668,6 +669,59 @@ namespace Yutaka.IO2
 
 			return String.Format("{0:f0} {1}", temp, unit);
 		}
+
+		public static long GetDirectorySize(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}<path> is required.{1}", log, Environment.NewLine);
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.GetDirectorySize(string path, SearchOption searchOption).{1}{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
+				return 0;
+			}
+			#endregion Input Check
+
+			var size = 0L;
+
+			try {
+				foreach (var file in Directory.EnumerateFiles(path)) {
+					try {
+						size += new FileInfo(file).Length;
+					}
+
+					catch { }
+				}
+
+				if (searchOption == SearchOption.AllDirectories) {
+					foreach (var dir in Directory.EnumerateDirectories(path)) {
+						try {
+							size += GetDirectorySize(dir, searchOption);
+						}
+
+						catch { }
+					}
+				}
+
+				return size;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				//if (ex.InnerException == null)
+				//	log = String.Format("{0}{2}Exception thrown in FileUtil.GetDirectorySize(string path='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path, searchOption);
+				//else
+				//	log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.GetDirectorySize(string path='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path, searchOption);
+
+				//Console.Write("\n{0}", log);
+				#endregion Log
+
+				return size;
+			}
+		}
+		#endregion Other
 		#endregion Public Methods
 	}
 }
