@@ -73,16 +73,13 @@ namespace FileManagerNet462
 			var count = FileUtil.DeleteAllCacheFiles(source, SearchOption.AllDirectories);
 			Directory.CreateDirectory(dest);
 
-			var curCount = 0;
+			var bytesProcessed = 0L;
 			YuFile fi;
 			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
-			var filesCount = files.Count;
 
-			for (var i = 0; i < filesCount; i++) {
+			for (var i = 0; i < files.Count; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
-				Console.Write("\n");
-				Console.Write("\n{3} {0}/{1} ({2})", ++curCount, filesCount, ((double) curCount / filesCount).ToString("p2"), source);
 
 				if (consoleOut)
 					fi.Debug();
@@ -97,6 +94,9 @@ namespace FileManagerNet462
 
 				else
 					errorCount++;
+
+				bytesProcessed += fi.Size;
+				Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
 			}
 
 			count += FileUtil.DeleteAllCacheFiles(dest, SearchOption.AllDirectories);
