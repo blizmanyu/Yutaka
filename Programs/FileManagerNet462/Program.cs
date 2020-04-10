@@ -35,7 +35,6 @@ namespace FileManagerNet462
 		private static long totalSize;
 		#endregion
 
-		// TODO: if total size is over 1GB, warn! // Fix/improve YuFile.SetNewFolder() //
 		static void Main(string[] args)
 		{
 			StartProgram();
@@ -82,12 +81,15 @@ namespace FileManagerNet462
 			for (var i = 0; i < files.Count; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
+				bytesProcessed += fi.Size;
 
 				if (consoleOut)
 					fi.Debug();
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryCopy(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
+					Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
+
 					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
 					else
@@ -96,9 +98,6 @@ namespace FileManagerNet462
 
 				else
 					errorCount++;
-
-				bytesProcessed += fi.Size;
-				Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
 			}
 
 			count += FileUtil.DeleteAllCacheFiles(dest, SearchOption.AllDirectories);
@@ -117,12 +116,15 @@ namespace FileManagerNet462
 			for (var i = 0; i < files.Count; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
+				bytesProcessed += fi.Size;
 
 				if (consoleOut)
 					fi.Debug();
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
+					Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
+
 					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
 					else
@@ -131,9 +133,6 @@ namespace FileManagerNet462
 
 				else
 					errorCount++;
-
-				bytesProcessed += fi.Size;
-				Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
 			}
 
 			count += FileUtil.DeleteAllCacheFiles(dest, SearchOption.AllDirectories);
