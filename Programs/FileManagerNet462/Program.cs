@@ -48,8 +48,10 @@ namespace FileManagerNet462
 			};
 
 			if (deleteFiles) {
-				foreach (var source in sources)
+				foreach (var source in sources) {
+					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 					MoveAllFiles(source, dest);
+				}
 			}
 
 			else {
