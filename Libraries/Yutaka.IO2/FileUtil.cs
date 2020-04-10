@@ -18,6 +18,7 @@ namespace Yutaka.IO2
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		public const string UNC_PREFIX = @"\\?\";
 		#endregion Fields
 
 		#region Utilities
@@ -670,6 +671,12 @@ namespace Yutaka.IO2
 			return String.Format("{0:f0} {1}", temp, unit);
 		}
 
+		/// <summary>
+		/// Gets the total size of all files within a folder.
+		/// </summary>
+		/// <param name="path">The relative or absolute path to the directory to search. This string is NOT case-sensitive.</param>
+		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories. The default value is &lt;TopDirectoryOnly&gt;.</param>
+		/// <returns>The total size of all files.</returns>
 		public static long GetDirectorySize(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			#region Input Check
@@ -689,35 +696,31 @@ namespace Yutaka.IO2
 			try {
 				foreach (var file in Directory.EnumerateFiles(path)) {
 					try {
-						size += new FileInfo(file).Length;
+						if (file.StartsWith(UNC_PREFIX))
+							size += new FileInfo(file).Length;
+						else
+							size += new FileInfo(String.Format("{0}{1}", UNC_PREFIX, file)).Length;
 					}
 
 					catch { }
 				}
 
 				if (searchOption == SearchOption.AllDirectories) {
-					foreach (var dir in Directory.EnumerateDirectories(path)) {
-						try {
-							size += GetDirectorySize(dir, searchOption);
-						}
-
-						catch { }
-					}
+					foreach (var dir in Directory.EnumerateDirectories(path))
+						size += GetDirectorySize(dir, searchOption);
 				}
 
 				return size;
 			}
 
-			catch (Exception ex) {
-				#region Log
-				//if (ex.InnerException == null)
-				//	log = String.Format("{0}{2}Exception thrown in FileUtil.GetDirectorySize(string path='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path, searchOption);
-				//else
-				//	log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.GetDirectorySize(string path='{3}', SearchOption searchOption='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path, searchOption);
+			catch (DirectoryNotFoundException) {
+				if (path.Length > 255)
+					return GetDirectorySize(String.Format("{0}{1}", UNC_PREFIX, path), searchOption);
+				else
+					return size;
+			}
 
-				//Console.Write("\n{0}", log);
-				#endregion Log
-
+			catch (Exception) {
 				return size;
 			}
 		}
