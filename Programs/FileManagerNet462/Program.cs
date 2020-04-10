@@ -32,6 +32,7 @@ namespace FileManagerNet462
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
+		private static long totalSize;
 		#endregion
 
 		// TODO: if total size is over 1GB, warn! // Fix/improve YuFile.SetNewFolder() //
@@ -52,12 +53,17 @@ namespace FileManagerNet462
 			}
 
 			else {
-				foreach (var source in sources)
-					CopyAllFiles(source, dest);
-			}
+				foreach (var source in sources) {
+					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 
-			//var count = FileUtil.DeleteAllCacheFiles(@"G:\Pictures\2020\", SearchOption.AllDirectories);
-			//Console.Write("\n\nDeleted {0} cache files", count);
+					if (totalSize > FileUtil.TWO_GB) {
+						Console.Write("\n******* Total Size is {0}! This will take a long time! Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize));
+						Console.ReadKey(true);
+					}
+
+					CopyAllFiles(source, dest);
+				}
+			}
 
 			EndProgram();
 		}
