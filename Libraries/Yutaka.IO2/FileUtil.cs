@@ -9,16 +9,16 @@ namespace Yutaka.IO2
 	public static class FileUtil
 	{
 		#region Fields
-		const int FIVE_HUNDRED_TWELVE_KB = 524288;
-		private const decimal ONE_KB = 1024m;
-		private const decimal ONE_MB = 1048576m;
-		private const decimal ONE_GB = 1073741824m;
-		private const decimal ONE_TB = 1099511627776m;
-		private const decimal ONE_PB = 1125899906842624m;
+		public const decimal ONE_KB = 1024m;
+		public const decimal ONE_MB = 1048576m;
+		public const decimal ONE_GB = 1073741824m;
+		public const decimal ONE_TB = 1099511627776m;
+		public const decimal ONE_PB = 1125899906842624m;
+		public const string UNC_PREFIX = @"\\?\";
 		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
+		private const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
 		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
-		public const string UNC_PREFIX = @"\\?\";
 		#endregion Fields
 
 		#region Utilities
