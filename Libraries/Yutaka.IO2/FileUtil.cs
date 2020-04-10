@@ -16,10 +16,11 @@ namespace Yutaka.IO2
 		public const decimal ONE_TB = 1099511627776m;
 		public const decimal ONE_PB = 1125899906842624m;
 		public const string UNC_PREFIX = @"\\?\";
-		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
+		public static readonly DateTime UnixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		public static readonly DateTime UnixTimeUnspecified = new DateTime(1970, 1, 1);
 		private const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		private static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
-		private static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		private static readonly DateTime MinDateTimeThreshold = UnixTimeUnspecified;
 		#endregion Fields
 
 		#region Utilities
