@@ -10,17 +10,18 @@ namespace Yutaka.IO2
 	public class YuFile
 	{
 		#region Fields
-		protected const decimal ONE_KB = 1024m;
-		protected const decimal ONE_MB = 1048576m;
-		protected const decimal ONE_GB = 1073741824m;
-		protected const decimal ONE_TB = 1099511627776m;
-		protected const decimal ONE_PB = 1125899906842624m;
+		public const decimal ONE_KB = 1024m;
+		public const decimal ONE_MB = 1048576m;
+		public const decimal ONE_GB = 1073741824m;
+		public const decimal ONE_TB = 1099511627776m;
+		public const decimal ONE_PB = 1125899906842624m;
+		public static readonly DateTime UnixTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+		public static readonly DateTime UnixTimeUnspecified = new DateTime(1970, 1, 1);
 		protected const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		protected const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.propertyitem.id //
 		protected const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
-		public static readonly DateTime UNIX_TIME = new DateTime(1970, 1, 1);
 		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
-		protected static readonly DateTime MinDateTimeThreshold = UNIX_TIME;
+		protected static readonly DateTime MinDateTimeThreshold = UnixTimeUnspecified;
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
