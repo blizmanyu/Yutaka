@@ -12,6 +12,7 @@ namespace Yutaka.IO
 	{
 		#region Fields
 		// Constants //
+		public const string UNC_PREFIX = @"\\?\";
 		const int FRAME_RATE_FIELD = 315;
 		const int FRAME_WIDTH_FIELD = 316;
 		const int DATE_TAKEN = 36867; // PropertyTagExifDTOrig //
@@ -768,20 +769,57 @@ namespace Yutaka.IO
 			}
 		}
 
-		public long GetDirectorySize(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.AllDirectories)
+		/// <summary>
+		/// Gets the total size of all files within a folder.
+		/// </summary>
+		/// <param name="path">The relative or absolute path to the directory to search. This string is NOT case-sensitive.</param>
+		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories. The default value is &lt;TopDirectoryOnly&gt;.</param>
+		/// <returns>The total size of all files.</returns>
+		public static long GetDirectorySize(string path, SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}<path> is required.{1}", log, Environment.NewLine);
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.GetDirectorySize(string path, SearchOption searchOption).{1}{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
+				return 0;
+			}
+			#endregion Input Check
+
+			var size = 0L;
+
 			try {
-				var files = Directory.EnumerateFiles(path, searchPattern, searchOption);
-				long bytes = 0;
+				foreach (var file in Directory.EnumerateFiles(path)) {
+					try {
+						if (file.StartsWith(UNC_PREFIX))
+							size += new FileInfo(file).Length;
+						else
+							size += new FileInfo(String.Format("{0}{1}", UNC_PREFIX, file)).Length;
+					}
 
-				foreach (var file in files)
-					bytes += new FileInfo(file).Length;
+					catch { }
+				}
 
-				return bytes;
+				if (searchOption == SearchOption.AllDirectories) {
+					foreach (var dir in Directory.EnumerateDirectories(path))
+						size += GetDirectorySize(dir, searchOption);
+				}
+
+				return size;
 			}
 
-			catch (Exception ex) {
-				throw new Exception(String.Format("Exception thrown in FileUtil.GetDirectorySize(string path='{3}', string searchPattern='{4}', SearchOption searchOption='{5}'){2}{0}{2}{2}{1}", ex.Message, ex.ToString(), Environment.NewLine, path ?? "null", searchPattern ?? "null", searchOption));
+			catch (DirectoryNotFoundException) {
+				if (path.Length > 255)
+					return GetDirectorySize(String.Format("{0}{1}", UNC_PREFIX, path), searchOption);
+				else
+					return size;
+			}
+
+			catch (Exception) {
+				return size;
 			}
 		}
 
