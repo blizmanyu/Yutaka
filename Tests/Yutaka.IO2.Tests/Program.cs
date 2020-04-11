@@ -262,7 +262,7 @@ namespace Yutaka.IO2.Tests
 				@"C:\",
 				@"temp1\",
 				@"temp2\",
-				@"temp3\",
+				@"asdfg.txt",
 			};
 
 			var combined = Path.Combine(tests[0], tests[1], tests[2], tests[3]);
