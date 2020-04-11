@@ -33,7 +33,7 @@ namespace FileManagerNet462
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static int errorCount = 0;
 		private static int totalCount = 0;
-		private static long totalSize;
+		private static long totalSize = 0;
 		#endregion
 
 		static void Main(string[] args)
@@ -165,23 +165,20 @@ namespace FileManagerNet462
 				}
 			}
 
-			var log = new string[4];
+			var log = new string[5];
 			log[0] = "Ending program";
 			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
 			log[2] = String.Format("Total: {0}", totalCount);
-			log[3] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
+			log[3] = String.Format("Total Size: {0} ({1:n0} bytes)", FileUtil.BytesToString(totalSize), totalSize);
+			log[4] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
 
-			logger.Info(log[0]);
-			logger.Info(log[1]);
-			logger.Info(log[2]);
-			logger.Info(log[3]);
+			foreach (var v in log)
+				logger.Info(v);
 
 			var timestamp = DateTime.Now.ToString(TIMESTAMP);
 			Console.Write("\n");
-			Console.Write("\n{0}{1}", timestamp, log[0]);
-			Console.Write("\n{0}{1}", timestamp, log[1]);
-			Console.Write("\n{0}{1}", timestamp, log[2]);
-			Console.Write("\n{0}{1}", timestamp, log[3]);
+			foreach (var v in log)
+				Console.Write("\n{0}{1}", timestamp, v);
 			Console.Write("\n.... Press any key to close the program ....");
 			Console.ReadKey(true);
 
