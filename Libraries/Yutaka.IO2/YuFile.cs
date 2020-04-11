@@ -25,15 +25,22 @@ namespace Yutaka.IO2
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
-		protected static readonly string[] DefaultCameraFolders = { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
-		#region protected static readonly string[] SpecialFolders = { "Tattoos", "Shirts", "Poses", "zMe", };
+		protected static readonly string[] DefaultCameraFolders = { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "TEST", "XPERIA TL", };
+		#region protected static readonly string[] SpecialFolders = { };
 		protected static readonly string[] SpecialFolders = {
-			"Tattoos",
-			"Shirts",
-			"Poses",
-			"zMe",
+			@"Philips Hue\",
+			@"Green Card\",
+			@"Tattoos\",
+			@"Shirts\",
+			@"Poses\",
+			@"zMe\",
 		};
 		#endregion SpecialFolders
+		#region protected static readonly string[] SpecialFolders2 = { };
+		protected static readonly string[] SpecialFolders2 = {
+
+		};
+		#endregion SpecialFolders2
 		protected string DateTakenStr;
 		protected string ExtensionOrig;
 		public DateTime CreationTime;
@@ -339,21 +346,31 @@ namespace Yutaka.IO2
 			//var parentFolderUpper = ParentFolder.ToUpper();
 			//var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
 
-			if (SpecialFolders.Contains(ParentFolder))
-				NewFolder = String.Format(@"{0}\", ParentFolder);
-			else {
-				if (MinDateTime < ReallyOldThreshold)
-					NewFolder = @"ReallyOld\";
-				else if (MinDateTime < OldThreshold)
-					NewFolder = @"Old\";
-
-				NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
-
-				if (DefaultCameraFolders.Contains(ParentFolder, StringComparer.OrdinalIgnoreCase) || int.TryParse(ParentFolder, out var result))
+			foreach (var folder in SpecialFolders2) {
+				if (FullName.Contains(folder)) {
+					NewFolder = String.Format(@"zz\", folder);
 					return;
-				else
-					NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
+				}
 			}
+
+			foreach (var folder in SpecialFolders) {
+				if (FullName.Contains(folder)) {
+					NewFolder = folder;
+					return;
+				}
+			}
+
+			if (MinDateTime < ReallyOldThreshold)
+				NewFolder = @"ReallyOld\";
+			else if (MinDateTime < OldThreshold)
+				NewFolder = @"Old\";
+
+			NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+
+			if (DefaultCameraFolders.Contains(ParentFolder, StringComparer.OrdinalIgnoreCase) || int.TryParse(ParentFolder, out var result))
+				return;
+			else
+				NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
 
 			#region Special Folders
 			//for (int i = 0; i < SpecialFolders.Length; i++) {
