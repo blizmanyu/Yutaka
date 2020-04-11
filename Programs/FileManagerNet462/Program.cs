@@ -13,6 +13,7 @@ namespace FileManagerNet462
 	{
 		// Config/Settings //
 		const string PROGRAM_NAME = "FileManagerNet462";
+		private const decimal TIME_FACTOR = 395189149.04562228086464351881m; // this is an arbitrary number based on average performance of my computer/drives.
 		private static bool consoleOut = true; // default = false //
 
 		#region Fields
@@ -58,7 +59,7 @@ namespace FileManagerNet462
 					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 
 					if (totalSize > FileUtil.TWO_GB) {
-						Console.Write("\n******* Total Size is {0}! This will take a long time! Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize));
+						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize/TIME_FACTOR);
 						Console.ReadKey(true);
 					}
 
@@ -109,22 +110,18 @@ namespace FileManagerNet462
 			var count = FileUtil.DeleteAllCacheFiles(source, SearchOption.AllDirectories);
 			Directory.CreateDirectory(dest);
 
-			var bytesProcessed = 0L;
 			YuFile fi;
 			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
 
 			for (var i = 0; i < files.Count; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
-				bytesProcessed += fi.Size;
 
 				if (consoleOut)
 					fi.Debug();
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
-					Console.Write("\n{3}    {0}/{1} ({2})", FileUtil.BytesToString(bytesProcessed), FileUtil.BytesToString(totalSize), ((double) bytesProcessed / totalSize).ToString("p2"), source);
-
 					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
 					else
