@@ -181,16 +181,14 @@ namespace FileManagerNet462
 			logger.Info(log[2]);
 			logger.Info(log[3]);
 
-			if (consoleOut) {
-				var timestamp = DateTime.Now.ToString(TIMESTAMP);
-				Console.Write("\n");
-				Console.Write("\n{0}{1}", timestamp, log[0]);
-				Console.Write("\n{0}{1}", timestamp, log[1]);
-				Console.Write("\n{0}{1}", timestamp, log[2]);
-				Console.Write("\n{0}{1}", timestamp, log[3]);
-				Console.Write("\n.... Press any key to close the program ....");
-				Console.ReadKey(true);
-			}
+			var timestamp = DateTime.Now.ToString(TIMESTAMP);
+			Console.Write("\n");
+			Console.Write("\n{0}{1}", timestamp, log[0]);
+			Console.Write("\n{0}{1}", timestamp, log[1]);
+			Console.Write("\n{0}{1}", timestamp, log[2]);
+			Console.Write("\n{0}{1}", timestamp, log[3]);
+			Console.Write("\n.... Press any key to close the program ....");
+			Console.ReadKey(true);
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
