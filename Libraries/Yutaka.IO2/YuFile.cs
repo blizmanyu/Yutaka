@@ -348,7 +348,7 @@ namespace Yutaka.IO2
 
 			foreach (var folder in SpecialFolders2) {
 				if (FullName.Contains(folder)) {
-					NewFolder = String.Format(@"zz\", folder);
+					NewFolder = String.Format(@"zz\{0}", folder);
 					return;
 				}
 			}
