@@ -25,21 +25,21 @@ namespace Yutaka.IO2
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		protected string DateTakenStr;
+		protected string ExtensionOrig;
 		public DateTime CreationTime;
 		public DateTime? DateTaken;
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MinDateTime;
-		protected string DateTakenStr;
+		public long Size;
 		public string DirectoryName;
-		protected string ExtensionOrig;
 		public string Extension;
 		public string FullName;
 		public string Name;
 		public string NewFolder;
 		public string ParentFolder;
 		public string Root;
-		public long Size;
 		#endregion Fields
 
 		#region Constructor
