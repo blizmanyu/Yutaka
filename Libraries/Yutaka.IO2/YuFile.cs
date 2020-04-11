@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -25,6 +25,15 @@ namespace Yutaka.IO2
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
+		protected static readonly string[] DefaultCameraFolders = { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
+		#region protected static readonly string[] SpecialFolders = { "Tattoos", "Shirts", "Poses", "zMe", };
+		protected static readonly string[] SpecialFolders = {
+			"Tattoos",
+			"Shirts",
+			"Poses",
+			"zMe",
+		};
+		#endregion SpecialFolders
 		protected string DateTakenStr;
 		protected string ExtensionOrig;
 		public DateTime CreationTime;
@@ -327,17 +336,24 @@ namespace Yutaka.IO2
 
 		protected void SetNewFolder()
 		{
-			if (MinDateTime < ReallyOldThreshold)
-				NewFolder = @"ReallyOld\";
-			else if (MinDateTime < OldThreshold)
-				NewFolder = @"Old\";
+			//var parentFolderUpper = ParentFolder.ToUpper();
+			//var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
 
-			NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+			if (SpecialFolders.Contains(ParentFolder))
+				NewFolder = String.Format(@"{0}\", ParentFolder);
+			else {
+				if (MinDateTime < ReallyOldThreshold)
+					NewFolder = @"ReallyOld\";
+				else if (MinDateTime < OldThreshold)
+					NewFolder = @"Old\";
 
-			int result;
-			var fullnameUpper = FullName.ToUpper();
-			var parentFolderUpper = ParentFolder.ToUpper();
-			var bypassList = new List<string> { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "SCREENSHOT", "SCREENSHOTS", "TEST", "XPERIA TL", };
+				NewFolder = String.Format(@"{0}{1}\", NewFolder, MinDateTime.Year);
+
+				if (DefaultCameraFolders.Contains(ParentFolder, StringComparer.OrdinalIgnoreCase) || int.TryParse(ParentFolder, out var result))
+					return;
+				else
+					NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
+			}
 
 			#region Special Folders
 			//for (int i = 0; i < SpecialFolders.Length; i++) {
@@ -352,13 +368,13 @@ namespace Yutaka.IO2
 			//		return; // only match one, then return //
 			//	}
 			//}
-			#endregion Special Folders
+			//#endregion Special Folders
 
-			#region Default: Everything else
-			if (bypassList.Exists(x => x.Equals(parentFolderUpper)) || int.TryParse(ParentFolder, out result))
-				;
-			else
-				NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
+			//#region Default: Everything else
+			//if (bypassList.Exists(x => x.Equals(parentFolderUpper)) || int.TryParse(ParentFolder, out result))
+			//	;
+			//else
+			//	NewFolder = String.Format(@"{0}{1}\", NewFolder, ParentFolder);
 			#endregion Default: Everything else
 		}
 		#endregion Utilities
