@@ -43,7 +43,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_GetDirectorySize();
+			Test_Path_Combine();
 			EndProgram();
 		}
 
@@ -255,6 +255,20 @@ namespace Yutaka.IO2.Tests
 		#endregion Tests for YuImage
 
 		#region Misc Tests
+		// Created Apr 11, 2020 // Modified Apr 11, 2020 //
+		private static void Test_Path_Combine()
+		{
+			var tests = new string[] {
+				@"C:\",
+				@"temp1\",
+				@"temp2\",
+				@"temp3\",
+			};
+
+			var combined = Path.Combine(tests[0], tests[1], tests[2], tests[3]);
+			Console.Write("\n{0}", combined);
+		}
+
 		private static void Test_FileInfo_MoveTo()
 		{
 			var file1 = @"C:\TEMP\test file 1.txt";
