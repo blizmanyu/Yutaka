@@ -30,6 +30,7 @@ namespace Yutaka.IO2
 		public DateTime LastAccessTime;
 		public DateTime LastWriteTime;
 		public DateTime MinDateTime;
+		protected string DateTakenStr;
 		public string DirectoryName;
 		protected string ExtensionOrig;
 		public string Extension;
@@ -217,6 +218,7 @@ namespace Yutaka.IO2
 			Console.Write("\n");
 			Console.Write("\n   CreationTime: {0}", CreationTime.ToString(FORMAT));
 			Console.Write("\n      DateTaken: {0:yyyy-MM-dd HH:mm:ss.fff}", DateTaken);
+			Console.Write("\n   DateTakenStr: {0}", DateTakenStr);
 			Console.Write("\n LastAccessTime: {0}", LastAccessTime.ToString(FORMAT));
 			Console.Write("\n  LastWriteTime: {0}", LastWriteTime.ToString(FORMAT));
 			Console.Write("\n    MinDateTime: {0}", MinDateTime.ToString(FORMAT));
@@ -287,6 +289,7 @@ namespace Yutaka.IO2
 					using (var img = Image.FromStream(fs, false, false)) {
 						var propItem = img.GetPropertyItem(PROPERTY_TAG_EXIF_DATE_TAKEN);
 						var dateTaken = Regex_Colon.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
+						DateTakenStr = dateTaken ?? "";
 
 						if (DateTime.TryParse(dateTaken, out var result))
 							DateTaken = result;
