@@ -88,7 +88,7 @@ namespace FileManagerNet462
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryCopy(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
-					Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
+					Console.Write("\n{3} {0}/{1} ({2})", FileUtil.BytesToString(bytesProcessed), FileUtil.BytesToString(totalSize), ((double) bytesProcessed / totalSize).ToString("p2"), source);
 
 					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
@@ -123,7 +123,7 @@ namespace FileManagerNet462
 
 				Directory.CreateDirectory(String.Format("{0}{1}", dest, fi.NewFolder));
 				if (FileUtil.TryMove(files[i], String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
-					Console.Write("\n{3} {0}/{1} ({2})", bytesProcessed, totalSize, ((double) bytesProcessed / totalSize).ToString("p2"), source);
+					Console.Write("\n{3} {0}/{1} ({2})", FileUtil.BytesToString(bytesProcessed), FileUtil.BytesToString(totalSize), ((double) bytesProcessed / totalSize).ToString("p2"), source);
 
 					if (FileUtil.TryRedate(String.Format("{0}{1}{2}", dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
