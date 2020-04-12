@@ -25,7 +25,29 @@ namespace Yutaka.IO2
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
-		protected static readonly string[] DefaultCameraFolders = { "_PROCESS THESE", "_TEST", "_UNPROCESSED", "100ANDRO", "101_PANA", "102_PANA", "103_PANA", "APPS", "CAMERA", "CAMERA ROLL", "DOCUMENTS", "DOWNLOAD", "DOWNLOADS", "GAMES", "IMAGES", "OLD", "PICTURES", "TEST", "XPERIA TL", };
+		#region protected static readonly string[] DefaultCameraFolders = { };
+		protected static readonly string[] DefaultCameraFolders = {
+			"101_PANA", // Panasonic
+			"102_PANA",
+			"103_PANA",
+			"Camera", // Samsung Galaxy
+			"Download", // General
+			"Downloads",
+			"_PROCESS THESE",
+			"_TEST",
+			"_UNPROCESSED",
+			"100ANDRO",
+			"APPS",
+			"CAMERA ROLL",
+			"DOCUMENTS",
+			"GAMES",
+			"IMAGES",
+			"OLD",
+			"PICTURES",
+			"TEST",
+			"XPERIA TL",
+		};
+		#endregion DefaultCameraFolders
 		#region protected static readonly string[] SpecialFolders = { };
 		protected static readonly string[] SpecialFolders = {
 			@"Philips Hue\",
