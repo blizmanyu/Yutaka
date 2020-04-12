@@ -164,7 +164,8 @@ namespace Yutaka.IO2
 		/// <param name="sourceFileName">The file to copy.</param>
 		/// <param name="destFileName">The name of the destination file. This cannot be a directory.</param>
 		/// <param name="overwriteOption">One of the enumeration values that specifies whether to overwrite or not if the destination file already exists.</param>
-		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip)
+		/// <param name="retry">Whether to retry or not when there's temporary network issues. Default is True.</param>
+		public static bool TryCopy(string sourceFileName, string destFileName, OverwriteOption overwriteOption = OverwriteOption.Skip, bool retry = true)
 		{
 			try {
 				Copy(sourceFileName, destFileName, overwriteOption);
@@ -172,6 +173,11 @@ namespace Yutaka.IO2
 			}
 
 			catch (Exception ex) {
+				if (retry && ex.Message.Equals("The network path was not found.")) {
+					Thread.Sleep(1000);
+					TryCopy(sourceFileName, destFileName, overwriteOption, false);
+				}
+
 				#region Log
 				string log;
 
