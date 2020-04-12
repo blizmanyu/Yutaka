@@ -33,19 +33,19 @@ namespace Yutaka.IO2
 			"Camera", // Samsung Galaxy
 			"Download", // General
 			"Downloads",
-			"_PROCESS THESE",
-			"_TEST",
-			"_UNPROCESSED",
-			"100ANDRO",
-			"APPS",
-			"CAMERA ROLL",
-			"DOCUMENTS",
-			"GAMES",
-			"IMAGES",
-			"OLD",
-			"PICTURES",
-			"TEST",
-			"XPERIA TL",
+			//"_PROCESS THESE",
+			//"_TEST",
+			//"_UNPROCESSED",
+			//"100ANDRO",
+			//"APPS",
+			//"CAMERA ROLL",
+			//"DOCUMENTS",
+			//"GAMES",
+			//"IMAGES",
+			//"OLD",
+			//"PICTURES",
+			//"TEST",
+			//"XPERIA TL",
 		};
 		#endregion DefaultCameraFolders
 		#region protected static readonly string[] SpecialFolders = { };
