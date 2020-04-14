@@ -350,16 +350,20 @@ namespace Yutaka.IO2
 		{
 			MinDateTime = MaxDateTimeThreshold;
 
-			if (DateTaken != null && MinDateTimeThreshold < DateTaken && DateTaken < MinDateTime)
-				MinDateTime = DateTaken.Value; // prioritize DateTaken //
+			if (MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
+				MinDateTime = CreationTime;
+			if (MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
+				MinDateTime = LastWriteTime;
+			if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
+				MinDateTime = LastAccessTime;
 
-			else {
-				if (MinDateTimeThreshold < CreationTime && CreationTime < MinDateTime)
-					MinDateTime = CreationTime;
-				if (MinDateTimeThreshold < LastWriteTime && LastWriteTime < MinDateTime)
-					MinDateTime = LastWriteTime;
-				if (MinDateTimeThreshold < LastAccessTime && LastAccessTime < MinDateTime)
-					MinDateTime = LastAccessTime;
+			/// On most devices, the DateTaken field doesn't have millisecond precision, so it rounds to the nearest second.
+			/// So if the difference is less than 1 second, the current MinDate carries a more precise DateTime.
+			if (DateTaken.HasValue && MinDateTimeThreshold < DateTaken && DateTaken < MaxDateTimeThreshold) {
+				var diff = MinDateTime - DateTaken.Value;
+
+				if (diff.TotalSeconds < -.999 || .999 < diff.TotalSeconds)
+					MinDateTime = DateTaken.Value;
 			}
 		}
 
