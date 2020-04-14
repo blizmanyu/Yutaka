@@ -48,8 +48,16 @@ namespace FileManagerNet462
 			};
 
 			if (deleteFiles) {
-				foreach (var source in sources)
-					MoveAllFiles(source, dest);
+				foreach (var source in sources) {
+					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
+
+					if (totalSize > FileUtil.FOUR_GB) {
+						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
+						Console.ReadKey(true);
+					}
+
+						MoveAllFiles(source, dest);
+					}
 			}
 
 			else {
@@ -108,18 +116,23 @@ namespace FileManagerNet462
 			var count = FileUtil.DeleteAllCacheFiles(source, SearchOption.AllDirectories);
 			Directory.CreateDirectory(dest);
 
+			var bytesProcessed = 0L;
 			YuFile fi;
 			var files = Directory.EnumerateFiles(source, "*", SearchOption.AllDirectories).ToList();
 
 			for (var i = 0; i < files.Count; i++) {
 				totalCount++;
 				fi = new YuFile(files[i]);
+				bytesProcessed += fi.Size;
 
 				if (consoleOut)
 					fi.Debug();
 
 				Directory.CreateDirectory(Path.Combine(dest, fi.NewFolder));
 				if (FileUtil.TryMove(files[i], Path.Combine(dest, fi.NewFolder, fi.Name), OverwriteOption.RenameIfDifferentSize)) {
+					if (i % 10 == 0)
+						Console.Write("\n{3}    {0}/{1} ({2})", FileUtil.BytesToString(bytesProcessed), FileUtil.BytesToString(totalSize), ((double) bytesProcessed / totalSize).ToString("p2"), source);
+
 					if (FileUtil.TryRedate(Path.Combine(dest, fi.NewFolder, fi.Name), fi.MinDateTime))
 						continue;
 					else
