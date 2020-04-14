@@ -13,6 +13,7 @@ namespace Yutaka.IO2
 		public const decimal ONE_MB = 1048576m;
 		public const decimal ONE_GB = 1073741824m;
 		public const decimal TWO_GB = 2147483648m;
+		public const decimal FOUR_GB = 4294967296m;
 		public const decimal ONE_TB = 1099511627776m;
 		public const decimal ONE_PB = 1125899906842624m;
 		public const string UNC_PREFIX = @"\\?\";
