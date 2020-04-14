@@ -47,30 +47,27 @@ namespace FileManagerNet462
 				@"asdfasdf\",
 			};
 
+			foreach (var source in sources)
+				totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
+
 			if (deleteFiles) {
-				foreach (var source in sources) {
-					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
+				if (totalSize > FileUtil.FOUR_GB) {
+					Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
+					Console.ReadKey(true);
+				}
 
-					if (totalSize > FileUtil.FOUR_GB) {
-						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
-						Console.ReadKey(true);
-					}
-
-						MoveAllFiles(source, dest);
-					}
+				foreach (var source in sources)
+					MoveAllFiles(source, dest);
 			}
 
 			else {
-				foreach (var source in sources) {
-					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
-
-					if (totalSize > FileUtil.TWO_GB) {
-						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize/TIME_FACTOR);
-						Console.ReadKey(true);
-					}
-
-					CopyAllFiles(source, dest);
+				if (totalSize > FileUtil.TWO_GB) {
+					Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
+					Console.ReadKey(true);
 				}
+
+				foreach (var source in sources)
+					CopyAllFiles(source, dest);
 			}
 
 			EndProgram();
