@@ -165,6 +165,64 @@ namespace Yutaka.Data
 			}
 		}
 
+		/// <summary>
+		/// WIP: Do not use yet!
+		/// </summary>
+		/// <param name="connectionString"></param>
+		/// <param name="database"></param>
+		/// <param name="schema"></param>
+		/// <param name="table"></param>
+		public void GetColumnsInformation(string connectionString, string database, string schema = null, string table = null)
+		{
+			var where = "";
+			var query = String.Format(
+				"SELECT [TABLE_CATALOG]" +
+				"      ,[TABLE_SCHEMA]" +
+				"      ,[TABLE_NAME]" +
+				"      ,[COLUMN_NAME]" +
+				"      ,[ORDINAL_POSITION]" +
+				"      ,[COLUMN_DEFAULT]" +
+				"      ,[IS_NULLABLE]" +
+				"      ,[DATA_TYPE]" +
+				"      ,[CHARACTER_MAXIMUM_LENGTH]" +
+				"      ,[CHARACTER_OCTET_LENGTH]" +
+				"      ,[NUMERIC_PRECISION]" +
+				"      ,[NUMERIC_PRECISION_RADIX]" +
+				"      ,[NUMERIC_SCALE]" +
+				"      ,[DATETIME_PRECISION]" +
+				"      ,[CHARACTER_SET_CATALOG]" +
+				"      ,[CHARACTER_SET_SCHEMA]" +
+				"      ,[CHARACTER_SET_NAME]" +
+				"      ,[COLLATION_CATALOG]" +
+				"      ,[COLLATION_SCHEMA]" +
+				"      ,[COLLATION_NAME]" +
+				"      ,[DOMAIN_CATALOG]" +
+				"      ,[DOMAIN_SCHEMA]" +
+				"      ,[DOMAIN_NAME]" +
+				"  FROM [{0}].[INFORMATION_SCHEMA].[COLUMNS]", database);
+
+			if (!String.IsNullOrWhiteSpace(schema))
+				where = String.Format(" WHERE [TABLE_SCHEMA] = '{0}'", schema);
+
+			if (!String.IsNullOrWhiteSpace(table)) {
+				if (String.IsNullOrWhiteSpace(where))
+					where = String.Format(" WHERE [TABLE_NAME] = '{0}'", table);
+				else
+					where = String.Format("{0}   AND [TABLE_NAME] = '{1}'", where, table);
+			}
+
+			using (var conn = new SqlConnection(connectionString)) {
+				using (var cmd = new SqlCommand(String.Format("{0}{1}", query, where), conn)) {
+					cmd.CommandType = CommandType.Text;
+					conn.Open();
+					using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
+						while (reader.Read())
+							Console.WriteLine(String.Format("{0}", reader[0]));
+					}
+				}
+			}
+		}
+
 		public DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			var ds = new DataSet();
