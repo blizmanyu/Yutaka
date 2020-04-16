@@ -42,8 +42,30 @@ namespace CodeGenerator
 		static void Main(string[] args)
 		{
 			StartProgram();
-			MapEntities();
+			ScriptTables();
 			EndProgram();
+		}
+
+		private static void ScriptTables()
+		{
+			GetColumnsInformation();
+			var script = _tsqlUtil.ScriptTableAsCreateViewList(Columns);
+			Console.Write("\n{0}", script);
+		}
+
+		private static void GetColumnsInformation()
+		{
+			var connectionString = "asdfg";
+			var database = "asdfg";
+			var schema = "";
+			var table = "_Example";
+
+			Columns = _tsqlUtil.GetColumnsInformation(connectionString, database, schema, table).ToList();
+
+			if (consoleOut) {
+				foreach (var col in Columns)
+					col.DumpToConsole();
+			}
 		}
 
 		private static void MapEntities()
@@ -63,21 +85,6 @@ namespace CodeGenerator
 
 			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
 			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
-		}
-
-		private static void GetColumnsInformation()
-		{
-			var connectionString = "asdf";
-			var database = "asdf";
-			var schema = "asdf";
-			var table = "asdf";
-
-			Columns = _tsqlUtil.GetColumnsInformation(connectionString, database, schema, table).ToList();
-
-			if (consoleOut) {
-				foreach (var col in Columns)
-					col.DumpToConsole();
-			}
 		}
 
 		private static void StartProgram()
