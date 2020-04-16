@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
@@ -166,14 +167,15 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// WIP: Do not use yet!
+		/// Gets Columns information from INFORMATION_SCHEMA.
 		/// </summary>
-		/// <param name="connectionString"></param>
-		/// <param name="database"></param>
-		/// <param name="schema"></param>
-		/// <param name="table"></param>
-		public void GetColumnsInformation(string connectionString, string database, string schema = null, string table = null)
+		/// <param name="connectionString">The connection used to open the SQL Server database.</param>
+		/// <param name="database">The database to query.</param>
+		/// <param name="schema">Specify a schema. To get from all schema, leave blank.</param>
+		/// <param name="table">Specify a table. To get from all tables, leave blank.</param>
+		public IList<Column> GetColumnsInformation(string connectionString, string database, string schema = null, string table = null)
 		{
+			var list = new List<Column>();
 			var where = "";
 			var query = String.Format(
 				"SELECT [TABLE_CATALOG]" +
@@ -216,11 +218,38 @@ namespace Yutaka.Data
 					cmd.CommandType = CommandType.Text;
 					conn.Open();
 					using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
-						while (reader.Read())
-							Console.WriteLine(String.Format("{0}", reader[0]));
+						while (reader.Read()) {
+							list.Add(new Column {
+								TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
+								TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
+								TableName = reader["TABLE_NAME"] is DBNull ? "" : reader["TABLE_NAME"].ToString(),
+								ColumnName = reader["COLUMN_NAME"] is DBNull ? "" : reader["COLUMN_NAME"].ToString(),
+								OrdinalPosition = reader["ORDINAL_POSITION"] is DBNull ? -1 : (int) reader["ORDINAL_POSITION"],
+								ColumnDefault = reader["COLUMN_DEFAULT"]?.ToString(),
+								IsNullable = reader["IS_NULLABLE"] is DBNull ? true : reader["IS_NULLABLE"].Equals("YES") ? true : false,
+								DataType = reader["DATA_TYPE"] is DBNull ? "" : reader["DATA_TYPE"].ToString(),
+								CharacterMaximumLength = reader["CHARACTER_MAXIMUM_LENGTH"] is DBNull ? -1 : (int) reader["CHARACTER_MAXIMUM_LENGTH"],
+								CharacterOctetLength = reader["CHARACTER_OCTET_LENGTH"] is DBNull ? -1 : (int) reader["CHARACTER_OCTET_LENGTH"],
+								NumericPrecision = reader["NUMERIC_PRECISION"] is DBNull ? -1 : int.Parse(reader["NUMERIC_PRECISION"].ToString()),
+								NumericPrecisionRadix = reader["NUMERIC_PRECISION_RADIX"] is DBNull ? -1 : int.Parse(reader["NUMERIC_PRECISION_RADIX"].ToString()),
+								NumericScale = reader["NUMERIC_SCALE"] is DBNull ? -1 : (int) reader["NUMERIC_SCALE"],
+								DatetimePrecision = reader["DATETIME_PRECISION"] is DBNull ? -1 : int.Parse(reader["DATETIME_PRECISION"].ToString()),
+								CharacterSetCatalog = reader["CHARACTER_SET_CATALOG"]?.ToString(),
+								CharacterSetSchema = reader["CHARACTER_SET_SCHEMA"]?.ToString(),
+								CharacterSetName = reader["CHARACTER_SET_NAME"]?.ToString(),
+								CollationCatalog = reader["COLLATION_CATALOG"]?.ToString(),
+								CollationSchema = reader["COLLATION_SCHEMA"]?.ToString(),
+								CollationName = reader["COLLATION_NAME"]?.ToString(),
+								DomainCatalog = reader["DOMAIN_CATALOG"]?.ToString(),
+								DomainSchema = reader["DOMAIN_SCHEMA"]?.ToString(),
+								DomainName = reader["DOMAIN_NAME"]?.ToString(),
+							});
+						}
 					}
 				}
 			}
+
+			return list;
 		}
 
 		public DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
@@ -470,5 +499,61 @@ namespace Yutaka.Data
 		//	}
 		//}
 		#endregion Commented Out Jan, 10, 2019
+	}
+
+	public class Column
+	{
+		public string TableCatalog;
+		public string TableSchema;
+		public string TableName;
+		public string ColumnName;
+		public int OrdinalPosition;
+		public string ColumnDefault;
+		public bool IsNullable;
+		public string DataType;
+		public int CharacterMaximumLength;
+		public int CharacterOctetLength;
+		public int NumericPrecision;
+		public int NumericPrecisionRadix;
+		public int NumericScale;
+		public int DatetimePrecision;
+		public string CharacterSetCatalog;
+		public string CharacterSetSchema;
+		public string CharacterSetName;
+		public string CollationCatalog;
+		public string CollationSchema;
+		public string CollationName;
+		public string DomainCatalog;
+		public string DomainSchema;
+		public string DomainName;
+
+		public void DumpToConsole()
+		{
+			Console.Write("\n");
+			Console.Write("\n          TableCatalog: {0}", TableCatalog);
+			Console.Write("\n           TableSchema: {0}", TableSchema);
+			Console.Write("\n             TableName: {0}", TableName);
+			Console.Write("\n            ColumnName: {0}", ColumnName);
+			Console.Write("\n       OrdinalPosition: {0}", OrdinalPosition);
+			Console.Write("\n         ColumnDefault: {0}", ColumnDefault);
+			Console.Write("\n            IsNullable: {0}", IsNullable);
+			Console.Write("\n              DataType: {0}", DataType);
+			Console.Write("\nCharacterMaximumLength: {0}", CharacterMaximumLength);
+			Console.Write("\n  CharacterOctetLength: {0}", CharacterOctetLength);
+			Console.Write("\n      NumericPrecision: {0}", NumericPrecision);
+			Console.Write("\n NumericPrecisionRadix: {0}", NumericPrecisionRadix);
+			Console.Write("\n          NumericScale: {0}", NumericScale);
+			Console.Write("\n     DatetimePrecision: {0}", DatetimePrecision);
+			Console.Write("\n   CharacterSetCatalog: {0}", CharacterSetCatalog);
+			Console.Write("\n    CharacterSetSchema: {0}", CharacterSetSchema);
+			Console.Write("\n      CharacterSetName: {0}", CharacterSetName);
+			Console.Write("\n      CollationCatalog: {0}", CollationCatalog);
+			Console.Write("\n       CollationSchema: {0}", CollationSchema);
+			Console.Write("\n         CollationName: {0}", CollationName);
+			Console.Write("\n         DomainCatalog: {0}", DomainCatalog);
+			Console.Write("\n          DomainSchema: {0}", DomainSchema);
+			Console.Write("\n            DomainName: {0}", DomainName);
+			Console.Write("\n");
+		}
 	}
 }
