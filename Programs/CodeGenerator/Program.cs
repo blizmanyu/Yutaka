@@ -36,7 +36,7 @@ namespace CodeGenerator
 		private static int errorCount = 0;
 		private static int totalCount = 0;
 		private static List<Column> Columns = new List<Column>();
-		private static TsqlUtil _tsqlUtil = new TsqlUtil();
+		private static TsqlUtil _tsqlUtil;
 		#endregion
 
 		static void Main(string[] args)
@@ -48,8 +48,11 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
+			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
 			GetColumnsInformation();
 			var script = _tsqlUtil.ScriptTableAsCreateViewList(Columns);
+			Console.Write("\n{0}", script);
+			script = _tsqlUtil.ScriptTableAsCreateViewEdit(Columns);
 			Console.Write("\n{0}", script);
 		}
 
