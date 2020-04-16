@@ -17,7 +17,7 @@ namespace CodeGenerator
 	{
 		// Config/Settings //
 		const string PROGRAM_NAME = "CodeGenerator";
-		private static bool consoleOut = true; // default = false //
+		private static readonly bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -29,13 +29,14 @@ namespace CodeGenerator
 		#endregion
 
 		const string TIMESTAMP = @"[HH:mm:ss] ";
-		private static DateTime startTime = DateTime.Now;
+		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly double errorPerThreshold = 0.07;
+		private static readonly int errorCountThreshold = 7;
+
 		private static int errorCount = 0;
 		private static int totalCount = 0;
-		private static int errorCountThreshold = 7;
-		private static double errorPerThreshold = 0.07;
-		private static TsqlUtil _tsqlUtil = new TsqlUtil();
 		private static List<Column> Columns = new List<Column>();
+		private static TsqlUtil _tsqlUtil = new TsqlUtil();
 		#endregion
 
 		static void Main(string[] args)
