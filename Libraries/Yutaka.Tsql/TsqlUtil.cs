@@ -166,19 +166,16 @@ namespace Yutaka.Data
 					script = String.Format("{0}           ,[{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 
 					if (col.ColumnName.Equals("CreatedById")) {
-						script = String.Format("{0}           ,[CreatedByAlias] = cr.[Alias]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[CreatedByUserName] = cr.[UserName]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[CreatedByFullName] = cr.[FullName]{1}", script, Environment.NewLine);
 					}
 
 					else if (col.ColumnName.Equals("UpdatedById")) {
-						script = String.Format("{0}           ,[UpdatedByAlias] = up.[Alias]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[UpdatedByUserName] = up.[UserName]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[UpdatedByFullName] = up.[FullName]{1}", script, Environment.NewLine);
 					}
 
 					else if (col.ColumnName.Equals("DeletedById")) {
-						script = String.Format("{0}           ,[DeletedByAlias] = de.[Alias]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[DeletedByUserName] = de.[UserName]{1}", script, Environment.NewLine);
 						script = String.Format("{0}           ,[DeletedByFullName] = de.[FullName]{1}", script, Environment.NewLine);
 					}
