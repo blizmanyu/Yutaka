@@ -122,6 +122,78 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Returns a script for creating a Sql View Edit.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptTableAsCreateViewEdit(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var today = DateTime.Today.ToString(DateFormat);
+			var script = "";
+			var database = "";
+			var schema = "";
+			var table = "";
+			var alias = "";
+			var scriptIntro = true;
+
+			foreach (var col in columns) {
+				if (scriptIntro) {
+					database = col.TableCatalog ?? "";
+					schema = col.TableSchema ?? "";
+					table = col.TableName ?? "";
+					alias = table.Replace("_", "").Substring(0, 2).ToLower();
+					script = String.Format("{0}USE [{2}]{1}", script, Environment.NewLine, database);
+					script = String.Format("{0}GO{1}", script, Environment.NewLine);
+					script = String.Format("{0}SET ANSI_NULLS ON{1}", script, Environment.NewLine);
+					script = String.Format("{0}GO{1}", script, Environment.NewLine);
+					script = String.Format("{0}SET QUOTED_IDENTIFIER ON{1}", script, Environment.NewLine);
+					script = String.Format("{0}GO{1}", script, Environment.NewLine);
+					script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+					script = String.Format("{0}-- Author:      {2}{1}", script, Environment.NewLine, Author);
+					script = String.Format("{0}-- Create date: {2}{1}", script, Environment.NewLine, today);
+					script = String.Format("{0}-- Modified:    {2}{1}", script, Environment.NewLine, today);
+					script = String.Format("{0}-- Description: -{1}", script, Environment.NewLine);
+					script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+					script = String.Format("{0}CREATE VIEW [{2}].[{3}Edit] AS ({1}", script, Environment.NewLine, schema, table);
+					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
+					scriptIntro = false;
+				}
+
+				else {
+					script = String.Format("{0}           ,[{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
+
+					if (col.ColumnName.Equals("CreatedById")) {
+						script = String.Format("{0}           ,[CreatedByAlias] = cr.[Alias]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[CreatedByUserName] = cr.[UserName]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[CreatedByFullName] = cr.[FullName]{1}", script, Environment.NewLine);
+					}
+
+					else if (col.ColumnName.Equals("UpdatedById")) {
+						script = String.Format("{0}           ,[UpdatedByAlias] = up.[Alias]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[UpdatedByUserName] = up.[UserName]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[UpdatedByFullName] = up.[FullName]{1}", script, Environment.NewLine);
+					}
+
+					else if (col.ColumnName.Equals("DeletedById")) {
+						script = String.Format("{0}           ,[DeletedByAlias] = de.[Alias]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[DeletedByUserName] = de.[UserName]{1}", script, Environment.NewLine);
+						script = String.Format("{0}           ,[DeletedByFullName] = de.[FullName]{1}", script, Environment.NewLine);
+					}
+				}
+			}
+
+			script = String.Format("{0}       FROM [{2}].[{3}].[{4}] {5} WITH (NOLOCK){1}", script, Environment.NewLine, database, schema, table, alias);
+			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] cr WITH (NOLOCK) ON cr.[Id] = {2}.[CreatedById]{1}", script, Environment.NewLine, alias);
+			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] up WITH (NOLOCK) ON up.[Id] = {2}.[UpdatedById]{1}", script, Environment.NewLine, alias);
+			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] de WITH (NOLOCK) ON de.[Id] = {2}.[DeletedById]{1}", script, Environment.NewLine, alias);
+			script = String.Format("{0}){1}", script, Environment.NewLine);
+			return script;
+		}
+
+		/// <summary>
 		/// Returns a script for creating a Sql View List.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
