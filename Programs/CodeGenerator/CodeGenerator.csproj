@@ -68,6 +68,9 @@
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Text.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.Tsql">
+      <HintPath>..\..\Libraries\Yutaka.Tsql\bin\Release\Yutaka.Tsql.dll</HintPath>
+    </Reference>
     <Reference Include="Yutaka.Utils">
       <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>

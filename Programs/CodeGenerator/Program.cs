@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 //using Nop.Web.Models.RcwInventory;
 //using Rcw.Sql.Hulk.Import.Data;
 //using Rcw.Sql.Hulk.IntranetData.Data;
+using Yutaka.Data;
 using Yutaka.IO;
 using Yutaka.VineSpring.Data20200207;
 
@@ -31,6 +34,8 @@ namespace CodeGenerator
 		private static int totalCount = 0;
 		private static int errorCountThreshold = 7;
 		private static double errorPerThreshold = 0.07;
+		private static TsqlUtil _tsqlUtil = new TsqlUtil();
+		private static List<Column> Columns = new List<Column>();
 		#endregion
 
 		static void Main(string[] args)
@@ -57,6 +62,21 @@ namespace CodeGenerator
 
 			var filename = String.Format("{0:yyyy MMdd HHmm ssff}.cs", DateTime.Now);
 			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+		}
+
+		private static void GetColumnsInformation()
+		{
+			var connectionString = "asdf";
+			var database = "asdf";
+			var schema = "asdf";
+			var table = "asdf";
+
+			Columns = _tsqlUtil.GetColumnsInformation(connectionString, database, schema, table).ToList();
+
+			if (consoleOut) {
+				foreach (var col in Columns)
+					col.DumpToConsole();
+			}
 		}
 
 		private static void StartProgram()
