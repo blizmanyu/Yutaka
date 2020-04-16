@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace Yutaka.Tsql
+namespace Yutaka.Data
 {
 	public class TsqlUtil
 	{

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Yutaka.Tsql
+namespace Yutaka.Data
 {
 	public class Column
 	{
