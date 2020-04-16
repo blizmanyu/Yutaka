@@ -32,22 +32,8 @@ namespace Yutaka.Data.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_GetColumnsInformation();
+			Test_CanExecute();
 			EndProgram();
-		}
-
-		// Modified Apr 15, 2020 // Created Apr 15, 2020 //
-		private static void Test_GetColumnsInformation()
-		{
-			var connectionString = "asdf";
-			var database = "asdf";
-			var schema = "asdf";
-			var table = "asdf";
-
-			var columns = _sqlUtil.GetColumnsInformation(connectionString, database, schema, table);
-
-			foreach (var col in columns)
-				col.DumpToConsole();
 		}
 
 		#region Tests
