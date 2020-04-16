@@ -71,6 +71,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlaylistCreator", "Programs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpeedTester", "Tests\SpeedTester\SpeedTester.csproj", "{6E4DC4A9-C652-45AD-B709-A4B64DB969B5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Tsql", "Libraries\Yutaka.Tsql\Yutaka.Tsql.csproj", "{01BE655C-7A19-4E17-B22A-A85A2CB98283}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -201,6 +203,10 @@ Global
 		{6E4DC4A9-C652-45AD-B709-A4B64DB969B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6E4DC4A9-C652-45AD-B709-A4B64DB969B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6E4DC4A9-C652-45AD-B709-A4B64DB969B5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01BE655C-7A19-4E17-B22A-A85A2CB98283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01BE655C-7A19-4E17-B22A-A85A2CB98283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01BE655C-7A19-4E17-B22A-A85A2CB98283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01BE655C-7A19-4E17-B22A-A85A2CB98283}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -237,6 +243,7 @@ Global
 		{2771B0F3-A004-4721-9E48-8F3B10D1E755} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
 		{78935EFE-8FFC-4646-8046-022D0305A3F5} = {E964C772-CE6B-484A-A575-8F123C38CB1E}
 		{6E4DC4A9-C652-45AD-B709-A4B64DB969B5} = {2D4535E9-B792-47EC-B1D1-D62952932B87}
+		{01BE655C-7A19-4E17-B22A-A85A2CB98283} = {2F7E70C2-68B7-4A98-873D-D49E4F3AF552}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
