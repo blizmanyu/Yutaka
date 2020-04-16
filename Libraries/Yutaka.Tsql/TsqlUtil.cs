@@ -19,6 +19,11 @@ namespace Yutaka.Data
 			DateFormat = dateFormat;
 		}
 
+		//protected string ScriptHeading(string database, string schema, string table)
+		//{
+
+		//}
+
 		/// <summary>
 		/// Gets Columns information from INFORMATION_SCHEMA.
 		/// </summary>
