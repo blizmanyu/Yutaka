@@ -152,7 +152,7 @@ namespace Yutaka.Data
 					script = String.Format("{0}SET QUOTED_IDENTIFIER ON{1}", script, Environment.NewLine);
 					script = String.Format("{0}GO{1}", script, Environment.NewLine);
 					script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
-					script = String.Format("{0}-- Author:      Yutaka Blizman{1}", script, Environment.NewLine);
+					script = String.Format("{0}-- Author:      {2}{1}", script, Environment.NewLine, Author);
 					script = String.Format("{0}-- Create date: {2}{1}", script, Environment.NewLine, today);
 					script = String.Format("{0}-- Modified:    {2}{1}", script, Environment.NewLine, today);
 					script = String.Format("{0}-- Description: -{1}", script, Environment.NewLine);
