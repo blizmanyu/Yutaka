@@ -42,11 +42,11 @@ namespace CodeGenerator
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Process();
+			MapEntities();
 			EndProgram();
 		}
 
-		private static void Process()
+		private static void MapEntities()
 		{
 			var sb = new StringBuilder();
 			//sb.Append(Mapper.Map<InventoryAabModel>("InventoryAabView"));
