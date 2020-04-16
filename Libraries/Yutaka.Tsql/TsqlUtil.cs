@@ -7,7 +7,17 @@ namespace Yutaka.Data
 {
 	public class TsqlUtil
 	{
-		public string DateFormat = @"MMM dd, yyyy";
+		public string Author;
+		public string DateFormat;
+
+		public TsqlUtil(string author = null, string dateFormat = null)
+		{
+			if (String.IsNullOrWhiteSpace(dateFormat))
+				dateFormat = @"MMM dd, yyyy";
+
+			Author = author;
+			DateFormat = dateFormat;
+		}
 
 		/// <summary>
 		/// Gets Columns information from INFORMATION_SCHEMA.
