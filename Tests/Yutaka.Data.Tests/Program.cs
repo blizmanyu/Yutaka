@@ -32,11 +32,26 @@ namespace Yutaka.Data.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_CanExecute();
+			Test_GetColumnsInformation();
 			EndProgram();
 		}
 
-		#region Test CanExecute() - 2019 1226 1514
+		// Modified Apr 15, 2020 // Created Apr 15, 2020 //
+		private static void Test_GetColumnsInformation()
+		{
+			var connectionString = "asdf";
+			var database = "asdf";
+			var schema = "asdf";
+			var table = "asdf";
+
+			var columns = _sqlUtil.GetColumnsInformation(connectionString, database, schema, table);
+
+			foreach (var col in columns)
+				col.DumpToConsole();
+		}
+
+		#region Tests
+		// Modified Dec 26, 2019 // Created Dec 26, 2019 //
 		private static void Test_CanExecute()
 		{
 			var tests = new string[] {
@@ -51,16 +66,13 @@ namespace Yutaka.Data.Tests
 				Console.Write("\n");
 			}
 		}
-		#endregion Test CanExecute()
 
-		#region Test ToXls()
 		private static void Test_ToXls()
 		{
 
 		}
-		#endregion Test ToXls()
 
-		#region Test TruncateTable() - 2019 0905 1909
+		// Modified Sep 5, 2019 // Created Sep 5, 2019 //
 		private static void Test_TruncateTable()
 		{
 			var conStr = "";
@@ -70,8 +82,9 @@ namespace Yutaka.Data.Tests
 
 			_sqlUtil.TruncateTable(conStr, database, schema, table);
 		}
-		#endregion Test TruncateTable()
+		#endregion Tests
 
+		#region StartProgram & EndProgram
 		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
@@ -126,5 +139,6 @@ namespace Yutaka.Data.Tests
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
+		#endregion StartProgram & EndProgram
 	}
 }
