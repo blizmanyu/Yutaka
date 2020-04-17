@@ -12,6 +12,7 @@ namespace Yutaka.Data
 		public string ColumnDefault;
 		public bool IsNullable;
 		public string DataType;
+		public string DataTypeFull;
 		public int CharacterMaximumLength;
 		public int CharacterOctetLength;
 		public int NumericPrecision;
@@ -39,6 +40,7 @@ namespace Yutaka.Data
 			Console.Write("\n         ColumnDefault: {0}", ColumnDefault);
 			Console.Write("\n            IsNullable: {0}", IsNullable);
 			Console.Write("\n              DataType: {0}", DataType);
+			Console.Write("\n          DataTypeFull: {0}", DataTypeFull);
 			Console.Write("\nCharacterMaximumLength: {0}", CharacterMaximumLength);
 			Console.Write("\n  CharacterOctetLength: {0}", CharacterOctetLength);
 			Console.Write("\n      NumericPrecision: {0}", NumericPrecision);
