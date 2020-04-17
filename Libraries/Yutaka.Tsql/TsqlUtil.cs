@@ -269,6 +269,57 @@ namespace Yutaka.Data
 			script = String.Format("{0}){1}", script, Environment.NewLine);
 			return script;
 		}
+
+		/// <summary>
+		/// Returns a script for a Stored Procedure that inserts into the table.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptTableInsert(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var script = "";
+			var prmtrs = "";
+			var clumns = "";
+			var values = "";
+			var schema = "";
+			var table = "";
+			var scriptIntro = true;
+
+			foreach (var col in columns) {
+				if (scriptIntro) {
+					schema = col.TableSchema ?? "";
+					table = col.TableName ?? "";
+					script = ScriptHeading(col.TableCatalog ?? "", schema, table);
+					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Insert]{1}", script, Environment.NewLine, schema, table);
+					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataType);
+					clumns = String.Format("{0}               ([{1}]", clumns, col.ColumnName);
+					values = String.Format("{0}               (@{1}", values, col.ColumnName);
+					scriptIntro = false;
+				}
+
+				else {
+					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataType);
+					clumns = String.Format("{0}{1}               ,[{2}]", clumns, Environment.NewLine, col.ColumnName);
+					values = String.Format("{0}{1}               ,@{2}", values, Environment.NewLine, col.ColumnName);
+				}
+			}
+
+			script = String.Format("{0}{1}", script, prmtrs);
+			script = String.Format("{0}AS{1}", script, Environment.NewLine);
+			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
+			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
+			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
+			script = String.Format("{0}{1}", script, Environment.NewLine);
+			script = String.Format("{0}    INSERT INTO [{2}].[{3}]{1}", script, Environment.NewLine, schema, table);
+			script = String.Format("{0}{1}){2}", script, clumns, Environment.NewLine);
+			script = String.Format("{0}         VALUES{1}", script, Environment.NewLine);
+			script = String.Format("{0}{1}){2}", script, values, Environment.NewLine);
+			script = String.Format("{0}END{1}", script, Environment.NewLine);
+			return script;
+		}
 		#endregion Public Methods
 	}
 }
