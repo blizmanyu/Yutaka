@@ -159,7 +159,6 @@ namespace Yutaka.Data
 			if (columns == null || columns.Count < 1)
 				return "";
 
-			var today = DateTime.Today.ToString(DateFormat);
 			var script = "";
 			var database = "";
 			var schema = "";
@@ -173,18 +172,7 @@ namespace Yutaka.Data
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = String.Format("{0}USE [{2}]{1}", script, Environment.NewLine, database);
-					script = String.Format("{0}GO{1}", script, Environment.NewLine);
-					script = String.Format("{0}SET ANSI_NULLS ON{1}", script, Environment.NewLine);
-					script = String.Format("{0}GO{1}", script, Environment.NewLine);
-					script = String.Format("{0}SET QUOTED_IDENTIFIER ON{1}", script, Environment.NewLine);
-					script = String.Format("{0}GO{1}", script, Environment.NewLine);
-					script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
-					script = String.Format("{0}-- Author:      {2}{1}", script, Environment.NewLine, Author);
-					script = String.Format("{0}-- Create date: {2}{1}", script, Environment.NewLine, today);
-					script = String.Format("{0}-- Modified:    {2}{1}", script, Environment.NewLine, today);
-					script = String.Format("{0}-- Description: -{1}", script, Environment.NewLine);
-					script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+					script = ScriptHeading(database, schema, table);
 					script = String.Format("{0}CREATE VIEW [{2}].[{3}Edit] AS ({1}", script, Environment.NewLine, schema, table);
 					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 					scriptIntro = false;
