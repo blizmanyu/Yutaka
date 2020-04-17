@@ -104,8 +104,9 @@ namespace Yutaka.Data
 						cmd.CommandType = CommandType.Text;
 						conn.Open();
 						using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
+							Column col;
 							while (reader.Read()) {
-								list.Add(new Column {
+								col = new Column {
 									TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
 									TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
 									TableName = reader["TABLE_NAME"] is DBNull ? "" : reader["TABLE_NAME"].ToString(),
@@ -129,7 +130,16 @@ namespace Yutaka.Data
 									DomainCatalog = reader["DOMAIN_CATALOG"]?.ToString(),
 									DomainSchema = reader["DOMAIN_SCHEMA"]?.ToString(),
 									DomainName = reader["DOMAIN_NAME"]?.ToString(),
-								});
+								};
+
+								if (col.DataType.Equals("varchar") || col.DataType.Equals("nvarchar"))
+									col.DataTypeFull = String.Format("{0}({1})", col.DataType, col.CharacterMaximumLength);
+								else if (col.DataType.Equals("decimal"))
+									col.DataTypeFull = String.Format("{0}({1},{2})", col.DataType, col.NumericPrecision, col.NumericScale);
+								else
+									col.DataTypeFull = col.DataType;
+
+								list.Add(col);
 							}
 						}
 					}
