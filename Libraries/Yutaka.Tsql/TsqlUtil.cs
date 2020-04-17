@@ -278,6 +278,69 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Generates script text to create a SQL Stored Procedure used to Delete.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptTableDelete(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var script = "";
+			var parameters = "";
+			var setClause = "";
+			var whereClause = "";
+			var isFirstCol = true;
+			var findID = true;
+
+			foreach (var col in columns) {
+				if (isFirstCol) {
+					var schema = col.TableSchema;
+					var table = col.TableName;
+					script = ScriptHeading(col.TableCatalog);
+					script = String.Format("{0}CREATE PROCEDURE [{1}].[{2}Delete]{3}", script, schema, table, Environment.NewLine);
+					script = String.Format("{0}_PARAMETERS_", script);
+					script = String.Format("{0}AS{1}", script, Environment.NewLine);
+					script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
+					script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
+					script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
+					script = String.Format("{0}{1}", script, Environment.NewLine);
+					script = String.Format("{0}    UPDATE [{1}].[{2}]{3}", script, schema, table, Environment.NewLine);
+					script = String.Format("{0}_SET_CLAUSE_", script);
+					script = String.Format("{0}_WHERE_CLAUSE_", script);
+					script = String.Format("{0}END{1}", script, Environment.NewLine);
+					isFirstCol = false;
+				}
+
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))) {
+					if (String.IsNullOrWhiteSpace(parameters))
+						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+					else
+						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+					whereClause = String.Format("{0}     WHERE [{1}] = @{1}{2}", whereClause, col.ColumnName, Environment.NewLine);
+					findID = false;
+				}
+
+				else if (col.ColumnName.StartsWith("Delete")) {
+					if (String.IsNullOrWhiteSpace(parameters))
+						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+					else
+						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+					if (String.IsNullOrWhiteSpace(setClause))
+						setClause = String.Format("{0}       SET [{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+					else
+						setClause = String.Format("{0}          ,[{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+				}
+			}
+
+			script = script.Replace("_PARAMETERS_", parameters).Replace("_SET_CLAUSE_", setClause).Replace("_WHERE_CLAUSE_", whereClause);
+			return script;
+		}
+
+		/// <summary>
 		/// Generates script text to create a SQL Stored Procedure used to Insert.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
