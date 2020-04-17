@@ -7,9 +7,12 @@ namespace Yutaka.Data
 {
 	public class TsqlUtil
 	{
+		#region Fields
 		public string Author;
 		public string DateFormat;
+		#endregion Fields
 
+		#region Constructor
 		public TsqlUtil(string author = null, string dateFormat = null)
 		{
 			if (String.IsNullOrWhiteSpace(dateFormat))
@@ -18,7 +21,9 @@ namespace Yutaka.Data
 			Author = author;
 			DateFormat = dateFormat;
 		}
+		#endregion Constructor
 
+		#region Utilities
 		/// <summary>
 		/// Scripts the heading part of almost all T-Sql script.
 		/// </summary>
@@ -46,7 +51,9 @@ namespace Yutaka.Data
 
 			return script;
 		}
+		#endregion Utilities
 
+		#region Public Methods
 		/// <summary>
 		/// Gets Columns information from INFORMATION_SCHEMA.
 		/// </summary>
@@ -262,5 +269,6 @@ namespace Yutaka.Data
 			script = String.Format("{0}){1}", script, Environment.NewLine);
 			return script;
 		}
+		#endregion Public Methods
 	}
 }
