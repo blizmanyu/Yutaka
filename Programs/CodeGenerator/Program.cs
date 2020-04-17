@@ -50,10 +50,12 @@ namespace CodeGenerator
 		{
 			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
 			GetColumnsInformation();
-			var script = _tsqlUtil.ScriptTableAsCreateViewList(Columns);
-			Console.Write("\n{0}", script);
-			script = _tsqlUtil.ScriptTableAsCreateViewEdit(Columns);
-			Console.Write("\n{0}", script);
+			var scriptCreateViewList = _tsqlUtil.ScriptTableCreateViewList(Columns);
+			Console.Write("\n{0}", scriptCreateViewList);
+			var scriptCreateViewEdit = _tsqlUtil.ScriptTableCreateViewEdit(Columns);
+			Console.Write("\n{0}", scriptCreateViewEdit);
+			var scriptTableInsert = _tsqlUtil.ScriptTableInsert(Columns);
+			Console.Write("\n{0}", scriptTableInsert);
 		}
 
 		private static void GetColumnsInformation()
