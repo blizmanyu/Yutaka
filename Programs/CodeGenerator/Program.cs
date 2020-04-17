@@ -58,6 +58,8 @@ namespace CodeGenerator
 			Console.Write("\n{0}", ScriptTableInsert);
 			var ScriptTableUpdate = _tsqlUtil.ScriptTableUpdate(Columns);
 			Console.Write("\n{0}", ScriptTableUpdate);
+			var ScriptTableDelete = _tsqlUtil.ScriptTableDelete(Columns);
+			Console.Write("\n{0}", ScriptTableDelete);
 		}
 
 		private static void GetColumnsInformation()
