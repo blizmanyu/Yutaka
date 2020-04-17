@@ -28,14 +28,11 @@ namespace Yutaka.Data
 		/// Scripts the heading part of almost all T-Sql script.
 		/// </summary>
 		/// <param name="database">The database.</param>
-		/// <param name="schema">The schema.</param>
-		/// <param name="table">The table.</param>
 		/// <returns>The heading part of the script.</returns>
-		protected string ScriptHeading(string database, string schema, string table)
+		protected string ScriptHeading(string database)
 		{
 			var today = DateTime.Today.ToString(DateFormat);
 			var script = "";
-			var alias = table.Replace("_", "").Substring(0, 2).ToLower();
 			script = String.Format("{0}USE [{2}]{1}", script, Environment.NewLine, database);
 			script = String.Format("{0}GO{1}", script, Environment.NewLine);
 			script = String.Format("{0}SET ANSI_NULLS ON{1}", script, Environment.NewLine);
@@ -179,7 +176,7 @@ namespace Yutaka.Data
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = ScriptHeading(database, schema, table);
+					script = ScriptHeading(database);
 					script = String.Format("{0}CREATE VIEW [{2}].[{3}Edit] AS ({1}", script, Environment.NewLine, schema, table);
 					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 					scriptIntro = false;
@@ -236,7 +233,7 @@ namespace Yutaka.Data
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = ScriptHeading(database, schema, table);
+					script = ScriptHeading(database);
 					script = String.Format("{0}CREATE VIEW [{2}].[{3}List] AS ({1}", script, Environment.NewLine, schema, table);
 					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 					scriptIntro = false;
@@ -292,7 +289,7 @@ namespace Yutaka.Data
 				if (scriptIntro) {
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
-					script = ScriptHeading(col.TableCatalog ?? "", schema, table);
+					script = ScriptHeading(col.TableCatalog ?? "");
 					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Insert]{1}", script, Environment.NewLine, schema, table);
 					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataType);
 					clumns = String.Format("{0}               ([{1}]", clumns, col.ColumnName);
