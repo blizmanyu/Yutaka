@@ -48,6 +48,40 @@ namespace Yutaka.Data
 
 			return script;
 		}
+
+		/// <summary>
+		/// Generates script text template.
+		/// </summary>
+		/// <param name="database">The database.</param>
+		/// <returns>The template.</returns>
+		protected string ScriptTemplate(string database)
+		{
+			var today = DateTime.Today.ToString(DateFormat);
+			var script = "";
+			script = String.Format("{0}USE [{1}]{2}", script, database, Environment.NewLine);
+			script = String.Format("{0}GO{1}", script, Environment.NewLine);
+			script = String.Format("{0}SET ANSI_NULLS ON{1}", script, Environment.NewLine);
+			script = String.Format("{0}GO{1}", script, Environment.NewLine);
+			script = String.Format("{0}SET QUOTED_IDENTIFIER ON{1}", script, Environment.NewLine);
+			script = String.Format("{0}GO{1}", script, Environment.NewLine);
+			script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+			script = String.Format("{0}-- Author:      {1}{2}", script, Author, Environment.NewLine);
+			script = String.Format("{0}-- Create date: {1}{2}", script, today, Environment.NewLine);
+			script = String.Format("{0}-- Modified:    {1}{2}", script, today, Environment.NewLine);
+			script = String.Format("{0}-- Description: -{1}", script, Environment.NewLine);
+			script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+			script = String.Format("{0}_CREATE_CLAUSE_{1}", script, Environment.NewLine);
+			script = String.Format("{0}_PARAMETERS_", script);
+			script = String.Format("{0}AS{1}", script, Environment.NewLine);
+			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
+			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
+			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
+			script = String.Format("{0}{1}", script, Environment.NewLine);
+			script = String.Format("{0}_STATEMENT_CLAUSE_", script);
+			script = String.Format("{0}END{1}", script, Environment.NewLine);
+
+			return script;
+		}
 		#endregion Utilities
 
 		#region Public Methods
