@@ -158,7 +158,7 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptTableAsCreateViewEdit(IList<Column> columns)
+		public string ScriptTableCreateViewEdit(IList<Column> columns)
 		{
 			if (columns == null || columns.Count < 1)
 				return "";
@@ -215,7 +215,7 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptTableAsCreateViewList(IList<Column> columns)
+		public string ScriptTableCreateViewList(IList<Column> columns)
 		{
 			if (columns == null || columns.Count < 1)
 				return "";
