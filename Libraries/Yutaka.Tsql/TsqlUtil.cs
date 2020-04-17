@@ -301,14 +301,14 @@ namespace Yutaka.Data
 					table = col.TableName ?? "";
 					script = ScriptHeading(col.TableCatalog ?? "");
 					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Insert]{1}", script, Environment.NewLine, schema, table);
-					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataType);
+					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
 					clumns = String.Format("{0}               ([{1}]", clumns, col.ColumnName);
 					values = String.Format("{0}               (@{1}", values, col.ColumnName);
 					scriptIntro = false;
 				}
 
 				else {
-					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataType);
+					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
 					clumns = String.Format("{0}{1}               ,[{2}]", clumns, Environment.NewLine, col.ColumnName);
 					values = String.Format("{0}{1}               ,@{2}", values, Environment.NewLine, col.ColumnName);
 				}
