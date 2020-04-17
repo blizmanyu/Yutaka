@@ -417,6 +417,55 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Generates script text to create a SQL Stored Procedure used to Restore.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptTableRestore(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var script = "";
+			var parameters = "";
+			var setClause = "";
+			var whereClause = "";
+			var isFirstCol = true;
+			var findID = true;
+
+			foreach (var col in columns) {
+				if (isFirstCol) {
+					var schema = col.TableSchema;
+					var table = col.TableName;
+					script = ScriptTemplate(col.TableCatalog);
+					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Restore]", schema, table));
+					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
+					isFirstCol = false;
+				}
+
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))) {
+					if (String.IsNullOrWhiteSpace(parameters))
+						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+					else
+						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+					whereClause = String.Format("{0}     WHERE [{1}] = @{1}{2}", whereClause, col.ColumnName, Environment.NewLine);
+					findID = false;
+				}
+
+				else if (col.ColumnName.StartsWith("Delete")) {
+					if (String.IsNullOrWhiteSpace(setClause))
+						setClause = String.Format("{0}       SET [{1}] = NULL{2}", setClause, col.ColumnName, Environment.NewLine);
+					else
+						setClause = String.Format("{0}          ,[{1}] = NULL{2}", setClause, col.ColumnName, Environment.NewLine);
+				}
+			}
+
+			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
+			return script;
+		}
+
+		/// <summary>
 		/// Generates script text to create a SQL Stored Procedure used to Update.
 		/// </summary>
 		/// This method still has room for improvement. It should ignore [Id] and [UniqueId] from the SET clause.
