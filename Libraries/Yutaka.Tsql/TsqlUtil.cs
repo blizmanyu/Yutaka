@@ -332,18 +332,9 @@ namespace Yutaka.Data
 				if (isFirstCol) {
 					var schema = col.TableSchema;
 					var table = col.TableName;
-					script = ScriptHeading(col.TableCatalog);
-					script = String.Format("{0}CREATE PROCEDURE [{1}].[{2}Delete]{3}", script, schema, table, Environment.NewLine);
-					script = String.Format("{0}_PARAMETERS_", script);
-					script = String.Format("{0}AS{1}", script, Environment.NewLine);
-					script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
-					script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
-					script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
-					script = String.Format("{0}{1}", script, Environment.NewLine);
-					script = String.Format("{0}    UPDATE [{1}].[{2}]{3}", script, schema, table, Environment.NewLine);
-					script = String.Format("{0}_SET_CLAUSE_", script);
-					script = String.Format("{0}_WHERE_CLAUSE_", script);
-					script = String.Format("{0}END{1}", script, Environment.NewLine);
+					script = ScriptTemplate(col.TableCatalog);
+					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Delete]", schema, table));
+					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
 					isFirstCol = false;
 				}
 
@@ -370,7 +361,7 @@ namespace Yutaka.Data
 				}
 			}
 
-			script = script.Replace("_PARAMETERS_", parameters).Replace("_SET_CLAUSE_", setClause).Replace("_WHERE_CLAUSE_", whereClause);
+			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
 			return script;
 		}
 
