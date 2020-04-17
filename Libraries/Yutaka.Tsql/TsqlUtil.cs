@@ -164,7 +164,7 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// Returns a script for creating a Sql View Edit.
+		/// Generates script text to create a SQL View used for Editing.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
@@ -221,7 +221,7 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// Returns a script for creating a Sql View List.
+		/// Generates script text to create a SQL View used for Listing.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
@@ -278,7 +278,7 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// Returns a script for a Stored Procedure that inserts into the table.
+		/// Generates script text to create a SQL Stored Procedure used to Insert.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
@@ -329,7 +329,7 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// Returns a script for a Stored Procedure that updates into the table.
+		/// Generates script text to create a SQL Stored Procedure used to Update.
 		/// </summary>
 		/// This method still has room for improvement. It should ignore [Id] and [UniqueId] from the SET clause.
 		/// <param name="columns">The list of all columns from a table.</param>
