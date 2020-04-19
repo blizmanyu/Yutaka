@@ -32,10 +32,12 @@ namespace CodeGenerator
 		private static readonly DateTime startTime = DateTime.Now;
 		private static readonly double errorPerThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
+		private static readonly string DestFolder = @"C:\TEMP\";
 
 		private static int errorCount = 0;
 		private static int totalCount = 0;
 		private static List<Column> Columns = new List<Column>();
+		private static FileUtil _fileUtil = new FileUtil();
 		private static TsqlUtil _tsqlUtil;
 		#endregion
 
@@ -48,20 +50,15 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
+			var dest = Path.Combine(DestFolder, String.Format("{0:yyyy MMdd HHmm ssff}.sql", DateTime.Now));
 			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
 			GetColumnsInformation();
-			var ScriptTableCreateViewList = _tsqlUtil.ScriptTableCreateViewList(Columns);
-			Console.Write("\n{0}", ScriptTableCreateViewList);
-			var ScriptTableCreateViewEdit = _tsqlUtil.ScriptTableCreateViewEdit(Columns);
-			Console.Write("\n{0}", ScriptTableCreateViewEdit);
-			var ScriptTableInsert = _tsqlUtil.ScriptTableInsert(Columns);
-			Console.Write("\n{0}", ScriptTableInsert);
-			var ScriptTableUpdate = _tsqlUtil.ScriptTableUpdate(Columns);
-			Console.Write("\n{0}", ScriptTableUpdate);
-			var ScriptTableDelete = _tsqlUtil.ScriptTableDelete(Columns);
-			Console.Write("\n{0}", ScriptTableDelete);
-			var ScriptTableRestore = _tsqlUtil.ScriptTableRestore(Columns);
-			Console.Write("\n{0}", ScriptTableRestore);
+			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewList(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewEdit(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableInsert(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableUpdate(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableDelete(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableRestore(Columns), dest);
 		}
 
 		private static void GetColumnsInformation()
