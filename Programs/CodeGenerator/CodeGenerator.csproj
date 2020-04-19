@@ -59,22 +59,29 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.Data">
+    <Reference Include="Yutaka.Data, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.Data\bin\Release\Yutaka.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Yutaka.IO, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
+    </Reference>
     <Reference Include="Yutaka.Net">
-      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Net.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Net\bin\Release\Yutaka.Net.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Text">
-      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Text.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Text\bin\Release\Yutaka.Text.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.Tsql">
+    <Reference Include="Yutaka.Tsql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.Tsql\bin\Release\Yutaka.Tsql.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Utils">
-      <HintPath>..\..\..\Rcw.Sql\HULK\Rcw.Sql.Hulk.IntranetData\bin\Release\Yutaka.Utils.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.Utils\bin\Release\Yutaka.Utils.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.VineSpring">
+    <Reference Include="Yutaka.VineSpring, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Libraries\Yutaka.VineSpring\bin\Release\Yutaka.VineSpring.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -84,12 +91,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Yutaka.IO\Yutaka.IO.csproj">
-      <Project>{EFE67BB5-CDA4-4B3E-89F1-60628003D560}</Project>
-      <Name>Yutaka.IO</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
