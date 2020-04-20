@@ -376,6 +376,68 @@ namespace Yutaka.Data
 				#endregion Log
 			}
 		}
+
+		/// <summary>
+		/// Truncates a SQL table.
+		/// </summary>
+		/// <param name="database">Optional database of the table, but beware because it will run on the "current" database.</param>
+		/// <param name="schema">The schema of the table. If null or empty, it will default to "dbo".</param>
+		/// <param name="table">The table to truncate.</param>
+		public void TruncateTable(string database = null, string schema = null, string table = null)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(schema))
+				schema = "dbo";
+			if (String.IsNullOrWhiteSpace(table))
+				log = String.Format("{0}<table> is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.TruncateTable(string database, string schema, string table).{1}{1}", log, Environment.NewLine));
+			#endregion Input Check
+
+			var sql = String.Format("TRUNCATE TABLE {0}.{1}", schema, table);
+
+			if (!String.IsNullOrWhiteSpace(database))
+				sql = sql.Replace("TABLE ", String.Format("TABLE {0}.", database));
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					using (var cmd = new SqlCommand(sql, conn)) {
+						cmd.CommandType = CommandType.Text;
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+
+			catch (SqlException ex) {
+				#region Log
+				for (int i = 0; i < ex.Errors.Count; i++) {
+					log = String.Format("{0}Index #{1}{2}" +
+						"Message: {3}{2}" +
+						"LineNumber: {4}{2}" +
+						"Source: {5}{2}" +
+						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
+				}
+
+				log = String.Format("{0}{2}{1}Exception thrown in SqlUtil2.TruncateTable(string database='{3}', string schema='{4}', string table='{5}').{2}{2}", ex.Message, log, Environment.NewLine, database, schema, table);
+				throw new Exception(log);
+				#endregion Log
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in SqlUtil2.TruncateTable(string database='{3}', string schema='{4}', string table='{5}').{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, database, schema, table);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string database='{3}', string schema='{4}', string table='{5}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, database, schema, table);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion Public Methods
 	}
 }
