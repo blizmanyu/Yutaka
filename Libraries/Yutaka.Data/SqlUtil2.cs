@@ -317,6 +317,65 @@ namespace Yutaka.Data
 				#endregion Log
 			}
 		}
+
+		/// <summary>
+		/// Starts a SQL Agent job.
+		/// </summary>
+		/// <param name="jobId">The ID of the job to start.</param>
+		/// <param name="stepName">Optional step name to start at.</param>
+		public void StartJob(string jobId, string stepName = null)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(jobId))
+				log = String.Format("{0}<jobId> is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.StartJob(string jobId, string stepName).{1}{1}", log, Environment.NewLine));
+			#endregion Input Check
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					using (var cmd = new SqlCommand("msdb.dbo.sp_start_job", conn)) {
+						cmd.CommandType = CommandType.StoredProcedure;
+						cmd.Parameters.AddWithValue("@job_id", jobId);
+
+						if (!String.IsNullOrWhiteSpace(stepName))
+							cmd.Parameters.AddWithValue("@step_name", stepName);
+
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+
+			catch (SqlException ex) {
+				#region Log
+				for (int i = 0; i < ex.Errors.Count; i++) {
+					log = String.Format("{0}Index #{1}{2}" +
+						"Message: {3}{2}" +
+						"LineNumber: {4}{2}" +
+						"Source: {5}{2}" +
+						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
+				}
+
+				log = String.Format("{0}{2}{1}Exception thrown in SqlUtil2.StartJob(string jobId='{3}', string stepName='{4}').{2}{2}", ex.Message, log, Environment.NewLine, jobId, stepName);
+				throw new Exception(log);
+				#endregion Log
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in SqlUtil2.StartJob(string jobId='{3}', string stepName='{4}').{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, jobId, stepName);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.StartJob(string jobId='{3}', string stepName='{4}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, jobId, stepName);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion Public Methods
 	}
 }
