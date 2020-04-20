@@ -46,5 +46,36 @@ namespace Yutaka.Text
 				"\t\t\t\t\tselect {1}).FirstOrDefault();{3}" +
 				"\t\t}}{3}{3}", table, alias, idCol, Environment.NewLine);
 		}
+
+		/// <summary>
+		/// Generates method for searching the entity.
+		/// </summary>
+		/// This is WIP.
+		/// <param name="table">The name of the table.</param>
+		/// <returns></returns>
+		public static string GenerateSearch(IList<Column> columns)
+		{
+			var table = "";
+			var idCol = "";
+			var dataType = "";
+
+			foreach (var col in columns) {
+				table = col.TableName;
+				idCol = col.ColumnName;
+				dataType = col.DataType;
+				break;
+			}
+
+			var alias = table.Replace("_", "").Substring(0, 1).ToLower();
+
+			return String.Format(
+				"\t\tpublic IList<{0}List> Search{0}(){3}" +
+				"\t\t{{{3}" +
+				"\t\t\tvar query = from {1} in dbcontext.{0}s{3}" +
+				"\t\t\t\t\t\tselect {1};{3}" +
+				"{3}" +
+				"\t\t\treturn query.ToList();{3}" +
+				"\t\t}}{3}{3}", table, alias, idCol, Environment.NewLine);
+		}
 	}
 }
