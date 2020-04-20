@@ -14,6 +14,9 @@ namespace Yutaka.Text
 		/// <returns></returns>
 		public static string GenerateAll(IList<Column> columns)
 		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
 			var table = columns[0].TableName;
 			var sb = new StringBuilder();
 			sb.Append(String.Format("\t\t#region {0}{1}", table, Environment.NewLine));
