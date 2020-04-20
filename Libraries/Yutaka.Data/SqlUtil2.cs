@@ -55,7 +55,7 @@ namespace Yutaka.Data
 		/// <param name="commandText">The Transact-SQL statement or stored procedure to execute.</param>
 		/// <param name="commandType">One of the <see cref="CommandType"/> values.</param>
 		/// <param name="parameters">The parameters of the Transact-SQL statement or stored procedure. The default is an empty collection.</param>
-		public void ExecuteNonQuery(string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public void ExecuteNonQuery(string commandText, CommandType commandType = CommandType.Text, params SqlParameter[] parameters)
 		{
 			#region Input Check
 			var log = "";
@@ -137,7 +137,7 @@ namespace Yutaka.Data
 		/// <param name="commandType">One of the <see cref="CommandType"/> values.</param>
 		/// <param name="parameters">The parameters of the Transact-SQL statement or stored procedure. The default is an empty collection.</param>
 		/// <returns>A <see cref="SqlDataReader"/> object</returns>
-		public SqlDataReader ExecuteReader(string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public SqlDataReader ExecuteReader(string commandText, CommandType commandType = CommandType.Text, params SqlParameter[] parameters)
 		{
 			#region Input Check
 			var log = "";
@@ -220,7 +220,7 @@ namespace Yutaka.Data
 		/// <param name="commandType">One of the <see cref="CommandType"/> values.</param>
 		/// <param name="parameters">The parameters of the Transact-SQL statement or stored procedure. The default is an empty collection.</param>
 		/// <returns>The first column of the first row in the result set, or a null reference if the result set is empty. Returns a maximum of 2033 characters.</returns>
-		public object ExecuteScalar(string commandText, CommandType commandType, params SqlParameter[] parameters)
+		public object ExecuteScalar(string commandText, CommandType commandType = CommandType.Text, params SqlParameter[] parameters)
 		{
 			#region Input Check
 			var log = "";
