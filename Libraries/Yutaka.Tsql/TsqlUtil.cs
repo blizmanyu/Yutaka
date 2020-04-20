@@ -205,6 +205,9 @@ namespace Yutaka.Data
 		/// <returns></returns>
 		public string ScriptAll(IList<Column> columns)
 		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
 			var sb = new StringBuilder();
 			sb.Append(ScriptTableCreateViewEdit(columns)).Append(Environment.NewLine);
 			sb.Append(ScriptTableCreateViewList(columns)).Append(Environment.NewLine);
