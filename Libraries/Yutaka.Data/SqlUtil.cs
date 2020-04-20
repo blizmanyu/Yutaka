@@ -55,6 +55,8 @@ namespace Yutaka.Data
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
+
+		protected string ConnectionString;
 		#endregion Fields
 
 		#region Public Methods
