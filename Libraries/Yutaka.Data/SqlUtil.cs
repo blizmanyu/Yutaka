@@ -8,7 +8,8 @@ namespace Yutaka.Data
 {
 	public class SqlUtil
 	{
-		#region CommandBehavior
+		#region Fields
+		// CommandBehavior //
 		/// <summary>
 		/// When the command is executed, the associated <c>Connection</c> object is closed when the associated <c>DataReader</c> object is closed.
 		/// </summary>
@@ -37,8 +38,8 @@ namespace Yutaka.Data
 		/// The query is expected to return a single row of the first result set. Execution of the query may affect the database state. Some .NET Framework data providers may, but are not required to, use this information to optimize the performance of the command. When you specify SingleRow with the ExecuteReader() method of the OleDbCommand object, the .NET Framework Data Provider for OLE DB performs binding using the OLE DB IRow interface if it is available. Otherwise, it uses the IRowset interface. If your SQL statement is expected to return only a single row, specifying SingleRow can also improve application performance. It is possible to specify SingleRow when executing queries that are expected to return multiple result sets. In that case, where both a multi-result set SQL query and single row are specified, the result returned will contain only the first row of the first result set. The other result sets of the query will not be returned.
 		/// </summary>
 		public const CommandBehavior CommandBehavior_SingleRow = CommandBehavior.SingleRow;
-		#endregion CommandBehavior
-		#region CommandType
+
+		// CommandType //
 		/// <summary>
 		/// The name of a stored procedure.
 		/// </summary>
@@ -54,8 +55,9 @@ namespace Yutaka.Data
 		public const CommandType STORED_PROCEDURE = CommandType.StoredProcedure;
 		public const CommandType TABLE_DIRECT = CommandType.TableDirect;
 		public const CommandType TEXT_COMM_TYPE = CommandType.Text;
-		#endregion CommandType
+		#endregion Fields
 
+		#region Public Methods
 		/// <summary>
 		/// Checks whether or not we can connect and execute a simple query on the SQL Server.
 		/// </summary>
@@ -199,7 +201,7 @@ namespace Yutaka.Data
 			}
 		}
 
-		public void StartJob(string connectionString, string jobId, string stepName=null)
+		public void StartJob(string connectionString, string jobId, string stepName = null)
 		{
 			using (var conn = new SqlConnection(connectionString)) {
 				using (var cmd = new SqlCommand()) {
@@ -412,5 +414,6 @@ namespace Yutaka.Data
 		//	}
 		//}
 		#endregion Commented Out Jan, 10, 2019
+		#endregion Public Methods
 	}
 }
