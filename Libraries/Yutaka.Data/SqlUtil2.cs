@@ -50,6 +50,29 @@ namespace Yutaka.Data
 
 		#region Public Methods
 		/// <summary>
+		/// Checks whether or not we can connect and execute a simple query on the SQL Server.
+		/// </summary>
+		/// <returns>True if it can connect and execute. False otherwise.</returns>
+		public bool CanExecute()
+		{
+			try {
+				var result = ExecuteScalar("SELECT 1");
+
+				if (result == null)
+					return false;
+
+				if ((int) result == 1)
+					return true;
+
+				return false;
+			}
+
+			catch (Exception) {
+				return false;
+			}
+		}
+
+		/// <summary>
 		/// Executes a Transact-SQL statement against the connection.
 		/// </summary>
 		/// <param name="commandText">The Transact-SQL statement or stored procedure to execute.</param>
