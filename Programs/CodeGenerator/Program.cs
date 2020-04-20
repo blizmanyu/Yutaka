@@ -55,19 +55,13 @@ namespace CodeGenerator
 			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewList(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewEdit(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableInsert(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableUpdate(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableDelete(Columns), String.Format("{0}sql", dest));
-			//_fileUtil.Write(_tsqlUtil.ScriptTableRestore(Columns), String.Format("{0}sql", dest));
 			_fileUtil.Write(CSUtil.GenerateGetById(Columns), String.Format("{0}cs", dest));
 		}
 
 		private static void GetColumnsInformation()
 		{
-			var connectionString = "data source=rarecoinwholesalers.com;initial catalog=IntranetData;persist security info=True;user id=rcwadmin;password=Gva0wcz2qfd7rtb9;asynchronous processing=True;multipleactiveresultsets=True;App=EntityFramework";
-			var database = "IntranetData";
+			var connectionString = "asdfg";
+			var database = "asdfg";
 			var schema = "";
 			var table = "_Example";
 
