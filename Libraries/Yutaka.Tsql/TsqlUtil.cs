@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text;
 
 namespace Yutaka.Data
 {
@@ -195,6 +196,23 @@ namespace Yutaka.Data
 			}
 
 			return list;
+		}
+
+		/// <summary>
+		/// Calls all script generating method in this class and returns them as one string.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptAll(IList<Column> columns)
+		{
+			var sb = new StringBuilder();
+			sb.Append(ScriptTableCreateViewEdit(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptTableCreateViewList(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptTableDelete(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptTableInsert(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptTableRestore(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptTableUpdate(columns)).Append(Environment.NewLine);
+			return sb.ToString();
 		}
 
 		/// <summary>
