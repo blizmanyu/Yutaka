@@ -9,6 +9,7 @@ using System.Text;
 //using Rcw.Sql.Hulk.IntranetData.Data;
 using Yutaka.Data;
 using Yutaka.IO;
+using Yutaka.Text;
 using Yutaka.VineSpring.Data20200207;
 
 namespace CodeGenerator
@@ -50,15 +51,17 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
-			var dest = Path.Combine(DestFolder, String.Format("{0:yyyy MMdd HHmm ssff}.sql", DateTime.Now));
+			var dest = Path.Combine(DestFolder, String.Format("{0:yyyy MMdd HHmm ssff}.", DateTime.Now));
+			_fileUtil.Write(CSUtil.GenerateGetById("Chatter"), String.Format("{0}cs", dest));
+			return;
 			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
 			GetColumnsInformation();
-			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewList(Columns), dest);
-			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewEdit(Columns), dest);
-			_fileUtil.Write(_tsqlUtil.ScriptTableInsert(Columns), dest);
-			_fileUtil.Write(_tsqlUtil.ScriptTableUpdate(Columns), dest);
-			_fileUtil.Write(_tsqlUtil.ScriptTableDelete(Columns), dest);
-			_fileUtil.Write(_tsqlUtil.ScriptTableRestore(Columns), dest);
+			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewList(Columns), String.Format("{0}sql", dest));
+			_fileUtil.Write(_tsqlUtil.ScriptTableCreateViewEdit(Columns), String.Format("{0}sql", dest));
+			_fileUtil.Write(_tsqlUtil.ScriptTableInsert(Columns), String.Format("{0}sql", dest));
+			_fileUtil.Write(_tsqlUtil.ScriptTableUpdate(Columns), String.Format("{0}sql", dest));
+			_fileUtil.Write(_tsqlUtil.ScriptTableDelete(Columns), String.Format("{0}sql", dest));
+			_fileUtil.Write(_tsqlUtil.ScriptTableRestore(Columns), String.Format("{0}sql", dest));
 		}
 
 		private static void GetColumnsInformation()
