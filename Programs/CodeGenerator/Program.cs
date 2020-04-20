@@ -56,6 +56,7 @@ namespace CodeGenerator
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
 			_fileUtil.Write(CSUtil.GenerateGetById(Columns), String.Format("{0}cs", dest));
+			_fileUtil.Write(CSUtil.GenerateSearch(Columns), String.Format("{0}cs", dest));
 		}
 
 		private static void GetColumnsInformation()
