@@ -373,8 +373,8 @@ namespace Yutaka.IO
 				return allLines;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -612,8 +612,8 @@ namespace Yutaka.IO
 				return false;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -631,8 +631,8 @@ namespace Yutaka.IO
 				return false;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -650,8 +650,8 @@ namespace Yutaka.IO
 				return false;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
