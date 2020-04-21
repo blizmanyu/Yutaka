@@ -300,8 +300,8 @@ namespace Yutaka.Net
 					result.Success = true;
 				}
 
-				catch (Exception ex) {
-					throw ex;
+				catch (Exception) {
+					throw;
 				}
 			}
 
@@ -321,8 +321,8 @@ namespace Yutaka.Net
 				result.Success = true;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 
 			return result;
@@ -361,8 +361,8 @@ namespace Yutaka.Net
 					result.Success = true;
 				}
 
-				catch (Exception ex) {
-					throw ex;
+				catch (Exception) {
+					throw;
 				}
 			}
 
@@ -408,8 +408,8 @@ namespace Yutaka.Net
 						result.Success = true;
 					}
 
-					catch (Exception ex) {
-						throw ex;
+					catch (Exception) {
+						throw;
 					}
 				}
 			}
