@@ -99,5 +99,97 @@ namespace Yutaka.Text
 				"\t\t\treturn query.ToList();{3}" +
 				"\t\t}}{3}", table, alias, idCol, Environment.NewLine);
 		}
+
+		/// <summary>
+		/// WIP: Do not use yet! Generates method for Updating.
+		/// </summary>
+		/// <param name="columns">The list of Columns Information.</param>
+		/// <returns></returns>
+		public static string GenerateTryUpdate(IList<Column> columns)
+		{
+			var database = "";
+			var table = "";
+			var alias = "";
+			var idCol = "";
+			var dataType = "";
+			var parameters = new StringBuilder();
+			var isFirstCol = true;
+			var findID = true;
+
+			foreach (var col in columns) {
+				if (isFirstCol) {
+					database = col.TableCatalog;
+					table = col.TableName;
+
+					if (table.Substring(0, 1).Equals("_"))
+						table = table.Substring(1);
+
+					alias = String.Format("{0}{1}", table.Substring(0, 1).ToLower(), table.Substring(1));
+					isFirstCol = false;
+				}
+
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))) {
+					idCol = col.ColumnName;
+					dataType = col.DataType;
+					findID = false;
+				}
+
+				parameters.Append(String.Format("\t\t\t\t\tnew SqlParameter(\"@{0}\", {1}.{0}", col.ColumnName, alias));
+
+				if (col.IsNullable)
+					parameters.Append(" ?? null");
+				
+				parameters.Append(String.Format("),{0}", Environment.NewLine));
+			}
+
+			var sb = new StringBuilder();
+			sb.Append(String.Format("\t\tpublic bool TryUpdate{0}({0} {1}, out string response)", table, alias)).Append(Environment.NewLine);
+			sb.Append("\t\t{").Append(Environment.NewLine);
+			sb.Append("\t\t\t#region Input Check").Append(Environment.NewLine);
+			sb.Append("\t\t\tresponse = \"\";").Append(Environment.NewLine);
+			sb.Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\tif ({0} == null)", alias)).Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}<{0}> is null.{{1}}\", response, Environment.NewLine);", alias)).Append(Environment.NewLine);
+
+			if (dataType.Equals("int")) {
+				sb.Append(String.Format("\t\t\telse if ({0}.{1} < 1)", alias, idCol)).Append(Environment.NewLine);
+				sb.Append(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}{0}.{1} is invalid.{{2}}\", response, Environment.NewLine);", alias, idCol)).Append(Environment.NewLine);
+			}
+			else {
+				sb.Append(String.Format("\t\t\telse if (String.IsNullOrWhiteSpace({0}.{1}))", alias, idCol)).Append(Environment.NewLine);
+				sb.Append(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}{0}.{1} is NULL or whitespace.{{2}}\", response, Environment.NewLine);", alias, idCol)).Append(Environment.NewLine);
+			}
+
+			sb.Append(Environment.NewLine);
+			sb.Append("\t\t\tif (!String.IsNullOrWhiteSpace(response)) {").Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}Exception thrown in {0}Service.TryUpdate{1}({1} {2}, out string response).{{1}}{{1}}\", response, Environment.NewLine);", database, table, alias)).Append(Environment.NewLine);
+			sb.Append("\t\t\t\treturn false;").Append(Environment.NewLine);
+			sb.Append("\t\t\t}").Append(Environment.NewLine);
+			sb.Append("\t\t\t#endregion Input Check").Append(Environment.NewLine);
+			sb.Append(Environment.NewLine);
+			sb.Append("\t\t\ttry {").Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\t\tvar storProc = \"[dbo].[{0}Update]\";", table)).Append(Environment.NewLine);
+			sb.Append("\t\t\t\tSqlParameter[] parameters = {").Append(Environment.NewLine);
+			sb.Append(parameters);
+			sb.Append("\t\t\t\t};").Append(Environment.NewLine);
+			sb.Append("\t\t\t\tExecuteNonQuery(storProc, STORED_PROCEDURE, parameters);").Append(Environment.NewLine);
+			sb.Append("\t\t\t\treturn true;").Append(Environment.NewLine);
+			sb.Append("\t\t\t}").Append(Environment.NewLine);
+			sb.Append(Environment.NewLine);
+			sb.Append("\t\t\tcatch (Exception ex) {").Append(Environment.NewLine);
+			sb.Append("\t\t\t\t#region Log").Append(Environment.NewLine);
+			sb.Append("\t\t\t\tif (ex.InnerException == null)").Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in {0}Service.TryUpdateChatter(Chatter chatter='{{3}}', out string response).{{2}}{{1}}{{2}}{{2}}\", ex.Message, ex.ToString(), Environment.NewLine, chatter.Id);", database)).Append(Environment.NewLine);
+			sb.Append("\t\t\t\telse").Append(Environment.NewLine);
+			sb.Append(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in INNER EXCEPTION of {0}Service.TryUpdateChatter(Chatter chatter='{{3}}', out string response).{{2}}{{1}}{{2}}{{2}}\", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, chatter.Id);", database)).Append(Environment.NewLine);
+			sb.Append(Environment.NewLine);
+			sb.Append("\t\t\t\tLog(response);").Append(Environment.NewLine);
+			sb.Append("\t\t\t\t#endregion Log").Append(Environment.NewLine);
+			sb.Append(Environment.NewLine);
+			sb.Append("\t\t\t\treturn false;").Append(Environment.NewLine);
+			sb.Append("\t\t\t}").Append(Environment.NewLine);
+			sb.Append("\t\t}").Append(Environment.NewLine);
+			return sb.ToString();
+		}
 	}
 }
