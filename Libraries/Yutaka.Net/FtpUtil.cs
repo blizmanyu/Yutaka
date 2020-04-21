@@ -48,8 +48,8 @@ namespace Yutaka.Net
 				#endregion
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -98,8 +98,8 @@ namespace Yutaka.Net
 				#endregion
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
