@@ -681,8 +681,8 @@ namespace Yutaka.IO
 				return allLines;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -1004,8 +1004,8 @@ namespace Yutaka.IO
 				return false;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -1020,8 +1020,8 @@ namespace Yutaka.IO
 				return IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2);
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
@@ -1036,8 +1036,8 @@ namespace Yutaka.IO
 				return fi1.Length == fi2.Length;
 			}
 
-			catch (Exception ex) {
-				throw ex;
+			catch (Exception) {
+				throw;
 			}
 		}
 
