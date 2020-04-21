@@ -104,8 +104,8 @@ namespace Yutaka.Data
 						cmd.ExecuteNonQuery();
 					}
 
-					catch (Exception ex) {
-						throw ex;
+					catch (Exception) {
+						throw;
 					}
 				}
 			}
@@ -127,8 +127,8 @@ namespace Yutaka.Data
 						}
 					}
 
-					catch (Exception ex) {
-						throw ex;
+					catch (Exception) {
+						throw;
 					}
 				}
 			}
@@ -220,8 +220,8 @@ namespace Yutaka.Data
 						cmd.ExecuteNonQuery();
 					}
 
-					catch (Exception ex) {
-						throw ex;
+					catch (Exception) {
+						throw;
 					}
 				}
 			}
@@ -409,8 +409,8 @@ namespace Yutaka.Data
 		//				cmd.ExecuteScalar();
 		//			}
 
-		//			catch (Exception ex) {
-		//				throw ex;
+				//catch (Exception) {
+				//	throw;
 		//			}
 		//		}
 		//	}
