@@ -40,6 +40,9 @@ namespace Yutaka.NewConsoleAppTemplate
 
 		}
 
+		#region Methods
+
+		#region StartProgram & EndProgram
 		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
@@ -94,5 +97,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
+		#endregion StartProgram & EndProgram
+		#endregion Methods
 	}
 }
