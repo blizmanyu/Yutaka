@@ -139,9 +139,11 @@ namespace Yutaka.Net
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
-					response = String.Format("{0}{2}Exception thrown in GmailSmtpClient.TrySend(string from='{3}', string recipients='{4}', string subject='{5}', string body='{6}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, from, recipients, subject, body.Length > 200 ? body.Substring(0, 200) : body);
+					response = String.Format("{0}{2}Exception thrown in GmailSmtpClient.TrySend(_PARAMETERS_).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GmailSmtpClient.TrySend(string from='{3}', string recipients='{4}', string subject='{5}', string body='{6}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, from, recipients, subject, body.Length > 200 ? body.Substring(0, 200) : body);
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GmailSmtpClient.TrySend(_PARAMETERS_).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				response = response.Replace("_PARAMETERS_", String.Format("string from='{0}', string recipients='{1}', string subject='{2}', string body='{3}', out string response", from, recipients, subject, body.Length > 200 ? body.Substring(0, 200) : body));
 				#endregion Log
 
 				return false;
