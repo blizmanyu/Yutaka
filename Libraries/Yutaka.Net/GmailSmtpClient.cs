@@ -14,7 +14,7 @@ namespace Yutaka.Net
 		/// </summary>
 		/// <param name="username">The user name associated with the credentials.</param>
 		/// <param name="password">The password for the user name associated with the credentials.</param>
-		public GmailSmtpClient(string username, string password)
+		public GmailSmtpClient(string username = null, string password = null)
 		{
 			#region Input Check
 			var log = "";
