@@ -77,20 +77,18 @@ namespace Yutaka.NewConsoleAppTemplate
 			log[0] = "Ending program";
 			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
 			log[2] = String.Format("Total: {0}", totalCount);
-			log[3] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
+			log[3] = String.Format("Errors: {0} ({1}){2}{2}", errorCount, errorPer.ToString("P"), Environment.NewLine);
 
-			logger.Info(log[0]);
-			logger.Info(log[1]);
-			logger.Info(log[2]);
-			logger.Info(log[3]);
+			foreach (var l in log)
+				logger.Info(l);
 
 			if (consoleOut) {
 				var timestamp = DateTime.Now.ToString(TIMESTAMP);
 				Console.Write("\n");
-				Console.Write("\n{0}{1}", timestamp, log[0]);
-				Console.Write("\n{0}{1}", timestamp, log[1]);
-				Console.Write("\n{0}{1}", timestamp, log[2]);
-				Console.Write("\n{0}{1}", timestamp, log[3]);
+
+				foreach (var l in log)
+					Console.Write("\n{0}{1}", timestamp, l);
+
 				Console.Write("\n.... Press any key to close the program ....");
 				Console.ReadKey(true);
 			}
