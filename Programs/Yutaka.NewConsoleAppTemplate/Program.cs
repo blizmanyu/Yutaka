@@ -19,13 +19,13 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
-		const string TIMESTAMP = @"[HH:mm:ss] ";
-		private static DateTime startTime = DateTime.Now;
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly double errorPerThreshold = 0.07;
+		private static readonly int errorCountThreshold = 7;
+		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
 		private static int errorCount = 0;
 		private static int totalCount = 0;
-		private static int errorCountThreshold = 7;
-		private static double errorPerThreshold = 0.07;
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
 
 		static void Main(string[] args)
