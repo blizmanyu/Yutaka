@@ -31,8 +31,8 @@ namespace Yutaka.NewConsoleAppTemplate
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Process();
-			EndProgram();
+			try { Process(); }
+			finally { EndProgram(); }
 		}
 
 		private static void Process()
