@@ -7,7 +7,6 @@ namespace Yutaka.NewConsoleAppTemplate
 	class Program
 	{
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
-		private static readonly bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -18,11 +17,16 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
+		private static readonly bool consoleOut = true; // default = false //
 		private static readonly DateTime startTime = DateTime.Now;
 		private static readonly double errorPerThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
+
 		private static int errorCount = 0;
+		private static int processedCount = 0;
+		private static int skippedCount = 0;
+		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
