@@ -6,8 +6,6 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
-		private static readonly string ProgramName = "NewConsoleAppTemplate";
-
 		#region Fields
 		#region Static Externs
 		[DllImport("kernel32.dll")]
@@ -21,6 +19,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static readonly DateTime startTime = DateTime.Now;
 		private static readonly double errorPerThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
+		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
 
 		private static int errorCount = 0;
