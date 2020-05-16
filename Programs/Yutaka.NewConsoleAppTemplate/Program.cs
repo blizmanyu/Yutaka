@@ -66,7 +66,10 @@ namespace Yutaka.NewConsoleAppTemplate
 		{
 			var endTime = DateTime.Now;
 			var ts = endTime - startTime;
-			var errorPer = (double) errorCount/totalCount;
+			var processedPer = (double) processedCount / totalCount;
+			var skippedPer = (double) skippedCount / totalCount;
+			var errorPer = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
+			var successPer = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
 			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
 				logger.Error("The number of errors is above the threshold.");
@@ -76,11 +79,14 @@ namespace Yutaka.NewConsoleAppTemplate
 				}
 			}
 
-			var log = new string[4];
+			var log = new string[7];
 			log[0] = "Ending program";
 			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
 			log[2] = String.Format("Total: {0}", totalCount);
-			log[3] = String.Format("Errors: {0} ({1}){2}{2}", errorCount, errorPer.ToString("P"), Environment.NewLine);
+			log[3] = String.Format("Processed: {0} ({1})", processedCount, processedPer.ToString("p"), Environment.NewLine);
+			log[4] = String.Format("Skipped: {0} ({1})", skippedCount, skippedPer.ToString("p"), Environment.NewLine);
+			log[5] = String.Format("Success: {0} ({1})", successCount, successPer.ToString("p"), Environment.NewLine);
+			log[6] = String.Format("Errors: {0} ({1}){2}{2}", errorCount, errorPer.ToString("p"), Environment.NewLine);
 
 			foreach (var l in log)
 				logger.Info(l);
