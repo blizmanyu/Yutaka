@@ -6,9 +6,8 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
-		// Config/Settings //
-		const string PROGRAM_NAME = "NewConsoleAppTemplate";
-		private static bool consoleOut = true; // default = false //
+		private static readonly string ProgramName = "NewConsoleAppTemplate";
+		private static readonly bool consoleOut = true; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -45,7 +44,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		#region StartProgram & EndProgram
 		private static void StartProgram()
 		{
-			var log = String.Format("Starting {0} program", PROGRAM_NAME);
+			var log = String.Format("Starting {0} program", ProgramName);
 			logger.Info(log);
 
 			if (consoleOut) {
@@ -69,7 +68,7 @@ namespace Yutaka.NewConsoleAppTemplate
 				logger.Error("The number of errors is above the threshold.");
 
 				if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
-					//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+					//MailUtil.Send("fromEmail", "fromEmail", ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
 				}
 			}
 
