@@ -1185,8 +1185,8 @@ namespace Yutaka.IO
 		public void Write(object value, string path, bool append = true, Encoding encoding = null, int bufferSize = 65536)
 		{
 			#region Parameter Check
-			if (value == null || String.IsNullOrWhiteSpace(value.ToString()))
-				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}<value> is NULL or whitespace", Environment.NewLine, value, path, append, encoding, bufferSize));
+			if (value == null || String.IsNullOrEmpty(value.ToString()))
+				return;
 
 			if (String.IsNullOrWhiteSpace(path))
 				throw new Exception(String.Format("Exception thrown in FileUtil.Write(object value='{1}', string path='{2}', bool append='{3}', Encoding encoding='{4}', int bufferSize='{5}'){0}<path> is NULL or whitespace", Environment.NewLine, value, path, append, encoding, bufferSize));
