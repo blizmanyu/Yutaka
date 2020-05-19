@@ -4,7 +4,11 @@ namespace Yutaka
 {
 	public static class DateTimeUtil
 	{
+		#region Fields
 		public static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
+		public static readonly DateTime UNIX_EPOCH_LOCAL = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
+		public static readonly DateTime UNIX_EPOCH_UNSPECIFIED = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
+		#endregion Fields
 
 		#region Methods
 		#region ConvertToLocalTime() Overloads
