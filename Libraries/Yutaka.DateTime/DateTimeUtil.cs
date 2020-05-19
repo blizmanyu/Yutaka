@@ -11,6 +11,27 @@ namespace Yutaka
 		#endregion Fields
 
 		#region Methods
+		/// <summary>
+		/// Calculates a person's age. Optionally specify an &lt;endDate&gt; if you don't want to calculate based on <see cref="DateTime.Today"/>. This assumes you are
+		/// looking for the Western idea of age and not using East Asian reckoning.
+		/// </summary>
+		/// <param name="birthdate">The peron's birthdate.</param>
+		/// <param name="endDate">The date to base the calculation on. If null, it will default to <see cref="DateTime.Today"/>.</param>
+		/// <returns>The person's age.</returns>
+		/// <seealso cref="https://stackoverflow.com/questions/9/how-do-i-calculate-someones-age-in-c"/>
+		public static int CalculateAge(DateTime birthdate, DateTime? endDate = null)
+		{
+			if (endDate == null)
+				endDate = DateTime.Today;
+
+			var age = endDate.Value.Year - birthdate.Year;
+			// Go back to the year the person was born in case of a leap year
+			if (birthdate.Date > endDate.Value.AddYears(-age))
+				age--;
+
+			return age;
+		}
+
 		#region ConvertToLocalTime() Overloads
 		/// <summary>
 		/// Converts the date and time to current local date and time
