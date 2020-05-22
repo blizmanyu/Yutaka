@@ -11,15 +11,15 @@ namespace Yutaka.Data
 		/// <summary>
 		/// An SQL text command. (Default.)
 		/// </summary>
-		public static readonly CommandType CommandTypeText = CommandType.Text;
+		public static readonly CommandType CommandType_Text = CommandType.Text;
 		/// <summary>
 		/// The name of a stored procedure.
 		/// </summary>
-		public static readonly CommandType CommandTypeStoredProcedure = CommandType.StoredProcedure;
+		public static readonly CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
 		/// <summary>
 		/// The name of a table.
 		/// </summary>
-		public static readonly CommandType CommandTypeTableDirect = CommandType.TableDirect;
+		public static readonly CommandType CommandType_TableDirect = CommandType.TableDirect;
 		#endregion CommandTypes
 
 		protected string ConnectionString;
