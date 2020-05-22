@@ -393,42 +393,6 @@ namespace Yutaka.Data
 				throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil.TruncateTable(string connectionString, string database='{3}', string schema='{4}', string table='{5}'){2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, database, schema, table));
 			}
 		}
-
-		#region Deprecated
-		[Obsolete("Deprecated Dec 26, 2019. Use CanExecute(string connectionString, int retries = 1) instead.", true)]
-		public bool IsServerConnected(string connectionString)
-		{
-			using (var conn = new SqlConnection(connectionString)) {
-				try {
-					conn.Open();
-					return true;
-				}
-				catch (SqlException) {
-					return false;
-				}
-			}
-		}
-		#endregion Deprecated
-
-		#region Commented Out Jan, 10, 2019
-		//public void ExecuteScalar(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
-		//{
-		//	using (var conn = new SqlConnection(connectionString)) {
-		//		using (var cmd = new SqlCommand(commandText, conn)) {
-		//			cmd.CommandType = commandType;
-		//			try {
-		//				cmd.Parameters.AddRange(parameters);
-		//				conn.Open();
-		//				cmd.ExecuteScalar();
-		//			}
-
-				//catch (Exception) {
-				//	throw;
-		//			}
-		//		}
-		//	}
-		//}
-		#endregion Commented Out Jan, 10, 2019
 		#endregion Public Methods
 	}
 }
