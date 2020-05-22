@@ -164,20 +164,6 @@ namespace Yutaka.Data
 			}
 		}
 
-		/// <summary>
-		/// Excecutes a Stored Procedure.
-		/// </summary>
-		/// <param name="connectionString">The connection string.</param>
-		/// <param name="storProcName">The name of the Stored Procedure to execute.</param>
-		/// <param name="parameters">The parameters of the stored procedure. The default is an empty collection.</param>
-		public void ExecuteStoredProcedure(string connectionString, string storProcName, params SqlParameter[] parameters)
-		{
-			if (String.IsNullOrWhiteSpace(storProcName))
-				return;
-
-			ExecuteNonQuery(connectionString, storProcName, CommandType_StoredProcedure, parameters);
-		}
-
 		public DataSet GetData(string connectionString, string commandText, CommandType commandType, params SqlParameter[] parameters)
 		{
 			var ds = new DataSet();
