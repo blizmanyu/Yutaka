@@ -7,7 +7,7 @@ namespace Yutaka.Data
 	public class SqlUtil2
 	{
 		#region Fields
-		#region CommandTypes
+		protected string ConnectionString;
 		/// <summary>
 		/// An SQL text command. (Default.)
 		/// </summary>
@@ -20,9 +20,6 @@ namespace Yutaka.Data
 		/// The name of a table.
 		/// </summary>
 		public static readonly CommandType CommandType_TableDirect = CommandType.TableDirect;
-		#endregion CommandTypes
-
-		protected string ConnectionString;
 		#endregion Fields
 
 		#region Constructor
