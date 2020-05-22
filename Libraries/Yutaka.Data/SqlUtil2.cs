@@ -316,6 +316,19 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Excecutes a Stored Procedure.
+		/// </summary>
+		/// <param name="storProcName">The name of the Stored Procedure to execute.</param>
+		/// <param name="parameters">The parameters of the stored procedure. The default is an empty collection.</param>
+		public void ExecuteStoredProcedure(string storProcName, params SqlParameter[] parameters)
+		{
+			if (String.IsNullOrWhiteSpace(storProcName))
+				return;
+
+			ExecuteNonQuery(storProcName, CommandType_StoredProcedure, parameters);
+		}
+
+		/// <summary>
 		/// Starts a SQL Agent job.
 		/// </summary>
 		/// <param name="jobId">The ID of the job to start.</param>
