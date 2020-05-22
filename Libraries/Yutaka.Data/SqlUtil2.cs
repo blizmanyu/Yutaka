@@ -378,6 +378,24 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Returns a string that represents all <see cref="SqlParameter.ParameterName"/>s and their <see cref="SqlParameter.Value"/>s.
+		/// </summary>
+		/// <param name="parameters">The array of <see cref="SqlParameter"/>s</param>
+		/// <returns>A string that represents all <see cref="SqlParameter.ParameterName"/>s and their <see cref="SqlParameter.Value"/>s.</returns>
+		public string ToString(SqlParameter[] parameters)
+		{
+			if (parameters == null || parameters.Length < 1)
+				return "";
+
+			var str = "";
+
+			foreach (var p in parameters)
+				str = String.Format("{0}{1}: '{2}'; ", str, p.ParameterName, p.Value);
+
+			return str.Substring(0, str.Length - 2);
+		}
+
+		/// <summary>
 		/// Truncates a SQL table.
 		/// </summary>
 		/// <param name="database">Optional database of the table, but beware because it will run on the "current" database.</param>
