@@ -5,6 +5,7 @@ namespace Yutaka
 	public static class DateTimeUtil
 	{
 		#region Fields
+		private static readonly char[] separator = new char[] { '/' };
 		public static readonly DateTime UNIX_EPOCH = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc);
 		public static readonly DateTime UNIX_EPOCH_LOCAL = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Local);
 		public static readonly DateTime UNIX_EPOCH_UNSPECIFIED = new DateTime(1970, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified);
@@ -254,6 +255,73 @@ namespace Yutaka
 			return (long) (dt - UNIX_EPOCH).TotalMilliseconds;
 		}
 		#endregion Google Time
+
+		/// <summary>
+		/// A more complex TryParse method for US-based date formats. Will detect M, MM, d, dd, yy, and yyyy separated by '/' that is used in the US.
+		/// </summary>
+		/// <param name="date">The date as a string.</param>
+		/// <param name="result">The resulting DateTime if successful. Null if unsuccessful.</param>
+		/// <returns>True if succeeded. False otherwise.</returns>
+		public static bool TryParse(string date, out DateTime? result)
+		{
+			result = null;
+
+			if (String.IsNullOrWhiteSpace(date))
+				return false;
+			else {
+				if (DateTime.TryParse(date, out var temp)) {
+					result = temp;
+					return true;
+				}
+
+				else {
+					if (date.Contains("/")) {
+						var split = date.Split(separator, StringSplitOptions.RemoveEmptyEntries);
+
+						if (split == null || split.Length != 3)
+							return false;
+						else {
+							// Check month //
+							if (String.IsNullOrWhiteSpace(split[0]))
+								return false;
+							if (int.TryParse(split[0], out var month)) {
+								if (0 < month && month < 13) {
+									// Check day //
+									if (String.IsNullOrWhiteSpace(split[1]))
+										return false;
+									if (int.TryParse(split[1], out var day)) {
+										if (0 < day && day < 32) {
+											// Check year //
+											if (String.IsNullOrWhiteSpace(split[2]))
+												return false;
+											if (int.TryParse(split[2], out var year)) {
+												if (-1 < year && year < 100) {
+													result = new DateTime(year + 2000, month, day);
+													return true;
+												}
+
+												if (1900 < year && year < 10000) {
+													result = new DateTime(year, month, day);
+													return true;
+												}
+
+												return false;
+											}
+										}
+
+										return false;
+									}
+								}
+
+								return false;
+							}
+						}
+					}
+
+					return false;
+				}
+			}
+		}
 		#endregion Methods
 	}
 }
