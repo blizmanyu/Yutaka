@@ -295,12 +295,12 @@ namespace Yutaka
 											if (String.IsNullOrWhiteSpace(split[2]))
 												return false;
 											if (int.TryParse(split[2], out var year)) {
-												if (-1 < year && year < 100) {
+												if (9 < year && year < 100) {
 													result = new DateTime(year + 2000, month, day);
 													return true;
 												}
 
-												if (1900 < year && year < 10000) {
+												if (999 < year && year < 10000) {
 													result = new DateTime(year, month, day);
 													return true;
 												}
