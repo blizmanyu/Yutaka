@@ -17,6 +17,7 @@ namespace Yutaka.Google.Calendar
 	/// </summary>
 	public class GoogleCalendarService
 	{
+		#region Fields
 		private CalendarService _service;
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
 		public string ApplicationName;
@@ -24,7 +25,9 @@ namespace Yutaka.Google.Calendar
 		public string CertificatePassword;
 		public string ServiceAccountEmail;
 		public X509KeyStorageFlags CertificateKeyStorageFlags;
+		#endregion Fields
 
+		#region Constructor
 		/// <summary>
 		/// Creates a new <see cref="GoogleCalendarService"/>.
 		/// </summary>
@@ -49,7 +52,9 @@ namespace Yutaka.Google.Calendar
 
 			CertificateKeyStorageFlags = certificateKeyStorageFlags;
 		}
+		#endregion Constructor
 
+		#region Methods
 		/// <summary>
 		/// Creates a new Google <see cref="CalendarService"/>.
 		/// </summary>
@@ -112,5 +117,6 @@ namespace Yutaka.Google.Calendar
 				return false;
 			}
 		}
+		#endregion Methods
 	}
 }
