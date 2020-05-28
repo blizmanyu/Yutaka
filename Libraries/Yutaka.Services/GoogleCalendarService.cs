@@ -5,7 +5,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Services;
 
-namespace Yutaka.Services
+namespace Yutaka.Google.Calendar
 {
 	/// <summary>
 	/// The certificate needs to be downloaded from the Google API Console <see cref="https://console.developers.google.com/">
