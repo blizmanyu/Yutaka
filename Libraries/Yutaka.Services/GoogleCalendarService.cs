@@ -64,10 +64,6 @@ namespace Yutaka.Services
 		/// </summary>
 		public void CreateService()
 		{
-			if (String.IsNullOrWhiteSpace(ApplicationName) || String.IsNullOrWhiteSpace(CertificateFileName) ||
-				String.IsNullOrWhiteSpace(CertificatePassword) || String.IsNullOrWhiteSpace(ServiceAccountEmail))
-				return;
-
 			var certificate = new X509Certificate2(CertificateFileName, CertificatePassword, CertificateKeyStorageFlags);
 			var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer(ServiceAccountEmail) {
 				Scopes = new[] { CalendarService.Scope.Calendar }
