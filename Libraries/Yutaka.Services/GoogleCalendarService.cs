@@ -54,11 +54,11 @@ namespace Yutaka.Google.Calendar
 		}
 		#endregion Constructor
 
-		#region Methods
+		#region Utilities
 		/// <summary>
 		/// Creates a new Google <see cref="CalendarService"/>.
 		/// </summary>
-		public void CreateService()
+		protected void CreateService()
 		{
 			var certificate = new X509Certificate2(CertificateFileName, CertificatePassword, CertificateKeyStorageFlags);
 			var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer(ServiceAccountEmail) {
@@ -70,7 +70,9 @@ namespace Yutaka.Google.Calendar
 				ApplicationName = ApplicationName,
 			});
 		}
+		#endregion Utilities
 
+		#region Public Methods
 		/// <summary>
 		/// Creates a new Google <see cref="CalendarService"/>. A return value indicates whether the creation succeeded. Any error messages are
 		/// contained in output variable response.
@@ -117,6 +119,6 @@ namespace Yutaka.Google.Calendar
 				return false;
 			}
 		}
-		#endregion Methods
+		#endregion Public Methods
 	}
 }
