@@ -28,8 +28,7 @@ namespace Yutaka.Services
 		#endregion Fields
 
 		/// <summary>
-		/// Creates a new <see cref="GoogleCalendarService"/>. If parameters &lt;certificateFileName&gt;, &lt;certificatePassword&gt;, and
-		/// &lt;serviceAccountEmail&gt; are all specified and valid, it will also call <see cref="GoogleCalendarService.CreateService()"/> to initialize a new Google <see cref="CalendarService"/>.
+		/// Creates a new <see cref="GoogleCalendarService"/>.
 		/// </summary>
 		/// <param name="applicationName">Your application's name.</param>
 		/// <param name="certificateFileName">The full file path of a certificate file.</param>
@@ -51,11 +50,6 @@ namespace Yutaka.Services
 				ServiceAccountEmail = serviceAccountEmail;
 
 			CertificateKeyStorageFlags = certificateKeyStorageFlags;
-
-			if (String.IsNullOrWhiteSpace(ApplicationName) || String.IsNullOrWhiteSpace(CertificateFileName) || String.IsNullOrWhiteSpace(CertificatePassword) || String.IsNullOrWhiteSpace(ServiceAccountEmail))
-				return;
-			else
-				CreateService();
 		}
 
 		/// <summary>
