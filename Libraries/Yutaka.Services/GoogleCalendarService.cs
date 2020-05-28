@@ -17,7 +17,6 @@ namespace Yutaka.Services
 	/// </summary>
 	public class GoogleCalendarService
 	{
-		#region Fields
 		private CalendarService _service;
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
 		public string ApplicationName;
@@ -25,7 +24,6 @@ namespace Yutaka.Services
 		public string CertificatePassword;
 		public string ServiceAccountEmail;
 		public X509KeyStorageFlags CertificateKeyStorageFlags;
-		#endregion Fields
 
 		/// <summary>
 		/// Creates a new <see cref="GoogleCalendarService"/>.
@@ -53,8 +51,7 @@ namespace Yutaka.Services
 		}
 
 		/// <summary>
-		/// Creates a new Google <see cref="CalendarService"/>. This is automatically called at the end of the constructor, but is
-		/// here in case you change any of the fields and want to re-initialize with the API.
+		/// Creates a new Google <see cref="CalendarService"/>.
 		/// </summary>
 		public void CreateService()
 		{
