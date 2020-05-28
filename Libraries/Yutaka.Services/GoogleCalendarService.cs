@@ -19,6 +19,7 @@ namespace Yutaka.Services
 	{
 		#region Fields
 		private CalendarService _service;
+		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
 		public string ApplicationName;
 		public string CertificateFileName;
 		public string CertificatePassword;
@@ -38,7 +39,7 @@ namespace Yutaka.Services
 		public GoogleCalendarService(string applicationName = null, string certificateFileName = null, string certificatePassword = null, string serviceAccountEmail = null, X509KeyStorageFlags certificateKeyStorageFlags = X509KeyStorageFlags.Exportable)
 		{
 			if (String.IsNullOrWhiteSpace(applicationName))
-				ApplicationName = "Yutaka's Google Calendar Service";
+				ApplicationName = DefaultApplicationName;
 			else
 				ApplicationName = applicationName;
 
