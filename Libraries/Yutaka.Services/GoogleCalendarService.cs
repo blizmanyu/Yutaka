@@ -3,6 +3,7 @@ using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
 
 namespace Yutaka.Google.Calendar
@@ -69,6 +70,15 @@ namespace Yutaka.Google.Calendar
 				HttpClientInitializer = credential,
 				ApplicationName = ApplicationName,
 			});
+		}
+
+		public Event InsertEvent(Event e, string calendarId)
+		{
+			if (_service == null)
+				CreateService();
+
+			var request = _service.Events.Insert(e, calendarId);
+			return request.Execute();
 		}
 		#endregion Utilities
 
