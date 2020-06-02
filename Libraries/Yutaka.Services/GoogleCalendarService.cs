@@ -145,64 +145,80 @@ namespace Yutaka.Google.Calendar
 			}
 		}
 
-		public Event TryInsertEvent(Event e, string calendarId, out string response)
+		/// <summary>
+		/// Creates an event.
+		/// </summary>
+		/// <param name="ev">The body of the request.</param>
+		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
+		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
+		/// you're using a service account.</param>
+		/// <param name="response">When this method returns, contains any error messages. It will be blank on success.</param>
+		/// <returns></returns>
+		public Event TryInsertEvent(Event ev, string calendarId, out string response)
 		{
 			response = "";
 
 			#region Validation
 			if (String.IsNullOrWhiteSpace(calendarId))
 				response = String.Format("{0}<calendarId> is required.{1}", response, Environment.NewLine);
-			if (e == null)
-				response = String.Format("{0}<event> is required.{1}", response, Environment.NewLine);
+			if (ev == null)
+				response = String.Format("{0}<ev> is required.{1}", response, Environment.NewLine);
 			else {
-				if (e.Start == null || (e.Start.DateTime == null && String.IsNullOrWhiteSpace(e.Start.Date) && String.IsNullOrWhiteSpace(e.Start.DateTimeRaw)))
-					response = String.Format("{0}Event.Start is required.{1}", response, Environment.NewLine);
-				if (e.End == null || (e.End.DateTime == null && String.IsNullOrWhiteSpace(e.End.Date) && String.IsNullOrWhiteSpace(e.End.DateTimeRaw)))
-					response = String.Format("{0}Event.End is required.{1}", response, Environment.NewLine);
+				if (ev.Start == null || (ev.Start.DateTime == null && String.IsNullOrWhiteSpace(ev.Start.Date) && String.IsNullOrWhiteSpace(ev.Start.DateTimeRaw)))
+					response = String.Format("{0}ev.Start is required.{1}", response, Environment.NewLine);
+				if (ev.End == null || (ev.End.DateTime == null && String.IsNullOrWhiteSpace(ev.End.Date) && String.IsNullOrWhiteSpace(ev.End.DateTimeRaw)))
+					response = String.Format("{0}ev.End is required.{1}", response, Environment.NewLine);
 			}
 
 			if (!String.IsNullOrWhiteSpace(response)) {
-				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryInsertEvent(Event e, string calendarId, out string response).{1}", response, Environment.NewLine);
+				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryInsertEvent(Event ev, string calendarId, out string response).{1}", response, Environment.NewLine);
 				return null;
 			}
 			#endregion Validation
 
 			#region Formatting
-			if (!String.IsNullOrWhiteSpace(e.Start.DateTimeRaw)) {
-				Console.Write("\n{0}", e.Start.DateTimeRaw);
-				if (DateTime.TryParse(e.Start.DateTimeRaw, out var result)) {
-					e.Start.DateTimeRaw = result.ToString(RFC3339);
-					Console.Write("\n{0}", e.Start.DateTimeRaw);
+			if (!String.IsNullOrWhiteSpace(ev.Start.DateTimeRaw)) {
+				Console.Write("\n{0}", ev.Start.DateTimeRaw);
+				if (DateTime.TryParse(ev.Start.DateTimeRaw, out var result)) {
+					ev.Start.DateTimeRaw = result.ToString(RFC3339);
+					Console.Write("\n{0}", ev.Start.DateTimeRaw);
 				}
 			}
 
-			if (!String.IsNullOrWhiteSpace(e.End.DateTimeRaw)) {
-				Console.Write("\n{0}", e.End.DateTimeRaw);
-				if (DateTime.TryParse(e.End.DateTimeRaw, out var result)) {
-					e.End.DateTimeRaw = result.ToString(RFC3339);
-					Console.Write("\n{0}", e.End.DateTimeRaw);
+			if (!String.IsNullOrWhiteSpace(ev.End.DateTimeRaw)) {
+				Console.Write("\n{0}", ev.End.DateTimeRaw);
+				if (DateTime.TryParse(ev.End.DateTimeRaw, out var result)) {
+					ev.End.DateTimeRaw = result.ToString(RFC3339);
+					Console.Write("\n{0}", ev.End.DateTimeRaw);
 				}
 			}
 
-			if (!String.IsNullOrWhiteSpace(e.Summary))
-				e.Summary = e.Summary.Trim();
+			if (!String.IsNullOrWhiteSpace(ev.Summary))
+				ev.Summary = ev.Summary.Trim();
 
-			if (String.IsNullOrWhiteSpace(e.Description))
-				e.Description = "**Created from the Intranet.";
+			if (String.IsNullOrWhiteSpace(ev.Description))
+				ev.Description = "**Created from the Intranet.";
 			else
-				e.Description = String.Format("{0}{1}{1}**Created from the Intranet.", e.Description, Environment.NewLine);
+				ev.Description = String.Format("{0}{1}{1}**Created from the Intranet.", ev.Description, Environment.NewLine);
 			#endregion Formatting
 
 			try {
-				return InsertEvent(e, calendarId);
+				if (_service == null || !UserEmail.Equals(calendarId, StringComparison.OrdinalIgnoreCase)) {
+					UserEmail = calendarId;
+
+					if (!TryCreateService(out response))
+						return null;
+				}
+
+				return InsertEvent(ev, calendarId);
 			}
 
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
-					response = String.Format("{0}{2}Exception thrown in GoogleCalendarService.TryInsertEvent(Event e, string calendarId='{3}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, calendarId);
+					response = String.Format("{0}{2}Exception thrown in GoogleCalendarService.TryInsertEvent(Event ev, string calendarId='{3}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, calendarId);
 				else
-					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GoogleCalendarService.TryInsertEvent(Event e, string calendarId='{3}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, calendarId);
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GoogleCalendarService.TryInsertEvent(Event ev, string calendarId='{3}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, calendarId);
 				#endregion Log
 
 				return null;
