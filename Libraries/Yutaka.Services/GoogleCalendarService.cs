@@ -176,19 +176,13 @@ namespace Yutaka.Google.Calendar
 
 			#region Formatting
 			if (!String.IsNullOrWhiteSpace(ev.Start.DateTimeRaw)) {
-				Console.Write("\n{0}", ev.Start.DateTimeRaw);
-				if (DateTime.TryParse(ev.Start.DateTimeRaw, out var result)) {
+				if (DateTime.TryParse(ev.Start.DateTimeRaw, out var result))
 					ev.Start.DateTimeRaw = result.ToString(RFC3339);
-					Console.Write("\n{0}", ev.Start.DateTimeRaw);
-				}
 			}
 
 			if (!String.IsNullOrWhiteSpace(ev.End.DateTimeRaw)) {
-				Console.Write("\n{0}", ev.End.DateTimeRaw);
-				if (DateTime.TryParse(ev.End.DateTimeRaw, out var result)) {
+				if (DateTime.TryParse(ev.End.DateTimeRaw, out var result))
 					ev.End.DateTimeRaw = result.ToString(RFC3339);
-					Console.Write("\n{0}", ev.End.DateTimeRaw);
-				}
 			}
 
 			if (!String.IsNullOrWhiteSpace(ev.Summary))
