@@ -21,6 +21,7 @@ namespace Yutaka.Google.Calendar
 		#region Fields
 		private CalendarService _service;
 		public static readonly TimeSpan LocalTimeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+		public static readonly string DateTimeFormat = @"yyyy-MM-ddTHH:mm:ss";
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
 		public static readonly string RFC3339 = String.Format("yyyy-MM-ddTHH:mm:ss-{0}", LocalTimeZoneOffset.ToString(@"hh\:mm"));
 		public string ApplicationName;
