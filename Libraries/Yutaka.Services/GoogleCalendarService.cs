@@ -93,7 +93,7 @@ namespace Yutaka.Google.Calendar
 		/// </summary>
 		/// <param name="response">When this method returns, contains any error messages. It will be blank on success.</param>
 		/// <returns>true if created successfully; otherwise, false</returns>
-		public bool TryCreateService(string userEmail, out string response)
+		public bool TryCreateService(out string response)
 		{
 			response = "";
 
@@ -110,6 +110,8 @@ namespace Yutaka.Google.Calendar
 				response = String.Format("{0}<CertificatePassword> is required.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(ServiceAccountEmail))
 				response = String.Format("{0}<ServiceAccountEmail> is required.{1}", response, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(UserEmail))
+				response = String.Format("{0}<UserEmail> is required.{1}", response, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(response)) {
 				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryCreateService(out string response).{1}", response, Environment.NewLine);
