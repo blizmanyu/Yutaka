@@ -82,16 +82,14 @@ namespace Yutaka.Google.Calendar
 		/// <summary>
 		/// Creates an event.
 		/// </summary>
-		/// <param name="body">The body of the request.</param>
-		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to access the
-		/// primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if you're using a service account.</param>
+		/// <param name="ev">The body of the request.</param>
+		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
+		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
+		/// you're using a service account.</param>
 		/// <returns></returns>
-		protected Event InsertEvent(Event body, string calendarId)
+		protected Event InsertEvent(Event ev, string calendarId)
 		{
-			if (_service == null)
-				CreateService();
-
-			return _service.Events.Insert(body, calendarId).Execute();
+			return _service.Events.Insert(ev, calendarId).Execute();
 		}
 		#endregion Utilities
 
