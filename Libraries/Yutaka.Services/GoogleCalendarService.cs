@@ -65,11 +65,11 @@ namespace Yutaka.Google.Calendar
 		/// <summary>
 		/// Creates a new Google <see cref="CalendarService"/>.
 		/// </summary>
-		protected void CreateService(string userEmail)
+		protected void CreateService()
 		{
 			var certificate = new X509Certificate2(CertificateFileName, CertificatePassword, CertificateKeyStorageFlags);
 			var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer(ServiceAccountEmail) {
-				User = userEmail,
+				User = UserEmail,
 				Scopes = new[] { CalendarService.Scope.Calendar, CalendarService.Scope.CalendarEvents, }
 			}.FromCertificate(certificate));
 
@@ -118,7 +118,7 @@ namespace Yutaka.Google.Calendar
 			#endregion Validation
 
 			try {
-				CreateService(userEmail);
+				CreateService();
 				return true;
 			}
 
