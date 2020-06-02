@@ -27,6 +27,7 @@ namespace Yutaka.Google.Calendar
 		public string CertificateFileName;
 		public string CertificatePassword;
 		public string ServiceAccountEmail;
+		public string UserEmail;
 		public X509KeyStorageFlags CertificateKeyStorageFlags;
 		#endregion Fields
 
