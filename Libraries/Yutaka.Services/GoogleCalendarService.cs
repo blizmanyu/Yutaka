@@ -39,8 +39,9 @@ namespace Yutaka.Google.Calendar
 		/// <param name="certificateFileName">The full file path of a certificate file.</param>
 		/// <param name="certificatePassword">The password required to access the X.509 certificate data.</param>
 		/// <param name="serviceAccountEmail">The service account email.</param>
+		/// <param name="userEmail">The email address of the user the application is trying to impersonate in the service account flow.</param>
 		/// <param name="certificateKeyStorageFlags">A bitwise combination of the enumeration values that control where and how to import the certificate. The default is <see cref="X509KeyStorageFlags.Exportable"/>.</param>
-		public GoogleCalendarService(string applicationName = null, string certificateFileName = null, string certificatePassword = null, string serviceAccountEmail = null, X509KeyStorageFlags certificateKeyStorageFlags = X509KeyStorageFlags.Exportable)
+		public GoogleCalendarService(string applicationName = null, string certificateFileName = null, string certificatePassword = null, string serviceAccountEmail = null, string userEmail = null, X509KeyStorageFlags certificateKeyStorageFlags = X509KeyStorageFlags.Exportable)
 		{
 			if (String.IsNullOrWhiteSpace(applicationName))
 				ApplicationName = DefaultApplicationName;
@@ -53,6 +54,8 @@ namespace Yutaka.Google.Calendar
 				CertificatePassword = certificatePassword;
 			if (!String.IsNullOrWhiteSpace(serviceAccountEmail))
 				ServiceAccountEmail = serviceAccountEmail;
+			if (!String.IsNullOrWhiteSpace(userEmail))
+				UserEmail = userEmail;
 
 			CertificateKeyStorageFlags = certificateKeyStorageFlags;
 		}
