@@ -24,6 +24,8 @@ namespace Yutaka.Google.Calendar
 		public static readonly string DateTimeFormat = @"yyyy-MM-ddTHH:mm:ss";
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
 		public static readonly string RFC3339 = String.Format("yyyy-MM-ddTHH:mm:ss-{0}", LocalTimeZoneOffset.ToString(@"hh\:mm"));
+		public static readonly string TimeZone_LosAngeles = "America/Los_Angeles";
+		public static readonly string TimeZone_NewYork = "America/New_York";
 		public string ApplicationName;
 		public string CertificateFileName;
 		public string CertificatePassword;
