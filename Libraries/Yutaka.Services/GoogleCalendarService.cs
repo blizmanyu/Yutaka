@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Security.Cryptography.X509Certificates;
 using Google.Apis.Auth.OAuth2;
@@ -20,6 +21,7 @@ namespace Yutaka.Google.Calendar
 	{
 		#region Fields
 		private CalendarService _service;
+		public static readonly CultureInfo CurrentCulture = CultureInfo.CurrentCulture;
 		public static readonly TimeSpan LocalTimeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
 		public static readonly string DateTimeFormat = @"yyyy-MM-ddTHH:mm:ss";
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
