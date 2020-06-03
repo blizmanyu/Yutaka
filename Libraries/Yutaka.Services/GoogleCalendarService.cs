@@ -168,7 +168,7 @@ namespace Yutaka.Google.Calendar
 		/// you're using a service account.</param>
 		/// <param name="response">When this method returns, contains any error messages. It will be blank on success.</param>
 		/// <returns></returns>
-		public string TryDeleteEvent(string eventId, string calendarId, out string response)
+		public bool TryDeleteEvent(string eventId, string calendarId, out string response)
 		{
 			response = "";
 
@@ -180,7 +180,7 @@ namespace Yutaka.Google.Calendar
 
 			if (!String.IsNullOrWhiteSpace(response)) {
 				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryDeleteEvent(string eventId, string calendarId, out string response).{1}", response, Environment.NewLine);
-				return null;
+				return false;
 			}
 			#endregion Validation
 
@@ -189,10 +189,15 @@ namespace Yutaka.Google.Calendar
 					UserEmail = calendarId;
 
 					if (!TryCreateService(out response))
-						return null;
+						return false;
 				}
 
-				return DeleteEvent(eventId, calendarId);
+				response = DeleteEvent(eventId, calendarId);
+
+				if (String.IsNullOrWhiteSpace(response))
+					return true;
+				else
+					return false;
 			}
 
 			catch (Exception ex) {
@@ -203,7 +208,7 @@ namespace Yutaka.Google.Calendar
 					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GoogleCalendarService.TryDeleteEvent(string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, eventId, calendarId);
 				#endregion Log
 
-				return null;
+				return false;
 			}
 		}
 
