@@ -92,7 +92,7 @@ namespace Yutaka.Google.Calendar
 		/// <returns></returns>
 		protected string DeleteEvent(string eventId, string calendarId)
 		{
-			return _service.Events.Delete(eventId, calendarId).Execute();
+			return _service.Events.Delete(calendarId, eventId).Execute();
 		}
 
 		/// <summary>
