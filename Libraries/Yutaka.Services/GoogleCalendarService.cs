@@ -203,6 +203,9 @@ namespace Yutaka.Google.Calendar
 			}
 
 			catch (Exception ex) {
+				if (ex.Message.Contains("410") && CurrentCulture.CompareInfo.IndexOf(ex.Message, "deleted", CompareOptions.OrdinalIgnoreCase) > -1)
+					return true;
+
 				#region Log
 				if (ex.InnerException == null)
 					response = String.Format("{0}{2}Exception thrown in GoogleCalendarService.TryDeleteEvent(string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, eventId, calendarId);
