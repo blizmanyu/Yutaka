@@ -100,6 +100,19 @@ namespace Yutaka.Google.Calendar
 		}
 
 		/// <summary>
+		/// Gets an event.
+		/// </summary>
+		/// <param name="eventId">Event identifier.</param>
+		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
+		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
+		/// you're using a service account.</param>
+		/// <returns></returns>
+		protected Event GetEvent(string eventId, string calendarId)
+		{
+			return _service.Events.Get(calendarId, eventId).Execute();
+		}
+
+		/// <summary>
 		/// Creates an event.
 		/// </summary>
 		/// <param name="ev">The body of the request.</param>
