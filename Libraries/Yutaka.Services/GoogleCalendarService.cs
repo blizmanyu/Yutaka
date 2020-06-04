@@ -22,10 +22,12 @@ namespace Yutaka.Google.Calendar
 		#region Fields
 		private CalendarService _service;
 		public static readonly CultureInfo CurrentCulture = CultureInfo.CurrentCulture;
-		public static readonly TimeSpan LocalTimeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
-		public static readonly string DateTimeFormat = @"yyyy-MM-ddTHH:mm:ss";
+		#region Commented out Jun 4, 2020
+		//public static readonly TimeSpan LocalTimeZoneOffset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow);
+		//public static readonly string DateTimeFormat = @"yyyy-MM-ddTHH:mm:ss";
+		//public static readonly string RFC3339 = String.Format("yyyy-MM-ddTHH:mm:ss-{0}", LocalTimeZoneOffset.ToString(@"hh\:mm"));
+		#endregion Commented out Jun 4, 2020
 		public static readonly string DefaultApplicationName = "Yutaka's Google Calendar Service";
-		public static readonly string RFC3339 = String.Format("yyyy-MM-ddTHH:mm:ss-{0}", LocalTimeZoneOffset.ToString(@"hh\:mm"));
 		public static readonly string TimeZone_LosAngeles = "America/Los_Angeles";
 		public static readonly string TimeZone_NewYork = "America/New_York";
 		public string ApplicationName;
