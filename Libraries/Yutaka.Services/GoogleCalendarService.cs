@@ -233,6 +233,54 @@ namespace Yutaka.Google.Calendar
 		}
 
 		/// <summary>
+		/// Gets an event.
+		/// </summary>
+		/// <param name="eventId">The body of the request.</param>
+		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
+		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
+		/// you're using a service account.</param>
+		/// <param name="response">When this method returns, contains any error messages. It will be blank on success.</param>
+		/// <returns></returns>
+		public Event TryGetEvent(string eventId, string calendarId, out string response)
+		{
+			response = "";
+
+			#region Validation
+			if (String.IsNullOrWhiteSpace(eventId))
+				response = String.Format("{0}<eventId> is required.{1}", response, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(calendarId))
+				response = String.Format("{0}<calendarId> is required.{1}", response, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(response)) {
+				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryGetEvent(string eventId, string calendarId, out string response).{1}", response, Environment.NewLine);
+				return null;
+			}
+			#endregion Validation
+
+			try {
+				if (_service == null || !UserEmail.Equals(calendarId, StringComparison.OrdinalIgnoreCase)) {
+					UserEmail = calendarId;
+
+					if (!TryCreateService(out response))
+						return null;
+				}
+
+				return GetEvent(eventId, calendarId);
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					response = String.Format("{0}{2}Exception thrown in GoogleCalendarService.TryGetEvent(string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, eventId, calendarId);
+				else
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GoogleCalendarService.TryGetEvent(string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, eventId, calendarId);
+				#endregion Log
+
+				return null;
+			}
+		}
+
+		/// <summary>
 		/// Creates an event.
 		/// </summary>
 		/// <param name="ev">The body of the request.</param>
