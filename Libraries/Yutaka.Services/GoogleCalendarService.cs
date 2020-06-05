@@ -359,6 +359,75 @@ namespace Yutaka.Google.Calendar
 				return null;
 			}
 		}
+
+		/// <summary>
+		/// Updates an event. This method supports patch semantics. The field values you specify replace the existing values. Fields
+		/// that you don’t specify in the request remain unchanged. Array fields, if specified, overwrite the existing arrays; this
+		/// discards any previous array elements.
+		/// </summary>
+		/// <param name="ev">The body of the request.</param>
+		/// <param name="eventId">Event identifier.</param>
+		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
+		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
+		/// you're using a service account.</param>
+		/// <param name="response">When this method returns, contains any error messages. It will be blank on success.</param>
+		/// <returns></returns>
+		public Event TryPatchEvent(Event ev, string eventId, string calendarId, out string response)
+		{
+			response = "";
+
+			#region Validation
+			if (String.IsNullOrWhiteSpace(eventId))
+				response = String.Format("{0}<eventId> is required.{1}", response, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(calendarId))
+				response = String.Format("{0}<calendarId> is required.{1}", response, Environment.NewLine);
+			if (ev == null)
+				response = String.Format("{0}<ev> is required.{1}", response, Environment.NewLine);
+			else {
+				if (ev.Start == null || (ev.Start.DateTime == null && String.IsNullOrWhiteSpace(ev.Start.Date) && String.IsNullOrWhiteSpace(ev.Start.DateTimeRaw)))
+					response = String.Format("{0}ev.Start is required.{1}", response, Environment.NewLine);
+				if (ev.End == null || (ev.End.DateTime == null && String.IsNullOrWhiteSpace(ev.End.Date) && String.IsNullOrWhiteSpace(ev.End.DateTimeRaw)))
+					response = String.Format("{0}ev.End is required.{1}", response, Environment.NewLine);
+			}
+
+			if (!String.IsNullOrWhiteSpace(response)) {
+				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryPatchEvent(Event ev, string eventId, string calendarId, out string response).{1}", response, Environment.NewLine);
+				return null;
+			}
+			#endregion Validation
+
+			#region Formatting
+			if (!String.IsNullOrWhiteSpace(ev.Summary))
+				ev.Summary = ev.Summary.Trim();
+
+			if (String.IsNullOrWhiteSpace(ev.Description))
+				ev.Description = "**Created from the Intranet.";
+			else
+				ev.Description = String.Format("{0}{1}{1}**Created from the Intranet.", ev.Description, Environment.NewLine);
+			#endregion Formatting
+
+			try {
+				if (_service == null || !UserEmail.Equals(calendarId, StringComparison.OrdinalIgnoreCase)) {
+					UserEmail = calendarId;
+
+					if (!TryCreateService(out response))
+						return null;
+				}
+
+				return PatchEvent(ev, eventId, calendarId);
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					response = String.Format("{0}{2}Exception thrown in GoogleCalendarService.TryPatchEvent(Event ev, string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, eventId, calendarId);
+				else
+					response = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of GoogleCalendarService.TryPatchEvent(Event ev, string eventId='{3}', string calendarId='{4}', out string response).{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, eventId, calendarId);
+				#endregion Log
+
+				return null;
+			}
+		}
 		#endregion Public Methods
 	}
 }
