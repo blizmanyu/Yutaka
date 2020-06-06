@@ -212,7 +212,7 @@ namespace Yutaka.Google.Calendar
 				response = String.Format("{0}<calendarId> is required.{1}", response, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(response)) {
-				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryDeleteEvent(string eventId, string calendarId, out string response).{1}", response, Environment.NewLine);
+				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryDeleteEvent(string eventId='{2}', string calendarId='{3}', out string response).{1}", response, Environment.NewLine, eventId ?? "NULL", calendarId ?? "NULL");
 				return false;
 			}
 			#endregion Validation
@@ -225,7 +225,7 @@ namespace Yutaka.Google.Calendar
 						return false;
 				}
 
-				response = DeleteEvent(eventId, calendarId);
+				response = _service.Events.Delete(calendarId, eventId).Execute();
 
 				if (String.IsNullOrWhiteSpace(response))
 					return true;
@@ -234,8 +234,10 @@ namespace Yutaka.Google.Calendar
 			}
 
 			catch (Exception ex) {
-				if (ex.Message.Contains("410") && CurrentCulture.CompareInfo.IndexOf(ex.Message, "deleted", CompareOptions.OrdinalIgnoreCase) > -1)
+				if (ex.Message.Contains("410") && CurrentCulture.CompareInfo.IndexOf(ex.Message, "deleted", CompareOptions.OrdinalIgnoreCase) > -1) {
+					response = "Already deleted.";
 					return true;
+				}
 
 				#region Log
 				if (ex.InnerException == null)
