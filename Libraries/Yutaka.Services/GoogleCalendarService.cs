@@ -377,7 +377,7 @@ namespace Yutaka.Google.Calendar
 						return null;
 				}
 
-				return PatchEvent(ev, eventId, calendarId);
+				return _service.Events.Patch(ev, calendarId, eventId).Execute();
 			}
 
 			catch (Exception ex) {
