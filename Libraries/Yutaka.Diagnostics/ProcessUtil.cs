@@ -26,7 +26,7 @@ namespace Yutaka.Diagnostics
 		}
 		#endregion Fields
 
-		#region Private Utilities
+		#region Utilities
 		#region DLL Imports
 		[DllImport("user32.dll")]
 		private static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
@@ -49,7 +49,7 @@ namespace Yutaka.Diagnostics
 				for (var y = 0; y < rect.bottom; y += 5)
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
 		}
-		#endregion Private Utilities
+		#endregion Utilities
 
 		#region Public Methods
 		public static int CloseProgram(string programName)
