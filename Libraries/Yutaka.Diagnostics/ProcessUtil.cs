@@ -91,12 +91,12 @@ namespace Yutaka.Diagnostics
 			if (String.IsNullOrWhiteSpace(processName))
 				return 0;
 
-			var killCount = 0;
+			var count = 0;
 
 			foreach (var process in Process.GetProcessesByName(processName)) {
 				try {
 					process.Kill();
-					killCount++;
+					++count;
 					Thread.Sleep(DefaultSleepTime);
 					process.Close();
 				}
@@ -104,7 +104,7 @@ namespace Yutaka.Diagnostics
 				catch (Exception) { }
 			}
 
-			return killCount;
+			return count;
 		}
 
 		public static void RefreshTrayArea()
