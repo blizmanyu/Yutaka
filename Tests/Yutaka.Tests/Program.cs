@@ -171,7 +171,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test202003261724();
+			TestTrim();
 			EndProgram();
 		}
 
@@ -526,6 +526,32 @@ namespace Yutaka.Tests
 		#endregion QB20191021Util Tests
 
 		#region String Tests
+		// Modified Jun 8, 2020 // Created Jun 8, 2020 //
+		private static void TestTrim()
+		{
+			string[] tests = { null, "", "test", " test ", };
+			string temp;
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) '{1}'", ++totalCount, test);
+
+				try {
+					if (test == null)
+						temp = "NULL";
+					else
+						temp = test.Trim();
+
+					Console.Write("\nAfter: '{0}'", temp);
+				}
+
+				catch (Exception ex) {
+					Console.Write("\n{0}{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				}
+
+				Console.Write("\n");
+			}
+		}
+
 		// Created Feb 11, 2020 // Modified Feb 11, 2020 //
 		private static void TestReplace()
 		{
