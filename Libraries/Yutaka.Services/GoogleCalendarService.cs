@@ -333,16 +333,6 @@ namespace Yutaka.Google.Calendar
 			}
 			#endregion Validation
 
-			#region Formatting
-			if (!String.IsNullOrWhiteSpace(ev.Summary))
-				ev.Summary = ev.Summary.Trim();
-
-			if (String.IsNullOrWhiteSpace(ev.Description))
-				ev.Description = "**Created from the Intranet.";
-			else
-				ev.Description = String.Format("{0}{1}{1}**Created from the Intranet.", ev.Description, Environment.NewLine);
-			#endregion Formatting
-
 			try {
 				if (_service == null || !UserEmail.Equals(calendarId, StringComparison.OrdinalIgnoreCase)) {
 					UserEmail = calendarId;
