@@ -8,6 +8,7 @@ namespace Yutaka.Diagnostics
 	public static class ProcessUtil
 	{
 		#region Fields
+		const uint wmMousemove = 0x0200;
 		public const int ONE_DAY_IN_SECONDS = 86400;
 		public const int TWO_DAYS_IN_SECONDS = 172800;
 		public const int THREE_DAYS_IN_SECONDS = 259200;
@@ -43,9 +44,7 @@ namespace Yutaka.Diagnostics
 
 		private static void RefreshTrayArea(IntPtr windowHandle)
 		{
-			const uint wmMousemove = 0x0200;
-			RECT rect;
-			GetClientRect(windowHandle, out rect);
+			GetClientRect(windowHandle, out var rect);
 			for (var x = 0; x < rect.right; x += 5)
 				for (var y = 0; y < rect.bottom; y += 5)
 					SendMessage(windowHandle, wmMousemove, 0, (y << 16) + x);
