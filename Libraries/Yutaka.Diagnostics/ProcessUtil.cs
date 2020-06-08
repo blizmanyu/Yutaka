@@ -109,18 +109,18 @@ namespace Yutaka.Diagnostics
 
 		public static void RefreshTrayArea()
 		{
-			IntPtr systemTrayContainerHandle = FindWindow("Shell_TrayWnd", null);
-			IntPtr systemTrayHandle = FindWindowEx(systemTrayContainerHandle, IntPtr.Zero, "TrayNotifyWnd", null);
-			IntPtr sysPagerHandle = FindWindowEx(systemTrayHandle, IntPtr.Zero, "SysPager", null);
-			IntPtr notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
+			var systemTrayContainerHandle = FindWindow("Shell_TrayWnd", null);
+			var systemTrayHandle = FindWindowEx(systemTrayContainerHandle, IntPtr.Zero, "TrayNotifyWnd", null);
+			var sysPagerHandle = FindWindowEx(systemTrayHandle, IntPtr.Zero, "SysPager", null);
+			var notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "Notification Area");
+
 			if (notificationAreaHandle == IntPtr.Zero) {
-				notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32",
-					"User Promoted Notification Area");
-				IntPtr notifyIconOverflowWindowHandle = FindWindow("NotifyIconOverflowWindow", null);
-				IntPtr overflowNotificationAreaHandle = FindWindowEx(notifyIconOverflowWindowHandle, IntPtr.Zero,
-			"ToolbarWindow32", "Overflow Notification Area");
+				notificationAreaHandle = FindWindowEx(sysPagerHandle, IntPtr.Zero, "ToolbarWindow32", "User Promoted Notification Area");
+				var notifyIconOverflowWindowHandle = FindWindow("NotifyIconOverflowWindow", null);
+				var overflowNotificationAreaHandle = FindWindowEx(notifyIconOverflowWindowHandle, IntPtr.Zero, "ToolbarWindow32", "Overflow Notification Area");
 				RefreshTrayArea(overflowNotificationAreaHandle);
 			}
+
 			RefreshTrayArea(notificationAreaHandle);
 		}
 
