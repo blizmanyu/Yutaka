@@ -58,12 +58,12 @@ namespace Yutaka.Diagnostics
 			if (String.IsNullOrWhiteSpace(programName))
 				return 0;
 
-			var closeCount = 0;
+			var count = 0;
 
 			foreach (var process in Process.GetProcessesByName(programName)) {
 				try {
 					process.CloseMainWindow();
-					closeCount++;
+					++count;
 					Thread.Sleep(DefaultSleepTime);
 					process.Close();
 				}
@@ -71,7 +71,7 @@ namespace Yutaka.Diagnostics
 				catch (Exception) { }
 			}
 
-			return closeCount;
+			return count;
 		}
 
 		/// <summary>
