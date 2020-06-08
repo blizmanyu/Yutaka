@@ -270,7 +270,7 @@ namespace Yutaka.Google.Calendar
 						return null;
 				}
 
-				return GetEvent(eventId, calendarId);
+				return _service.Events.Get(calendarId, eventId).Execute();
 			}
 
 			catch (Exception ex) {
