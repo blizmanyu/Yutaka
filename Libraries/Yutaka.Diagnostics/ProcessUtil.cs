@@ -134,12 +134,10 @@ namespace Yutaka.Diagnostics
 			if (!String.IsNullOrWhiteSpace(remoteCompName))
 				args = String.Format(@"{0} -m \\{1}", args, remoteCompName);
 
-			var psi = new ProcessStartInfo("shutdown", args) {
+			Process.Start(new ProcessStartInfo("shutdown", args) {
 				CreateNoWindow = !createWindow,
 				UseShellExecute = false,
-			};
-
-			Process.Start(psi);
+			});
 		}
 
 		public static int StartProcess(string fileName, string args = null, bool redirectStandardOutput = true, bool redirectStandardError = true, bool useShellExecute = false, bool createNoWindow = true)
