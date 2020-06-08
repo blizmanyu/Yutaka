@@ -85,22 +85,6 @@ namespace Yutaka.Google.Calendar
 				ApplicationName = ApplicationName,
 			});
 		}
-
-		/// <summary>
-		/// Updates an event. This method supports patch semantics. The field values you specify replace the existing values. Fields
-		/// that you don’t specify in the request remain unchanged. Array fields, if specified, overwrite the existing arrays; this
-		/// discards any previous array elements.
-		/// </summary>
-		/// <param name="ev">The body of the request.</param>
-		/// <param name="eventId">Event identifier.</param>
-		/// <param name="calendarId">Calendar identifier. To retrieve calendar IDs call the calendarList.list method. If you want to
-		/// access the primary calendar of the currently logged in user, use the "primary" keyword, or, the full email address if
-		/// you're using a service account.</param>
-		/// <returns></returns>
-		protected Event PatchEvent(Event ev, string eventId, string calendarId)
-		{
-			return _service.Events.Patch(ev, calendarId, eventId).Execute();
-		}
 		#endregion Utilities
 
 		#region Public Methods
