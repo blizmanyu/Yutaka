@@ -67,6 +67,7 @@
   <ItemGroup>
     <Compile Include="GoogleGmailService.cs" />
     <Compile Include="GoogleCalendarService.cs" />
+    <Compile Include="EventSqlTable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
