@@ -17,6 +17,13 @@ namespace Yutaka.Data
 		#endregion Fields
 
 		#region Constructor
+		/// <summary>
+		/// Creates an instance of TsqlUtil.
+		/// </summary>
+		/// <param name="author">The author's name.</param>
+		/// <param name="createDate">The Create date you want to set this as. The default is Today.</param>
+		/// <param name="dateFormat">The date format you want to use for the Create date and Modified date. Default is "MMM dd, yyyy".</param>
+		/// <param name="description">The description.</param>
 		public TsqlUtil(string author = null, DateTime? createDate = null, string dateFormat = null, string description = null)
 		{
 			if (String.IsNullOrWhiteSpace(author))
