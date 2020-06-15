@@ -57,6 +57,24 @@ namespace Yutaka.Data
 
 		#region Utilities
 		/// <summary>
+		/// Scripts a CREATE VIEW template.
+		/// </summary>
+		/// <returns></returns>
+		protected string ScriptCreateViewTemplate()
+		{
+			var sb = new StringBuilder();
+			sb.Append(ScriptHeading());
+			sb.AppendLine("CREATE VIEW [_SCHEMA_].[_TABLE_] AS (");
+			sb.AppendLine("_SELECT_CLAUSE_");
+			sb.AppendLine("_FROM_CLAUSE_");
+			sb.AppendLine(")");
+			sb.AppendLine("GO");
+			sb.AppendLine().AppendLine();
+
+			return sb.ToString();
+		}
+
+		/// <summary>
 		/// Scripts the heading part of almost all T-Sql script.
 		/// </summary>
 		/// <returns>The heading part of the script.</returns>
