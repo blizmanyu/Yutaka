@@ -59,12 +59,11 @@ namespace Yutaka.Data
 		/// <summary>
 		/// Scripts the heading part of almost all T-Sql script.
 		/// </summary>
-		/// <param name="database">The database.</param>
 		/// <returns>The heading part of the script.</returns>
-		protected string ScriptHeading(string database)
+		protected string ScriptHeading()
 		{
 			var sb = new StringBuilder();
-			sb.AppendLine(String.Format("USE [{0}]", database));
+			sb.AppendLine(String.Format("USE [{0}]", Database));
 			sb.AppendLine(String.Format("GO"));
 			sb.AppendLine(String.Format("SET ANSI_NULLS ON"));
 			sb.AppendLine(String.Format("GO"));
@@ -271,7 +270,7 @@ namespace Yutaka.Data
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = ScriptHeading(database);
+					script = ScriptHeading();
 					script = String.Format("{0}CREATE VIEW [{2}].[{3}Edit] AS ({1}", script, Environment.NewLine, schema, table);
 					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 					scriptIntro = false;
@@ -328,7 +327,7 @@ namespace Yutaka.Data
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = ScriptHeading(database);
+					script = ScriptHeading();
 					script = String.Format("{0}CREATE VIEW [{2}].[{3}List] AS ({1}", script, Environment.NewLine, schema, table);
 					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
 					scriptIntro = false;
@@ -438,7 +437,7 @@ namespace Yutaka.Data
 				if (scriptIntro) {
 					schema = col.TableSchema ?? "";
 					table = col.TableName ?? "";
-					script = ScriptHeading(col.TableCatalog ?? "");
+					script = ScriptHeading();
 					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Insert]{1}", script, Environment.NewLine, schema, table);
 					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
 					clumns = String.Format("{0}               ([{1}]", clumns, col.ColumnName);
@@ -545,7 +544,7 @@ namespace Yutaka.Data
 				if (scriptIntro) {
 					schema = col.TableSchema;
 					table = col.TableName;
-					script = ScriptHeading(col.TableCatalog);
+					script = ScriptHeading();
 					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Update]{1}", script, Environment.NewLine, schema, table);
 					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
 					clumns = String.Format("{0}       SET [{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
