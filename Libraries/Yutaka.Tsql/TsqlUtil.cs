@@ -12,6 +12,7 @@ namespace Yutaka.Data
 		public DateTime CreateDate;
 		public string Author;
 		public string CreateDateStr;
+		public string Database;
 		public string DateFormat;
 		public string Description;
 		#endregion Fields
