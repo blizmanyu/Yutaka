@@ -76,8 +76,7 @@
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Release\Yutaka.Text.dll</HintPath>
     </Reference>
-    <Reference Include="Yutaka.Tsql, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Yutaka.Tsql">
       <HintPath>..\..\Libraries\Yutaka.Tsql\bin\Release\Yutaka.Tsql.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Utils">
