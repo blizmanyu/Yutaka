@@ -29,7 +29,7 @@ namespace Yutaka.Data
 		public TsqlUtil(string database = null, string author = null, DateTime? createDate = null, string dateFormat = null, string description = null)
 		{
 			if (String.IsNullOrWhiteSpace(database))
-				Database = "";
+				throw new ArgumentException("<database> is required.", "database");
 			else
 				Database = database.Trim();
 
