@@ -56,22 +56,21 @@ namespace Yutaka.Data
 		/// <returns>The heading part of the script.</returns>
 		protected string ScriptHeading(string database)
 		{
-			var today = DateTime.Today.ToString(DateFormat);
-			var script = "";
-			script = String.Format("{0}USE [{2}]{1}", script, Environment.NewLine, database);
-			script = String.Format("{0}GO{1}", script, Environment.NewLine);
-			script = String.Format("{0}SET ANSI_NULLS ON{1}", script, Environment.NewLine);
-			script = String.Format("{0}GO{1}", script, Environment.NewLine);
-			script = String.Format("{0}SET QUOTED_IDENTIFIER ON{1}", script, Environment.NewLine);
-			script = String.Format("{0}GO{1}", script, Environment.NewLine);
-			script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
-			script = String.Format("{0}-- Author:      {2}{1}", script, Environment.NewLine, Author);
-			script = String.Format("{0}-- Create date: {2}{1}", script, Environment.NewLine, today);
-			script = String.Format("{0}-- Modified:    {2}{1}", script, Environment.NewLine, today);
-			script = String.Format("{0}-- Description: -{1}", script, Environment.NewLine);
-			script = String.Format("{0}-- ============================================={1}", script, Environment.NewLine);
+			var sb = new StringBuilder();
+			sb.AppendLine(String.Format("USE [{0}]", database));
+			sb.AppendLine(String.Format("GO"));
+			sb.AppendLine(String.Format("SET ANSI_NULLS ON"));
+			sb.AppendLine(String.Format("GO"));
+			sb.AppendLine(String.Format("SET QUOTED_IDENTIFIER ON"));
+			sb.AppendLine(String.Format("GO"));
+			sb.AppendLine(String.Format("-- ============================================="));
+			sb.AppendLine(String.Format("-- Author:      {0}", Author));
+			sb.AppendLine(String.Format("-- Create date: {0}", CreateDateStr));
+			sb.AppendLine(String.Format("-- Modified:    {0}", CreateDateStr));
+			sb.AppendLine(String.Format("-- Description: {0}", Description));
+			sb.AppendLine(String.Format("-- ============================================="));
 
-			return script;
+			return sb.ToString();
 		}
 
 		/// <summary>
