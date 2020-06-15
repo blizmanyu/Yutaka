@@ -17,13 +17,27 @@ namespace Yutaka.Data
 		#endregion Fields
 
 		#region Constructor
-		public TsqlUtil(string author = null, string dateFormat = null)
+		public TsqlUtil(string author = null, DateTime? createDate = null, string dateFormat = null, string description = null)
 		{
-			if (String.IsNullOrWhiteSpace(dateFormat))
-				dateFormat = @"MMM dd, yyyy";
+			if (String.IsNullOrWhiteSpace(author))
+				Author = "";
+			else
+				Author = author.Trim();
 
-			Author = author;
-			DateFormat = dateFormat;
+			if (createDate == null)
+				CreateDate = DateTime.Today;
+			else
+				CreateDate = createDate.Value;
+
+			if (String.IsNullOrWhiteSpace(dateFormat))
+				CreateDateStr = CreateDate.ToString(@"MMM dd, yyyy");
+			else
+				CreateDateStr = CreateDate.ToString(dateFormat);
+
+			if (String.IsNullOrWhiteSpace(description))
+				Description = "";
+			else
+				Description = description.Trim();
 		}
 		#endregion Constructor
 
