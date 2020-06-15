@@ -359,7 +359,7 @@ namespace Yutaka.Data
 					isFirstCol = false;
 				}
 
-				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))) {
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))) {
 					if (String.IsNullOrWhiteSpace(parameters))
 						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
 					else
@@ -464,7 +464,7 @@ namespace Yutaka.Data
 					isFirstCol = false;
 				}
 
-				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))) {
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))) {
 					if (String.IsNullOrWhiteSpace(parameters))
 						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
 					else
@@ -509,7 +509,7 @@ namespace Yutaka.Data
 				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("Delete"))
 					continue;
 
-				if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("UniqueId"))
+				if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))
 					where = String.Format("{0}     WHERE [{1}] = @{1}{2}", where, col.ColumnName, Environment.NewLine);
 
 				if (scriptIntro) {
