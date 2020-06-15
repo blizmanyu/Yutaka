@@ -9,8 +9,11 @@ namespace Yutaka.Data
 	public class TsqlUtil
 	{
 		#region Fields
+		public DateTime CreateDate;
 		public string Author;
+		public string CreateDateStr;
 		public string DateFormat;
+		public string Description;
 		#endregion Fields
 
 		#region Constructor
