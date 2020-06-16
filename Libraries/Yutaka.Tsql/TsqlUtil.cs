@@ -73,7 +73,7 @@ namespace Yutaka.Data
 			sb.AppendLine("_STATEMENT_CLAUSE_");
 			sb.AppendLine("END");
 			sb.AppendLine("GO");
-			sb.AppendLine().AppendLine();
+			sb.AppendLine();
 
 			return sb.ToString();
 		}
@@ -90,7 +90,7 @@ namespace Yutaka.Data
 			sb.AppendLine("_FROM_CLAUSE_");
 			sb.AppendLine(")");
 			sb.AppendLine("GO");
-			sb.AppendLine().AppendLine();
+			sb.AppendLine();
 
 			return sb.ToString();
 		}
