@@ -254,7 +254,7 @@ namespace Yutaka.Data
 			sb.Append(ScriptCreateProcedureDelete(columns));
 			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptCreateProcedureRestore(columns));
-			sb.Append(ScriptTableUpdate(columns));
+			sb.Append(ScriptCreateProcedureUpdate(columns));
 			return sb.ToString();
 		}
 
@@ -425,6 +425,65 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Generates script text to create a SQL Stored Procedure used to Update.
+		/// </summary>
+		/// This method still has room for improvement. It should ignore [Id] and [UniqueId] from the SET clause.
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptCreateProcedureUpdate(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var script = "";
+			var prmtrs = "";
+			var clumns = "";
+			var where = "";
+			var schema = "";
+			var table = "";
+			var scriptIntro = true;
+
+			foreach (var col in columns) {
+				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("Delete"))
+					continue;
+
+				if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))
+					where = String.Format("{0}     WHERE [{1}] = @{1}{2}", where, col.ColumnName, Environment.NewLine);
+
+				if (scriptIntro) {
+					schema = col.TableSchema;
+					table = col.TableName;
+					script = ScriptHeading();
+					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Update]{1}", script, Environment.NewLine, schema, table);
+					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
+					clumns = String.Format("{0}       SET [{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
+					scriptIntro = false;
+				}
+
+				else {
+					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
+
+					if (col.ColumnName.StartsWith("Update"))
+						clumns = String.Format("{0}          ,[{2}] = @{2}{1}", clumns, Environment.NewLine, col.ColumnName);
+					else
+						clumns = String.Format("{0}          ,[{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
+				}
+			}
+
+			script = String.Format("{0}{1}", script, prmtrs);
+			script = String.Format("{0}AS{1}", script, Environment.NewLine);
+			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
+			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
+			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
+			script = String.Format("{0}{1}", script, Environment.NewLine);
+			script = String.Format("{0}    UPDATE [{2}].[{3}]{1}", script, Environment.NewLine, schema, table);
+			script = String.Format("{0}{1}", script, clumns);
+			script = String.Format("{0}{1}", script, where);
+			script = String.Format("{0}END{1}", script, Environment.NewLine);
+			return script;
+		}
+
+		/// <summary>
 		/// Generates script text to create a SQL View used for Editing.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
@@ -562,65 +621,6 @@ namespace Yutaka.Data
 			script = script.Replace("_SELECT_CLAUSE_", selectClause);
 			script = script.Replace("_FROM_CLAUSE_", fromClause);
 			return script.ToString();
-		}
-
-		/// <summary>
-		/// Generates script text to create a SQL Stored Procedure used to Update.
-		/// </summary>
-		/// This method still has room for improvement. It should ignore [Id] and [UniqueId] from the SET clause.
-		/// <param name="columns">The list of all columns from a table.</param>
-		/// <returns></returns>
-		public string ScriptTableUpdate(IList<Column> columns)
-		{
-			if (columns == null || columns.Count < 1)
-				return "";
-
-			var script = "";
-			var prmtrs = "";
-			var clumns = "";
-			var where = "";
-			var schema = "";
-			var table = "";
-			var scriptIntro = true;
-
-			foreach (var col in columns) {
-				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("Delete"))
-					continue;
-
-				if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))
-					where = String.Format("{0}     WHERE [{1}] = @{1}{2}", where, col.ColumnName, Environment.NewLine);
-
-				if (scriptIntro) {
-					schema = col.TableSchema;
-					table = col.TableName;
-					script = ScriptHeading();
-					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Update]{1}", script, Environment.NewLine, schema, table);
-					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-					clumns = String.Format("{0}       SET [{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
-					scriptIntro = false;
-				}
-
-				else {
-					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-
-					if (col.ColumnName.StartsWith("Update"))
-						clumns = String.Format("{0}          ,[{2}] = @{2}{1}", clumns, Environment.NewLine, col.ColumnName);
-					else
-						clumns = String.Format("{0}          ,[{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
-				}
-			}
-
-			script = String.Format("{0}{1}", script, prmtrs);
-			script = String.Format("{0}AS{1}", script, Environment.NewLine);
-			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
-			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
-			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
-			script = String.Format("{0}{1}", script, Environment.NewLine);
-			script = String.Format("{0}    UPDATE [{2}].[{3}]{1}", script, Environment.NewLine, schema, table);
-			script = String.Format("{0}{1}", script, clumns);
-			script = String.Format("{0}{1}", script, where);
-			script = String.Format("{0}END{1}", script, Environment.NewLine);
-			return script;
 		}
 		#endregion Public Methods
 	}
