@@ -444,6 +444,9 @@ namespace Yutaka.Data
 				}
 			}
 
+			if (String.IsNullOrWhiteSpace(setClause))
+				return "";
+
 			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
 			return script;
 		}
