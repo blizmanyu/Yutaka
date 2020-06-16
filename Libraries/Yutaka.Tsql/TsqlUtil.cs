@@ -57,6 +57,28 @@ namespace Yutaka.Data
 
 		#region Utilities
 		/// <summary>
+		/// Scripts a CREATE PROCEDURE template.
+		/// </summary>
+		/// <returns></returns>
+		protected string ScriptCreateProcedureTemplate()
+		{
+			var sb = new StringBuilder(ScriptHeading());
+			sb.AppendLine("CREATE PROCEDURE [_SCHEMA_].[_PROCEDURE_NAME_]");
+			sb.AppendLine("_PARAMETERS_");
+			sb.AppendLine("AS");
+			sb.AppendLine("BEGIN");
+			sb.AppendLine("\t-- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.");
+			sb.AppendLine("\tSET NOCOUNT ON;");
+			sb.AppendLine();
+			sb.AppendLine("_STATEMENT_CLAUSE_");
+			sb.AppendLine("END");
+			sb.AppendLine("GO");
+			sb.AppendLine().AppendLine();
+
+			return sb.ToString();
+		}
+
+		/// <summary>
 		/// Scripts a CREATE VIEW template.
 		/// </summary>
 		/// <returns></returns>
