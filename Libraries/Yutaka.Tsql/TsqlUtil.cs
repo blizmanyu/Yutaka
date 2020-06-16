@@ -127,6 +127,7 @@ namespace Yutaka.Data
 			script = String.Format("{0}{1}", script, Environment.NewLine);
 			script = String.Format("{0}_STATEMENT_CLAUSE_", script);
 			script = String.Format("{0}END{1}", script, Environment.NewLine);
+			script = String.Format("{0}GO{1}{1}", script, Environment.NewLine);
 
 			return script;
 		}
