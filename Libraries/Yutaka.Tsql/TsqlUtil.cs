@@ -243,8 +243,14 @@ namespace Yutaka.Data
 				return "";
 
 			var sb = new StringBuilder();
+			sb.AppendLine("-- =============================================");
+			sb.AppendLine("-- VIEWS");
+			sb.AppendLine("-- =============================================");
 			sb.Append(ScriptTableCreateViewEdit(columns));
 			sb.Append(ScriptTableCreateViewList(columns));
+			sb.AppendLine("-- =============================================");
+			sb.AppendLine("-- STORED PROCEDURES");
+			sb.AppendLine("-- =============================================");
 			sb.Append(ScriptTableDelete(columns));
 			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptTableRestore(columns));
