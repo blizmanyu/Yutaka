@@ -251,11 +251,70 @@ namespace Yutaka.Data
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- STORED PROCEDURES");
 			sb.AppendLine("-- =============================================");
-			sb.Append(ScriptTableDelete(columns));
+			sb.Append(ScriptCreateProcedureDelete(columns));
 			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptTableRestore(columns));
 			sb.Append(ScriptTableUpdate(columns));
 			return sb.ToString();
+		}
+
+		/// <summary>
+		/// Generates script text to create a SQL Stored Procedure used to Delete.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptCreateProcedureDelete(IList<Column> columns)
+		{
+			if (columns == null || columns.Count < 1)
+				return "";
+
+			var script = "";
+			var parameters = "";
+			var setClause = "";
+			var whereClause = "";
+			var isFirstCol = true;
+			var findID = true;
+
+			foreach (var col in columns) {
+				if (isFirstCol) {
+					var schema = col.TableSchema;
+					var table = col.TableName;
+					script = ScriptCreateProcedureTemplate();
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Delete", table));
+					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Delete]", schema, table));
+					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
+					isFirstCol = false;
+				}
+
+				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))) {
+					if (String.IsNullOrWhiteSpace(parameters))
+						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+					else
+						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+					whereClause = String.Format("{0}     WHERE [{1}] = @{1}{2}", whereClause, col.ColumnName, Environment.NewLine);
+					findID = false;
+				}
+
+				else if (col.ColumnName.StartsWith("Delete")) {
+					if (String.IsNullOrWhiteSpace(parameters))
+						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+					else
+						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+					if (String.IsNullOrWhiteSpace(setClause))
+						setClause = String.Format("{0}       SET [{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+					else
+						setClause = String.Format("{0}          ,[{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+				}
+			}
+
+			if (String.IsNullOrWhiteSpace(setClause))
+				return "";
+
+			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
+			return script;
 		}
 
 		/// <summary>
@@ -452,65 +511,6 @@ namespace Yutaka.Data
 			script = script.Replace("_SELECT_CLAUSE_", selectClause);
 			script = script.Replace("_FROM_CLAUSE_", fromClause);
 			return script.ToString();
-		}
-
-		/// <summary>
-		/// Generates script text to create a SQL Stored Procedure used to Delete.
-		/// </summary>
-		/// <param name="columns">The list of all columns from a table.</param>
-		/// <returns></returns>
-		public string ScriptTableDelete(IList<Column> columns)
-		{
-			if (columns == null || columns.Count < 1)
-				return "";
-
-			var script = "";
-			var parameters = "";
-			var setClause = "";
-			var whereClause = "";
-			var isFirstCol = true;
-			var findID = true;
-
-			foreach (var col in columns) {
-				if (isFirstCol) {
-					var schema = col.TableSchema;
-					var table = col.TableName;
-					script = ScriptCreateProcedureTemplate();
-					script = script.Replace("_SCHEMA_", schema);
-					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Delete", table));
-					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Delete]", schema, table));
-					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
-					isFirstCol = false;
-				}
-
-				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))) {
-					if (String.IsNullOrWhiteSpace(parameters))
-						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-					else
-						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-
-					whereClause = String.Format("{0}     WHERE [{1}] = @{1}{2}", whereClause, col.ColumnName, Environment.NewLine);
-					findID = false;
-				}
-
-				else if (col.ColumnName.StartsWith("Delete")) {
-					if (String.IsNullOrWhiteSpace(parameters))
-						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-					else
-						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-
-					if (String.IsNullOrWhiteSpace(setClause))
-						setClause = String.Format("{0}       SET [{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
-					else
-						setClause = String.Format("{0}          ,[{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
-				}
-			}
-
-			if (String.IsNullOrWhiteSpace(setClause))
-				return "";
-
-			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
-			return script;
 		}
 
 		/// <summary>
