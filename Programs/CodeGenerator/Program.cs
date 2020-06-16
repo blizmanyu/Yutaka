@@ -37,6 +37,10 @@ namespace CodeGenerator
 
 		private static int errorCount = 0;
 		private static int totalCount = 0;
+		private static string ConnectionString = "";
+		private static string Database = "";
+		private static string Schema = "";
+		private static string Table = "";
 		private static List<Column> Columns = new List<Column>();
 		private static FileUtil _fileUtil = new FileUtil();
 		private static TsqlUtil _tsqlUtil;
@@ -51,8 +55,13 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
+			ConnectionString = "asdfg";
+			Database = "asdfg";
+			Schema = "asdfg";
+			Table = "asdfg";
+
 			var dest = Path.Combine(DestFolder, String.Format("{0:yyyy MMdd HHmm ssff}.", DateTime.Now));
-			_tsqlUtil = new TsqlUtil("Yutaka Blizman");
+			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
 			//_fileUtil.Write(CSUtil.GenerateAll(Columns), String.Format("{0}cs", dest));
@@ -61,12 +70,7 @@ namespace CodeGenerator
 
 		private static void GetColumnsInformation()
 		{
-			var connectionString = "asdfg";
-			var database = "asdfg";
-			var schema = "";
-			var table = "_Example";
-
-			Columns = _tsqlUtil.GetColumnsInformation(connectionString, database, schema, table).ToList();
+			Columns = _tsqlUtil.GetColumnsInformation(ConnectionString, Database, Schema, Table).ToList();
 
 			if (consoleOut) {
 				foreach (var col in Columns)
