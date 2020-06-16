@@ -73,7 +73,7 @@ namespace Yutaka.Data
 			sb.AppendLine("_STATEMENT_CLAUSE_");
 			sb.AppendLine("END");
 			sb.AppendLine("GO");
-			sb.AppendLine();
+			sb.AppendLine().AppendLine();
 
 			return sb.ToString();
 		}
@@ -90,7 +90,7 @@ namespace Yutaka.Data
 			sb.AppendLine("_FROM_CLAUSE_");
 			sb.AppendLine(")");
 			sb.AppendLine("GO");
-			sb.AppendLine();
+			sb.AppendLine().AppendLine();
 
 			return sb.ToString();
 		}
@@ -243,12 +243,12 @@ namespace Yutaka.Data
 				return "";
 
 			var sb = new StringBuilder();
-			sb.AppendLine(ScriptTableCreateViewEdit(columns));
-			sb.AppendLine(ScriptTableCreateViewList(columns));
-			sb.AppendLine(ScriptTableDelete(columns));
-			sb.AppendLine(ScriptCreateProcedureInsert(columns));
-			sb.AppendLine(ScriptTableRestore(columns));
-			sb.AppendLine(ScriptTableUpdate(columns));
+			sb.Append(ScriptTableCreateViewEdit(columns));
+			sb.Append(ScriptTableCreateViewList(columns));
+			sb.Append(ScriptTableDelete(columns));
+			sb.Append(ScriptCreateProcedureInsert(columns));
+			sb.Append(ScriptTableRestore(columns));
+			sb.Append(ScriptTableUpdate(columns));
 			return sb.ToString();
 		}
 
