@@ -273,54 +273,67 @@ namespace Yutaka.Data
 		/// <returns></returns>
 		public string ScriptTableCreateViewEdit(IList<Column> columns)
 		{
-			if (columns == null || columns.Count < 1)
-				return "";
+			var script = new StringBuilder(ScriptCreateViewTemplate());
 
-			var script = "";
-			var database = "";
+			if (columns == null || columns.Count < 1)
+				return script.ToString();
+
+			var selectClause = "";
+			var fromClause = "";
 			var schema = "";
 			var table = "";
 			var alias = "";
-			var scriptIntro = true;
+			var joinedAlias = "";
+			var isFirstCol = true;
 
 			foreach (var col in columns) {
-				if (scriptIntro) {
-					database = col.TableCatalog ?? "";
-					schema = col.TableSchema ?? "";
-					table = col.TableName ?? "";
+				if (isFirstCol) {
+					schema = col.TableSchema;
+					table = col.TableName;
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
-					script = ScriptHeading();
-					script = String.Format("{0}CREATE VIEW [{2}].[{3}Edit] AS ({1}", script, Environment.NewLine, schema, table);
-					script = String.Format("{0}     SELECT [{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
-					scriptIntro = false;
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_VIEW_NAME_", String.Format("{0}Edit", table));
+					isFirstCol = false;
 				}
 
-				else {
-					script = String.Format("{0}           ,[{2}] = {3}.[{2}]{1}", script, Environment.NewLine, col.ColumnName, alias);
+				if (String.IsNullOrWhiteSpace(selectClause))
+					selectClause = String.Format("{0}\t SELECT [{1}] = {2}.[{1}]", selectClause, col.ColumnName, alias);
+				else
+					selectClause = String.Format("{0}{1}\t\t   ,[{2}] = {3}.[{2}]", selectClause, Environment.NewLine, col.ColumnName, alias);
 
-					if (col.ColumnName.Equals("CreatedById")) {
-						script = String.Format("{0}           ,[CreatedByUserName] = cr.[UserName]{1}", script, Environment.NewLine);
-						script = String.Format("{0}           ,[CreatedByFullName] = cr.[FullName]{1}", script, Environment.NewLine);
-					}
+				if (String.IsNullOrWhiteSpace(fromClause))
+					fromClause = String.Format("\t   FROM [{0}].[{1}].[{2}] {3} WITH (NOLOCK)", Database, schema, table, alias);
 
-					else if (col.ColumnName.Equals("UpdatedById")) {
-						script = String.Format("{0}           ,[UpdatedByUserName] = up.[UserName]{1}", script, Environment.NewLine);
-						script = String.Format("{0}           ,[UpdatedByFullName] = up.[FullName]{1}", script, Environment.NewLine);
-					}
+				if (col.ColumnName.Equals("CreatedById")) {
+					selectClause = String.Format("{0}{1}\t\t   ,[CreatedByFullName] = cr.[FullName]", selectClause, Environment.NewLine);
+					fromClause = String.Format("{0}{1}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] cr WITH (NOLOCK) ON cr.[Id] = {2}.[CreatedById]", fromClause, Environment.NewLine, alias);
+				}
 
-					else if (col.ColumnName.Equals("DeletedById")) {
-						script = String.Format("{0}           ,[DeletedByUserName] = de.[UserName]{1}", script, Environment.NewLine);
-						script = String.Format("{0}           ,[DeletedByFullName] = de.[FullName]{1}", script, Environment.NewLine);
-					}
+				else if (col.ColumnName.Equals("UpdatedById")) {
+					selectClause = String.Format("{0}{1}\t\t   ,[UpdatedByFullName] = up.[FullName]", selectClause, Environment.NewLine);
+					fromClause = String.Format("{0}{1}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] up WITH (NOLOCK) ON up.[Id] = {2}.[UpdatedById]", fromClause, Environment.NewLine, alias);
+				}
+
+				else if (col.ColumnName.Equals("ModifiedById")) {
+					selectClause = String.Format("{0}{1}\t\t   ,[UpdatedByFullName] = up.[FullName]", selectClause, Environment.NewLine);
+					fromClause = String.Format("{0}{1}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] up WITH (NOLOCK) ON up.[Id] = {2}.[ModifiedById]", fromClause, Environment.NewLine, alias);
+				}
+
+				else if (col.ColumnName.Equals("DeletedById")) {
+					selectClause = String.Format("{0}{1}\t\t   ,[DeletedByFullName] = de.[FullName]", selectClause, Environment.NewLine);
+					fromClause = String.Format("{0}{1}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] de WITH (NOLOCK) ON de.[Id] = {2}.[DeletedById]", fromClause, Environment.NewLine, alias);
+				}
+
+				else if (col.ColumnName.EndsWith("Id") && !col.ColumnName.Equals("Id") && !col.ColumnName.Equals("UniqueId")) {
+					joinedAlias = col.ColumnName.Replace("_", "").Substring(0, 2).ToLower();
+					selectClause = String.Format("{0}{1}\t\t   ,{2}.*", selectClause, Environment.NewLine, joinedAlias);
+					fromClause = String.Format("{0}{1}  LEFT JOIN [{2}].[{3}].[{4}] {5} WITH (NOLOCK) ON {5}.[Id] = {6}.[{7}]", fromClause, Environment.NewLine, Database, schema, col.ColumnName.Replace("Id", ""), joinedAlias, alias, col.ColumnName);
 				}
 			}
 
-			script = String.Format("{0}       FROM [{2}].[{3}].[{4}] {5} WITH (NOLOCK){1}", script, Environment.NewLine, database, schema, table, alias);
-			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] cr WITH (NOLOCK) ON cr.[Id] = {2}.[CreatedById]{1}", script, Environment.NewLine, alias);
-			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] up WITH (NOLOCK) ON up.[Id] = {2}.[UpdatedById]{1}", script, Environment.NewLine, alias);
-			script = String.Format("{0}  LEFT JOIN [IntranetData].[dbo].[CustomerExtra] de WITH (NOLOCK) ON de.[Id] = {2}.[DeletedById]{1}", script, Environment.NewLine, alias);
-			script = String.Format("{0}){1}", script, Environment.NewLine);
-			return script;
+			script = script.Replace("_SELECT_CLAUSE_", selectClause);
+			script = script.Replace("_FROM_CLAUSE_", fromClause);
+			return script.ToString();
 		}
 
 		/// <summary>
