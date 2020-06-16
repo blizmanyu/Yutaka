@@ -62,8 +62,7 @@ namespace Yutaka.Data
 		/// <returns></returns>
 		protected string ScriptCreateViewTemplate()
 		{
-			var sb = new StringBuilder();
-			sb.Append(ScriptHeading());
+			var sb = new StringBuilder(ScriptHeading());
 			sb.AppendLine("CREATE VIEW [_SCHEMA_].[_VIEW_NAME_] AS (");
 			sb.AppendLine("_SELECT_CLAUSE_");
 			sb.AppendLine("_FROM_CLAUSE_");
