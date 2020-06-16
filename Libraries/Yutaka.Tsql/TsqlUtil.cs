@@ -253,6 +253,62 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Generates script text to create a SQL Stored Procedure used to Insert.
+		/// </summary>
+		/// <param name="columns">The list of all columns from a table.</param>
+		/// <returns></returns>
+		public string ScriptCreateProcedureInsert(IList<Column> columns)
+		{
+			var script = new StringBuilder(ScriptCreateProcedureTemplate());
+
+			if (columns == null || columns.Count < 1)
+				return script.ToString();
+
+			var parametersClause = "";
+			var insertClause = "";
+			var valuesClause = "";
+			var schema = "";
+			var table = "";
+			var isFirstCol = true;
+
+			foreach (var col in columns) {
+				if (isFirstCol) {
+					schema = col.TableSchema;
+					table = col.TableName;
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Insert", table));
+					isFirstCol = false;
+				}
+
+				if (col.ColumnName.Equals("Ident"))
+					continue; // skip identity columns
+
+				if (String.IsNullOrWhiteSpace(parametersClause))
+					parametersClause = String.Format("{0}\t @{1} {2} = NULL", parametersClause, col.ColumnName, col.DataTypeFull);
+				else
+					parametersClause = String.Format("{0}{3}\t,@{1} {2} = NULL", parametersClause, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+
+				if (String.IsNullOrWhiteSpace(insertClause)) {
+					insertClause = String.Format("\tINSERT INTO [{0}].[{1}]", schema, table);
+					insertClause = String.Format("{0}{1}\t\t\t   ([{2}]", insertClause, Environment.NewLine, col.ColumnName);
+				}
+				else
+					insertClause = String.Format("{0}{1}\t\t\t   ,[{2}]", insertClause, Environment.NewLine, col.ColumnName);
+
+				if (String.IsNullOrWhiteSpace(valuesClause)) {
+					valuesClause = String.Format("\t\t VALUES");
+					valuesClause = String.Format("{0}{1}\t\t\t   (@{2}", valuesClause, Environment.NewLine, col.ColumnName);
+				}
+				else
+					valuesClause = String.Format("{0}{1}\t\t\t   ,@{2}", valuesClause, Environment.NewLine, col.ColumnName);
+			}
+
+			script = script.Replace("_PARAMETERS_", parametersClause);
+			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
+			return script.ToString();
+		}
+
+		/// <summary>
 		/// Generates script text to create a SQL View used for Editing.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
@@ -448,57 +504,6 @@ namespace Yutaka.Data
 				return "";
 
 			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
-			return script;
-		}
-
-		/// <summary>
-		/// Generates script text to create a SQL Stored Procedure used to Insert.
-		/// </summary>
-		/// <param name="columns">The list of all columns from a table.</param>
-		/// <returns></returns>
-		public string ScriptCreateProcedureInsert(IList<Column> columns)
-		{
-			if (columns == null || columns.Count < 1)
-				return "";
-
-			var script = "";
-			var prmtrs = "";
-			var clumns = "";
-			var values = "";
-			var schema = "";
-			var table = "";
-			var scriptIntro = true;
-
-			foreach (var col in columns) {
-				if (scriptIntro) {
-					schema = col.TableSchema ?? "";
-					table = col.TableName ?? "";
-					script = ScriptHeading();
-					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Insert]{1}", script, Environment.NewLine, schema, table);
-					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-					clumns = String.Format("{0}               ([{1}]", clumns, col.ColumnName);
-					values = String.Format("{0}               (@{1}", values, col.ColumnName);
-					scriptIntro = false;
-				}
-
-				else {
-					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-					clumns = String.Format("{0}{1}               ,[{2}]", clumns, Environment.NewLine, col.ColumnName);
-					values = String.Format("{0}{1}               ,@{2}", values, Environment.NewLine, col.ColumnName);
-				}
-			}
-
-			script = String.Format("{0}{1}", script, prmtrs);
-			script = String.Format("{0}AS{1}", script, Environment.NewLine);
-			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
-			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
-			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
-			script = String.Format("{0}{1}", script, Environment.NewLine);
-			script = String.Format("{0}    INSERT INTO [{2}].[{3}]{1}", script, Environment.NewLine, schema, table);
-			script = String.Format("{0}{1}){2}", script, clumns, Environment.NewLine);
-			script = String.Format("{0}         VALUES{1}", script, Environment.NewLine);
-			script = String.Format("{0}{1}){2}", script, values, Environment.NewLine);
-			script = String.Format("{0}END{1}", script, Environment.NewLine);
 			return script;
 		}
 
