@@ -448,7 +448,9 @@ namespace Yutaka.Data
 				if (isFirstCol) {
 					var schema = col.TableSchema;
 					var table = col.TableName;
-					script = ScriptTemplate(col.TableCatalog);
+					script = ScriptCreateProcedureTemplate();
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Delete", table));
 					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Delete]", schema, table));
 					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
 					isFirstCol = false;
@@ -553,7 +555,9 @@ namespace Yutaka.Data
 				if (isFirstCol) {
 					var schema = col.TableSchema;
 					var table = col.TableName;
-					script = ScriptTemplate(col.TableCatalog);
+					script = ScriptCreateProcedureTemplate();
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Restore", table));
 					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Restore]", schema, table));
 					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
 					isFirstCol = false;
