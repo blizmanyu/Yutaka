@@ -246,7 +246,7 @@ namespace Yutaka.Data
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- VIEWS");
 			sb.AppendLine("-- =============================================");
-			sb.Append(ScriptTableCreateViewEdit(columns));
+			sb.Append(ScriptCreateViewEdit(columns));
 			sb.Append(ScriptTableCreateViewList(columns));
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- STORED PROCEDURES");
@@ -319,7 +319,7 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptTableCreateViewEdit(IList<Column> columns)
+		public string ScriptCreateViewEdit(IList<Column> columns)
 		{
 			var script = new StringBuilder(ScriptCreateViewTemplate());
 
