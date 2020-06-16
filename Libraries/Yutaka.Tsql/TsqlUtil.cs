@@ -246,7 +246,7 @@ namespace Yutaka.Data
 			sb.Append(ScriptTableCreateViewEdit(columns)).Append(Environment.NewLine);
 			sb.Append(ScriptTableCreateViewList(columns)).Append(Environment.NewLine);
 			sb.Append(ScriptTableDelete(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptTableInsert(columns)).Append(Environment.NewLine);
+			sb.Append(ScriptCreateProcedureInsert(columns)).Append(Environment.NewLine);
 			sb.Append(ScriptTableRestore(columns)).Append(Environment.NewLine);
 			sb.Append(ScriptTableUpdate(columns)).Append(Environment.NewLine);
 			return sb.ToString();
@@ -456,7 +456,7 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptTableInsert(IList<Column> columns)
+		public string ScriptCreateProcedureInsert(IList<Column> columns)
 		{
 			if (columns == null || columns.Count < 1)
 				return "";
