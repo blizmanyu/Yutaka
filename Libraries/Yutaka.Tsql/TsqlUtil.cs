@@ -243,12 +243,12 @@ namespace Yutaka.Data
 				return "";
 
 			var sb = new StringBuilder();
-			sb.Append(ScriptTableCreateViewEdit(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptTableCreateViewList(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptTableDelete(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptCreateProcedureInsert(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptTableRestore(columns)).Append(Environment.NewLine);
-			sb.Append(ScriptTableUpdate(columns)).Append(Environment.NewLine);
+			sb.AppendLine(ScriptTableCreateViewEdit(columns));
+			sb.AppendLine(ScriptTableCreateViewList(columns));
+			sb.AppendLine(ScriptTableDelete(columns));
+			sb.AppendLine(ScriptCreateProcedureInsert(columns));
+			sb.AppendLine(ScriptTableRestore(columns));
+			sb.AppendLine(ScriptTableUpdate(columns));
 			return sb.ToString();
 		}
 
