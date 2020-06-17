@@ -469,16 +469,16 @@ namespace Yutaka.Data
 					}
 				}
 
-				else if (col.ColumnName.StartsWith("Delete")) {
+				else if (col.ColumnName.Equals("Active") || col.ColumnName.Equals("IsActive") || col.ColumnName.Equals("Published") || col.ColumnName.StartsWith("Delete")) {
 					if (String.IsNullOrWhiteSpace(parametersClause))
 						parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
 					else
 						parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
 
 					if (String.IsNullOrWhiteSpace(setClause))
-						setClause = String.Format("\t   SET [{0}] = NULL", col.ColumnName);
+						setClause = String.Format("\t   SET [{0}] = @{0}", col.ColumnName);
 					else
-						setClause = String.Format("{1}{2}\t\t  ,[{0}] = NULL", col.ColumnName, setClause, Environment.NewLine);
+						setClause = String.Format("{1}{2}\t\t  ,[{0}] = @{0}", col.ColumnName, setClause, Environment.NewLine);
 				}
 			}
 
