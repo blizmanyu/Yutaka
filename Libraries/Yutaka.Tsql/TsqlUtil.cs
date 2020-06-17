@@ -432,55 +432,57 @@ namespace Yutaka.Data
 		/// <returns></returns>
 		public string ScriptCreateProcedureUpdate(IList<Column> columns)
 		{
-			if (columns == null || columns.Count < 1)
-				return "";
+			var script = new StringBuilder(ScriptCreateProcedureTemplate());
 
-			var script = "";
-			var prmtrs = "";
-			var clumns = "";
-			var where = "";
+			if (columns == null || columns.Count < 1)
+				return script.ToString();
+
+			var parametersClause = "";
+			var updateClause = "";
+			var setClause = "";
+			var whereClause = "";
 			var schema = "";
 			var table = "";
-			var scriptIntro = true;
+			var findId = true;
+			var isFirstCol = true;
 
 			foreach (var col in columns) {
-				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("Delete"))
-					continue;
-
-				if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))
-					where = String.Format("{0}     WHERE [{1}] = @{1}{2}", where, col.ColumnName, Environment.NewLine);
-
-				if (scriptIntro) {
+				if (isFirstCol) {
 					schema = col.TableSchema;
 					table = col.TableName;
-					script = ScriptHeading();
-					script = String.Format("{0}CREATE PROCEDURE [{2}].[{3}Update]{1}", script, Environment.NewLine, schema, table);
-					prmtrs = String.Format("{0}     @{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-					clumns = String.Format("{0}       SET [{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
-					scriptIntro = false;
+					script = script.Replace("_SCHEMA_", schema);
+					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Update", table));
+					updateClause = String.Format("\tUPDATE [{0}].[{1}]", schema, table);
+					isFirstCol = false;
 				}
 
+				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("InsertedOn"))
+					continue;
 				else {
-					prmtrs = String.Format("{0}    ,@{2} {3} = NULL{1}", prmtrs, Environment.NewLine, col.ColumnName, col.DataTypeFull);
-
-					if (col.ColumnName.StartsWith("Update"))
-						clumns = String.Format("{0}          ,[{2}] = @{2}{1}", clumns, Environment.NewLine, col.ColumnName);
+					if (String.IsNullOrWhiteSpace(parametersClause))
+						parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
 					else
-						clumns = String.Format("{0}          ,[{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END){1}", clumns, Environment.NewLine, col.ColumnName);
+						parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
+
+					if (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId")) {
+						if (findId) {
+							whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
+							findId = false;
+						}
+					}
+
+					else {
+						if (String.IsNullOrWhiteSpace(setClause))
+							setClause = String.Format("\t   SET [{0}] = (CASE WHEN @{0} is null THEN [{0}] ELSE @{0} END)", col.ColumnName);
+						else
+							setClause = String.Format("{0}{1}\t\t  ,[{2}] = (CASE WHEN @{2} is null THEN [{2}] ELSE @{2} END)", setClause, Environment.NewLine, col.ColumnName);
+					}
 				}
 			}
 
-			script = String.Format("{0}{1}", script, prmtrs);
-			script = String.Format("{0}AS{1}", script, Environment.NewLine);
-			script = String.Format("{0}BEGIN{1}", script, Environment.NewLine);
-			script = String.Format("{0}    -- SET NOCOUNT ON added to prevent extra result sets from interfering with SELECT statements.{1}", script, Environment.NewLine);
-			script = String.Format("{0}    SET NOCOUNT ON;{1}", script, Environment.NewLine);
-			script = String.Format("{0}{1}", script, Environment.NewLine);
-			script = String.Format("{0}    UPDATE [{2}].[{3}]{1}", script, Environment.NewLine, schema, table);
-			script = String.Format("{0}{1}", script, clumns);
-			script = String.Format("{0}{1}", script, where);
-			script = String.Format("{0}END{1}", script, Environment.NewLine);
-			return script;
+			script = script.Replace("_PARAMETERS_", parametersClause);
+			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
+			return script.ToString();
 		}
 
 		/// <summary>
