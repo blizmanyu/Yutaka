@@ -265,56 +265,85 @@ namespace Yutaka.Data
 		/// <returns></returns>
 		public string ScriptCreateProcedureDelete(IList<Column> columns)
 		{
-			if (columns == null || columns.Count < 1)
-				return "";
+			var script = new StringBuilder(ScriptCreateProcedureTemplate());
 
-			var script = "";
-			var parameters = "";
+			if (columns == null || columns.Count < 1)
+				return script.ToString();
+
+			var parametersClause = "";
+			var updateClause = "";
 			var setClause = "";
 			var whereClause = "";
+			var schema = "";
+			var table = "";
+			var findId = true;
 			var isFirstCol = true;
-			var findID = true;
 
 			foreach (var col in columns) {
 				if (isFirstCol) {
-					var schema = col.TableSchema;
-					var table = col.TableName;
-					script = ScriptCreateProcedureTemplate();
+					schema = col.TableSchema;
+					table = col.TableName;
 					script = script.Replace("_SCHEMA_", schema);
 					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Delete", table));
-					script = script.Replace("_CREATE_CLAUSE_", String.Format("CREATE PROCEDURE [{0}].[{1}Delete]", schema, table));
-					script = script.Replace("_STATEMENT_CLAUSE_", String.Format("    UPDATE [{0}].[{1}]{2}_STATEMENT_CLAUSE_", schema, table, Environment.NewLine));
+					updateClause = String.Format("\tUPDATE [{0}].[{1}]", schema, table);
 					isFirstCol = false;
 				}
 
-				if (findID && (col.ColumnName.Equals("Id") || col.ColumnName.Equals("Ident") || col.ColumnName.Equals("UniqueId"))) {
-					if (String.IsNullOrWhiteSpace(parameters))
-						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-					else
-						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+				if (col.ColumnName.Equals("Id")) {
+					if (findId) {
+						if (String.IsNullOrWhiteSpace(parametersClause))
+							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
+						else
+							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
 
-					whereClause = String.Format("{0}     WHERE [{1}] = @{1}{2}", whereClause, col.ColumnName, Environment.NewLine);
-					findID = false;
+						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
+						findId = false;
+					}
 				}
 
-				else if (col.ColumnName.StartsWith("Delete")) {
-					if (String.IsNullOrWhiteSpace(parameters))
-						parameters = String.Format("{0}     @{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+				else if (col.ColumnName.Equals("Ident")) {
+					if (findId) {
+						if (String.IsNullOrWhiteSpace(parametersClause))
+							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
+						else
+							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
+
+						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
+						findId = false;
+					}
+				}
+
+				else if (col.ColumnName.Equals("UniqueId")) {
+					if (findId) {
+						if (String.IsNullOrWhiteSpace(parametersClause))
+							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
+						else
+							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
+
+						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
+						findId = false;
+					}
+				}
+
+				else if (col.ColumnName.Equals("Active") || col.ColumnName.Equals("IsActive") || col.ColumnName.Equals("Published") || col.ColumnName.StartsWith("Delete")) {
+					if (String.IsNullOrWhiteSpace(parametersClause))
+						parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
 					else
-						parameters = String.Format("{0}    ,@{1} {2} = NULL{3}", parameters, col.ColumnName, col.DataTypeFull, Environment.NewLine);
+						parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
 
 					if (String.IsNullOrWhiteSpace(setClause))
-						setClause = String.Format("{0}       SET [{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+						setClause = String.Format("\t   SET [{0}] = @{0}", col.ColumnName);
 					else
-						setClause = String.Format("{0}          ,[{1}] = @{1}{2}", setClause, col.ColumnName, Environment.NewLine);
+						setClause = String.Format("{1}{2}\t\t  ,[{0}] = @{0}", col.ColumnName, setClause, Environment.NewLine);
 				}
 			}
 
 			if (String.IsNullOrWhiteSpace(setClause))
-				return "";
+				return String.Format("-- This table doesn't contain any 'Delete' columns --{0}{0}{0}", Environment.NewLine);
 
-			script = script.Replace("_PARAMETERS_", parameters).Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}", setClause, whereClause));
-			return script;
+			script = script.Replace("_PARAMETERS_", parametersClause);
+			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
+			return script.ToString();
 		}
 
 		/// <summary>
