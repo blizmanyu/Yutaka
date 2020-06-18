@@ -4,6 +4,8 @@ namespace Yutaka.Data
 {
 	public class Column
 	{
+		public string DatabaseName;
+		public string SchemaName;
 		public string TableCatalog;
 		public string TableSchema;
 		public string TableName;
@@ -11,6 +13,8 @@ namespace Yutaka.Data
 		public int OrdinalPosition;
 		public string ColumnDefault;
 		public bool IsNullable;
+		public bool IsIdentity;
+		public bool IsComputed;
 		public string DataType;
 		public string DataTypeFull;
 		public int CharacterMaximumLength;
