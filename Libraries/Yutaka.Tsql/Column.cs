@@ -36,6 +36,8 @@ namespace Yutaka.Data
 		public void DumpToConsole()
 		{
 			Console.Write("\n");
+			Console.Write("\n          DatabaseName: {0}", DatabaseName);
+			Console.Write("\n            SchemaName: {0}", SchemaName);
 			Console.Write("\n          TableCatalog: {0}", TableCatalog);
 			Console.Write("\n           TableSchema: {0}", TableSchema);
 			Console.Write("\n             TableName: {0}", TableName);
@@ -43,6 +45,8 @@ namespace Yutaka.Data
 			Console.Write("\n       OrdinalPosition: {0}", OrdinalPosition);
 			Console.Write("\n         ColumnDefault: {0}", ColumnDefault);
 			Console.Write("\n            IsNullable: {0}", IsNullable);
+			Console.Write("\n            IsIdentity: {0}", IsIdentity);
+			Console.Write("\n            IsComputed: {0}", IsComputed);
 			Console.Write("\n              DataType: {0}", DataType);
 			Console.Write("\n          DataTypeFull: {0}", DataTypeFull);
 			Console.Write("\nCharacterMaximumLength: {0}", CharacterMaximumLength);
