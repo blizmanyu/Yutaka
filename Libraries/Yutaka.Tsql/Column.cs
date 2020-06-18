@@ -4,6 +4,7 @@ namespace Yutaka.Data
 {
 	public class Column
 	{
+		#region Fields
 		public string DatabaseName;
 		public string SchemaName;
 		public string TableCatalog;
@@ -32,7 +33,9 @@ namespace Yutaka.Data
 		public string DomainCatalog;
 		public string DomainSchema;
 		public string DomainName;
+		#endregion Fields
 
+		#region Public Methods
 		public void DumpToConsole()
 		{
 			Console.Write("\n");
@@ -66,5 +69,6 @@ namespace Yutaka.Data
 			Console.Write("\n            DomainName: {0}", DomainName);
 			Console.Write("\n");
 		}
+		#endregion Public Methods
 	}
 }
