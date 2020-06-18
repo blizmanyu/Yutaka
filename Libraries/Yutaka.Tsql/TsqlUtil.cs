@@ -121,7 +121,7 @@ namespace Yutaka.Data
 
 		#region Public Methods
 		/// <summary>
-		/// Gets Columns information from INFORMATION_SCHEMA.
+		/// WIP: DO NOT use yet! Gets Columns information from INFORMATION_SCHEMA.
 		/// </summary>
 		/// <param name="connectionString">The connection used to open the SQL Server database.</param>
 		/// <param name="database">The database to query.</param>
@@ -129,76 +129,90 @@ namespace Yutaka.Data
 		/// <param name="table">Specify a table. To get from all tables, leave blank.</param>
 		public IList<Column> GetColumnsInformation(string connectionString, string database, string schema = null, string table = null)
 		{
+			Column col;
 			var list = new List<Column>();
 			var where = "";
-			var query = String.Format(
-				"SELECT [TABLE_CATALOG]" +
-				"      ,[TABLE_SCHEMA]" +
-				"      ,[TABLE_NAME]" +
-				"      ,[COLUMN_NAME]" +
-				"      ,[ORDINAL_POSITION]" +
-				"      ,[COLUMN_DEFAULT]" +
-				"      ,[IS_NULLABLE]" +
-				"      ,[DATA_TYPE]" +
-				"      ,[CHARACTER_MAXIMUM_LENGTH]" +
-				"      ,[CHARACTER_OCTET_LENGTH]" +
-				"      ,[NUMERIC_PRECISION]" +
-				"      ,[NUMERIC_PRECISION_RADIX]" +
-				"      ,[NUMERIC_SCALE]" +
-				"      ,[DATETIME_PRECISION]" +
-				"      ,[CHARACTER_SET_CATALOG]" +
-				"      ,[CHARACTER_SET_SCHEMA]" +
-				"      ,[CHARACTER_SET_NAME]" +
-				"      ,[COLLATION_CATALOG]" +
-				"      ,[COLLATION_SCHEMA]" +
-				"      ,[COLLATION_NAME]" +
-				"      ,[DOMAIN_CATALOG]" +
-				"      ,[DOMAIN_SCHEMA]" +
-				"      ,[DOMAIN_NAME]" +
-				"  FROM [{0}].[INFORMATION_SCHEMA].[COLUMNS]", database);
+			var select = new StringBuilder();
+			select.AppendLine("DECLARE @DbName nvarchar(400) = DB_NAME()");
+			select.AppendLine();
+			select.AppendLine("    SELECT [DatabaseName] = @DbName");
+			select.AppendLine("          ,[SchemaName] = SCHEMA_NAME(o.[schema_id])");
+			select.AppendLine("          ,[TableName] = o.[name]");
+			select.AppendLine("          ,[OrdinalPosition] = COLUMNPROPERTY(c.[object_id], c.[name], 'ordinal')");
+			select.AppendLine("          ,[ColumnName] = c.[name]");
+			select.AppendLine("          ,[ColumnDefault] = CONVERT(nvarchar, OBJECT_DEFINITION(c.[default_object_id]))");
+			select.AppendLine("          ,[IsNullable] = c.[is_nullable]");
+			select.AppendLine("          ,[IsIdentity] = c.[is_identity]");
+			select.AppendLine("          ,[IsComputed] = c.[is_computed]");
+			select.AppendLine("          ,[DataType] = ISNULL(TYPE_NAME(c.[system_type_id]), t.[name])");
+			select.AppendLine("          ,[CharacterMaximumLength] = COLUMNPROPERTY(c.[object_id], c.[name], 'charmaxlen')");
+			select.AppendLine("          ,[CharacterOctetLength] = COLUMNPROPERTY(c.[object_id], c.[name], 'octetmaxlen')");
+			select.AppendLine("          ,[NumericPrecision] = CONVERT(tinyint, CASE WHEN c.[system_type_id] IN (48, 52, 56, 59, 60, 62, 106, 108, 122, 127) THEN c.[precision] END) -- int/decimal/numeric/real/float/money");
+			select.AppendLine("          ,[NumericPrecisionRadix] = CONVERT(smallint, CASE WHEN c.[system_type_id] IN (48, 52, 56, 60, 106, 108, 122, 127) THEN 10 -- int/money/decimal/numeric");
+			select.AppendLine("                                                            WHEN c.[system_type_id] IN (59, 62) THEN 2 END) -- real/float");
+			select.AppendLine("          ,[NumericScale] = CONVERT(int, CASE WHEN c.[system_type_id] IN (40, 41, 42, 43, 58, 61) THEN NULL ELSE ODBCSCALE(c.[system_type_id], c.[scale]) END) -- datetime/smalldatetime");
+			select.AppendLine("          ,[DateTimePrecision] = CONVERT(smallint, CASE WHEN c.[system_type_id] IN (40, 41, 42, 43, 58, 61) THEN ODBCSCALE(c.[system_type_id], c.[scale]) END) -- datetime/smalldatetime");
+			select.AppendLine("          ,[CharacterSetCatalog] = NULL");
+			select.AppendLine("          ,[CharacterSetSchema] = NULL");
+			select.AppendLine("          ,[CharacterSetName] = CONVERT(sysname, CASE WHEN c.[system_type_id] IN (35, 167, 175) THEN COLLATIONPROPERTY(c.[collation_name], 'sqlcharsetname') -- char/varchar/text");
+			select.AppendLine("                                                      WHEN c.[system_type_id] IN (99, 231, 239) THEN N'UNICODE' END) -- nchar/nvarchar/ntext");
+			select.AppendLine("          ,[CollationCatalog] = NULL");
+			select.AppendLine("          ,[CollationSchema] = NULL");
+			select.AppendLine("          ,[CollationName] = c.[collation_name]");
+			select.AppendLine("          ,[DomainCatalog] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN @DbName END)");
+			select.AppendLine("          ,[DomainSchema] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN SCHEMA_NAME(t.[schema_id]) END)");
+			select.AppendLine("          ,[DomainName] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN TYPE_NAME(c.[user_type_id]) END)");
+			select.AppendLine(String.Format("      FROM [{0}].[sys].[tables] o", database));
+			select.AppendLine(String.Format("      JOIN [{0}].[sys].[columns] c ON c.[object_id] = o.[object_id]", database));
+			select.AppendLine(String.Format("      JOIN [{0}].[sys].[types] t ON c.[user_type_id] = t.[user_type_id]", database));
 
 			if (!String.IsNullOrWhiteSpace(schema))
-				where = String.Format(" WHERE [TABLE_SCHEMA] = '{0}'", schema);
+				where = String.Format("     WHERE SCHEMA_NAME(o.[schema_id]) = '{0}'", schema);
 
 			if (!String.IsNullOrWhiteSpace(table)) {
 				if (String.IsNullOrWhiteSpace(where))
-					where = String.Format(" WHERE [TABLE_NAME] = '{0}'", table);
+					where = String.Format("     WHERE o.[name] = '{0}'", table);
 				else
-					where = String.Format("{0}   AND [TABLE_NAME] = '{1}'", where, table);
+					where = String.Format("{0}	   AND o.[name] = '{1}'", where, table);
 			}
+
+			Console.Write("\n{0}{1}\n", select, where);
 
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
-					using (var cmd = new SqlCommand(String.Format("{0}{1}", query, where), conn)) {
+					using (var cmd = new SqlCommand(String.Format("{0}{1}", select, where), conn)) {
 						cmd.CommandType = CommandType.Text;
 						conn.Open();
 						using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
-							Column col;
 							while (reader.Read()) {
 								col = new Column {
-									TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
-									TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
-									TableName = reader["TABLE_NAME"] is DBNull ? "" : reader["TABLE_NAME"].ToString(),
-									ColumnName = reader["COLUMN_NAME"] is DBNull ? "" : reader["COLUMN_NAME"].ToString(),
-									OrdinalPosition = reader["ORDINAL_POSITION"] is DBNull ? -1 : (int) reader["ORDINAL_POSITION"],
-									ColumnDefault = reader["COLUMN_DEFAULT"]?.ToString(),
-									IsNullable = reader["IS_NULLABLE"] is DBNull ? true : reader["IS_NULLABLE"].Equals("YES") ? true : false,
-									DataType = reader["DATA_TYPE"] is DBNull ? "" : reader["DATA_TYPE"].ToString(),
-									CharacterMaximumLength = reader["CHARACTER_MAXIMUM_LENGTH"] is DBNull ? -1 : (int) reader["CHARACTER_MAXIMUM_LENGTH"],
-									CharacterOctetLength = reader["CHARACTER_OCTET_LENGTH"] is DBNull ? -1 : (int) reader["CHARACTER_OCTET_LENGTH"],
-									NumericPrecision = reader["NUMERIC_PRECISION"] is DBNull ? -1 : int.Parse(reader["NUMERIC_PRECISION"].ToString()),
-									NumericPrecisionRadix = reader["NUMERIC_PRECISION_RADIX"] is DBNull ? -1 : int.Parse(reader["NUMERIC_PRECISION_RADIX"].ToString()),
-									NumericScale = reader["NUMERIC_SCALE"] is DBNull ? -1 : (int) reader["NUMERIC_SCALE"],
-									DatetimePrecision = reader["DATETIME_PRECISION"] is DBNull ? -1 : int.Parse(reader["DATETIME_PRECISION"].ToString()),
-									CharacterSetCatalog = reader["CHARACTER_SET_CATALOG"]?.ToString(),
-									CharacterSetSchema = reader["CHARACTER_SET_SCHEMA"]?.ToString(),
-									CharacterSetName = reader["CHARACTER_SET_NAME"]?.ToString(),
-									CollationCatalog = reader["COLLATION_CATALOG"]?.ToString(),
-									CollationSchema = reader["COLLATION_SCHEMA"]?.ToString(),
-									CollationName = reader["COLLATION_NAME"]?.ToString(),
-									DomainCatalog = reader["DOMAIN_CATALOG"]?.ToString(),
-									DomainSchema = reader["DOMAIN_SCHEMA"]?.ToString(),
-									DomainName = reader["DOMAIN_NAME"]?.ToString(),
+									DatabaseName = reader["DatabaseName"] is DBNull ? "" : reader["DatabaseName"].ToString(),
+									SchemaName = reader["SchemaName"] is DBNull ? "" : reader["SchemaName"].ToString(),
+									//TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
+									//TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
+									TableName = reader["TableName"] is DBNull ? "" : reader["TableName"].ToString(),
+									ColumnName = reader["ColumnName"] is DBNull ? "" : reader["ColumnName"].ToString(),
+									OrdinalPosition = reader["OrdinalPosition"] is DBNull ? -1 : (int) reader["OrdinalPosition"],
+									ColumnDefault = reader["ColumnDefault"]?.ToString(),
+									IsNullable = reader["IsNullable"] is DBNull ? true : (bool) reader["IsNullable"],
+									IsIdentity = reader["IsIdentity"] is DBNull ? true : (bool) reader["IsIdentity"],
+									IsComputed = reader["IsComputed"] is DBNull ? true : (bool) reader["IsComputed"],
+									DataType = reader["DataType"] is DBNull ? "" : reader["DataType"].ToString(),
+									CharacterMaximumLength = reader["CharacterMaximumLength"] is DBNull ? -1 : (int) reader["CharacterMaximumLength"],
+									CharacterOctetLength = reader["CharacterOctetLength"] is DBNull ? -1 : (int) reader["CharacterOctetLength"],
+									NumericPrecision = reader["NumericPrecision"] is DBNull ? -1 : int.Parse(reader["NumericPrecision"].ToString()),
+									NumericPrecisionRadix = reader["NumericPrecisionRadix"] is DBNull ? -1 : int.Parse(reader["NumericPrecisionRadix"].ToString()),
+									NumericScale = reader["NumericScale"] is DBNull ? -1 : (int) reader["NumericScale"],
+									DatetimePrecision = reader["DatetimePrecision"] is DBNull ? -1 : int.Parse(reader["DatetimePrecision"].ToString()),
+									CharacterSetCatalog = reader["CharacterSetCatalog"]?.ToString(),
+									CharacterSetSchema = reader["CharacterSetSchema"]?.ToString(),
+									CharacterSetName = reader["CharacterSetName"]?.ToString(),
+									CollationCatalog = reader["CollationCatalog"]?.ToString(),
+									CollationSchema = reader["CollationSchema"]?.ToString(),
+									CollationName = reader["CollationName"]?.ToString(),
+									DomainCatalog = reader["DomainCatalog"]?.ToString(),
+									DomainSchema = reader["DomainSchema"]?.ToString(),
+									DomainName = reader["DomainName"]?.ToString(),
 								};
 
 								if (col.DataType.Equals("varchar") || col.DataType.Equals("nvarchar"))
