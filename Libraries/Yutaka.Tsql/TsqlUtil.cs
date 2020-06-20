@@ -133,47 +133,47 @@ namespace Yutaka.Data
 			var list = new List<Column>();
 			var where = "";
 			var select = new StringBuilder();
-			select.AppendLine("DECLARE @DbName nvarchar(400) = DB_NAME()");
-			select.AppendLine();
-			select.AppendLine("    SELECT [DatabaseName] = @DbName");
-			select.AppendLine("          ,[SchemaName] = SCHEMA_NAME(o.[schema_id])");
-			select.AppendLine("          ,[TableName] = o.[name]");
-			select.AppendLine("          ,[OrdinalPosition] = COLUMNPROPERTY(c.[object_id], c.[name], 'ordinal')");
-			select.AppendLine("          ,[ColumnName] = c.[name]");
-			select.AppendLine("          ,[ColumnDefault] = CONVERT(nvarchar, OBJECT_DEFINITION(c.[default_object_id]))");
-			select.AppendLine("          ,[IsNullable] = c.[is_nullable]");
-			select.AppendLine("          ,[IsIdentity] = c.[is_identity]");
-			select.AppendLine("          ,[IsComputed] = c.[is_computed]");
-			select.AppendLine("          ,[DataType] = ISNULL(TYPE_NAME(c.[system_type_id]), t.[name])");
-			select.AppendLine("          ,[CharacterMaximumLength] = COLUMNPROPERTY(c.[object_id], c.[name], 'charmaxlen')");
-			select.AppendLine("          ,[CharacterOctetLength] = COLUMNPROPERTY(c.[object_id], c.[name], 'octetmaxlen')");
-			select.AppendLine("          ,[NumericPrecision] = CONVERT(tinyint, CASE WHEN c.[system_type_id] IN (48, 52, 56, 59, 60, 62, 106, 108, 122, 127) THEN c.[precision] END) -- int/decimal/numeric/real/float/money");
-			select.AppendLine("          ,[NumericPrecisionRadix] = CONVERT(smallint, CASE WHEN c.[system_type_id] IN (48, 52, 56, 60, 106, 108, 122, 127) THEN 10 -- int/money/decimal/numeric");
-			select.AppendLine("                                                            WHEN c.[system_type_id] IN (59, 62) THEN 2 END) -- real/float");
-			select.AppendLine("          ,[NumericScale] = CONVERT(int, CASE WHEN c.[system_type_id] IN (40, 41, 42, 43, 58, 61) THEN NULL ELSE ODBCSCALE(c.[system_type_id], c.[scale]) END) -- datetime/smalldatetime");
-			select.AppendLine("          ,[DateTimePrecision] = CONVERT(smallint, CASE WHEN c.[system_type_id] IN (40, 41, 42, 43, 58, 61) THEN ODBCSCALE(c.[system_type_id], c.[scale]) END) -- datetime/smalldatetime");
-			select.AppendLine("          ,[CharacterSetCatalog] = NULL");
-			select.AppendLine("          ,[CharacterSetSchema] = NULL");
-			select.AppendLine("          ,[CharacterSetName] = CONVERT(sysname, CASE WHEN c.[system_type_id] IN (35, 167, 175) THEN COLLATIONPROPERTY(c.[collation_name], 'sqlcharsetname') -- char/varchar/text");
-			select.AppendLine("                                                      WHEN c.[system_type_id] IN (99, 231, 239) THEN N'UNICODE' END) -- nchar/nvarchar/ntext");
-			select.AppendLine("          ,[CollationCatalog] = NULL");
-			select.AppendLine("          ,[CollationSchema] = NULL");
-			select.AppendLine("          ,[CollationName] = c.[collation_name]");
-			select.AppendLine("          ,[DomainCatalog] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN @DbName END)");
-			select.AppendLine("          ,[DomainSchema] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN SCHEMA_NAME(t.[schema_id]) END)");
-			select.AppendLine("          ,[DomainName] = CONVERT(sysname, CASE WHEN c.[user_type_id] > 256 THEN TYPE_NAME(c.[user_type_id]) END)");
-			select.AppendLine(String.Format("      FROM [{0}].[sys].[tables] o", database));
-			select.AppendLine(String.Format("      JOIN [{0}].[sys].[columns] c ON c.[object_id] = o.[object_id]", database));
-			select.AppendLine(String.Format("      JOIN [{0}].[sys].[types] t ON c.[user_type_id] = t.[user_type_id]", database));
-
-			if (!String.IsNullOrWhiteSpace(schema))
-				where = String.Format("     WHERE SCHEMA_NAME(o.[schema_id]) = '{0}'", schema);
+			select.AppendLine("SELECT [TABLE_CATALOG] = c.[TABLE_CATALOG]");
+			select.AppendLine("      ,[TABLE_SCHEMA] = c.[TABLE_SCHEMA]");
+			select.AppendLine("      ,[TABLE_NAME] = c.[TABLE_NAME]");
+			select.AppendLine("      ,[COLUMN_NAME] = c.[COLUMN_NAME]");
+			select.AppendLine("      ,[ORDINAL_POSITION] = c.[ORDINAL_POSITION]");
+			select.AppendLine("      ,[COLUMN_DEFAULT] = c.[COLUMN_DEFAULT]");
+			select.AppendLine("      ,[IS_NULLABLE] = c.[IS_NULLABLE]");
+			select.AppendLine("      ,[IsIdentity] = sc.[is_identity]");
+			select.AppendLine("      ,[IsComputed] = sc.[is_computed]");
+			select.AppendLine("      ,[DATA_TYPE] = c.[DATA_TYPE]");
+			select.AppendLine("      ,[CHARACTER_MAXIMUM_LENGTH] = c.[CHARACTER_MAXIMUM_LENGTH]");
+			select.AppendLine("      ,[CHARACTER_OCTET_LENGTH] = c.[CHARACTER_OCTET_LENGTH]");
+			select.AppendLine("      ,[NUMERIC_PRECISION] = c.[NUMERIC_PRECISION]");
+			select.AppendLine("      ,[NUMERIC_PRECISION_RADIX] = c.[NUMERIC_PRECISION_RADIX]");
+			select.AppendLine("      ,[NUMERIC_SCALE] = c.[NUMERIC_SCALE]");
+			select.AppendLine("      ,[DATETIME_PRECISION] = c.[DATETIME_PRECISION]");
+			select.AppendLine("      ,[CHARACTER_SET_CATALOG] = c.[CHARACTER_SET_CATALOG]");
+			select.AppendLine("      ,[CHARACTER_SET_SCHEMA] = c.[CHARACTER_SET_SCHEMA]");
+			select.AppendLine("      ,[CHARACTER_SET_NAME] = c.[CHARACTER_SET_NAME]");
+			select.AppendLine("      ,[COLLATION_CATALOG] = c.[COLLATION_CATALOG]");
+			select.AppendLine("      ,[COLLATION_SCHEMA] = c.[COLLATION_SCHEMA]");
+			select.AppendLine("      ,[COLLATION_NAME] = c.[COLLATION_NAME]");
+			select.AppendLine("      ,[DOMAIN_CATALOG] = c.[DOMAIN_CATALOG]");
+			select.AppendLine("      ,[DOMAIN_SCHEMA] = c.[DOMAIN_SCHEMA]");
+			select.AppendLine("      ,[DOMAIN_NAME] = c.[DOMAIN_NAME]");
+			select.AppendLine(String.Format("  FROM [{0}].[sys].[columns] sc", database));
+			select.AppendLine(String.Format("  JOIN [{0}].[sys].[tables] t ON t.[object_id] = sc.[object_id]", database));
+			select.AppendLine(String.Format("  JOIN [{0}].[INFORMATION_SCHEMA].[COLUMNS] c ON c.[COLUMN_NAME] = sc.[name] AND c.[TABLE_NAME] = t.[name]", database));
 
 			if (!String.IsNullOrWhiteSpace(table)) {
 				if (String.IsNullOrWhiteSpace(where))
-					where = String.Format("     WHERE o.[name] = '{0}'", table);
+					where = String.Format(" WHERE c.[TABLE_NAME] = '{0}'", table);
 				else
-					where = String.Format("{0}	   AND o.[name] = '{1}'", where, table);
+					where = String.Format("{1}{2}   AND c.[TABLE_NAME] = '{0}'", table, where, Environment.NewLine);
+			}
+
+			if (!String.IsNullOrWhiteSpace(schema)) {
+				if (String.IsNullOrWhiteSpace(where))
+					where = String.Format(" WHERE c.[TABLE_SCHEMA] = '{0}'", schema);
+				else
+					where = String.Format("{1}{2}   AND c.[TABLE_SCHEMA] = '{0}'", schema, where, Environment.NewLine);
 			}
 
 			Console.Write("\n{0}{1}\n", select, where);
@@ -186,10 +186,10 @@ namespace Yutaka.Data
 						using (var reader = cmd.ExecuteReader(CommandBehavior.CloseConnection)) {
 							while (reader.Read()) {
 								col = new Column {
-									DatabaseName = reader["DatabaseName"] is DBNull ? "" : reader["DatabaseName"].ToString(),
-									SchemaName = reader["SchemaName"] is DBNull ? "" : reader["SchemaName"].ToString(),
-									//TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
-									//TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
+									//DatabaseName = reader["DatabaseName"] is DBNull ? "" : reader["DatabaseName"].ToString(),
+									//SchemaName = reader["SchemaName"] is DBNull ? "" : reader["SchemaName"].ToString(),
+									TableCatalog = reader["TABLE_CATALOG"] is DBNull ? "" : reader["TABLE_CATALOG"].ToString(),
+									TableSchema = reader["TABLE_SCHEMA"] is DBNull ? "" : reader["TABLE_SCHEMA"].ToString(),
 									TableName = reader["TableName"] is DBNull ? "" : reader["TableName"].ToString(),
 									ColumnName = reader["ColumnName"] is DBNull ? "" : reader["ColumnName"].ToString(),
 									OrdinalPosition = reader["OrdinalPosition"] is DBNull ? -1 : (int) reader["OrdinalPosition"],
