@@ -15,22 +15,6 @@ namespace Yutaka.Data
 		public bool IsIdentity;
 		public bool IsComputed;
 		public string DataType;
-		public int CharacterMaximumLength;
-		public int CharacterOctetLength;
-		public int NumericPrecision;
-		public int NumericPrecisionRadix;
-		public int NumericScale;
-		public int DatetimePrecision;
-		public string CharacterSetCatalog;
-		public string CharacterSetSchema;
-		public string CharacterSetName;
-		public string CollationCatalog;
-		public string CollationSchema;
-		public string CollationName;
-		public string DomainCatalog;
-		public string DomainSchema;
-		public string DomainName;
-
 		public string DataTypeFull
 		{
 			get {
@@ -60,7 +44,21 @@ namespace Yutaka.Data
 				}
 			}
 		}
-
+		public int CharacterMaximumLength;
+		public int CharacterOctetLength;
+		public int NumericPrecision;
+		public int NumericPrecisionRadix;
+		public int NumericScale;
+		public int DatetimePrecision;
+		public string CharacterSetCatalog;
+		public string CharacterSetSchema;
+		public string CharacterSetName;
+		public string CollationCatalog;
+		public string CollationSchema;
+		public string CollationName;
+		public string DomainCatalog;
+		public string DomainSchema;
+		public string DomainName;
 		#endregion Fields
 
 		#region Public Methods
