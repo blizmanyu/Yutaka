@@ -60,7 +60,7 @@ namespace CodeGenerator
 			Schema = "dbo";
 			Table = "asdfg";
 
-			var dest = Path.Combine(DestFolder, String.Format("{0:yyyy MMdd HHmm ssff}.", DateTime.Now));
+			var dest = Path.Combine(DestFolder, String.Format("{0}.{1}.{2} {3}.", Database, Schema, Table, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
