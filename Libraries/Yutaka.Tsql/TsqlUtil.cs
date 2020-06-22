@@ -255,8 +255,8 @@ namespace Yutaka.Data
 			sb.AppendLine("-- STORED PROCEDURES");
 			sb.AppendLine("-- =============================================");
 			sb.Append(ScriptCreateProcedureDelete(columns));
-			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptCreateProcedureRestore(columns));
+			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptCreateProcedureUpdate(columns));
 			return sb.ToString();
 		}
