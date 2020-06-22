@@ -19,21 +19,13 @@ namespace Yutaka.Data
 		{
 			get {
 				switch (DataType) {
-					#region case "decimal":
+					#region cases "decimal" & "numeric":
 					case "decimal":
-						return String.Format("{0}({1},{2})", DataType, NumericPrecision, NumericScale);
-					#endregion
-					#region case "numeric":
 					case "numeric":
 						return String.Format("{0}({1},{2})", DataType, NumericPrecision, NumericScale);
 					#endregion
-					#region case "nvarchar":
+					#region cases "nvarchar" & "varchar":
 					case "nvarchar":
-						if (CharacterMaximumLength > 0)
-							return String.Format("{0}({1})", DataType, CharacterMaximumLength);
-						return String.Format("{0}(MAX)", DataType);
-					#endregion
-					#region case "varchar":
 					case "varchar":
 						if (CharacterMaximumLength > 0)
 							return String.Format("{0}({1})", DataType, CharacterMaximumLength);
