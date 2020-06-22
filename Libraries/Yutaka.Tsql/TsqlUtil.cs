@@ -121,7 +121,7 @@ namespace Yutaka.Data
 
 		#region Public Methods
 		/// <summary>
-		/// WIP: DO NOT use yet! Gets Columns information from INFORMATION_SCHEMA.
+		/// Gets Columns information from INFORMATION_SCHEMA and sys.columns.
 		/// </summary>
 		/// <param name="connectionString">The connection used to open the SQL Server database.</param>
 		/// <param name="database">The database to query.</param>
@@ -175,8 +175,6 @@ namespace Yutaka.Data
 				else
 					where = String.Format("{1}{2}   AND c.[TABLE_SCHEMA] = '{0}'", schema, where, Environment.NewLine);
 			}
-
-			Console.Write("\n{0}{1}\n", select, where);
 
 			try {
 				using (var conn = new SqlConnection(connectionString)) {
