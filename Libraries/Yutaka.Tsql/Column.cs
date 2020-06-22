@@ -15,7 +15,6 @@ namespace Yutaka.Data
 		public bool IsIdentity;
 		public bool IsComputed;
 		public string DataType;
-		public string DataTypeFull;
 		public int CharacterMaximumLength;
 		public int CharacterOctetLength;
 		public int NumericPrecision;
@@ -31,6 +30,37 @@ namespace Yutaka.Data
 		public string DomainCatalog;
 		public string DomainSchema;
 		public string DomainName;
+
+		public string DataTypeFull
+		{
+			get {
+				switch (DataType) {
+					#region case "decimal":
+					case "decimal":
+						return String.Format("{0}({1},{2})", DataType, NumericPrecision, NumericScale);
+					#endregion
+					#region case "numeric":
+					case "numeric":
+						return String.Format("{0}({1},{2})", DataType, NumericPrecision, NumericScale);
+					#endregion
+					#region case "nvarchar":
+					case "nvarchar":
+						if (CharacterMaximumLength > 0)
+							return String.Format("{0}({1})", DataType, CharacterMaximumLength);
+						return String.Format("{0}(MAX)", DataType);
+					#endregion
+					#region case "varchar":
+					case "varchar":
+						if (CharacterMaximumLength > 0)
+							return String.Format("{0}({1})", DataType, CharacterMaximumLength);
+						return String.Format("{0}(MAX)", DataType);
+					#endregion
+					default:
+						return DataType;
+				}
+			}
+		}
+
 		#endregion Fields
 
 		#region Public Methods
