@@ -5,8 +5,6 @@ namespace Yutaka.Data
 	public class Column
 	{
 		#region Fields
-		public string DatabaseName;
-		public string SchemaName;
 		public string TableCatalog;
 		public string TableSchema;
 		public string TableName;
@@ -39,8 +37,6 @@ namespace Yutaka.Data
 		public void DumpToConsole()
 		{
 			Console.Write("\n");
-			Console.Write("\n          DatabaseName: {0}", DatabaseName);
-			Console.Write("\n            SchemaName: {0}", SchemaName);
 			Console.Write("\n          TableCatalog: {0}", TableCatalog);
 			Console.Write("\n           TableSchema: {0}", TableSchema);
 			Console.Write("\n             TableName: {0}", TableName);
