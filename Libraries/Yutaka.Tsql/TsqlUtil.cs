@@ -388,24 +388,42 @@ namespace Yutaka.Data
 			if (columns == null || columns.Count < 1)
 				return script.ToString();
 
+			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
+			var result = new StringBuilder();
+			var curSchema = "";
+			var curTable = "";
 			var parametersClause = "";
 			var insertClause = "";
 			var valuesClause = "";
 			var schema = "";
 			var table = "";
-			var isFirstCol = true;
 
 			foreach (var col in columns) {
-				if (isFirstCol) {
-					schema = col.TableSchema;
-					table = col.TableName;
+				schema = col.TableSchema;
+				table = col.TableName;
+
+				// its a new table //
+				if (!table.Equals(curTable) || !schema.Equals(curSchema)) {
+					// if null or whitespace, its the first iteration, so NOT will catch all other times its a new table //
+					if (!String.IsNullOrWhiteSpace(curTable) || !String.IsNullOrWhiteSpace(curSchema)) {
+						script = script.Replace("_PARAMETERS_", parametersClause);
+						script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
+						result.Append(script);
+					}
+
+					script = new StringBuilder(ScriptCreateProcedureTemplate());
+					curSchema = schema;
+					curTable = table;
+					parametersClause = "";
+					insertClause = "";
+					valuesClause = "";
+
 					script = script.Replace("_SCHEMA_", schema);
 					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Insert", table));
-					isFirstCol = false;
 				}
 
-				if (col.ColumnName.Equals("Ident"))
-					continue; // skip identity columns
+				if (col.IsIdentity || col.IsComputed)
+					continue; // skip identity & computed columns
 
 				if (String.IsNullOrWhiteSpace(parametersClause))
 					parametersClause = String.Format("{0}\t @{1} {2} = NULL", parametersClause, col.ColumnName, col.DataTypeFull);
@@ -429,7 +447,8 @@ namespace Yutaka.Data
 
 			script = script.Replace("_PARAMETERS_", parametersClause);
 			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
-			return script.ToString();
+			result.Append(script);
+			return result.ToString();
 		}
 
 		/// <summary>
