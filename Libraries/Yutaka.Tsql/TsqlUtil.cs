@@ -296,6 +296,9 @@ namespace Yutaka.Data
 						if (String.IsNullOrWhiteSpace(setClause))
 							result.Append(String.Format("-- Table [{0}].[{1}] doesn't contain any 'Delete' columns --{2}{2}{2}", curSchema, curTable, Environment.NewLine));
 						else {
+							if (String.IsNullOrWhiteSpace(whereClause))
+								whereClause = "\t WHERE [Asdfg] = @Asdfg";
+
 							script = script.Replace("_PARAMETERS_", parametersClause);
 							script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
 							result.Append(script);
@@ -368,6 +371,9 @@ namespace Yutaka.Data
 			if (String.IsNullOrWhiteSpace(setClause))
 				result.Append(String.Format("-- Table [{0}].[{1}] doesn't contain any 'Delete' columns --{2}{2}{2}", schema, table, Environment.NewLine));
 			else {
+				if (String.IsNullOrWhiteSpace(whereClause))
+					whereClause = "\t WHERE [Asdfg] = @Asdfg";
+
 				script = script.Replace("_PARAMETERS_", parametersClause);
 				script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
 				result.Append(script);
