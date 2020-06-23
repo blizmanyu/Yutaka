@@ -19,6 +19,7 @@ namespace CodeGenerator
 		// Config/Settings //
 		const string PROGRAM_NAME = "CodeGenerator";
 		private static readonly bool consoleOut = true; // default = false //
+		private static bool dumpToConsole = false; // default = false //
 
 		#region Fields
 		#region Static Externs
@@ -55,10 +56,11 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
+			dumpToConsole = false;
 			ConnectionString = "asdfg";
 			Database = "asdfg";
-			Schema = "dbo";
-			Table = "asdfg";
+			Schema = "";
+			Table = "";
 
 			var dest = Path.Combine(DestFolder, String.Format("{0}.{1}.{2} {3}.", Database, Schema, Table, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
@@ -72,7 +74,7 @@ namespace CodeGenerator
 		{
 			Columns = _tsqlUtil.GetColumnsInformation(ConnectionString, Database, Schema, Table).ToList();
 
-			if (consoleOut) {
+			if (dumpToConsole) {
 				foreach (var col in Columns)
 					col.DumpToConsole();
 			}
