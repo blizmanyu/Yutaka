@@ -464,6 +464,10 @@ namespace Yutaka.Data
 			if (columns == null || columns.Count < 1)
 				return script.ToString();
 
+			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
+			var result = new StringBuilder();
+			var curSchema = "";
+			var curTable = "";
 			var parametersClause = "";
 			var updateClause = "";
 			var setClause = "";
@@ -471,16 +475,35 @@ namespace Yutaka.Data
 			var schema = "";
 			var table = "";
 			var findId = true;
-			var isFirstCol = true;
 
 			foreach (var col in columns) {
-				if (isFirstCol) {
-					schema = col.TableSchema;
-					table = col.TableName;
+				schema = col.TableSchema;
+				table = col.TableName;
+
+				// its a new table //
+				if (!table.Equals(curTable) || !schema.Equals(curSchema)) {
+					// if null or whitespace, its the first iteration, so NOT will catch all other times its a new table //
+					if (!String.IsNullOrWhiteSpace(curTable) || !String.IsNullOrWhiteSpace(curSchema)) {
+						if (String.IsNullOrWhiteSpace(whereClause))
+							whereClause = "\t WHERE [Asdfg] = @Asdfg";
+
+						script = script.Replace("_PARAMETERS_", parametersClause);
+						script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
+						result.Append(script);
+					}
+
+					script = new StringBuilder(ScriptCreateProcedureTemplate());
+					curSchema = schema;
+					curTable = table;
+					parametersClause = "";
+					updateClause = "";
+					setClause = "";
+					whereClause = "";
+					findId = true;
+
 					script = script.Replace("_SCHEMA_", schema);
 					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Update", table));
 					updateClause = String.Format("\tUPDATE [{0}].[{1}]", schema, table);
-					isFirstCol = false;
 				}
 
 				if (col.ColumnName.StartsWith("Create") || col.ColumnName.StartsWith("InsertedOn"))
@@ -499,6 +522,9 @@ namespace Yutaka.Data
 					}
 
 					else {
+						if (col.IsIdentity || col.IsComputed)
+							continue; // skip identity & computed columns
+
 						if (String.IsNullOrWhiteSpace(setClause))
 							setClause = String.Format("\t   SET [{0}] = (CASE WHEN @{0} is null THEN [{0}] ELSE @{0} END)", col.ColumnName);
 						else
@@ -507,9 +533,13 @@ namespace Yutaka.Data
 				}
 			}
 
+			if (String.IsNullOrWhiteSpace(whereClause))
+				whereClause = "\t WHERE [Asdfg] = @Asdfg";
+
 			script = script.Replace("_PARAMETERS_", parametersClause);
 			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
-			return script.ToString();
+			result.Append(script);
+			return result.ToString();
 		}
 
 		/// <summary>
