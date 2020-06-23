@@ -56,13 +56,14 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
-			dumpToConsole = false;
 			ConnectionString = "asdfg";
 			Database = "asdfg";
-			Schema = "";
-			Table = "";
+			Schema = null;
+			Table = null;
 
-			var dest = Path.Combine(DestFolder, String.Format("{0}.{1}.{2} {3}.", Database, Schema, Table, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			dumpToConsole = false;
+			var filename = String.Format("{0}{1}{2}", Database, Schema == null ? "" : String.Format(".{0}", Schema), Table == null ? "" : String.Format(".{0}", Table));
+			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", filename, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
