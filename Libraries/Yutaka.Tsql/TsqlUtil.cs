@@ -256,7 +256,6 @@ namespace Yutaka.Data
 			sb.AppendLine("-- STORED PROCEDURES");
 			sb.AppendLine("-- =============================================");
 			sb.Append(ScriptCreateProcedureDelete(columns));
-			sb.Append(ScriptCreateProcedureRestore(columns));
 			sb.Append(ScriptCreateProcedureInsert(columns));
 			sb.Append(ScriptCreateProcedureUpdate(columns));
 			return sb.ToString();
@@ -430,94 +429,6 @@ namespace Yutaka.Data
 
 			script = script.Replace("_PARAMETERS_", parametersClause);
 			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
-			return script.ToString();
-		}
-
-		/// <summary>
-		/// Generates script text to create a SQL Stored Procedure used to Restore.
-		/// </summary>
-		/// <param name="columns">The list of all columns from a table.</param>
-		/// <returns></returns>
-		public string ScriptCreateProcedureRestore(IList<Column> columns)
-		{
-			var script = new StringBuilder(ScriptCreateProcedureTemplate());
-
-			if (columns == null || columns.Count < 1)
-				return script.ToString();
-
-			var parametersClause = "";
-			var updateClause = "";
-			var setClause = "";
-			var whereClause = "";
-			var schema = "";
-			var table = "";
-			var findId = true;
-			var isFirstCol = true;
-
-			foreach (var col in columns) {
-				if (isFirstCol) {
-					schema = col.TableSchema;
-					table = col.TableName;
-					script = script.Replace("_SCHEMA_", schema);
-					script = script.Replace("_PROCEDURE_NAME_", String.Format("{0}Restore", table));
-					updateClause = String.Format("\tUPDATE [{0}].[{1}]", schema, table);
-					isFirstCol = false;
-				}
-
-				if (col.ColumnName.Equals("Id")) {
-					if (findId) {
-						if (String.IsNullOrWhiteSpace(parametersClause))
-							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
-						else
-							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
-
-						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
-						findId = false;
-					}
-				}
-
-				else if (col.ColumnName.Equals("Ident")) {
-					if (findId) {
-						if (String.IsNullOrWhiteSpace(parametersClause))
-							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
-						else
-							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
-
-						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
-						findId = false;
-					}
-				}
-
-				else if (col.ColumnName.Equals("UniqueId")) {
-					if (findId) {
-						if (String.IsNullOrWhiteSpace(parametersClause))
-							parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
-						else
-							parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
-
-						whereClause = String.Format("\t WHERE [{0}] = @{0}", col.ColumnName);
-						findId = false;
-					}
-				}
-
-				else if (col.ColumnName.Equals("Active") || col.ColumnName.Equals("IsActive") || col.ColumnName.Equals("Published") || col.ColumnName.StartsWith("Delete")) {
-					if (String.IsNullOrWhiteSpace(parametersClause))
-						parametersClause = String.Format("\t @{0} {1} = NULL", col.ColumnName, col.DataTypeFull);
-					else
-						parametersClause = String.Format("{2}{3}\t,@{0} {1} = NULL", col.ColumnName, col.DataTypeFull, parametersClause, Environment.NewLine);
-
-					if (String.IsNullOrWhiteSpace(setClause))
-						setClause = String.Format("\t   SET [{0}] = @{0}", col.ColumnName);
-					else
-						setClause = String.Format("{1}{2}\t\t  ,[{0}] = @{0}", col.ColumnName, setClause, Environment.NewLine);
-				}
-			}
-
-			if (String.IsNullOrWhiteSpace(setClause))
-				return String.Format("-- This table doesn't contain any 'Delete' columns --{0}{0}{0}", Environment.NewLine);
-
-			script = script.Replace("_PARAMETERS_", parametersClause);
-			script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}{1}{2}{1}{3}", updateClause, Environment.NewLine, setClause, whereClause));
 			return script.ToString();
 		}
 
