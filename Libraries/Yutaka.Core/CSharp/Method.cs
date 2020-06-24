@@ -49,5 +49,27 @@ namespace Yutaka.Core.CSharp
 			else
 				Body = body.Trim();
 		}
+
+		public override string ToString()
+		{
+			var sb = new StringBuilder();
+			sb.Append(Tab).Append(AccessLevel).Append(Space);
+
+			if (!String.IsNullOrWhiteSpace(Modifier))
+				sb.Append(Modifier).Append(Space);
+
+			sb.Append(ReturnType).Append(Space);
+			sb.Append(Name).Append("(");
+
+			if (Parameters != null && Parameters.Length > 0)
+				sb.Append(String.Join(", ", Parameters));
+
+			sb.AppendLine(")");
+			sb.Append(Tab).AppendLine("{");
+			sb.Append(Tab).Append(Tab).AppendLine(Body);
+			sb.Append(Tab).AppendLine("}");
+
+			return sb.ToString();
+		}
 	}
 }
