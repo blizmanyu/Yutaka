@@ -65,9 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GoogleGmailService.cs" />
     <Compile Include="Google\Calendar\EventSqlTable.cs" />
     <Compile Include="Google\Calendar\GoogleCalendarService.cs" />
+    <Compile Include="Google\Gmail\GoogleGmailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
