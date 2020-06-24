@@ -17,7 +17,7 @@ namespace Yutaka.Core.CSharp
 		public string[] Parameters;
 		public string Body;
 
-		public Method(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string[] parameters = null)
+		public Method(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string[] parameters = null, string body = null)
 		{
 			if (String.IsNullOrWhiteSpace(accessLevel))
 				AccessLevel = "public";
@@ -35,7 +35,7 @@ namespace Yutaka.Core.CSharp
 				ReturnType = returnType.Trim().ToLower();
 
 			if (String.IsNullOrWhiteSpace(name))
-				throw new ArgumentNullException("name", "<name> is required.");
+				Name = null;
 			else
 				Name = name.Trim();
 
@@ -43,6 +43,11 @@ namespace Yutaka.Core.CSharp
 				Parameters = null;
 			else
 				Parameters = parameters;
+
+			if (String.IsNullOrWhiteSpace(body))
+				Body = null;
+			else
+				Body = body.Trim();
 		}
 	}
 }
