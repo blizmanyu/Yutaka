@@ -69,6 +69,7 @@
     <Compile Include="Google\Calendar\GoogleCalendarService.cs" />
     <Compile Include="Google\Gmail\GoogleGmailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Code\Scripter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Google\Calendar\Event.json" />
