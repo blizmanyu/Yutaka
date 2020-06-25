@@ -11,10 +11,10 @@ namespace Yutaka.Core.CSharp
 		public string Modifier;
 		public string ReturnType;
 		public string Name;
-		public string[] Parameters;
+		public string Parameters;
 		public string Body;
 
-		public Method(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string[] parameters = null, string body = null)
+		public Method(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string parameters = null, string body = null)
 		{
 			if (String.IsNullOrWhiteSpace(accessLevel))
 				AccessLevel = "public";
@@ -36,10 +36,10 @@ namespace Yutaka.Core.CSharp
 			else
 				Name = name.Trim();
 
-			if (parameters == null || parameters.Length == 0)
+			if (String.IsNullOrWhiteSpace(parameters))
 				Parameters = null;
 			else
-				Parameters = parameters;
+				Parameters = parameters.Trim();
 
 			if (String.IsNullOrWhiteSpace(body))
 				Body = null;
@@ -57,11 +57,7 @@ namespace Yutaka.Core.CSharp
 
 			sb.Append(ReturnType).Append(Space);
 			sb.Append(Name).Append("(");
-
-			if (Parameters != null && Parameters.Length > 0)
-				sb.Append(String.Join(", ", Parameters));
-
-			sb.AppendLine(")");
+			sb.Append(Parameters).AppendLine(")");
 			sb.Append(Tab).AppendLine("{");
 			sb.Append(Tab).Append(Tab).AppendLine(Body);
 			sb.Append(Tab).AppendLine("}");
