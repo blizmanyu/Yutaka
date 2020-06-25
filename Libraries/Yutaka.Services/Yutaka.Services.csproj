@@ -63,6 +63,12 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Yutaka.Core">
+      <HintPath>..\Yutaka.Core\bin\Release\Yutaka.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Yutaka.Tsql">
+      <HintPath>..\Yutaka.Tsql\bin\Release\Yutaka.Tsql.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Google\Calendar\EventSqlTable.cs" />
