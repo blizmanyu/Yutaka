@@ -27,6 +27,9 @@ namespace Yutaka.Code
 			#endregion
 
 			Method method = null;
+			var checkInputBlock = new StringBuilder();
+			var tryBlock = new StringBuilder();
+			var catchBlock = new StringBuilder();
 			var result = new StringBuilder();
 			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
 			var curSchema = "";
@@ -46,6 +49,7 @@ namespace Yutaka.Code
 					if (!String.IsNullOrWhiteSpace(curTable) || !String.IsNullOrWhiteSpace(curSchema)) {
 						//script = script.Replace("_PARAMETERS_", parametersClause);
 						//script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
+						method.Body = String.Format("{0}{3}{1}{3}{2}", checkInputBlock, tryBlock, catchBlock, Environment.NewLine);
 						result.Append(method);
 					}
 
@@ -60,6 +64,9 @@ namespace Yutaka.Code
 
 					curSchema = schema;
 					curTable = table;
+					body = new StringBuilder();
+					body.AppendLine(String.Format("\t\tif ({0} == null) {", alias));
+					body.AppendLine("\t\t\treturn;");
 				}
 
 				if (col.IsIdentity || col.IsComputed)
