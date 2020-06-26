@@ -54,6 +54,7 @@ namespace CodeGenerator
 			EndProgram();
 		}
 
+		#region Methods
 		private static void ScriptTables()
 		{
 			ConnectionString = "asdfg";
@@ -146,5 +147,6 @@ namespace CodeGenerator
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
+		#endregion Methods
 	}
 }
