@@ -50,8 +50,8 @@ namespace CodeGenerator
 		static void Main(string[] args)
 		{
 			StartProgram();
-			ScriptTables();
-			EndProgram();
+			try { ScriptTables(); }
+			finally { EndProgram(); }
 		}
 
 		#region Methods
