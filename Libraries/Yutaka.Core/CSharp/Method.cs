@@ -5,6 +5,7 @@ namespace Yutaka.Core.CSharp
 {
 	public class Method
 	{
+		#region Fields
 		private static readonly string Space = " ";
 		private static readonly string Tab = "\t";
 		public string AccessLevel;
@@ -13,6 +14,7 @@ namespace Yutaka.Core.CSharp
 		public string Name;
 		public string Parameters;
 		public string Body;
+		#endregion Fields
 
 		public Method(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string parameters = null, string body = null)
 		{
