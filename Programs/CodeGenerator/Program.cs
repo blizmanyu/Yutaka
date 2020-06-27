@@ -9,8 +9,10 @@ using System.Text;
 //using Rcw.Sql.Hulk.IntranetData.Data;
 using Yutaka.Data;
 using Yutaka.IO;
+using Yutaka.Code;
 using Yutaka.Text;
 using Yutaka.VineSpring.Data20200207;
+using Yutaka.Core.CSharp;
 
 namespace CodeGenerator
 {
@@ -44,17 +46,39 @@ namespace CodeGenerator
 		private static string Table = "";
 		private static List<Column> Columns = new List<Column>();
 		private static FileUtil _fileUtil = new FileUtil();
+		private static Scripter _scripter = new Scripter();
 		private static TsqlUtil _tsqlUtil;
 		#endregion
 
 		static void Main(string[] args)
 		{
 			StartProgram();
-			try { ScriptTables(); }
+			try { Test_Region_ToString(); }
 			finally { EndProgram(); }
 		}
 
 		#region Methods
+		#region Tests
+		private static void Test_Region_ToString()
+		{
+			var dest = Path.Combine(DestFolder, String.Format("Test_Region_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			_fileUtil.Write(new Region("Test"), dest);
+		}
+		#endregion Tests
+
+		private static void ScriptCSharp()
+		{
+			dumpToConsole = false;
+
+			ConnectionString = "asdfg";
+			Database = "asdfg";
+
+			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
+			GetColumnsInformation();
+			_fileUtil.Write(_scripter.ScriptTryInsertMethod(Columns), String.Format("{0}cs", dest));
+		}
+
 		private static void ScriptTables()
 		{
 			ConnectionString = "asdfg";
