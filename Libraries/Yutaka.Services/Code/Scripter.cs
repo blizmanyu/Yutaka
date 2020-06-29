@@ -11,9 +11,9 @@ namespace Yutaka.Code
 	public class Scripter
 	{
 		/// <summary>
-		/// WIP: Do NOT use yet!
+		/// Creates script for a TryInsert method.
 		/// </summary>
-		/// <param name="columns"></param>
+		/// <param name="columns">The columns information for each table.</param>
 		/// <returns></returns>
 		public string ScriptTryInsertMethod(IList<Column> columns)
 		{
@@ -36,98 +36,99 @@ namespace Yutaka.Code
 			var tryBlock = new StringBuilder();
 			var catchBlock = new StringBuilder();
 			Method method = null;
-			var curSchema = "";
-			var curTable = "";
+			var database = "";
 			var schema = "";
 			var table = "";
 			var alias = "";
 
 			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
 
-			foreach (var tables in columns.GroupBy(x => new { x.TableSchema, x.TableName })) {
+			foreach (var tables in columns.GroupBy(x => new { x.TableCatalog, x.TableSchema, x.TableName })) {
+				database = tables.Key.TableCatalog;
 				schema = tables.Key.TableSchema;
 				table = tables.Key.TableName;
 				alias = table.Replace("_", "").Substring(0, 2).ToLower();
+
+				#region Check Input Block
+				checkInputBlock = new StringBuilder();
+				checkInputBlock.AppendLine("\t\t\t#region Check Input");
+				checkInputBlock.AppendLine("\t\t\tresponse = \"\";");
+				checkInputBlock.AppendLine();
+				checkInputBlock.AppendLine(String.Format("\t\t\tif ({0} == null)", alias));
+				checkInputBlock.AppendLine(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}<{0}> is required.{{1}}\", response, Environment.NewLine);", alias));
+				checkInputBlock.AppendLine();
+				checkInputBlock.AppendLine("\t\t\tif (!String.IsNullOrWhiteSpace(response)) {");
+				checkInputBlock.AppendLine(String.Format("\t\t\t\tresponse = String.Format(\"{{0}}Exception thrown in {0}Service.TryInsert{1}({1} {2}, out string response).{{1}}\", response, Environment.NewLine); ", database, table, alias));
+				checkInputBlock.AppendLine("\t\t\t\treturn false;");
+				checkInputBlock.AppendLine("\t\t\t}");
+				checkInputBlock.AppendLine("\t\t\t#endregion");
+				#endregion Check Input Block
+
+				#region Open Try Block
+				tryBlock = new StringBuilder();
+				tryBlock.AppendLine("\t\t\ttry {");
+				tryBlock.AppendLine(String.Format("\t\t\t\tvar storProc = \"[dbo].[{0}Insert]\";", table));
+				tryBlock.AppendLine("\t\t\t\tSqlParameter[] parameters = {");
+				#endregion Open Try Block
+
+				foreach (var col in tables) {
+					if (!col.IsIdentity && !col.IsComputed) {
+						tryBlock.Append(String.Format("\t\t\t\t\tnew SqlParameter(\"@{0}\", {1}.{0}", col.ColumnName, alias));
+
+						if (col.IsNullable) {
+							if (col.DataType.Equals("datetime"))
+								tryBlock.AppendLine(" ?? null),");
+							else if (col.DataType.Equals("int") || col.DataType.Equals("decimal") || col.DataType.Equals("numeric"))
+								tryBlock.AppendLine(" ?? -1),");
+							else
+								tryBlock.AppendLine(" ?? \"\"),");
+						}
+
+						else if (col.DataType.Equals("varchar") || col.DataType.Equals("nvarchar"))
+							tryBlock.AppendLine(" ?? \"\"),");
+						else
+							tryBlock.AppendLine("),");
+					}
+				}
+
+				#region Close Try Block
+				tryBlock.AppendLine("\t\t\t\t};");
+				tryBlock.AppendLine("\t\t\t\tExecuteStoredProcedure(storProc, parameters);");
+				tryBlock.AppendLine("\t\t\t}");
+				#endregion Close Try Block
+
+				#region Catch Block
+				catchBlock = new StringBuilder();
+				catchBlock.AppendLine("\t\t\tcatch (Exception ex) {");
+				catchBlock.AppendLine("\t\t\t\t#region Log");
+				catchBlock.AppendLine("\t\t\t\tif (ex.InnerException == null)");
+				catchBlock.AppendLine(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in {0}Service.TryInsert{1}({1} {2}, out string response).{{2}}{{1}}{{2}}{{2}}\", ex.Message, ex.ToString(), Environment.NewLine);", database, table, alias));
+				catchBlock.AppendLine("\t\t\t\telse");
+				catchBlock.AppendLine(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in INNER EXCEPTION of {0}Service.TryInsert{1}({1} {2}, out string response).{{2}}{{1}}{{2}}{{2}}\", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);", database, table, alias));
+				catchBlock.AppendLine("\t\t\t\t#endregion Log");
+				catchBlock.AppendLine();
+				catchBlock.AppendLine("\t\t\t\treturn false;");
+				catchBlock.AppendLine("\t\t\t}");
+				#endregion Catch Block
 
 				method = new Method {
 					AccessLevel = "public",
 					Body = "",
 					Modifier = null,
-					Name = table,
+					Name = String.Format("TryInsert{0}", table),
 					Parameters = String.Format("{0} {1}, out string response", table, alias),
 					ReturnType = "bool",
 				};
 
-				foreach (var col in tables) {
-					col.DumpToConsole();
-				}
+				if (!String.IsNullOrWhiteSpace(checkInputBlock.ToString()))
+					method.Body = String.Format("{0}{1}{2}", method.Body, checkInputBlock, Environment.NewLine);
+				if (!String.IsNullOrWhiteSpace(tryBlock.ToString()))
+					method.Body = String.Format("{0}{1}{2}", method.Body, tryBlock, Environment.NewLine);
+				if (!String.IsNullOrWhiteSpace(catchBlock.ToString()))
+					method.Body = String.Format("{0}{1}", method.Body, catchBlock);
 
 				finalScript.AppendLine(method.ToString());
 			}
-
-			return finalScript.ToString();
-
-
-
-			foreach (var col in columns) {
-				schema = col.TableSchema;
-				table = col.TableName;
-				alias = table.Replace("_", "").Substring(0, 2).ToLower();
-
-				// its a new table //
-				if (!table.Equals(curTable) || !schema.Equals(curSchema)) {
-					// if null or whitespace, its the first iteration, so NOT will catch all other times its a new table //
-					if (!String.IsNullOrWhiteSpace(curTable) || !String.IsNullOrWhiteSpace(curSchema)) {
-						//script = script.Replace("_PARAMETERS_", parametersClause);
-						//script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
-						method.Body = String.Format("{0}{3}{1}{3}{2}", checkInputBlock, tryBlock, catchBlock, Environment.NewLine);
-						finalScript.Append(method);
-					}
-
-					method = new Method {
-						AccessLevel = "public",
-						Body = "",
-						Modifier = "",
-						Name = String.Format("TryInsert{0}", table),
-						Parameters = String.Format("{0} {1}, out string response", table, alias),
-						ReturnType = "bool",
-					};
-
-					curSchema = schema;
-					curTable = table;
-					//body = new StringBuilder();
-					//body.AppendLine(String.Format("\t\tif ({0} == null) {", alias));
-					//body.AppendLine("\t\t\treturn;");
-				}
-
-				if (col.IsIdentity || col.IsComputed)
-					continue; // skip identity & computed columns
-
-				//if (String.IsNullOrWhiteSpace(parametersClause))
-				//	parametersClause = String.Format("{0}\t @{1} {2} = NULL", parametersClause, col.ColumnName, col.DataTypeFull);
-				//else
-				//	parametersClause = String.Format("{0}{3}\t,@{1} {2} = NULL", parametersClause, col.ColumnName, col.DataTypeFull, Environment.NewLine);
-
-				//if (String.IsNullOrWhiteSpace(insertClause)) {
-				//	insertClause = String.Format("\tINSERT INTO [{0}].[{1}]", schema, table);
-				//	insertClause = String.Format("{0}{1}\t\t\t   ([{2}]", insertClause, Environment.NewLine, col.ColumnName);
-				//}
-				//else
-				//	insertClause = String.Format("{0}{1}\t\t\t   ,[{2}]", insertClause, Environment.NewLine, col.ColumnName);
-
-				//if (String.IsNullOrWhiteSpace(valuesClause)) {
-				//	valuesClause = String.Format("\t\t VALUES");
-				//	valuesClause = String.Format("{0}{1}\t\t\t   (@{2}", valuesClause, Environment.NewLine, col.ColumnName);
-				//}
-				//else
-				//	valuesClause = String.Format("{0}{1}\t\t\t   ,@{2}", valuesClause, Environment.NewLine, col.ColumnName);
-			}
-
-			//script = script.Replace("_PARAMETERS_", parametersClause);
-			//script = script.Replace("_STATEMENT_CLAUSE_", String.Format("{0}){1}{2})", insertClause, Environment.NewLine, valuesClause));
-			finalScript.Append(method);
-
-
 
 			return finalScript.ToString();
 		}
