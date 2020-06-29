@@ -61,7 +61,7 @@ namespace Yutaka.Core.CSharp
 			sb.Append(Name).Append("(");
 			sb.Append(Parameters).AppendLine(")");
 			sb.Append(Tab).Append(Tab).AppendLine("{");
-			sb.Append(Tab).Append(Tab).Append(Tab).AppendLine(Body);
+			sb.Append(Body);
 			sb.Append(Tab).Append(Tab).AppendLine("}");
 
 			return sb.ToString();
