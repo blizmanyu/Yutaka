@@ -10,6 +10,47 @@ namespace Yutaka.Code
 	public class Scripter
 	{
 		/// <summary>
+		/// Separates all columns by table, then runs all Script methods on each. Wraps each table in a #region for organization.
+		/// </summary>
+		/// <param name="columns">The columns.</param>
+		/// <returns></returns>
+		public string ScriptAll(IList<Column> columns)
+		{
+			#region Input Check
+			var log = "";
+
+			if (columns == null)
+				log = String.Format("{0}<columns> is null.{1}", log, Environment.NewLine);
+			else if (columns.Count == 0)
+				log = String.Format("{0}<columns> is empty.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in Scripter.ScriptAll(IList<Column> columns).{1}{1}", log, Environment.NewLine);
+				return log;
+			}
+			#endregion
+
+			var finalScript = new StringBuilder();
+			var table = "";
+
+			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
+			var grouped = columns.GroupBy(x => new { x.TableCatalog, x.TableSchema, x.TableName }).ToList();
+			var last = grouped.Last();
+
+			foreach (var tables in grouped) {
+				table = tables.Key.TableName;
+				finalScript.AppendLine(String.Format("\t\t#region {0}", table));
+				finalScript.Append(ScriptTryInsertMethod(tables.ToList()));
+				finalScript.AppendLine(String.Format("\t\t#endregion {0}", table));
+
+				if (!last.Equals(tables))
+					finalScript.AppendLine();
+			}
+
+			return finalScript.ToString();
+		}
+
+		/// <summary>
 		/// Creates script for a TryInsert method.
 		/// </summary>
 		/// <param name="columns">The columns information for each table.</param>
