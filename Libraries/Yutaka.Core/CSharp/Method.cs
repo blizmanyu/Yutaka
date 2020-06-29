@@ -52,7 +52,7 @@ namespace Yutaka.Core.CSharp
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			sb.Append(Tab).Append(AccessLevel).Append(Space);
+			sb.Append(Tab).Append(Tab).Append(AccessLevel).Append(Space);
 
 			if (!String.IsNullOrWhiteSpace(Modifier))
 				sb.Append(Modifier).Append(Space);
@@ -60,9 +60,9 @@ namespace Yutaka.Core.CSharp
 			sb.Append(ReturnType).Append(Space);
 			sb.Append(Name).Append("(");
 			sb.Append(Parameters).AppendLine(")");
-			sb.Append(Tab).AppendLine("{");
-			sb.Append(Tab).Append(Tab).AppendLine(Body);
-			sb.Append(Tab).AppendLine("}");
+			sb.Append(Tab).Append(Tab).AppendLine("{");
+			sb.Append(Tab).Append(Tab).Append(Tab).AppendLine(Body);
+			sb.Append(Tab).Append(Tab).AppendLine("}");
 
 			return sb.ToString();
 		}
