@@ -75,7 +75,7 @@ namespace Yutaka.Code
 						tryBlock.Append(String.Format("\t\t\t\t\tnew SqlParameter(\"@{0}\", {1}.{0}", col.ColumnName, alias));
 
 						if (col.IsNullable) {
-							if (col.DataType.Equals("datetime"))
+							if (col.DataType.Equals("bit") || col.DataType.Equals("datetime"))
 								tryBlock.AppendLine(" ?? null),");
 							else if (col.DataType.Equals("int") || col.DataType.Equals("decimal") || col.DataType.Equals("numeric"))
 								tryBlock.AppendLine(" ?? -1),");
@@ -93,6 +93,7 @@ namespace Yutaka.Code
 				#region Close Try Block
 				tryBlock.AppendLine("\t\t\t\t};");
 				tryBlock.AppendLine("\t\t\t\tExecuteStoredProcedure(storProc, parameters);");
+				tryBlock.AppendLine("\t\t\t\treturn true;");
 				tryBlock.AppendLine("\t\t\t}");
 				#endregion Close Try Block
 
@@ -126,7 +127,7 @@ namespace Yutaka.Code
 				if (!String.IsNullOrWhiteSpace(catchBlock.ToString()))
 					method.Body = String.Format("{0}{1}", method.Body, catchBlock);
 
-				finalScript.AppendLine(method.ToString());
+				finalScript.Append(method.ToString());
 			}
 
 			return finalScript.ToString();
