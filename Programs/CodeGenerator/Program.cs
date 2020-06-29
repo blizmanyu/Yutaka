@@ -62,7 +62,8 @@ namespace CodeGenerator
 		private static void Test_Region_ToString()
 		{
 			var dest = Path.Combine(DestFolder, String.Format("Test_Region_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
-			_fileUtil.Write(new Region("Test"), dest);
+			var region = new Region("Test");
+			_fileUtil.Write(region, dest);
 		}
 		#endregion Tests
 
