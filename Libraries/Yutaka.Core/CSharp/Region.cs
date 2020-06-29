@@ -28,7 +28,7 @@ namespace Yutaka.Core.CSharp
 			else
 				sb.AppendLine(String.Format("\t\t#region {0}", Name));
 
-			if (Methods == null && Methods.Count < 1)
+			if (Methods == null || Methods.Count < 1)
 				sb.AppendLine("\t\t// No methods //");
 			else {
 				for (int i = 0; i < Methods.Count; i++) {
