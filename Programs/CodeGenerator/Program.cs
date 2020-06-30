@@ -53,7 +53,10 @@ namespace CodeGenerator
 		static void Main(string[] args)
 		{
 			StartProgram();
-			try { Test_Region_ToString(); }
+			try {
+				ScriptTables();
+				ScriptCSharp();
+			}
 			finally { EndProgram(); }
 		}
 
@@ -77,7 +80,7 @@ namespace CodeGenerator
 			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
-			_fileUtil.Write(_scripter.ScriptTryInsertMethod(Columns), String.Format("{0}cs", dest));
+			_fileUtil.Write(_scripter.ScriptAll(Columns), String.Format("{0}cs", dest));
 		}
 
 		private static void ScriptTables()
