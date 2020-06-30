@@ -120,7 +120,9 @@ namespace Yutaka.Code
 						tryBlock.Append(String.Format("\t\t\t\t\tnew SqlParameter(\"@{0}\", {1}.{0}", col.ColumnName, alias));
 
 						if (col.IsNullable) {
-							if (col.DataType.Equals("bit") || col.DataType.Equals("datetime"))
+							if (col.ColumnName.StartsWith("Delete"))
+								tryBlock.AppendLine(" ?? null),");
+							else if (col.DataType.Equals("bit") || col.DataType.Equals("datetime"))
 								tryBlock.AppendLine(" ?? null),");
 							else if (col.DataType.Equals("int") || col.DataType.Equals("decimal") || col.DataType.Equals("numeric"))
 								tryBlock.AppendLine(" ?? -1),");
