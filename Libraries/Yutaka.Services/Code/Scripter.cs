@@ -86,7 +86,7 @@ namespace Yutaka.Code
 			foreach (var tables in columns.GroupBy(x => new { x.TableCatalog, x.TableSchema, x.TableName })) {
 				database = tables.Key.TableCatalog;
 				schema = tables.Key.TableSchema;
-				table = tables.Key.TableName;
+				table = tables.Key.TableName.Replace(".", "_");
 				alias = table.Replace("_", "").Substring(0, 2).ToLower();
 
 				#region Check Input Block
