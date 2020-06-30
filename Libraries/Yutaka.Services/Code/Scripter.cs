@@ -89,6 +89,10 @@ namespace Yutaka.Code
 				table = tables.Key.TableName.Replace(".", "_");
 				alias = table.Replace("_", "").Substring(0, 2).ToLower();
 
+				// check for C# keywords //
+				if (alias.Equals("in"))
+					alias = table.Replace("_", "").Substring(0, 3).ToLower();
+
 				#region Check Input Block
 				checkInputBlock = new StringBuilder();
 				checkInputBlock.AppendLine("\t\t\t#region Check Input");
