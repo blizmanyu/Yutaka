@@ -3,6 +3,9 @@ using System.Text;
 
 namespace Yutaka.Core.CSharp
 {
+	/// <summary>
+	/// WIP: Do NOT use yet!
+	/// </summary>
 	public class Class
 	{
 		#region Fields
@@ -16,6 +19,9 @@ namespace Yutaka.Core.CSharp
 		public string Body;
 		#endregion Fields
 
+		/// <summary>
+		/// WIP: Do NOT use yet!
+		/// </summary>
 		public Class(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string parameters = null, string body = null)
 		{
 			if (String.IsNullOrWhiteSpace(accessLevel))
@@ -49,6 +55,9 @@ namespace Yutaka.Core.CSharp
 				Body = body.Trim();
 		}
 
+		/// <summary>
+		/// WIP: Do NOT use yet!
+		/// </summary>
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
