@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CSharp\Class.cs" />
+    <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Region.cs" />
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="PhoneUtil.cs" />
