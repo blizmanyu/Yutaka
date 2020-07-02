@@ -54,6 +54,7 @@ namespace CodeGenerator
 		{
 			StartProgram();
 			try {
+				//Test_Field_ToString();
 				ScriptTables();
 				ScriptCSharp();
 			}
@@ -62,6 +63,23 @@ namespace CodeGenerator
 
 		#region Methods
 		#region Tests
+		private static void Test_Field_ToString()
+		{
+			var dest = Path.Combine(DestFolder, String.Format("Test_Field_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var field = new Field {
+				AccessLevel = "public",
+				DisplayName = "TestDisplayName",
+				Modifier = null,
+				Name = "TestName",
+				Type = "string",
+				UIHint = "DecimalNullable",
+				IsAutoImplemented = false,
+				Getter = "return null;",
+				Setter = "TestName = value;",
+			};
+			_fileUtil.Write(field, dest);
+		}
+
 		private static void Test_Region_ToString()
 		{
 			var dest = Path.Combine(DestFolder, String.Format("Test_Region_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
