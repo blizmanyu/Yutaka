@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Yutaka.Core.CSharp
@@ -9,50 +10,22 @@ namespace Yutaka.Core.CSharp
 	public class Class
 	{
 		#region Fields
-		private static readonly string Space = " ";
-		private static readonly string Tab = "\t";
+		public List<Field> Fields;
+		public List<Method> Methods;
+		public List<string> Usings;
 		public string AccessLevel;
+		public string BaseClass;
 		public string Modifier;
-		public string ReturnType;
 		public string Name;
-		public string Parameters;
-		public string Body;
+		public string Namespace;
 		#endregion Fields
 
 		/// <summary>
 		/// WIP: Do NOT use yet!
 		/// </summary>
-		public Class(string accessLevel = null, string modifier = null, string returnType = null, string name = null, string parameters = null, string body = null)
+		public Class()
 		{
-			if (String.IsNullOrWhiteSpace(accessLevel))
-				AccessLevel = "public";
-			else
-				AccessLevel = accessLevel.Trim().ToLower();
 
-			if (String.IsNullOrWhiteSpace(modifier))
-				Modifier = null;
-			else
-				Modifier = modifier.Trim().ToLower();
-
-			if (String.IsNullOrWhiteSpace(returnType))
-				ReturnType = "void";
-			else
-				ReturnType = returnType.Trim().ToLower();
-
-			if (String.IsNullOrWhiteSpace(name))
-				Name = null;
-			else
-				Name = name.Trim();
-
-			if (String.IsNullOrWhiteSpace(parameters))
-				Parameters = null;
-			else
-				Parameters = parameters.Trim();
-
-			if (String.IsNullOrWhiteSpace(body))
-				Body = null;
-			else
-				Body = body.Trim();
 		}
 
 		/// <summary>
@@ -61,17 +34,45 @@ namespace Yutaka.Core.CSharp
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
-			sb.Append(Tab).Append(Tab).Append(AccessLevel).Append(Space);
 
+			#region Usings
+			if (Usings != null && Usings.Count > 0) {
+				foreach (var u in Usings)
+					sb.AppendLine(String.Format("using {0};", u));
+
+				sb.AppendLine();
+			}
+			#endregion Usings
+
+			#region Namespace
+			if (!String.IsNullOrWhiteSpace(Namespace)) {
+				sb.AppendLine(String.Format("namespace {0}", Namespace));
+				sb.AppendLine("{");
+				sb.Append("\t");
+			}
+
+			#region Class
+			if (!String.IsNullOrWhiteSpace(AccessLevel))
+				sb.Append(String.Format("{0} ", AccessLevel));
 			if (!String.IsNullOrWhiteSpace(Modifier))
-				sb.Append(Modifier).Append(Space);
+				sb.Append(String.Format("{0} ", Modifier));
 
-			sb.Append(ReturnType).Append(Space);
-			sb.Append(Name).Append("(");
-			sb.Append(Parameters).AppendLine(")");
-			sb.Append(Tab).Append(Tab).AppendLine("{");
-			sb.Append(Body);
-			sb.Append(Tab).Append(Tab).AppendLine("}");
+			sb.Append(String.Format("class {0}", Name));
+
+			if (!String.IsNullOrWhiteSpace(BaseClass))
+				sb.Append(String.Format(" : {0}", BaseClass));
+
+			sb.AppendLine();
+			sb.AppendLine("{");
+			#endregion Class
+
+
+
+
+
+			if (!String.IsNullOrWhiteSpace(Namespace))
+				sb.AppendLine("}");
+			#endregion Namespace
 
 			return sb.ToString();
 		}
