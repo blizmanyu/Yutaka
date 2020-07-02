@@ -286,6 +286,8 @@ namespace Yutaka.Net
 			return list;
 		}
 
+		#region Deprecated
+		[Obsolete("Deprecated Jul 2, 2020. Use GmailSmtpClient.Send() instead.", true)]
 		public Result Send(MailMessage message, string smtpHost, int smtpPort, string username, string password, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false)
 		{
 			var result = new Result() {
@@ -313,6 +315,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
+		[Obsolete("Deprecated Jul 2, 2020. Use GmailSmtpClient.Send() instead.", true)]
 		public Result Send(SmtpClient client, MailMessage message)
 		{
 			var result = new Result() {
@@ -333,6 +336,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
+		[Obsolete("Deprecated Jul 2, 2020. Use GmailSmtpClient.Send() instead.", true)]
 		public Result Send(SmtpClient client, string from, string to, string subject, string body, AttachmentCollection attachments=null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
 		{
 			var result = new Result() {
@@ -374,6 +378,7 @@ namespace Yutaka.Net
 			return result;
 		}
 
+		[Obsolete("Deprecated Jul 2, 2020. Use GmailSmtpClient.Send() instead.", true)]
 		public Result Send(string smtpHost, int smtpPort, string username, string password, string from, string to, string subject, string body, SmtpDeliveryMethod smtpDeliveryMethod = SmtpDeliveryMethod.Network, bool enableSsl = true, bool useDefaultCredentials = false, AttachmentCollection attachments = null, MailAddressCollection bcc = null, MailAddressCollection cc = null, bool isBodyHtml = true)
 		{
 			var result = new Result() {
@@ -421,6 +426,7 @@ namespace Yutaka.Net
 
 			return result;
 		}
+		#endregion Deprecated
 
 		public struct Result
 		{
