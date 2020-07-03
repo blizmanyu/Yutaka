@@ -45,6 +45,7 @@
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Region.cs" />
     <Compile Include="CSharp\Method.cs" />
+    <Compile Include="Email\Email.cs" />
     <Compile Include="PhoneUtil.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
