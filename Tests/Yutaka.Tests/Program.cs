@@ -171,7 +171,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			TestTrim();
+			Test_MailAddress_ToString();
 			EndProgram();
 		}
 
@@ -430,6 +430,59 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion GmailSmtpClient Tests
+
+		#region MailAddress Tests
+		// Modified: Jul 2, 2020 // Created: Jul 2, 2020 //
+		private static void Test_MailAddress_ToString()
+		{
+			string[] tests =  {
+				null,
+				"",
+				" ",
+				"asdfg",
+				"undisclosed recipients",
+				"test@server.com",
+				"Tester <test@server.com>",
+			};
+
+			MailAddress email;
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+
+				try {
+					email = new MailAddress(test);
+					Console.Write("\n    Address: {0}", email.Address);
+					Console.Write("\nDisplayName: {0}", email.DisplayName);
+					Console.Write("\n       Host: {0}", email.Host);
+					Console.Write("\n       User: {0}", email.User);
+					Console.Write("\n ToString(): {0}", email);
+				}
+
+				catch {
+					Console.Write("\n   error");
+				}
+
+				Console.Write("\n");
+			}
+		}
+
+		private static void Test_MailAddress()
+		{
+			var tests = new string[] {
+				"undisclosed recipients",
+			};
+
+			MailAddress address;
+
+			for (int i = 0; i < tests.Length; i++) {
+				address = new MailAddress(tests[i]);
+				Console.Write("\n");
+				Console.Write("\nTest #{0}: {1}", i + 1, tests[i]);
+				Console.Write("\n=> {0}", address.Address);
+			}
+		}
+		#endregion MailAddress Tests
 
 		#region Path Tests
 		// Created Oct 22, 2019 // Modified Oct 22, 2019 //
@@ -1559,24 +1612,6 @@ namespace Yutaka.Tests
 			}
 		}
 		#endregion Test FileUtilStatic.FixCreationTime
-
-		#region Test MailAddress
-		private static void Test_MailAddress()
-		{
-			var tests = new string[] {
-				"undisclosed recipients",
-			};
-
-			MailAddress address;
-
-			for (int i = 0; i < tests.Length; i++) {
-				address = new MailAddress(tests[i]);
-				Console.Write("\n");
-				Console.Write("\nTest #{0}: {1}", i + 1, tests[i]);
-				Console.Write("\n=> {0}", address.Address);
-			}
-		}
-		#endregion Test MailAddress
 
 		#region Test FileUtilStatic.FixCreationTime
 		//private static void Test_FileUtil_FixCreationTime()
