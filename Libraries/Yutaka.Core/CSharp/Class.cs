@@ -11,7 +11,7 @@ namespace Yutaka.Core.CSharp
 	public class Class
 	{
 		#region Fields
-		private static string CurrentIndentation = "";
+		protected static string CurrentIndentation = "";
 		public List<Field> Fields;
 		public List<Method> Methods;
 		public List<string> Usings;
