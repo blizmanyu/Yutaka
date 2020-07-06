@@ -40,6 +40,11 @@ namespace Yutaka.Core.CSharp
 			else
 				CurrentIndentation = CurrentIndentation.Substring(0, CurrentIndentation.Length - 2);
 		}
+
+		protected void IncreaseIndent()
+		{
+			CurrentIndentation = String.Format("{0}\t", CurrentIndentation);
+		}
 		#endregion Non-Public Methods
 
 		/// <summary>
