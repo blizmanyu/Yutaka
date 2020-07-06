@@ -32,6 +32,16 @@ namespace Yutaka.Core.CSharp
 			Usings = new List<string>();
 		}
 
+		#region Non-Public Methods
+		protected void DecreaseIndent()
+		{
+			if (String.IsNullOrWhiteSpace(CurrentIndentation))
+				CurrentIndentation = "";
+			else
+				CurrentIndentation = CurrentIndentation.Substring(0, CurrentIndentation.Length - 2);
+		}
+		#endregion Non-Public Methods
+
 		/// <summary>
 		/// WIP: Do NOT use yet!
 		/// </summary>
