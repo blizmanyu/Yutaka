@@ -47,6 +47,7 @@ namespace Yutaka.Core.CSharp
 		}
 		#endregion Non-Public Methods
 
+		#region Public Methods
 		/// <summary>
 		/// WIP: Do NOT use yet!
 		/// </summary>
@@ -95,5 +96,6 @@ namespace Yutaka.Core.CSharp
 
 			return sb.ToString();
 		}
+		#endregion Public Methods
 	}
 }
