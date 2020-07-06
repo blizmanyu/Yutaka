@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Yutaka.Core.CSharp
@@ -10,6 +11,7 @@ namespace Yutaka.Core.CSharp
 	public class Class
 	{
 		#region Fields
+		private static string CurrentIndentation = "";
 		public List<Field> Fields;
 		public List<Method> Methods;
 		public List<string> Usings;
