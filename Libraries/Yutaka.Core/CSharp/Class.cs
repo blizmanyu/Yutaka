@@ -25,7 +25,9 @@ namespace Yutaka.Core.CSharp
 		/// </summary>
 		public Class()
 		{
-
+			Fields = new List<Field>();
+			Methods = new List<Method>();
+			Usings = new List<string>();
 		}
 
 		/// <summary>
