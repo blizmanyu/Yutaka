@@ -54,15 +54,34 @@ namespace CodeGenerator
 		{
 			StartProgram();
 			try {
-				//Test_Field_ToString();
-				ScriptTables();
-				ScriptCSharp();
+				Test_Class_ToString();
+				//ScriptTables();
+				//ScriptCSharp();
 			}
 			finally { EndProgram(); }
 		}
 
 		#region Methods
 		#region Tests
+		// Modified Jul 6, 2020 // Created Jul 6, 2020 //
+		private static void Test_Class_ToString()
+		{
+			var dest = Path.Combine(DestFolder, String.Format("Test_Class_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var cl = new Class {
+				AccessLevel = "public",
+				BaseClass = null,
+				Fields = new List<Field>(),
+				Methods = new List<Method>(),
+				Modifier = null,
+				Name = "TestModel",
+				Namespace = "Nop.Web.Models.Yutaka",
+				Usings = new List<string>(),
+			};
+
+			cl.Usings.Add("System");
+			_fileUtil.Write(cl, dest);
+		}
+
 		private static void Test_Field_ToString()
 		{
 			var dest = Path.Combine(DestFolder, String.Format("Test_Field_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
