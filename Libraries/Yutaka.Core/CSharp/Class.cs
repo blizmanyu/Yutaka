@@ -37,10 +37,10 @@ namespace Yutaka.Core.CSharp
 		#region Non-Public Methods
 		protected void DecreaseIndent()
 		{
-			if (String.IsNullOrWhiteSpace(CurrentIndentation))
+			if (String.IsNullOrEmpty(CurrentIndentation))
 				CurrentIndentation = "";
 			else
-				CurrentIndentation = CurrentIndentation.Substring(0, CurrentIndentation.Length - 2);
+				CurrentIndentation = Tab.Replace(CurrentIndentation, "", 1);
 		}
 
 		protected void IncreaseIndent()
