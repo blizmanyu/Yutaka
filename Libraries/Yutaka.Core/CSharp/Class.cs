@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.Core.CSharp
 {
@@ -11,6 +12,7 @@ namespace Yutaka.Core.CSharp
 	public class Class
 	{
 		#region Fields
+		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
 		protected static string CurrentIndentation = "";
 		public List<Field> Fields;
 		public List<Method> Methods;
