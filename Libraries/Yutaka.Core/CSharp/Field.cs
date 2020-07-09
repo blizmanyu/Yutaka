@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.Core.CSharp
 {
 	public class Field
 	{
 		#region Fields
+		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
+		protected string CurrentIndentation = "";
 		public bool IsAutoImplemented;
 		public string AccessLevel;
 		public string DisplayName;
