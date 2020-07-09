@@ -97,7 +97,7 @@ namespace Yutaka.Core.CSharp
 				var lastField = Fields.Last();
 
 				foreach (var field in Fields) {
-					sb.AppendFormat("{0}{2}{1}", CurrentIndentation, Environment.NewLine, field);
+					sb.AppendLine(field.ToString());
 					if (!field.Equals(lastField))
 						sb.AppendLine();
 				}
