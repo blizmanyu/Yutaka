@@ -8,7 +8,7 @@ namespace Yutaka.Core.CSharp
 	{
 		#region Fields
 		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
-		protected string CurrentIndentation = "";
+		public string CurrentIndentation = "";
 		public bool IsAutoImplemented;
 		public string AccessLevel;
 		public string DisplayName;
@@ -85,52 +85,53 @@ namespace Yutaka.Core.CSharp
 			var sb = new StringBuilder();
 
 			if (!String.IsNullOrWhiteSpace(DisplayName))
-				sb.AppendLine(String.Format("\t\t[DisplayName(\"{0}\")]", DisplayName));
+				sb.AppendFormat("{0}[DisplayName(\"{2}\")]{1}", CurrentIndentation, Environment.NewLine, DisplayName);
 			if (!String.IsNullOrWhiteSpace(UIHint))
-				sb.AppendLine(String.Format("\t\t[UIHint(\"{0}\")]", UIHint));
+				sb.AppendFormat("{0}[UIHint(\"{2}\")]{1}", CurrentIndentation, Environment.NewLine, UIHint);
 
-			sb.Append("\t\t");
-
-			if (!String.IsNullOrWhiteSpace(AccessLevel))
-				sb.Append(String.Format("{0} ", AccessLevel));
-			if (!String.IsNullOrWhiteSpace(Modifier))
-				sb.Append(String.Format("{0} ", Modifier));
-			if (!String.IsNullOrWhiteSpace(Type))
-				sb.Append(String.Format("{0} ", Type));
-			if (!String.IsNullOrWhiteSpace(Name))
-				sb.Append(String.Format("{0}", Name));
+			sb.AppendFormat("{0}{1}{2}{3}{4}",
+				CurrentIndentation, // {0}
+				String.IsNullOrWhiteSpace(AccessLevel) ? "" : String.Format("{0} ", AccessLevel), // {1}
+				String.IsNullOrWhiteSpace(Modifier) ? "" : String.Format("{0} ", Modifier), // {2}
+				String.IsNullOrWhiteSpace(Type) ? "" : String.Format("{0} ", Type), // {3}
+				Name // {4}
+				);
 
 			if (IsAutoImplemented)
-				sb.AppendLine(" { get; set; }");
+				sb.Append(" { get; set; }");
 			else {
 				if (String.IsNullOrWhiteSpace(Getter)) {
 					if (String.IsNullOrWhiteSpace(Setter))
-						sb.AppendLine(";");
+						sb.Append(";");
 					else {
 						sb.AppendLine();
-						sb.AppendLine("\t\t{");
-						sb.AppendLine("\t\t\tset {");
+						sb.AppendFormat("{0}{{{1}", CurrentIndentation, Environment.NewLine);
+						IncreaseIndent();
+						sb.AppendFormat("{0}set {{{1}", CurrentIndentation, Environment.NewLine);
 						sb.AppendLine(Setter);
-						sb.AppendLine("\t\t\t}");
-						sb.AppendLine("\t\t}");
+						sb.AppendFormat("{0}}}{1}", CurrentIndentation, Environment.NewLine);
+						DecreaseIndent();
+						sb.AppendFormat("{0}}}{1}", CurrentIndentation, Environment.NewLine);
 					}
 				}
 
 				else {
 					sb.AppendLine();
-					sb.AppendLine("\t\t{");
-					sb.AppendLine("\t\t\tget {");
+					sb.AppendFormat("{0}{{{1}", CurrentIndentation, Environment.NewLine);
+					IncreaseIndent();
+					sb.AppendFormat("{0}get {{{1}", CurrentIndentation, Environment.NewLine);
 					sb.AppendLine(Getter);
-					sb.AppendLine("\t\t\t}");
+					sb.AppendFormat("{0}}}{1}", CurrentIndentation, Environment.NewLine);
+					DecreaseIndent();
 
 					if (!String.IsNullOrWhiteSpace(Setter)) {
 						sb.AppendLine();
-						sb.AppendLine("\t\t\tset {");
+						sb.AppendFormat("{0}set {{{1}", CurrentIndentation, Environment.NewLine);
 						sb.AppendLine(Setter);
-						sb.AppendLine("\t\t\t}");
+						sb.AppendFormat("{0}}}{1}", CurrentIndentation, Environment.NewLine);
 					}
 
-					sb.AppendLine("\t\t}");
+					sb.AppendFormat("{0}}}{1}", CurrentIndentation, Environment.NewLine);
 				}
 			}
 
