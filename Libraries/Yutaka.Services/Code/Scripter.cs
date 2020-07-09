@@ -40,7 +40,8 @@ namespace Yutaka.Code
 			foreach (var tables in grouped) {
 				table = tables.Key.TableName;
 				finalScript.AppendLine(String.Format("\t\t#region {0}", table));
-				finalScript.Append(ScriptTryInsertMethod(tables.ToList()));
+				//finalScript.Append(ScriptTryInsertMethod(tables.ToList()));
+				finalScript.Append(ScriptModel(tables.ToList()));
 				finalScript.AppendLine(String.Format("\t\t#endregion {0}", table));
 
 				if (!last.Equals(tables))
@@ -67,28 +68,14 @@ namespace Yutaka.Code
 			#endregion
 
 			var finalScript = new StringBuilder();
-			var checkInputBlock = new StringBuilder();
-			var tryBlock = new StringBuilder();
-			var catchBlock = new StringBuilder();
 			Class cl = null;
 			Field field = null;
-			List <Field> fields = null;
-			var database = "";
-			var schema = "";
 			var table = "";
-			var alias = "";
 
 			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
 
 			foreach (var tables in columns.GroupBy(x => new { x.TableCatalog, x.TableSchema, x.TableName })) {
-				database = tables.Key.TableCatalog;
-				schema = tables.Key.TableSchema;
 				table = tables.Key.TableName.Replace(".", "_");
-				alias = table.Replace("_", "").Substring(0, 2).ToLower();
-
-				// check for C# keywords //
-				if (alias.Equals("in"))
-					alias = table.Replace("_", "").Substring(0, 3).ToLower();
 
 				cl = new Class {
 					AccessLevel = "public",
@@ -127,81 +114,49 @@ namespace Yutaka.Code
 						#endregion case "bit":
 						#region case "datetime":
 						case "datetime":
-							if (col.IsNullable)
+							if (col.IsNullable) {
 								field.Type = "DateTime?";
+								field.UIHint = "DateTimeNullable";
+							}
 							else
 								field.Type = "DateTime";
 							break;
 						#endregion case "datetime":
+						#region case "decimal" & "numeric":
+						case "decimal":
+						case "numeric":
+							if (col.IsNullable)
+								field.Type = "decimal?";
+							else
+								field.Type = "decimal";
+							break;
+						#endregion case "decimal" & "numeric":
+						#region case "int":
+						case "int":
+							if (col.IsNullable)
+								field.Type = "int?";
+							else
+								field.Type = "int";
+							break;
+						#endregion case "int":
+						#region case "nvarchar" & "varchar":
+						case "nvarchar":
+						case "varchar":
+							field.Type = "string";
+							break;
+						#endregion case "nvarchar" & "varchar":
 						default:
-							field.Type = col.DataType;
+							if (col.IsNullable)
+								field.Type = String.Format("{0}?", col.DataType);
+							else
+								field.Type = col.DataType;
 							break;
 					}
 
-
-
-
-
-
-					if (!col.IsIdentity && !col.IsComputed) {
-						tryBlock.Append(String.Format("\t\t\t\t\tnew SqlParameter(\"@{0}\", {1}.{0}", col.ColumnName, alias));
-
-						if (col.IsNullable) {
-							if (col.ColumnName.StartsWith("Delete"))
-								tryBlock.AppendLine(" ?? null),");
-							else if (col.DataType.Equals("bit") || col.DataType.Equals("datetime"))
-								tryBlock.AppendLine(" ?? null),");
-							else if (col.DataType.Equals("int") || col.DataType.Equals("decimal") || col.DataType.Equals("numeric"))
-								tryBlock.AppendLine(" ?? -1),");
-							else
-								tryBlock.AppendLine(" ?? \"\"),");
-						}
-
-						else if (col.DataType.Equals("varchar") || col.DataType.Equals("nvarchar"))
-							tryBlock.AppendLine(" ?? \"\"),");
-						else
-							tryBlock.AppendLine("),");
-					}
+					cl.Fields.Add(field);
 				}
 
-				#region Close Try Block
-				tryBlock.AppendLine("\t\t\t\t};");
-				tryBlock.AppendLine("\t\t\t\tExecuteStoredProcedure(storProc, parameters);");
-				tryBlock.AppendLine("\t\t\t\treturn true;");
-				tryBlock.AppendLine("\t\t\t}");
-				#endregion Close Try Block
-
-				#region Catch Block
-				catchBlock = new StringBuilder();
-				catchBlock.AppendLine("\t\t\tcatch (Exception ex) {");
-				catchBlock.AppendLine("\t\t\t\t#region Log");
-				catchBlock.AppendLine("\t\t\t\tif (ex.InnerException == null)");
-				catchBlock.AppendLine(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in {0}Service.TryInsert{1}({1} {2}, out string response).{{2}}{{1}}{{2}}{{2}}\", ex.Message, ex.ToString(), Environment.NewLine);", database, table, alias));
-				catchBlock.AppendLine("\t\t\t\telse");
-				catchBlock.AppendLine(String.Format("\t\t\t\t\tresponse = String.Format(\"{{0}}{{2}}Exception thrown in INNER EXCEPTION of {0}Service.TryInsert{1}({1} {2}, out string response).{{2}}{{1}}{{2}}{{2}}\", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);", database, table, alias));
-				catchBlock.AppendLine("\t\t\t\t#endregion Log");
-				catchBlock.AppendLine();
-				catchBlock.AppendLine("\t\t\t\treturn false;");
-				catchBlock.AppendLine("\t\t\t}");
-				#endregion Catch Block
-
-				method = new Method {
-					AccessLevel = "public",
-					Body = "",
-					Modifier = null,
-					Name = String.Format("TryInsert{0}", table),
-					Parameters = String.Format("{0} {1}, out string response", table, alias),
-					ReturnType = "bool",
-				};
-
-				if (!String.IsNullOrWhiteSpace(checkInputBlock.ToString()))
-					method.Body = String.Format("{0}{1}{2}", method.Body, checkInputBlock, Environment.NewLine);
-				if (!String.IsNullOrWhiteSpace(tryBlock.ToString()))
-					method.Body = String.Format("{0}{1}{2}", method.Body, tryBlock, Environment.NewLine);
-				if (!String.IsNullOrWhiteSpace(catchBlock.ToString()))
-					method.Body = String.Format("{0}{1}", method.Body, catchBlock);
-
-				finalScript.Append(method.ToString());
+				finalScript.Append(cl.ToString());
 			}
 
 			return finalScript.ToString();
