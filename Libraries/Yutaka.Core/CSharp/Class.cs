@@ -6,9 +6,6 @@ using System.Text.RegularExpressions;
 
 namespace Yutaka.Core.CSharp
 {
-	/// <summary>
-	/// WIP: Do NOT use yet!
-	/// </summary>
 	public class Class
 	{
 		#region Fields
@@ -24,9 +21,6 @@ namespace Yutaka.Core.CSharp
 		public string Namespace;
 		#endregion Fields
 
-		/// <summary>
-		/// WIP: Do NOT use yet!
-		/// </summary>
 		public Class()
 		{
 			Fields = new List<Field>();
@@ -50,9 +44,6 @@ namespace Yutaka.Core.CSharp
 		#endregion Non-Public Methods
 
 		#region Public Methods
-		/// <summary>
-		/// WIP: Do NOT use yet!
-		/// </summary>
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
