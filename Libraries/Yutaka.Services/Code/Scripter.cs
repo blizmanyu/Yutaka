@@ -41,11 +41,122 @@ namespace Yutaka.Code
 				table = tables.Key.TableName;
 				finalScript.AppendLine(String.Format("\t\t#region {0}", table));
 				//finalScript.Append(ScriptTryInsertMethod(tables.ToList()));
+				finalScript.Append(ScriptListModel(tables.ToList()));
+				finalScript.AppendLine();
 				finalScript.Append(ScriptModel(tables.ToList()));
 				finalScript.AppendLine(String.Format("\t\t#endregion {0}", table));
 
 				if (!last.Equals(tables))
 					finalScript.AppendLine();
+			}
+
+			return finalScript.ToString();
+		}
+
+		public string ScriptListModel(IList<Column> columns)
+		{
+			#region Input Check
+			var log = "";
+
+			if (columns == null)
+				log = String.Format("{0}<columns> is null.{1}", log, Environment.NewLine);
+			else if (columns.Count == 0)
+				log = String.Format("{0}<columns> is empty.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in Scripter.ScriptListModel(IList<Column> columns).{1}{1}", log, Environment.NewLine);
+				return log;
+			}
+			#endregion
+
+			var finalScript = new StringBuilder();
+			Class cl = null;
+			Field field = null;
+			var table = "";
+
+			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
+
+			foreach (var tables in columns.GroupBy(x => new { x.TableCatalog, x.TableSchema, x.TableName })) {
+				table = tables.Key.TableName.Replace(".", "_");
+
+				cl = new Class {
+					AccessLevel = "public",
+					BaseClass = null,
+					Fields = new List<Field>(),
+					Methods = new List<Method>(),
+					Modifier = null,
+					Name = String.Format("{0}ListModel", table),
+					Namespace = String.Format("Yutaka.Models.{0}s", table),
+					Usings = new List<string>(),
+				};
+
+				foreach (var col in tables) {
+					field = new Field {
+						AccessLevel = "public",
+						DisplayName = col.ColumnName,
+						Getter = null,
+						IsAutoImplemented = true,
+						Modifier = null,
+						Name = String.Format("Search{0}", col.ColumnName),
+						Setter = null,
+						Type = null,
+						UIHint = null,
+					};
+
+					switch (col.DataType) {
+						#region case "bit":
+						case "bit":
+							if (col.IsNullable)
+								field.Type = "bool?";
+							else
+								field.Type = "bool";
+							break;
+						#endregion case "bit":
+						#region case "datetime":
+						case "datetime":
+							if (col.IsNullable) {
+								field.Type = "DateTime?";
+								field.UIHint = "DateTimeNullable";
+							}
+							else
+								field.Type = "DateTime";
+							break;
+						#endregion case "datetime":
+						#region case "decimal" & "numeric":
+						case "decimal":
+						case "numeric":
+							if (col.IsNullable)
+								field.Type = "decimal?";
+							else
+								field.Type = "decimal";
+							break;
+						#endregion case "decimal" & "numeric":
+						#region case "int":
+						case "int":
+							if (col.IsNullable)
+								field.Type = "int?";
+							else
+								field.Type = "int";
+							break;
+						#endregion case "int":
+						#region case "nvarchar" & "varchar":
+						case "nvarchar":
+						case "varchar":
+							field.Type = "string";
+							break;
+						#endregion case "nvarchar" & "varchar":
+						default:
+							if (col.IsNullable)
+								field.Type = String.Format("{0}?", col.DataType);
+							else
+								field.Type = col.DataType;
+							break;
+					}
+
+					cl.Fields.Add(field);
+				}
+
+				finalScript.Append(cl.ToString());
 			}
 
 			return finalScript.ToString();
