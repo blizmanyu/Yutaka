@@ -51,6 +51,11 @@ namespace Yutaka.Code
 			return finalScript.ToString();
 		}
 
+		/// <summary>
+		/// Creates script for an MVC Model.
+		/// </summary>
+		/// <param name="columns">The columns information for each table.</param>
+		/// <returns></returns>
 		public string ScriptModel(IList<Column> columns)
 		{
 			#region Input Check
