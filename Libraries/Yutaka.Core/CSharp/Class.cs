@@ -50,8 +50,10 @@ namespace Yutaka.Core.CSharp
 			CurrentIndentation = "";
 
 			#region Usings
-			if (!Usings.Contains("System"))
-				Usings.Add("System");
+			if (Fields.Any(x => x.Type.StartsWith("DateTime"))) {
+				if (!Usings.Contains("System"))
+					Usings.Add("System");
+			}
 
 			if (Fields.Any(x => !String.IsNullOrWhiteSpace(x.DisplayName))) {
 				if (!Usings.Contains("System.ComponentModel"))
