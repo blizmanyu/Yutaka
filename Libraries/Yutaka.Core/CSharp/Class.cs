@@ -50,6 +50,19 @@ namespace Yutaka.Core.CSharp
 			CurrentIndentation = "";
 
 			#region Usings
+			if (!Usings.Contains("System"))
+				Usings.Add("System");
+
+			if (Fields.Any(x => !String.IsNullOrWhiteSpace(x.DisplayName))) {
+				if (!Usings.Contains("System.ComponentModel"))
+					Usings.Add("System.ComponentModel");
+			}
+
+			if (Fields.Any(x => !String.IsNullOrWhiteSpace(x.UIHint))) {
+				if (!Usings.Contains("System.ComponentModel.DataAnnotations"))
+					Usings.Add("System.ComponentModel.DataAnnotations");
+			}
+
 			if (Usings != null && Usings.Count > 0) {
 				foreach (var u in Usings)
 					sb.AppendLine(String.Format("using {0};", u));
