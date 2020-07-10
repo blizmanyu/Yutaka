@@ -88,8 +88,6 @@ namespace Yutaka.Code
 					Usings = new List<string>(),
 				};
 
-				cl.Usings.Add("System");
-
 				foreach (var col in tables) {
 					field = new Field {
 						AccessLevel = "public",
