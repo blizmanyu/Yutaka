@@ -406,6 +406,25 @@ namespace Yutaka.Code
 
 			return finalScript.ToString();
 		}
+
+		#region Controller
+		public string ScriptIndex()
+		{
+			var body = new StringBuilder();
+			var method = new Method {
+				AccessLevel = "public",
+				Body = null,
+				Modifier = null,
+				Name = "Index",
+				Parameters = null,
+				ReturnType = "AcitonResult",
+			};
+
+			body.AppendLine("if (!_workContext.CurrentCustomer.IsRegistered())");
+
+			return method.ToString();
+		}
+		#endregion Controller
 		#endregion NopCommerce
 	}
 }
