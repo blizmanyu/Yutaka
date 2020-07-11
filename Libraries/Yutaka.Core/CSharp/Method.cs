@@ -69,6 +69,21 @@ namespace Yutaka.Core.CSharp
 		public override string ToString()
 		{
 			var sb = new StringBuilder();
+			sb.AppendFormat("{0}{1}{2}{3}{4}({5}){6}",
+				CurrentIndentation, // {0}
+				String.IsNullOrWhiteSpace(AccessLevel) ? "" : String.Format("{0} ", AccessLevel), // {1}
+				String.IsNullOrWhiteSpace(Modifier) ? "" : String.Format("{0} ", Modifier), // {2}
+				String.IsNullOrWhiteSpace(ReturnType) ? "" : String.Format("{0} ", ReturnType), // {3}
+				Name, // {4}
+				Parameters, // {5}
+				String.IsNullOrWhiteSpace(Body) ? " { }" : String.Format("{0} ", AccessLevel) // {6}
+				);
+
+			// WIP //
+
+
+
+
 			sb.Append(Tab).Append(Tab).Append(AccessLevel).Append(Space);
 
 			if (!String.IsNullOrWhiteSpace(Modifier))
