@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace Yutaka.Core.CSharp
 {
@@ -7,7 +8,8 @@ namespace Yutaka.Core.CSharp
 	{
 		#region Fields
 		private static readonly string Space = " ";
-		private static readonly string Tab = "\t";
+		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
+		public string CurrentIndentation = "";
 		public string AccessLevel;
 		public string Modifier;
 		public string ReturnType;
