@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSharp\NopController.cs" />
     <Compile Include="CSharp\Class.cs" />
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Method.cs" />
