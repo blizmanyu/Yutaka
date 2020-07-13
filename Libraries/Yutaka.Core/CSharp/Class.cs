@@ -10,7 +10,7 @@ namespace Yutaka.Core.CSharp
 	{
 		#region Fields
 		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
-		protected static string CurrentIndentation = "";
+		public string CurrentIndentation = "";
 		public List<Field> Fields;
 		public List<Method> Methods;
 		public List<string> Usings;
