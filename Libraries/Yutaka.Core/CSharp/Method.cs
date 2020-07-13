@@ -50,8 +50,8 @@ namespace Yutaka.Core.CSharp
 				Body = body.Trim();
 		}
 
-		#region Non-Public Methods
-		protected void DecreaseIndent()
+		#region Utilities
+		public void DecreaseIndent()
 		{
 			if (String.IsNullOrEmpty(CurrentIndentation))
 				CurrentIndentation = "";
@@ -59,11 +59,11 @@ namespace Yutaka.Core.CSharp
 				CurrentIndentation = Tab.Replace(CurrentIndentation, "", 1);
 		}
 
-		protected void IncreaseIndent()
+		public void IncreaseIndent()
 		{
 			CurrentIndentation = String.Format("{0}\t", CurrentIndentation);
 		}
-		#endregion Non-Public Methods
+		#endregion Utilities
 
 		public override string ToString()
 		{
