@@ -41,6 +41,8 @@ namespace Yutaka.Code
 				table = tables.Key.TableName;
 				finalScript.AppendLine(String.Format("\t\t#region {0}", table));
 				//finalScript.Append(ScriptTryInsertMethod(tables.ToList()));
+				finalScript.Append(ScriptIndex());
+				finalScript.AppendLine();
 				finalScript.Append(ScriptListModel(tables.ToList()));
 				finalScript.AppendLine();
 				finalScript.Append(ScriptModel(tables.ToList()));
@@ -408,20 +410,36 @@ namespace Yutaka.Code
 		}
 
 		#region Controller
-		public string ScriptIndex()
+		public string ScriptIndex(string currentIndentation = "\t\t")
 		{
 			var body = new StringBuilder();
 			var method = new Method {
 				AccessLevel = "public",
 				Body = null,
+				CurrentIndentation = currentIndentation,
 				Modifier = null,
 				Name = "Index",
 				Parameters = null,
-				ReturnType = "AcitonResult",
+				ReturnType = "ActionResult",
 			};
 
-			body.AppendLine("if (!_workContext.CurrentCustomer.IsRegistered())");
+			method.IncreaseIndent();
+			body.AppendFormat("{0}if (!_workContext.CurrentCustomer.IsRegistered()){1}", method.CurrentIndentation, Environment.NewLine);
+			method.IncreaseIndent();
+			body.AppendFormat("{0}return new HttpUnauthorizedResult();{1}", method.CurrentIndentation, Environment.NewLine);
+			method.DecreaseIndent();
+			body.AppendLine();
+			body.AppendFormat("{0}SetSessionVariables();{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendFormat("{0}var customerId = _workContext.CurrentCustomer.Id;{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendFormat("{0}var storeId = _intranetDataService.GetStoreIdByCustomerId(customerId);{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendFormat("{0}SetStoreIdSessions(customerId, storeId);{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendFormat("{0}var currentStoreId = Session[\"CurrentStoreId\"] == null ? -1 : (int) Session[\"CurrentStoreId\"];{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendFormat("{0}ViewBag.CurrentStoreId = currentStoreId;{1}", method.CurrentIndentation, Environment.NewLine);
+			body.AppendLine();
+			body.AppendFormat("{0}return View();{1}", method.CurrentIndentation, Environment.NewLine);
+			method.DecreaseIndent();
 
+			method.Body = body.ToString();
 			return method.ToString();
 		}
 		#endregion Controller
