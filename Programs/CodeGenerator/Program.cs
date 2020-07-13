@@ -55,13 +55,31 @@ namespace CodeGenerator
 			StartProgram();
 			try {
 				//ScriptTables();
-				ScriptCSharp();
+				//ScriptCSharp();
+				Test_Method_ToString();
 			}
 			finally { EndProgram(); }
 		}
 
 		#region Methods
 		#region Tests
+		// Modified Jul 13, 2020 // Created Jul 13, 2020 //
+		private static void Test_Method_ToString()
+		{
+			var dest = Path.Combine(DestFolder, String.Format("Test_Method_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var meth = new Method {
+				AccessLevel = "public",
+				Body = null,
+				CurrentIndentation = "\t\t",
+				Modifier = null,
+				Name = "TestMethod",
+				Parameters = null,
+				ReturnType = "void",
+			};
+
+			_fileUtil.Write(meth, dest);
+		}
+
 		// Modified Jul 6, 2020 // Created Jul 6, 2020 //
 		private static void Test_Class_ToString()
 		{
@@ -96,13 +114,6 @@ namespace CodeGenerator
 				Setter = "TestName = value;",
 			};
 			_fileUtil.Write(field, dest);
-		}
-
-		private static void Test_Region_ToString()
-		{
-			var dest = Path.Combine(DestFolder, String.Format("Test_Region_ToString {0}.cs", DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
-			var region = new Region("Test");
-			_fileUtil.Write(region, dest);
 		}
 		#endregion Tests
 
