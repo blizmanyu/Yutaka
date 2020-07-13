@@ -7,7 +7,6 @@ namespace Yutaka.Core.CSharp
 	public class Method
 	{
 		#region Fields
-		private static readonly string Space = " ";
 		protected static readonly Regex Tab = new Regex("\t", RegexOptions.Compiled);
 		public string CurrentIndentation = "";
 		public string AccessLevel;
@@ -76,25 +75,12 @@ namespace Yutaka.Core.CSharp
 				String.IsNullOrWhiteSpace(ReturnType) ? "" : String.Format("{0} ", ReturnType), // {3}
 				Name, // {4}
 				Parameters, // {5}
-				String.IsNullOrWhiteSpace(Body) ? " { }" : String.Format("{0} ", AccessLevel) // {6}
+				Environment.NewLine // {6}
 				);
 
-			// WIP //
-
-
-
-
-			sb.Append(Tab).Append(Tab).Append(AccessLevel).Append(Space);
-
-			if (!String.IsNullOrWhiteSpace(Modifier))
-				sb.Append(Modifier).Append(Space);
-
-			sb.Append(ReturnType).Append(Space);
-			sb.Append(Name).Append("(");
-			sb.Append(Parameters).AppendLine(")");
-			sb.Append(Tab).Append(Tab).AppendLine("{");
+			sb.AppendFormat("{0}{{{1}", CurrentIndentation, Environment.NewLine);
 			sb.Append(Body);
-			sb.Append(Tab).Append(Tab).AppendLine("}");
+			sb.AppendFormat("{0}}}", CurrentIndentation);
 
 			return sb.ToString();
 		}
