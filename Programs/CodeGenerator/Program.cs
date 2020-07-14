@@ -55,8 +55,8 @@ namespace CodeGenerator
 			StartProgram();
 			try {
 				//ScriptTables();
-				//ScriptCSharp();
-				Test_Method_ToString();
+				ScriptCSharp();
+				//Test_Method_ToString();
 			}
 			finally { EndProgram(); }
 		}
