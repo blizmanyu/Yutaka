@@ -317,8 +317,8 @@ namespace Yutaka.Code
 			#endregion
 
 			var finalScript = new StringBuilder();
-			Class cl = null;
-			Field field = null;
+			Class cl;
+			Field field, field2;
 			var table = "";
 
 			columns = columns.OrderBy(x => x.TableSchema).ThenBy(x => x.TableName).ThenBy(x => x.OrdinalPosition).ToList();
@@ -338,6 +338,7 @@ namespace Yutaka.Code
 				};
 
 				foreach (var col in tables) {
+					field2 = null;
 					field = new Field {
 						AccessLevel = "public",
 						DisplayName = col.ColumnName,
@@ -359,16 +360,32 @@ namespace Yutaka.Code
 								field.Type = "bool";
 							break;
 						#endregion case "bit":
-						#region case "datetime":
+						#region case "datetime" & "datetime2":
 						case "datetime":
+						case "datetime2":
 							if (col.IsNullable) {
 								field.Type = "DateTime?";
 								field.UIHint = "DateTimeNullable";
 							}
 							else
 								field.Type = "DateTime";
+
+							if (col.ColumnName.StartsWith("CreatedOn") || col.ColumnName.StartsWith("UpdatedOn") || col.ColumnName.StartsWith("ModifiedOn") || col.ColumnName.StartsWith("DeletedOn")) {
+								field.DisplayName = null;
+								field2 = new Field {
+									AccessLevel = "public",
+									DisplayName = null,
+									Getter = null,
+									IsAutoImplemented = true,
+									Modifier = null,
+									Name = String.Format("{0}Str", col.ColumnName.Replace("Utc", "")),
+									Setter = null,
+									Type = "string",
+									UIHint = null,
+								};
+							}
 							break;
-						#endregion case "datetime":
+						#endregion case "datetime" & "datetime2":
 						#region case "decimal" & "numeric":
 						case "decimal":
 						case "numeric":
@@ -401,6 +418,9 @@ namespace Yutaka.Code
 					}
 
 					cl.Fields.Add(field);
+
+					if (field2 != null)
+						cl.Fields.Add(field2);
 				}
 
 				finalScript.Append(cl.ToString());
