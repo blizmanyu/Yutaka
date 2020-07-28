@@ -52,6 +52,14 @@
     <Reference Include="Google.Apis.PlatformServices, Version=1.45.0.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Google.Apis.1.45.0\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="Interop.QBFC13">
+      <HintPath>..\..\Interop.QBFC13.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
+    <Reference Include="Interop.QBXMLRP2Lib">
+      <HintPath>..\..\Interop.QBXMLRP2Lib.dll</HintPath>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -76,6 +84,8 @@
     <Compile Include="Google\Gmail\GoogleGmailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Scripter.cs" />
+    <Compile Include="QuickBooks\Qbfc13Service.cs" />
+    <Compile Include="QuickBooks\_Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Google\Calendar\Event.json" />
@@ -83,6 +93,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Google\Calendar\Event.sql" />
+    <Content Include="QuickBooks\XMLOps\BillPaymentCheckAdd.xml" />
+    <Content Include="QuickBooks\XMLOps\BillPaymentCheckMod.xml" />
+    <Content Include="QuickBooks\XMLOps\BillPaymentCheckQuery.xml" />
+    <Content Include="QuickBooks\XMLOps\BillQuery.xml" />
+    <Content Include="QuickBooks\XMLOps\BillMod.xml" />
+    <Content Include="QuickBooks\XMLOps\BillAdd.xml" />
+    <Content Include="QuickBooks\XMLOps\AccountQuery.xml" />
+    <Content Include="QuickBooks\XMLOps\AccountMod.xml" />
+    <Content Include="QuickBooks\XMLOps\AccountAdd.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
