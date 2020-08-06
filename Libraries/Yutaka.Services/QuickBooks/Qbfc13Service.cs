@@ -125,48 +125,48 @@ namespace Yutaka.QuickBooks
 			}
 		}
 
-		public void DoAccountAdd(QueryType queryType)
-		{
-			if (SessionManager == null || RequestMsgSet == null) {
-				//Create the session Manager object
-				SessionManager = new QBSessionManager();
+		//public void DoAccountAdd(QueryType queryType)
+		//{
+		//	if (SessionManager == null || RequestMsgSet == null) {
+		//		//Create the session Manager object
+		//		SessionManager = new QBSessionManager();
 
-				//Create the message set request object to hold our request
-				RequestMsgSet = SessionManager.CreateMsgSetRequest(DefaultCountry, QBXMLMajorVersion, QBXMLMinorVersion);
-				RequestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
-			}
+		//		//Create the message set request object to hold our request
+		//		RequestMsgSet = SessionManager.CreateMsgSetRequest(DefaultCountry, QBXMLMajorVersion, QBXMLMinorVersion);
+		//		RequestMsgSet.Attributes.OnError = ENRqOnError.roeContinue;
+		//	}
 
-			try {
-				BuildAccountAddRq(RequestMsgSet);
+		//	try {
+		//		BuildAccountAddRq(RequestMsgSet);
 
-				if (!SessionBegun || !ConnectionOpen) {
-					//Connect to QuickBooks and begin a session
-					SessionManager.OpenConnection(AppID, AppName);
-					ConnectionOpen = true;
-					SessionManager.BeginSession(QBFile, OpenMode);
-					SessionBegun = true;
-				}
+		//		if (!SessionBegun || !ConnectionOpen) {
+		//			//Connect to QuickBooks and begin a session
+		//			SessionManager.OpenConnection(AppID, AppName);
+		//			ConnectionOpen = true;
+		//			SessionManager.BeginSession(QBFile, OpenMode);
+		//			SessionBegun = true;
+		//		}
 
-				//Send the request and get the response from QuickBooks
-				IMsgSetResponse responseMsgSet = SessionManager.DoRequests(requestMsgSet);
+		//		//Send the request and get the response from QuickBooks
+		//		IMsgSetResponse responseMsgSet = SessionManager.DoRequests(requestMsgSet);
 
-				//End the session and close the connection to QuickBooks
-				sessionManager.EndSession();
-				sessionBegun = false;
-				sessionManager.CloseConnection();
-				connectionOpen = false;
+		//		//End the session and close the connection to QuickBooks
+		//		sessionManager.EndSession();
+		//		sessionBegun = false;
+		//		sessionManager.CloseConnection();
+		//		connectionOpen = false;
 
-				WalkAccountAddRs(responseMsgSet);
-			}
-			catch (Exception e) {
-				MessageBox.Show(e.Message, "Error");
-				if (sessionBegun) {
-					sessionManager.EndSession();
-				}
-				if (connectionOpen) {
-					sessionManager.CloseConnection();
-				}
-			}
-		}
+		//		WalkAccountAddRs(responseMsgSet);
+		//	}
+		//	catch (Exception e) {
+		//		MessageBox.Show(e.Message, "Error");
+		//		if (sessionBegun) {
+		//			sessionManager.EndSession();
+		//		}
+		//		if (connectionOpen) {
+		//			sessionManager.CloseConnection();
+		//		}
+		//	}
+		//}
 	}
 }
