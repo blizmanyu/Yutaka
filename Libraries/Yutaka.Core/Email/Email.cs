@@ -13,7 +13,11 @@ namespace Yutaka.Core
 		#endregion Fields
 
 		#region Constructors
-		public Email(string address = null)
+		/// <summary>
+		/// Initializes a new instance of the <see cref="MailAddress"/> class using the specified address.
+		/// </summary>
+		/// <param name="address">A <see cref="string"/> that contains an email address.</param>
+		public Email(string address)
 		{
 			#region Check Input
 			if (address == null)
