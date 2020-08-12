@@ -171,9 +171,40 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_MailAddress_ToString();
+			Test_String_Split();
 			EndProgram();
 		}
+
+		#region Aug 11, 2020
+		private static void Test_String_Split()
+		{
+			var tests = new string[] {
+				null,
+				"",
+				"  ",
+				"asdfg",
+			};
+
+			string[] commaSplit, semicolonSplit;
+
+			foreach (var test in tests) {
+				Console.Write("\n{0}) '{1}'", ++totalCount, test ?? "NULL");
+
+				try {
+					commaSplit = test.Split(',');
+					semicolonSplit = test.Split(';');
+					Console.Write("\ncommaSplit Count: {0}", commaSplit.Length);
+					Console.Write("\nsemicolonSplit Count: {0}", semicolonSplit.Length);
+				}
+
+				catch (Exception) {
+					Console.Write("\n** Error **");
+				}
+
+				Console.Write("\n");
+			}
+		}
+		#endregion Aug 11, 2020
 
 		#region Base36 Tests
 		// Created Sep 30, 2019 // Modified Sep 30, 2019 //
