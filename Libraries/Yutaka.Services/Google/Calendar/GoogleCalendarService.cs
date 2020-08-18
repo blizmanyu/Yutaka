@@ -96,16 +96,16 @@ namespace Yutaka.Google.Calendar
 				ApplicationName = DefaultApplicationName;
 
 			if (String.IsNullOrWhiteSpace(CertificateFileName))
-				response = String.Format("{0}<CertificateFileName> is required.{1}", response, Environment.NewLine);
+				response = String.Format("{0}'CertificateFileName' is required.{1}", response, Environment.NewLine);
 			else if (!File.Exists(CertificateFileName))
 				response = String.Format("{0}Certificate file '{2}' doesn't exist.{1}", response, Environment.NewLine, CertificateFileName);
 
 			if (String.IsNullOrWhiteSpace(CertificatePassword))
-				response = String.Format("{0}<CertificatePassword> is required.{1}", response, Environment.NewLine);
+				response = String.Format("{0}'CertificatePassword' is required.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(ServiceAccountEmail))
-				response = String.Format("{0}<ServiceAccountEmail> is required.{1}", response, Environment.NewLine);
+				response = String.Format("{0}'ServiceAccountEmail' is required.{1}", response, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(UserEmail))
-				response = String.Format("{0}<UserEmail> is required.{1}", response, Environment.NewLine);
+				response = String.Format("{0}'UserEmail' is required.{1}", response, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(response)) {
 				response = String.Format("{0}Exception thrown in GoogleCalendarService.TryCreateService(out string response).{1}", response, Environment.NewLine);
