@@ -52,7 +52,7 @@ namespace Yutaka.Google.Calendar
 			else
 				ApplicationName = applicationName;
 
-			if (!String.IsNullOrWhiteSpace(certificateFileName) && File.Exists(certificateFileName))
+			if (!String.IsNullOrWhiteSpace(certificateFileName))
 				CertificateFileName = certificateFileName;
 			if (!String.IsNullOrWhiteSpace(serviceAccountEmail))
 				ServiceAccountEmail = serviceAccountEmail;
