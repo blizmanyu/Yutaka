@@ -35,7 +35,6 @@ namespace Yutaka.Google.Calendar
 		public string CertificatePassword = "notasecret";
 		public string ServiceAccountEmail;
 		public string UserEmail;
-		public X509KeyStorageFlags CertificateKeyStorageFlags = X509KeyStorageFlags.Exportable;
 		#endregion Fields
 
 		#region Constructor
@@ -68,7 +67,7 @@ namespace Yutaka.Google.Calendar
 		/// </summary>
 		protected void CreateService()
 		{
-			var certificate = new X509Certificate2(CertificateFileName, CertificatePassword, CertificateKeyStorageFlags);
+			var certificate = new X509Certificate2(CertificateFileName, CertificatePassword, X509KeyStorageFlags.MachineKeySet | X509KeyStorageFlags.Exportable);
 			var credential = new ServiceAccountCredential(new ServiceAccountCredential.Initializer(ServiceAccountEmail) {
 				User = UserEmail,
 				Scopes = new[] { CalendarService.Scope.Calendar, CalendarService.Scope.CalendarEvents, }
