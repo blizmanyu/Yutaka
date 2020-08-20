@@ -79,6 +79,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Ftp\FtpClient.cs" />
     <Compile Include="Google\Calendar\EventSqlTable.cs" />
     <Compile Include="Google\Calendar\GoogleCalendarService.cs" />
     <Compile Include="Google\Gmail\GoogleGmailService.cs" />
