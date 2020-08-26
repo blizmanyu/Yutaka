@@ -45,6 +45,7 @@
     <Compile Include="CSharp\Class.cs" />
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Method.cs" />
+    <Compile Include="DateTimeExtension.cs" />
     <Compile Include="Email\Email.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="PhoneUtil.cs" />
