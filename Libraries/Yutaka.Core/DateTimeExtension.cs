@@ -26,6 +26,19 @@ namespace Yutaka
 		}
 
 		/// <summary>
+		/// Converts the value of the current <see cref="DateTime"/> object to its equivalent long datetime string representation.
+		/// </summary>
+		/// <param name="dt">The DateTime to convert.</param>
+		/// <returns></returns>
+		public static string ToRelativeDateTimeString(this DateTime dt)
+		{
+			if (dt.Year == DateTime.Today.Year)
+				return String.Format("{0:MMM d}, {1}", dt, dt.ToShorterTimeString());
+
+			return String.Format("{0:MMM d, yyyy}, {1}", dt, dt.ToShorterTimeString());
+		}
+
+		/// <summary>
 		/// Converts the value of the current <see cref="DateTime"/> object to its equivalent short time string representation.
 		/// </summary>
 		/// <param name="dt">The DateTime to convert.</param>
