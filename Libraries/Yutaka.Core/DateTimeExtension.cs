@@ -24,5 +24,15 @@ namespace Yutaka
 		{
 			return new DateTime(dt.Year, 12, 31);
 		}
+
+		/// <summary>
+		/// Converts the value of the current <see cref="DateTime"/> object to its equivalent short time string representation.
+		/// </summary>
+		/// <param name="dt">The DateTime to convert.</param>
+		/// <returns></returns>
+		public static string ToShorterTimeString(this DateTime dt)
+		{
+			return dt.ToString("h:mmtt").ToLower();
+		}
 	}
 }
