@@ -43,7 +43,7 @@ namespace Yutaka.IO2.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_Path_Combine();
+			Test_DeleteAllCacheFiles();
 			EndProgram();
 		}
 
@@ -121,9 +121,23 @@ namespace Yutaka.IO2.Tests
 		// Created Apr 2, 2020, Modified: Apr 2, 2020 //
 		private static void Test_DeleteAllCacheFiles()
 		{
-			var folderPath = @"C:\TEMP\TEMP";
-			var count = FileUtil.DeleteAllCacheFiles(folderPath, SearchOption.AllDirectories);
-			Console.Write("\nDeleted {0} file(s).", count);
+			string[] folders = {
+				@"T:\Public\",
+				@"T:\Downloads\",
+				@"T:\Bitdefender\",
+			};
+			var curCount = 0;
+			var total = 0;
+
+			foreach (var folder in folders) {
+				Console.Write("\n{0}) {1}", ++totalCount, folder);
+				curCount = FileUtil.DeleteAllCacheFiles(folder, SearchOption.AllDirectories);
+				Console.Write("\nDeleted {0} file(s).", curCount);
+				total += curCount;
+				Console.Write("\nSo far {0} file(s).", total);
+				curCount = 0;
+				Console.Write("\n");
+			}
 		}
 
 		// Created Mar 20, 2020, Modified: Mar 20, 2020 //
