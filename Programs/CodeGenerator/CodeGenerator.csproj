@@ -59,8 +59,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="Yutaka.Core, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Yutaka.Core">
       <HintPath>..\..\Libraries\Yutaka.Core\bin\Release\Yutaka.Core.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.CSharp">
@@ -76,9 +75,6 @@
     </Reference>
     <Reference Include="Yutaka.Net">
       <HintPath>..\..\Libraries\Yutaka.Net\bin\Release\Yutaka.Net.dll</HintPath>
-    </Reference>
-    <Reference Include="Yutaka.Services">
-      <HintPath>..\..\Libraries\Yutaka.Services\bin\Release\Yutaka.Services.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.Text">
       <HintPath>..\..\Libraries\Yutaka.Text\bin\Release\Yutaka.Text.dll</HintPath>
@@ -100,6 +96,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yutaka.Services\Yutaka.Services.csproj">
+      <Project>{EDA97683-765E-4282-9BE3-72C8FC86EE35}</Project>
+      <Name>Yutaka.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
