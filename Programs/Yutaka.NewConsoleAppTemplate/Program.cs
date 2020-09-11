@@ -33,8 +33,28 @@ namespace Yutaka.NewConsoleAppTemplate
 		static void Main(string[] args)
 		{
 			StartProgram();
-			try { Process(); }
-			finally { EndProgram(); }
+			string log;
+
+			try {
+				Process();
+			}
+
+			catch (Exception ex) {
+				++errorCount;
+				#region Logging
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Main().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Main().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+
+				logger.Error(log);
+				#endregion
+			}
+
+			EndProgram();
 		}
 
 		private static void Process()
