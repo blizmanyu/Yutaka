@@ -15,7 +15,7 @@ namespace Yutaka.Google.Calendar
 	/// project. Don't forget to change the Build action to "Content" and the Copy to Output Directory to "Copy if newer".
 	/// 
 	/// Available scopes are here: https://developers.google.com/calendar/auth
-	/// Also add them to the Admin Console here: https://admin.google.com/rcw1.com/AdminHome?chromeless=1#OGX:ManageOauthClients
+	/// Also add them to the Admin Console here: https://admin.google.com/myDomain.com/AdminHome?chromeless=1#OGX:ManageOauthClients
 	/// </summary>
 	public class GoogleCalendarService
 	{
