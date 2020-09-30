@@ -58,6 +58,11 @@ namespace Yutaka.Core.IO
 			}
 		}
 
+		/// <summary>
+		/// Returns the names of image files (including their paths) in the specified directory and subdirectories.
+		/// </summary>
+		/// <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
+		/// <returns>A list of the full names (including paths) for the image files in the specified directory, or an empty list if no files are found.</returns>
 		public static IList<string> GetImageFiles(string path)
 		{
 			#region Check Input
