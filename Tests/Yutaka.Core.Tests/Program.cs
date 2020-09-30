@@ -38,7 +38,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_GetFiles();
+				Test_GetImageFiles();
 			}
 
 			catch (Exception ex) {
@@ -60,6 +60,15 @@ namespace Yutaka.Core.Tests
 		}
 
 		#region IO
+		// Modified Sep 29, 2020 // Created Sep 29, 2020 //
+		private static void Test_GetImageFiles()
+		{
+			var path = @"C:\";
+
+			foreach (var file in DirectoryUtil.GetImageFiles(path))
+				Console.Write("\n{0}) {1}", ++totalCount, file);
+		}
+
 		// Modified Sep 29, 2020 // Created Sep 29, 2020 //
 		private static void Test_GetFiles()
 		{
