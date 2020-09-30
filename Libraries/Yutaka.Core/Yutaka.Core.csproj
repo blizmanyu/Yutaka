@@ -47,6 +47,7 @@
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="Email\Email.cs" />
+    <Compile Include="IO\DirectoryUtil.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="PhoneUtil.cs" />
     <Compile Include="Phone.cs" />
