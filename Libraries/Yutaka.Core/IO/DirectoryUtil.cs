@@ -57,11 +57,11 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
-		/// Returns the names of image files (including their paths) in the specified directory and subdirectories.
+		/// Returns an enumerable collection of full image file names that match a search pattern in a specified path and subdirectories.
 		/// </summary>
 		/// <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
-		/// <returns>A list of the full names (including paths) for the image files in the specified directory, or an empty list if no files are found.</returns>
-		public static IList<string> GetImageFiles(string path)
+		/// <returns>An enumerable collection of the full names (including paths) for the image files in the directory specified by &lt;path&gt;.</returns>
+		public static IEnumerable<string> EnumerateImageFiles(string path)
 		{
 			#region Check Input
 			if (String.IsNullOrWhiteSpace(path))
@@ -70,44 +70,42 @@ namespace Yutaka.Core.IO
 				throw new ArgumentException(String.Format("'path' '{0}' does not exist.", path), "path");
 			#endregion Check Input
 
-			try {
-				string currentDir;
-				var files = new List<string>();
-				var dirs = new Stack<string>(InitialStackCapacity);
-				dirs.Push(path);
+			IEnumerable<string> files;
+			string currentDir;
+			var dirs = new Stack<string>(InitialStackCapacity);
+			dirs.Push(path);
 
-				while (dirs.Count > 0) {
-					currentDir = dirs.Pop();
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
 
-					try {
-						files.AddRange(Directory.EnumerateFiles(currentDir).Where(x => x.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".ico", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".wdp", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".webm", StringComparison.OrdinalIgnoreCase) ||
-																					   x.EndsWith(".webp", StringComparison.OrdinalIgnoreCase)));
-
-						foreach (var dir in Directory.EnumerateDirectories(currentDir))
-							dirs.Push(dir);
-					}
-
-					catch (Exception) {
-						continue;
-					}
+				try {
+					files = Directory.EnumerateFiles(currentDir).Where(x => x.EndsWith(".bmp", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".ico", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".wdp", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".webm", StringComparison.OrdinalIgnoreCase) ||
+																			x.EndsWith(".webp", StringComparison.OrdinalIgnoreCase));
 				}
 
-				return files;
-			}
+				catch {
+					continue;
+				}
 
-			catch (Exception ex) {
-				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in DirectoryUtil.GetImageFiles(string path='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path));
-				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of DirectoryUtil.GetImageFiles(string path='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path));
+				foreach (var file in files)
+					yield return file;
+
+				try {
+					foreach (var dir in Directory.EnumerateDirectories(currentDir))
+						dirs.Push(dir);
+				}
+
+				catch {
+					continue;
+				}
 			}
 		}
 	}

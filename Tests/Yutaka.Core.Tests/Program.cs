@@ -39,7 +39,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_EnumerateFiles();
+				Test_EnumerateImageFiles();
 			}
 
 			catch (Exception ex) {
@@ -61,13 +61,27 @@ namespace Yutaka.Core.Tests
 		}
 
 		#region IO
-		// Modified Sep 29, 2020 // Created Sep 29, 2020 //
-		private static void Test_GetImageFiles()
+		// Modified Sep 30, 2020 // Created Sep 29, 2020 //
+		private static void Test_EnumerateImageFiles()
 		{
 			var path = @"C:\";
+			int i;
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			stopWatch.Stop();
 
-			foreach (var file in DirectoryUtil.GetImageFiles(path))
+			//foreach (var file in Directory.EnumerateFiles(path, pattern, SearchOption.AllDirectories))
+			//	Console.Write("\n{0}) {1}", ++totalCount, file);
+
+			i = 0;
+			stopWatch.Restart();
+
+			foreach (var file in DirectoryUtil.EnumerateImageFiles(path))
 				Console.Write("\n{0}) {1}", ++totalCount, file);
+
+			Console.Write("\nCount: {0}", i);
+			stopWatch.Stop();
+			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
 		}
 
 		// Modified Sep 30, 2020 // Created Sep 29, 2020 //
