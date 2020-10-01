@@ -101,7 +101,7 @@ namespace Yutaka.NewConsoleAppTemplate
 			var log = new string[7];
 			log[0] = "Ending program";
 			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
-			log[2] = String.Format("Total: {0}", totalCount);
+			log[2] = String.Format("Total: {0:n0}", totalCount);
 			log[3] = String.Format("Processed: {0} ({1})", processedCount, processedPer.ToString("p"), Environment.NewLine);
 			log[4] = String.Format("Skipped: {0} ({1})", skippedCount, skippedPer.ToString("p"), Environment.NewLine);
 			log[5] = String.Format("Success: {0} ({1})", successCount, successPer.ToString("p"), Environment.NewLine);

@@ -177,7 +177,7 @@ namespace FileManagerNet462
 			var log = new string[5];
 			log[0] = "Ending program";
 			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
-			log[2] = String.Format("Total: {0}", totalCount);
+			log[2] = String.Format("Total: {0:n0}", totalCount);
 			log[3] = String.Format("Total Size: {0} ({1:n0} bytes)", FileUtil.BytesToString(totalSize), totalSize);
 			log[4] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
 
