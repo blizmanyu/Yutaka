@@ -7,15 +7,15 @@ namespace Yutaka.Core.IO
 {
 	public static class DirectoryUtil
 	{
-		private static readonly int InitialStackCapacity = 200;
+		private static readonly int InitialStackCapacity = 100;
 
 		/// <summary>
-		/// Returns the names of files (including their paths) that match the specified search pattern in the specified directory and subdirectories.
+		/// Returns an enumerable collection of full file names that match a search pattern in a specified path and subdirectories.
 		/// </summary>
 		/// <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
-		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
-		/// <returns>A list of the full names (including paths) for the files in the specified directory that match the specified search pattern, or an empty list if no files are found.</returns>
-		public static IList<string> GetFiles(string path, string searchPattern = "*")
+		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions</param>
+		/// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by &lt;path&gt; and that match the specified search pattern</returns>
+		public static IEnumerable<string> EnumerateFiles(string path, string searchPattern = "*")
 		{
 			#region Check Input
 			if (String.IsNullOrWhiteSpace(path))
@@ -26,35 +26,33 @@ namespace Yutaka.Core.IO
 				searchPattern = "*";
 			#endregion Check Input
 
-			try {
-				string currentDir;
-				var files = new List<string>();
-				var dirs = new Stack<string>(InitialStackCapacity);
-				dirs.Push(path);
+			IEnumerable<string> files;
+			string currentDir;
+			var dirs = new Stack<string>(InitialStackCapacity);
+			dirs.Push(path);
 
-				while (dirs.Count > 0) {
-					currentDir = dirs.Pop();
+			while (dirs.Count > 0) {
+				currentDir = dirs.Pop();
 
-					try {
-						files.AddRange(Directory.EnumerateFiles(currentDir, searchPattern, SearchOption.TopDirectoryOnly));
-
-						foreach (var dir in Directory.EnumerateDirectories(currentDir))
-							dirs.Push(dir);
-					}
-
-					catch (Exception) {
-						continue;
-					}
+				try {
+					files = Directory.EnumerateFiles(currentDir, searchPattern);
 				}
 
-				return files;
-			}
+				catch {
+					continue;
+				}
 
-			catch (Exception ex) {
-				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in DirectoryUtil.GetFiles(string path='{3}', string searchPattern='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path, searchPattern));
-				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of DirectoryUtil.GetFiles(string path='{3}', string searchPattern='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path, searchPattern));
+				foreach (var file in files)
+					yield return file;
+
+				try {
+					foreach (var dir in Directory.EnumerateDirectories(currentDir))
+						dirs.Push(dir);
+				}
+
+				catch {
+					continue;
+				}
 			}
 		}
 
