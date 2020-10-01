@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using NLog;
@@ -38,7 +39,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_GetImageFiles();
+				Test_EnumerateFiles();
 			}
 
 			catch (Exception ex) {
@@ -69,17 +70,28 @@ namespace Yutaka.Core.Tests
 				Console.Write("\n{0}) {1}", ++totalCount, file);
 		}
 
-		// Modified Sep 29, 2020 // Created Sep 29, 2020 //
-		private static void Test_GetFiles()
+		// Modified Sep 30, 2020 // Created Sep 29, 2020 //
+		private static void Test_EnumerateFiles()
 		{
 			var path = @"C:\";
 			var pattern = "*";
+			int i;
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			stopWatch.Stop();
 
 			//foreach (var file in Directory.EnumerateFiles(path, pattern, SearchOption.AllDirectories))
 			//	Console.Write("\n{0}) {1}", ++totalCount, file);
 
-			foreach (var file in DirectoryUtil.GetFiles(path, pattern))
-				Console.Write("\n{0}) {1}", ++totalCount, file);
+			i = 0;
+			stopWatch.Restart();
+
+			foreach (var file in DirectoryUtil.EnumerateFiles(path, pattern))
+				++i;
+
+			Console.Write("\nCount: {0}", i);
+			stopWatch.Stop();
+			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
 		}
 		#endregion IO
 
