@@ -48,6 +48,8 @@
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="Email\Email.cs" />
     <Compile Include="IO\DirectoryUtil.cs" />
+    <Compile Include="IO\FileUtil.cs" />
+    <Compile Include="IO\WinDirStat.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="PhoneUtil.cs" />
     <Compile Include="Phone.cs" />
