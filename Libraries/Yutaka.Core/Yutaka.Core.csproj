@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,6 +47,7 @@
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="DateTimeExtension.cs" />
+    <Compile Include="Drawing\DrawingUtil.cs" />
     <Compile Include="Email\Email.cs" />
     <Compile Include="IO\DirectoryUtil.cs" />
     <Compile Include="IO\FileUtil.cs" />
