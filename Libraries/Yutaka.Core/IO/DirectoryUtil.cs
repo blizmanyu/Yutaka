@@ -10,48 +10,58 @@ namespace Yutaka.Core.IO
 		private static readonly int InitialStackCapacity = 100;
 
 		/// <summary>
-		/// Returns an enumerable collection of full file names that match a search pattern in a specified path and subdirectories.
+		/// Returns an enumerable collection of full file names that match a search pattern in a specified path, and optionally searches subdirectories.
 		/// </summary>
 		/// <param name="path">The relative or absolute path to the directory to search. This string is not case-sensitive.</param>
-		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions</param>
-		/// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by &lt;path&gt; and that match the specified search pattern</returns>
-		public static IEnumerable<string> EnumerateFiles(string path, string searchPattern = "*")
+		/// <param name="searchPattern">The search string to match against the names of files in &lt;path&gt;. This parameter can contain a combination of valid literal path and wildcard (* and ?) characters, but it doesn't support regular expressions.</param>
+		/// <param name="searchOption">One of the enumeration values that specifies whether the search operation should include only the current directory or should include all subdirectories. The default value is <see cref="SearchOption.TopDirectoryOnly"/>.</param>
+		/// <returns>An enumerable collection of the full names (including paths) for the files in the directory specified by &lt;path&gt; and that match the specified search pattern and search option.</returns>
+		public static IEnumerable<string> EnumerateFiles(string path, string searchPattern = "*", SearchOption searchOption = SearchOption.TopDirectoryOnly)
 		{
 			#region Check Input
-			if (String.IsNullOrWhiteSpace(path))
-				throw new ArgumentException("'path' is null or whitespace.", "path");
+			if (path == null)
+				throw new ArgumentNullException("path");
+			else if (String.IsNullOrWhiteSpace(path))
+				throw new ArgumentException("'path' is whitespace.", "path");
 			if (!Directory.Exists(path))
-				throw new ArgumentException(String.Format("'path' '{0}' does not exist.", path), "path");
-			if (String.IsNullOrWhiteSpace(searchPattern))
+				throw new ArgumentException(String.Format("Path '{0}' does not exist.", path), "path");
+			if (String.IsNullOrEmpty(searchPattern))
 				searchPattern = "*";
 			#endregion Check Input
 
-			IEnumerable<string> files;
-			string currentDir;
-			var dirs = new Stack<string>(InitialStackCapacity);
-			dirs.Push(path);
-
-			while (dirs.Count > 0) {
-				currentDir = dirs.Pop();
-
-				try {
-					files = Directory.EnumerateFiles(currentDir, searchPattern);
-				}
-
-				catch {
-					continue;
-				}
-
-				foreach (var file in files)
+			if (searchOption == SearchOption.TopDirectoryOnly) {
+				foreach (var file in Directory.EnumerateFiles(path, searchPattern, searchOption))
 					yield return file;
+			}
 
-				try {
-					foreach (var dir in Directory.EnumerateDirectories(currentDir))
-						dirs.Push(dir);
-				}
+			else {
+				IEnumerable<string> files;
+				string currentDir;
+				var dirs = new Stack<string>(InitialStackCapacity);
+				dirs.Push(path);
 
-				catch {
-					continue;
+				while (dirs.Count > 0) {
+					currentDir = dirs.Pop();
+
+					try {
+						files = Directory.EnumerateFiles(currentDir, searchPattern, searchOption);
+					}
+
+					catch {
+						continue;
+					}
+
+					foreach (var file in files)
+						yield return file;
+
+					try {
+						foreach (var dir in Directory.EnumerateDirectories(currentDir))
+							dirs.Push(dir);
+					}
+
+					catch {
+						continue;
+					}
 				}
 			}
 		}
