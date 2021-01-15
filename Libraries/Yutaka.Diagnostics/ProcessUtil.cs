@@ -96,14 +96,7 @@ namespace Yutaka.Diagnostics
 			}
 
 			Thread.Sleep(DefaultSleepTime);
-
-			foreach (var process in processes) {
-				try {
-					process.Close();
-				}
-				catch { }
-			}
-
+			FreeResources(processes);
 			Thread.Sleep(DefaultSleepTime);
 			KillProcess(programName);
 			return count;
