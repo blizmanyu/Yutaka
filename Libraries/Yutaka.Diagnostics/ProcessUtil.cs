@@ -43,6 +43,23 @@ namespace Yutaka.Diagnostics
 		private static extern IntPtr SendMessage(IntPtr hWnd, uint msg, int wParam, int lParam);
 		#endregion DLL Imports
 
+		/// <summary>
+		/// Frees all the resources that are associated with these components.
+		/// </summary>
+		/// <param name="processes">The list of <see cref="Process"/>es to free.</param>
+		private static void FreeResources(List<Process> processes)
+		{
+			if (processes == null || processes.Count < 1)
+				return;
+
+			foreach (var process in processes) {
+				try {
+					process.Close();
+				}
+				catch { }
+			}
+		}
+
 		private static void RefreshTrayArea(IntPtr windowHandle)
 		{
 			GetClientRect(windowHandle, out var rect);
