@@ -52,22 +52,30 @@ namespace Yutaka.Diagnostics
 		#endregion Utilities
 
 		#region Public Methods
+		/// <summary>
+		/// Closes a process that has a user interface by sending a close message to its main window, then frees all the resources that are associated with this component.
+		/// </summary>
+		/// <param name="programName">The friendly name of the process.</param>
+		/// <returns>The number of processes closed.</returns>
 		public static int CloseProgram(string programName)
 		{
 			if (String.IsNullOrWhiteSpace(programName))
 				return 0;
 
 			var count = 0;
+			programName = programName.ToUpper();
 
-			foreach (var process in Process.GetProcessesByName(programName)) {
-				try {
-					process.CloseMainWindow();
-					++count;
-					Thread.Sleep(DefaultSleepTime);
-					process.Close();
+			foreach (var process in Process.GetProcesses()) {
+				if (process.ProcessName.ToUpper().StartsWith(programName)) {
+					try {
+						process.CloseMainWindow();
+						++count;
+						Thread.Sleep(DefaultSleepTime);
+						process.Close();
+					}
+
+					catch (Exception) { }
 				}
-
-				catch (Exception) { }
 			}
 
 			return count;
