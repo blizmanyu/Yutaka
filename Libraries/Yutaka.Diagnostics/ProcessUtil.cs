@@ -64,27 +64,28 @@ namespace Yutaka.Diagnostics
 				return 0;
 
 			var count = 0;
+			var processes = new List<Process>();
 			programName = programName.ToUpper();
 
 			foreach (var process in Process.GetProcesses()) {
 				if (process.ProcessName.ToUpper().StartsWith(programName)) {
+					processes.Add(process);
 					try {
 						process.CloseMainWindow();
 						++count;
-						Thread.Sleep(DefaultSleepTime);
-						process.Close();
 					}
-
-					catch (Exception) { }
+					catch { }
 				}
 			}
 
 			Thread.Sleep(DefaultSleepTime);
 
-			try {
-				count += KillProcess(programName);
+			foreach (var process in processes) {
+				try {
+					process.Close();
+				}
+				catch { }
 			}
-			catch (Exception) { }
 
 			return count;
 		}
