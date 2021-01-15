@@ -79,7 +79,12 @@ namespace Yutaka.Diagnostics
 			}
 
 			Thread.Sleep(DefaultSleepTime);
-			count += KillProcess(programName);
+
+			try {
+				count += KillProcess(programName);
+			}
+			catch (Exception) { }
+
 			return count;
 		}
 
