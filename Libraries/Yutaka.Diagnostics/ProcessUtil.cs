@@ -78,6 +78,8 @@ namespace Yutaka.Diagnostics
 				}
 			}
 
+			Thread.Sleep(DefaultSleepTime);
+			count += KillProcess(programName);
 			return count;
 		}
 
