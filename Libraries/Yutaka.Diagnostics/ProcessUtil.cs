@@ -93,22 +93,30 @@ namespace Yutaka.Diagnostics
 			}
 		}
 
+		/// <summary>
+		/// Immediately stops the associated process.
+		/// </summary>
+		/// <param name="processName">The friendly name of the process.</param>
+		/// <returns>The number of processes killed.</returns>
 		public static int KillProcess(string processName)
 		{
 			if (String.IsNullOrWhiteSpace(processName))
 				return 0;
 
 			var count = 0;
+			processName = processName.ToUpper();
 
-			foreach (var process in Process.GetProcessesByName(processName)) {
-				try {
-					process.Kill();
-					++count;
-					Thread.Sleep(DefaultSleepTime);
-					process.Close();
+			foreach (var process in Process.GetProcesses()) {
+				if (process.ProcessName.ToUpper().StartsWith(processName)) {
+					try {
+						process.Kill();
+						++count;
+						Thread.Sleep(DefaultSleepTime);
+						process.Close();
+					}
+
+					catch (Exception) { }
 				}
-
-				catch (Exception) { }
 			}
 
 			return count;
