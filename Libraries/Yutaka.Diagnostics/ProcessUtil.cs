@@ -146,13 +146,7 @@ namespace Yutaka.Diagnostics
 			}
 
 			Thread.Sleep(DefaultSleepTime);
-
-			foreach (var process in processes) {
-				try {
-					process.Close();
-				} catch { }
-			}
-
+			FreeResources(processes);
 			return count;
 		}
 
