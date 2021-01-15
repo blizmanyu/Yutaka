@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -111,19 +112,25 @@ namespace Yutaka.Diagnostics
 				return 0;
 
 			var count = 0;
+			var processes = new List<Process>();
 			processName = processName.ToUpper();
 
 			foreach (var process in Process.GetProcesses()) {
 				if (process.ProcessName.ToUpper().StartsWith(processName)) {
+					processes.Add(process);
 					try {
 						process.Kill();
 						++count;
-						Thread.Sleep(DefaultSleepTime);
-						process.Close();
-					}
-
-					catch (Exception) { }
+					} catch { }
 				}
+			}
+
+			Thread.Sleep(DefaultSleepTime);
+
+			foreach (var process in processes) {
+				try {
+					process.Close();
+				} catch { }
 			}
 
 			return count;
