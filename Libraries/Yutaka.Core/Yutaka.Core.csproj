@@ -54,6 +54,10 @@
     <Compile Include="IO\FileUtil.cs" />
     <Compile Include="IO\WinDirStat.cs" />
     <Compile Include="LogLevel.cs" />
+    <Compile Include="Net\FtpUtil.cs" />
+    <Compile Include="Net\GmailSmtpClient.cs" />
+    <Compile Include="Net\MailUtil.cs" />
+    <Compile Include="Net\MailUtil201902281957.cs" />
     <Compile Include="PhoneUtil.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
