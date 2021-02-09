@@ -4,6 +4,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using NLog;
 using Yutaka.Core.IO;
+using Yutaka.Core.Net;
 
 namespace Yutaka.Core.Tests
 {
@@ -24,6 +25,9 @@ namespace Yutaka.Core.Tests
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string ProgramName = "Yutaka.Core.Tests";
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
+		private static readonly string DcRcwIp = "192.168.4.6";
+		private static readonly string BlackPantherIp = "192.168.4.28";
+		private static readonly string WebHostIp = "69.16.238.147";
 
 		private static int errorCount = 0;
 		private static int processedCount = 0;
@@ -39,7 +43,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_EnumerateImageFiles();
+				Test_PingUtil_ArePingable();
 			}
 
 			catch (Exception ex) {
@@ -108,6 +112,21 @@ namespace Yutaka.Core.Tests
 			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
 		}
 		#endregion IO
+
+		#region Yutaka.Core.Net Tests
+		// Modified Feb 8, 2021 // Created Feb 8, 2021 //
+		private static void Test_PingUtil_ArePingable()
+		{
+			string[] tests = { DcRcwIp, BlackPantherIp, WebHostIp, /*"192.168.4.254",*/ };
+			var stopWatch = new Stopwatch();
+			stopWatch.Start();
+			stopWatch.Stop();
+			stopWatch.Restart();
+			Console.Write("\nArePingable: {0}", PingUtil.ArePingable(tests));
+			stopWatch.Stop();
+			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
+		}
+		#endregion Yutaka.Core.Net Tests
 
 		#region StartProgram & EndProgram
 		private static void StartProgram()
