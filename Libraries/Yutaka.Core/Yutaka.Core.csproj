@@ -58,6 +58,7 @@
     <Compile Include="Net\GmailSmtpClient.cs" />
     <Compile Include="Net\MailUtil.cs" />
     <Compile Include="Net\MailUtil201902281957.cs" />
+    <Compile Include="Net\PingUtil.cs" />
     <Compile Include="PhoneUtil.cs" />
     <Compile Include="Phone.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
