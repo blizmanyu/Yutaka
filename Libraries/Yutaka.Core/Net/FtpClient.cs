@@ -1,34 +1,62 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Yutaka.Core.Net
 {
-	public class FtpClient : WebRequest
+	public class FtpClient //: WebRequest
 	{
 		#region Fields
+		private string m_host = null;
+		/// <summary>
+		/// The server to connect to
+		/// </summary>
+		public string Host
+		{
+			get => m_host;
+			set { // remove unwanted prefix/postfix
+				if (value.StartsWith("ftp://"))
+					value = value.Substring(value.IndexOf("ftp://") + "ftp://".Length);
+				if (value.EndsWith("/"))
+					value = value.Replace("/", "");
 
+				m_host = value;
+			}
+		}
+
+		private int m_port = 0;
+		/// <summary>
+		/// The port to connect to. If this value is set to 0 (Default) the port used will be determined
+		/// by the type of SSL used or if no SSL is to be used it  will automatically connect to port 21.
+		/// </summary>
+		public int Port
+		{
+			get { // automatically determine port when m_port is 0.
+				if (m_port == 0)
+					return 21;
+
+				return m_port;
+			}
+			set => m_port = value;
+		}
+
+		/// <summary>
+		/// Credentials used for authentication
+		/// </summary>
+		public NetworkCredential Credentials { get; set; } = new NetworkCredential("anonymous", "anonymous");
 		#endregion Fields
 
 		#region Constructors
 		/// <summary>
 		/// Creates a new instance of an FTP Client.
 		/// </summary>
-		public FtpClient()
-		{
-			m_listParser = new FtpListParser(this);
-		}
+		public FtpClient() { }
 
 		/// <summary>
 		/// Creates a new instance of an FTP Client, with the given host.
 		/// </summary>
 		public FtpClient(string host)
 		{
-			Host = host ?? throw new ArgumentNullException("Host must be provided");
-			m_listParser = new FtpListParser(this);
+			Host = host ?? throw new ArgumentNullException("Host is required.");
 		}
 
 		/// <summary>
@@ -36,9 +64,8 @@ namespace Yutaka.Core.Net
 		/// </summary>
 		public FtpClient(string host, NetworkCredential credentials)
 		{
-			Host = host ?? throw new ArgumentNullException("Host must be provided");
-			Credentials = credentials ?? throw new ArgumentNullException("Credentials must be provided");
-			m_listParser = new FtpListParser(this);
+			Host = host ?? throw new ArgumentNullException("Host is required.");
+			Credentials = credentials ?? throw new ArgumentNullException("Credentials are required.");
 		}
 
 		/// <summary>
@@ -46,10 +73,9 @@ namespace Yutaka.Core.Net
 		/// </summary>
 		public FtpClient(string host, int port, NetworkCredential credentials)
 		{
-			Host = host ?? throw new ArgumentNullException("Host must be provided");
+			Host = host ?? throw new ArgumentNullException("Host is required.");
 			Port = port;
-			Credentials = credentials ?? throw new ArgumentNullException("Credentials must be provided");
-			m_listParser = new FtpListParser(this);
+			Credentials = credentials ?? throw new ArgumentNullException("Credentials is required.");
 		}
 
 		/// <summary>
@@ -59,17 +85,15 @@ namespace Yutaka.Core.Net
 		{
 			Host = host;
 			Credentials = new NetworkCredential(user, pass);
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
-		/// Creates a new instance of an FTP Client, with the given host, username, password and account
+		/// Creates a new instance of an FTP Client, with the given host, username, password and domain
 		/// </summary>
-		public FtpClient(string host, string user, string pass, string account)
+		public FtpClient(string host, string user, string pass, string domain)
 		{
 			Host = host;
-			Credentials = new NetworkCredential(user, pass, account);
-			m_listParser = new FtpListParser(this);
+			Credentials = new NetworkCredential(user, pass, domain);
 		}
 
 		/// <summary>
@@ -80,18 +104,16 @@ namespace Yutaka.Core.Net
 			Host = host;
 			Port = port;
 			Credentials = new NetworkCredential(user, pass);
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
-		/// Creates a new instance of an FTP Client, with the given host, port, username, password and account
+		/// Creates a new instance of an FTP Client, with the given host, port, username, password and domain
 		/// </summary>
-		public FtpClient(string host, int port, string user, string pass, string account)
+		public FtpClient(string host, int port, string user, string pass, string domain)
 		{
 			Host = host;
 			Port = port;
-			Credentials = new NetworkCredential(user, pass, account);
-			m_listParser = new FtpListParser(this);
+			Credentials = new NetworkCredential(user, pass, domain);
 		}
 
 		/// <summary>
@@ -101,7 +123,6 @@ namespace Yutaka.Core.Net
 		{
 			Host = ValidateHost(host);
 			Port = host.Port;
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
@@ -112,7 +133,6 @@ namespace Yutaka.Core.Net
 			Host = ValidateHost(host);
 			Port = host.Port;
 			Credentials = credentials;
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
@@ -123,18 +143,16 @@ namespace Yutaka.Core.Net
 			Host = ValidateHost(host);
 			Port = host.Port;
 			Credentials = new NetworkCredential(user, pass);
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
 		/// Creates a new instance of an FTP Client, with the given host and credentials.
 		/// </summary>
-		public FtpClient(Uri host, string user, string pass, string account)
+		public FtpClient(Uri host, string user, string pass, string domain)
 		{
 			Host = ValidateHost(host);
 			Port = host.Port;
-			Credentials = new NetworkCredential(user, pass, account);
-			m_listParser = new FtpListParser(this);
+			Credentials = new NetworkCredential(user, pass, domain);
 		}
 
 		/// <summary>
@@ -145,19 +163,31 @@ namespace Yutaka.Core.Net
 			Host = ValidateHost(host);
 			Port = port;
 			Credentials = new NetworkCredential(user, pass);
-			m_listParser = new FtpListParser(this);
 		}
 
 		/// <summary>
 		/// Creates a new instance of an FTP Client, with the given host, port and credentials.
 		/// </summary>
-		public FtpClient(Uri host, int port, string user, string pass, string account)
+		public FtpClient(Uri host, int port, string user, string pass, string domain)
 		{
 			Host = ValidateHost(host);
 			Port = port;
-			Credentials = new NetworkCredential(user, pass, account);
-			m_listParser = new FtpListParser(this);
+			Credentials = new NetworkCredential(user, pass, domain);
 		}
 		#endregion Constructors
+
+		#region Utilities
+		/// <summary>
+		/// Check if the host parameter is valid
+		/// </summary>
+		/// <param name="host"></param>
+		private static string ValidateHost(Uri host)
+		{
+			if (host == null) 
+				throw new ArgumentNullException("Host is required");
+
+			return host.Host;
+		}
+		#endregion Utilities
 	}
 }
