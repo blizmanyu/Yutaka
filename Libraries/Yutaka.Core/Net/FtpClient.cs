@@ -183,7 +183,7 @@ namespace Yutaka.Core.Net
 		/// <param name="host"></param>
 		private static string ValidateHost(Uri host)
 		{
-			if (host == null) 
+			if (host == null)
 				throw new ArgumentNullException("Host is required");
 
 			return host.Host;
