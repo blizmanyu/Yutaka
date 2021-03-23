@@ -16,10 +16,6 @@ namespace Yutaka.Data
 		/// The name of a stored procedure.
 		/// </summary>
 		public static readonly CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
-		/// <summary>
-		/// The name of a table.
-		/// </summary>
-		public static readonly CommandType CommandType_TableDirect = CommandType.TableDirect;
 		#endregion Fields
 
 		#region Constructor
