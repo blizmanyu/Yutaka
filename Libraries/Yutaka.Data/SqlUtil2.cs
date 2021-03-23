@@ -29,19 +29,8 @@ namespace Yutaka.Data
 		/// <param name="connectionString">A valid connection string.</param>
 		public SqlUtil2(string connectionString = null)
 		{
-			#region Input Check
-			var log = "";
-
-			if (String.IsNullOrWhiteSpace(connectionString))
-				log = String.Format("<connectionString> is required.{0}", Environment.NewLine);
-			else if (connectionString.Length < 9)
-				log = String.Format("'{0}' is an invalid connection string.{1}", connectionString, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(log))
-				throw new Exception(String.Format("{0}Exception thrown in Constructor SqlUtil2(string connectionString).{1}", log, Environment.NewLine));
-			#endregion Input Check
-
-			ConnectionString = connectionString;
+			if (!String.IsNullOrWhiteSpace(connectionString))
+				ConnectionString = connectionString;
 		}
 		#endregion Constructor
 
