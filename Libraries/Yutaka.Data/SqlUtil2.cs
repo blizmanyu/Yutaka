@@ -8,14 +8,6 @@ namespace Yutaka.Data
 	{
 		#region Fields
 		protected string ConnectionString;
-		/// <summary>
-		/// An SQL text command. (Default.)
-		/// </summary>
-		public static readonly CommandType CommandType_Text = CommandType.Text;
-		/// <summary>
-		/// The name of a stored procedure.
-		/// </summary>
-		public static readonly CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
 		#endregion Fields
 
 		#region Constructor
@@ -310,7 +302,7 @@ namespace Yutaka.Data
 			if (String.IsNullOrWhiteSpace(storProcName))
 				return;
 
-			ExecuteNonQuery(storProcName, CommandType_StoredProcedure, parameters);
+			ExecuteNonQuery(storProcName, CommandType.StoredProcedure, parameters);
 		}
 
 		/// <summary>
