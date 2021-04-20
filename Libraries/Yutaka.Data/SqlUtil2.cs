@@ -66,7 +66,7 @@ namespace Yutaka.Data
 			var log = "";
 
 			if (String.IsNullOrWhiteSpace(commandText))
-				log = String.Format("{0}<commandText> is required.{1}", log, Environment.NewLine);
+				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.ExecuteNonQuery(string commandText, CommandType commandType, params SqlParameter[] parameters).{1}{1}", log, Environment.NewLine));
@@ -148,7 +148,7 @@ namespace Yutaka.Data
 			var log = "";
 
 			if (String.IsNullOrWhiteSpace(commandText))
-				log = String.Format("{0}<commandText> is required.{1}", log, Environment.NewLine);
+				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.ExecuteReader(string commandText, CommandType commandType, params SqlParameter[] parameters).{1}{1}", log, Environment.NewLine));
@@ -231,7 +231,7 @@ namespace Yutaka.Data
 			var log = "";
 
 			if (String.IsNullOrWhiteSpace(commandText))
-				log = String.Format("{0}<commandText> is required.{1}", log, Environment.NewLine);
+				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.ExecuteScalar(string commandText, CommandType commandType, params SqlParameter[] parameters).{1}{1}", log, Environment.NewLine));
@@ -324,7 +324,7 @@ namespace Yutaka.Data
 			var log = "";
 
 			if (String.IsNullOrWhiteSpace(jobId))
-				log = String.Format("{0}<jobId> is required.{1}", log, Environment.NewLine);
+				log = String.Format("{0}'jobId' is required.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.StartJob(string jobId, string stepName).{1}{1}", log, Environment.NewLine));
@@ -404,7 +404,7 @@ namespace Yutaka.Data
 			if (String.IsNullOrWhiteSpace(schema))
 				schema = "dbo";
 			if (String.IsNullOrWhiteSpace(table))
-				log = String.Format("{0}<table> is required.{1}", log, Environment.NewLine);
+				log = String.Format("{0}'table' is required.{1}", log, Environment.NewLine);
 
 			if (!String.IsNullOrWhiteSpace(log))
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.TruncateTable(string database, string schema, string table).{1}{1}", log, Environment.NewLine));
