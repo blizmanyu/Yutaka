@@ -65,6 +65,8 @@ namespace Yutaka.Data
 			#region Input Check
 			var log = "";
 
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(commandText))
 				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
@@ -147,6 +149,8 @@ namespace Yutaka.Data
 			#region Input Check
 			var log = "";
 
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(commandText))
 				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
@@ -230,6 +234,8 @@ namespace Yutaka.Data
 			#region Input Check
 			var log = "";
 
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(commandText))
 				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
 
@@ -323,6 +329,8 @@ namespace Yutaka.Data
 			#region Input Check
 			var log = "";
 
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(jobId))
 				log = String.Format("{0}'jobId' is required.{1}", log, Environment.NewLine);
 
@@ -401,6 +409,8 @@ namespace Yutaka.Data
 			#region Input Check
 			var log = "";
 
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(schema))
 				schema = "dbo";
 			if (String.IsNullOrWhiteSpace(table))
