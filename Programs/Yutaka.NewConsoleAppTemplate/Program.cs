@@ -6,6 +6,8 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
+		private static readonly bool consoleOut = true; // default = false //
+
 		#region Fields
 		#region Static Externs
 		[DllImport("kernel32.dll")]
@@ -15,9 +17,8 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
-		private static readonly bool consoleOut = true; // default = false //
 		private static readonly DateTime startTime = DateTime.Now;
-		private static readonly double errorPerThreshold = 0.07;
+		private static readonly double errorPercThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
@@ -90,10 +91,10 @@ namespace Yutaka.NewConsoleAppTemplate
 			var errorPer = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
 			var successPer = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
-			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
+			if (errorCount > errorCountThreshold || errorPer > errorPercThreshold) {
 				logger.Error("The number of errors is above the threshold.");
 
-				if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
+				if (errorCount > errorCountThreshold && errorPer > errorPercThreshold) {
 					//MailUtil.Send("fromEmail", "fromEmail", ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
 				}
 			}
