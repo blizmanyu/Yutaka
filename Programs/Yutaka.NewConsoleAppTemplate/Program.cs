@@ -67,6 +67,21 @@ namespace Yutaka.NewConsoleAppTemplate
 		#region Methods
 
 		#region StartProgram & EndProgram
+		private static void HandleArgs(string[] args)
+		{
+			if (args == null || args.Length < 1) {
+				; // if you want empty arguments to actually set default args, set them here.
+			}
+
+			else {
+				var temp = String.Join(" ", args);
+
+				if (temp.IndexOf("ASDFG", StringComparison.OrdinalIgnoreCase) > -1) {
+					; // handle args like this
+				}
+			}
+		}
+
 		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", ProgramName);
