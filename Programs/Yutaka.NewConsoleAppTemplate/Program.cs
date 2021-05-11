@@ -102,30 +102,42 @@ namespace Yutaka.NewConsoleAppTemplate
 		{
 			var endTime = DateTime.Now;
 			var ts = endTime - startTime;
-			var processedPer = (double) processedCount / totalCount;
-			var skippedPer = (double) skippedCount / totalCount;
-			var errorPer = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
-			var successPer = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
+			var processedPerc = (double) processedCount / totalCount;
+			var skippedPerc = (double) skippedCount / totalCount;
+			var errorPerc = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
+			var successPerc = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
-			if (errorCount > errorCountThreshold || errorPer > errorPercThreshold) {
+			if (errorCount > errorCountThreshold || errorPerc > errorPercThreshold) {
 				logger.Error("The number of errors is above the threshold.");
 
-				if (errorCount > errorCountThreshold && errorPer > errorPercThreshold) {
-					//MailUtil.Send("fromEmail", "fromEmail", ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
+				if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold) {
+					//MailUtil.Send("fromEmail", "fromEmail", ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("P")));
 				}
 			}
 
 			var log = new string[7];
 			log[0] = "Ending program";
-			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
+
+			if (ts.TotalHours > 1)
+				log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm"));
+			else if (ts.TotalMinutes > 1)
+				log[1] = String.Format("It took {0} to complete", ts.ToString(@"mm\:ss"));
+			else
+				log[1] = String.Format("It took {0} to complete", ts.ToString(@"ss\.fff"));
+
 			log[2] = String.Format("Total: {0:n0}", totalCount);
-			log[3] = String.Format("Processed: {0:n0} ({1})", processedCount, processedPer.ToString("p"), Environment.NewLine);
-			log[4] = String.Format("Skipped: {0} ({1})", skippedCount, skippedPer.ToString("p"), Environment.NewLine);
-			log[5] = String.Format("Success: {0} ({1})", successCount, successPer.ToString("p"), Environment.NewLine);
-			log[6] = String.Format("Errors: {0} ({1}){2}{2}", errorCount, errorPer.ToString("p"), Environment.NewLine);
+
+			if (totalCount > 0) {
+				log[3] = String.Format("Processed: {0:n0} ({1})", processedCount, processedPerc.ToString("p").Replace(" ", ""));
+				log[4] = String.Format("Skipped: {0} ({1})", skippedCount, skippedPerc.ToString("p").Replace(" ", ""));
+				log[5] = String.Format("Success: {0} ({1})", successCount, successPerc.ToString("p").Replace(" ", ""));
+				log[6] = String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p").Replace(" ", ""));
+			}
 
 			foreach (var l in log)
 				logger.Info(l);
+
+			logger.Info(Environment.NewLine + Environment.NewLine);
 
 			if (consoleOut) {
 				var timestamp = DateTime.Now.ToString(TIMESTAMP);
