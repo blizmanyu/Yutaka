@@ -34,7 +34,6 @@ namespace Yutaka.NewConsoleAppTemplate
 		static void Main(string[] args)
 		{
 			StartProgram();
-			string log;
 
 			try {
 				Process();
@@ -43,6 +42,8 @@ namespace Yutaka.NewConsoleAppTemplate
 			catch (Exception ex) {
 				++errorCount;
 				#region Logging
+				string log;
+
 				if (ex.InnerException == null)
 					log = String.Format("{0}{2}Exception thrown in Main().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
