@@ -75,6 +75,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Services", "Librarie
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Core.Tests", "Tests\Yutaka.Core.Tests\Yutaka.Core.Tests.csproj", "{D8707176-BA01-4C46-B3C2-EE7EB7DA9A09}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries - 3rd Party", "Libraries - 3rd Party", "{4910ED87-4253-469E-B47F-EB0384EB9D95}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
