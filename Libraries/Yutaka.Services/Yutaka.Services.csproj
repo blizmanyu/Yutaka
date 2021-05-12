@@ -85,8 +85,6 @@
     <Compile Include="Google\Gmail\GoogleGmailService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Code\Scripter.cs" />
-    <Compile Include="QuickBooks\Qbfc13Service.cs" />
-    <Compile Include="QuickBooks\_Helper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Google\Calendar\Event.json" />
