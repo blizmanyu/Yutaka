@@ -92,8 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Google\Calendar\Event.sql" />
-    <Content Include="QuickBooks\XMLOps\BillPaymentCheckQuery.xml" />
-    <Content Include="QuickBooks\XMLOps\BillQuery.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
