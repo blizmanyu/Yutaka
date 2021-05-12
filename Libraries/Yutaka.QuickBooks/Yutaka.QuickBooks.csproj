@@ -66,7 +66,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="XMLOps\AccountAdd.xml" />
+    <Content Include="XMLOps\AccountMod.xml" />
+    <Content Include="XMLOps\AccountQuery.xml" />
     <Content Include="XMLOps\ARRefundCreditCardQuery.xml" />
+    <Content Include="XMLOps\BillAdd.xml" />
+    <Content Include="XMLOps\BillMod.xml" />
+    <Content Include="XMLOps\BillPaymentCheckAdd.xml" />
+    <Content Include="XMLOps\BillPaymentCheckMod.xml" />
     <Content Include="XMLOps\BillPaymentCheckQuery.xml" />
     <Content Include="XMLOps\BillPaymentCreditCardQuery.xml" />
     <Content Include="XMLOps\BillQuery.xml" />

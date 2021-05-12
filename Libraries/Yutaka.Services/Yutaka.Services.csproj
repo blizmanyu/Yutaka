@@ -94,15 +94,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Google\Calendar\Event.sql" />
-    <Content Include="QuickBooks\XMLOps\BillPaymentCheckAdd.xml" />
-    <Content Include="QuickBooks\XMLOps\BillPaymentCheckMod.xml" />
     <Content Include="QuickBooks\XMLOps\BillPaymentCheckQuery.xml" />
     <Content Include="QuickBooks\XMLOps\BillQuery.xml" />
-    <Content Include="QuickBooks\XMLOps\BillMod.xml" />
-    <Content Include="QuickBooks\XMLOps\BillAdd.xml" />
-    <Content Include="QuickBooks\XMLOps\AccountQuery.xml" />
-    <Content Include="QuickBooks\XMLOps\AccountMod.xml" />
-    <Content Include="QuickBooks\XMLOps\AccountAdd.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
