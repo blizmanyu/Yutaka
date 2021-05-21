@@ -26,7 +26,10 @@ namespace Yutaka.QuickBooks
 		public SalesTaxCodeRef SalesTaxCodeRef;
 		public bool? IsPaid;
 		public string ExternalGUID;
+		public LinkedTxn LinkedTxn;
 		public decimal? OpenAmount;
+		//Changes 5/20
+		public DataExtRet DataExtRet;
 		public List<Bill_ExpenseLineRet> ExpenseLines;
 
 		public BillRet()
@@ -37,6 +40,8 @@ namespace Yutaka.QuickBooks
 			CurrencyRef = new CurrencyRef();
 			TermsRef = new TermsRef();
 			SalesTaxCodeRef = new SalesTaxCodeRef();
+			LinkedTxn = new LinkedTxn();
+			DataExtRet = new DataExtRet();
 			ExpenseLines = new List<Bill_ExpenseLineRet>();
 		}
 	}

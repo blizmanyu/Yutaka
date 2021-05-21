@@ -12,6 +12,8 @@
 		public SalesTaxCodeRef SalesTaxCodeRef;
 		public string BillableStatus;
 		public SalesRepRef SalesRepRef;
+		//Changes 5/20
+		public DataExtRet DataExtRet;
 
 		public Bill_ExpenseLineRet()
 		{
@@ -20,6 +22,7 @@
 			ClassRef = new ClassRef();
 			SalesTaxCodeRef = new SalesTaxCodeRef();
 			SalesRepRef = new SalesRepRef();
+			DataExtRet = new DataExtRet();
 		}
 	}
 }
