@@ -53,6 +53,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\ARRefundCreditCardRet.cs" />
+    <Compile Include="Data\ARRefundCreditCard_CreditCardTxnInfo.cs" />
+    <Compile Include="Data\BillPaymentCheckRet.cs" />
+    <Compile Include="Data\BillPaymentCheck_AppliedToTxnRet.cs" />
+    <Compile Include="Data\ChargeRet.cs" />
     <Compile Include="Data\InventoryAdjustmentLineRet.cs" />
     <Compile Include="Data\InventoryAdjustmentRet.cs" />
     <Compile Include="Data\BillRet.cs" />
