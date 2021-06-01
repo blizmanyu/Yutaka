@@ -164,8 +164,7 @@ namespace Yutaka.Data
 						cmd.CommandType = commandType;
 						cmd.Parameters.AddRange(parameters);
 						conn.Open();
-						// When using CommandBehavior.CloseConnection, the connection will be closed when the IDataReader is closed.  
-						return cmd.ExecuteReader(CommandBehavior.CloseConnection);
+						return cmd.ExecuteReader();
 					}
 				}
 			}
