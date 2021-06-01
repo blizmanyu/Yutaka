@@ -319,6 +319,58 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Sends the CommandText to the Connection and loads the data into a <see cref="DataTable"/>.
+		/// </summary>
+		/// <param name="commandText">The Transact-SQL statement or stored procedure to execute.</param>
+		/// <param name="commandType">One of the <see cref="CommandType"/> values.</param>
+		/// <param name="parameters">The parameters of the Transact-SQL statement or stored procedure. The default is an empty collection.</param>
+		/// <returns>A <see cref="DataTable"/> object</returns>
+		public DataTable GetData(string commandText, CommandType commandType = CommandType.Text, params SqlParameter[] parameters)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(commandText))
+				log = String.Format("{0}'commandText' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.ExecuteReader(string commandText, CommandType commandType, params SqlParameter[] parameters).{1}{1}", log, Environment.NewLine));
+			#endregion Input Check
+
+			var dt = new DataTable();
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					using (var cmd = new SqlCommand(commandText, conn)) {
+						cmd.CommandType = commandType;
+						cmd.Parameters.AddRange(parameters);
+						conn.Open();
+						dt.Load(cmd.ExecuteReader(CommandBehavior.CloseConnection));
+						return dt;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}_PARAMS_Exception thrown in SqlUtil2.GetData(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, commandText, commandType);
+				else
+					log = String.Format("{0}{2}_PARAMS_Exception thrown in INNER EXCEPTION of SqlUtil2.GetData(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commandText, commandType);
+
+				if (parameters == null || parameters.Length < 1)
+					log = log.Replace("_PARAMS_", "");
+				else
+					log = log.Replace("_PARAMS_", String.Format("{0}{1}", ToString(parameters), Environment.NewLine));
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// Starts a SQL Agent job.
 		/// </summary>
 		/// <param name="jobId">The ID of the job to start.</param>
