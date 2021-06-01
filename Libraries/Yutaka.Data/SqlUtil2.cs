@@ -85,34 +85,6 @@ namespace Yutaka.Data
 				}
 			}
 
-			catch (SqlException ex) {
-				#region Log
-				for (int i = 0; i < ex.Errors.Count; i++) {
-					log = String.Format("{0}Index #{1}{2}" +
-						"Message: {3}{2}" +
-						"LineNumber: {4}{2}" +
-						"Source: {5}{2}" +
-						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
-				}
-
-				log = String.Format("{0}{2}{1}_PARAMS_Exception thrown in SqlUtil2.ExecuteNonQuery(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{2}{2}", ex.Message, log, Environment.NewLine, commandText, commandType);
-
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
-				throw new Exception(log);
-				#endregion Log
-			}
-
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
@@ -120,18 +92,7 @@ namespace Yutaka.Data
 				else
 					log = String.Format("{0}{2}_PARAMS_Exception thrown in INNER EXCEPTION of SqlUtil2.ExecuteNonQuery(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commandText, commandType);
 
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
+				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
 				#endregion Log
 			}
@@ -169,34 +130,6 @@ namespace Yutaka.Data
 				}
 			}
 
-			catch (SqlException ex) {
-				#region Log
-				for (int i = 0; i < ex.Errors.Count; i++) {
-					log = String.Format("{0}Index #{1}{2}" +
-						"Message: {3}{2}" +
-						"LineNumber: {4}{2}" +
-						"Source: {5}{2}" +
-						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
-				}
-
-				log = String.Format("{0}{2}{1}_PARAMS_Exception thrown in SqlUtil2.ExecuteReader(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{2}{2}", ex.Message, log, Environment.NewLine, commandText, commandType);
-
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
-				throw new Exception(log);
-				#endregion Log
-			}
-
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
@@ -204,18 +137,7 @@ namespace Yutaka.Data
 				else
 					log = String.Format("{0}{2}_PARAMS_Exception thrown in INNER EXCEPTION of SqlUtil2.ExecuteReader(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commandText, commandType);
 
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
+				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
 				#endregion Log
 			}
@@ -253,34 +175,6 @@ namespace Yutaka.Data
 				}
 			}
 
-			catch (SqlException ex) {
-				#region Log
-				for (int i = 0; i < ex.Errors.Count; i++) {
-					log = String.Format("{0}Index #{1}{2}" +
-						"Message: {3}{2}" +
-						"LineNumber: {4}{2}" +
-						"Source: {5}{2}" +
-						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
-				}
-
-				log = String.Format("{0}{2}{1}_PARAMS_Exception thrown in SqlUtil2.ExecuteScalar(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{2}{2}", ex.Message, log, Environment.NewLine, commandText, commandType);
-
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
-				throw new Exception(log);
-				#endregion Log
-			}
-
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
@@ -288,18 +182,7 @@ namespace Yutaka.Data
 				else
 					log = String.Format("{0}{2}_PARAMS_Exception thrown in INNER EXCEPTION of SqlUtil2.ExecuteScalar(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commandText, commandType);
 
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else {
-					var ps = "";
-
-					foreach (var p in parameters)
-						ps = String.Format("{0}{1}: '{2}'; ", ps, p.ParameterName, p.Value ?? "NULL");
-
-					ps = String.Format("{0}{1}", ps, Environment.NewLine);
-					log = log.Replace("_PARAMS_", ps);
-				}
-
+				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
 				#endregion Log
 			}
@@ -360,11 +243,7 @@ namespace Yutaka.Data
 				else
 					log = String.Format("{0}{2}_PARAMS_Exception thrown in INNER EXCEPTION of SqlUtil2.GetData(string commandText='{3}', CommandType commandType='{4}', params SqlParameter[] parameters).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, commandText, commandType);
 
-				if (parameters == null || parameters.Length < 1)
-					log = log.Replace("_PARAMS_", "");
-				else
-					log = log.Replace("_PARAMS_", String.Format("{0}{1}", ToString(parameters), Environment.NewLine));
-
+				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
 				#endregion Log
 			}
@@ -402,21 +281,6 @@ namespace Yutaka.Data
 						cmd.ExecuteNonQuery();
 					}
 				}
-			}
-
-			catch (SqlException ex) {
-				#region Log
-				for (int i = 0; i < ex.Errors.Count; i++) {
-					log = String.Format("{0}Index #{1}{2}" +
-						"Message: {3}{2}" +
-						"LineNumber: {4}{2}" +
-						"Source: {5}{2}" +
-						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
-				}
-
-				log = String.Format("{0}{2}{1}Exception thrown in SqlUtil2.StartJob(string jobId='{3}', string stepName='{4}').{2}{2}", ex.Message, log, Environment.NewLine, jobId, stepName);
-				throw new Exception(log);
-				#endregion Log
 			}
 
 			catch (Exception ex) {
@@ -480,7 +344,7 @@ namespace Yutaka.Data
 			var sql = String.Format("TRUNCATE TABLE {0}.{1}", schema, table);
 
 			if (!String.IsNullOrWhiteSpace(database))
-				sql = sql.Replace("TABLE ", String.Format("TABLE {0}.", database));
+				sql = sql.Replace("TRUNCATE TABLE ", String.Format("TRUNCATE TABLE {0}.", database));
 
 			try {
 				using (var conn = new SqlConnection(ConnectionString)) {
@@ -490,21 +354,6 @@ namespace Yutaka.Data
 						cmd.ExecuteNonQuery();
 					}
 				}
-			}
-
-			catch (SqlException ex) {
-				#region Log
-				for (int i = 0; i < ex.Errors.Count; i++) {
-					log = String.Format("{0}Index #{1}{2}" +
-						"Message: {3}{2}" +
-						"LineNumber: {4}{2}" +
-						"Source: {5}{2}" +
-						"Procedure: {6}{2}", log, i, Environment.NewLine, ex.Errors[i].Message, ex.Errors[i].LineNumber, ex.Errors[i].Source, ex.Errors[i].Procedure);
-				}
-
-				log = String.Format("{0}{2}{1}Exception thrown in SqlUtil2.TruncateTable(string database='{3}', string schema='{4}', string table='{5}').{2}{2}", ex.Message, log, Environment.NewLine, database, schema, table);
-				throw new Exception(log);
-				#endregion Log
 			}
 
 			catch (Exception ex) {
