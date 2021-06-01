@@ -435,8 +435,9 @@ namespace Yutaka.Data
 		/// Returns a string that represents all <see cref="SqlParameter.ParameterName"/>s and their <see cref="SqlParameter.Value"/>s.
 		/// </summary>
 		/// <param name="parameters">The array of <see cref="SqlParameter"/>s</param>
+		/// <param name="appendNewline">True to append <see cref="Environment.NewLine"/> to the end. The default is False.</param>
 		/// <returns>A string that represents all <see cref="SqlParameter.ParameterName"/>s and their <see cref="SqlParameter.Value"/>s.</returns>
-		public string ToString(SqlParameter[] parameters)
+		public string ToString(SqlParameter[] parameters, bool appendNewline = false)
 		{
 			if (parameters == null || parameters.Length < 1)
 				return "";
@@ -446,7 +447,12 @@ namespace Yutaka.Data
 			foreach (var p in parameters)
 				str = String.Format("{0}{1}: '{2}'; ", str, p.ParameterName, p.Value);
 
-			return str.Substring(0, str.Length - 2);
+			str = str.Substring(0, str.Length - 2);
+
+			if (appendNewline)
+				return String.Format("{0}{1}", str, Environment.NewLine);
+
+			return str;
 		}
 
 		/// <summary>
