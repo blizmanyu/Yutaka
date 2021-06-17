@@ -6,39 +6,42 @@ using System.Threading.Tasks;
 
 namespace Yutaka.QuickBooks.Data
 {
-	public class BillPaymentCheckRet
+	public class CheckRet
 	{
-		public string TxnID; 
-		public DateTime TimeCreated;
-		public DateTime TimeModified; 
-		public string EditSequence; 
+		public string TxnID; // required
+		public DateTime TimeCreated; // required
+		public DateTime TimeModified; // required
+		public string EditSequence; // required
 		public int? TxnNumber;
+		public AccountRef AccountRef;
 		public PayeeEntityRef PayeeEntityRef;
-		public APAccountRef APAccountRef;
+		public string RefNumber;
 		public DateTime TxnDate;
-		public BankAccountRef BankAccountRef;
 		public decimal? Amount;
 		public CurrencyRef CurrencyRef;
 		public decimal? ExchangeRate;
-		public decimal? AmountDueInHomeCurrency;
-		public string RefNumber;
+		public decimal? AmountInHomeCurrency;
 		public string Memo;
 		public Address Address;
 		public AddressBlock AddressBlock;
 		public bool? IsToBePrinted;
+		public bool? IsTaxIncluded;
+		public SalesTaxCodeRef SalesTaxCodeRef;
 		public string ExternalGUID;
-		public List<AppliedToTxnRet> AppliedToTxnRet;
+		public LinkedTxn LinkedTxn;
+		public List<Check_ExpenseLineRet> Check_ExpenseLineRet;
 		public DataExtRet DataExtRet;
 
-		public BillPaymentCheckRet()
+		public CheckRet()
 		{
+			AccountRef = new AccountRef();
 			PayeeEntityRef = new PayeeEntityRef();
-			APAccountRef = new APAccountRef();
-			BankAccountRef = new BankAccountRef();
 			CurrencyRef = new CurrencyRef();
 			Address = new Address();
 			AddressBlock = new AddressBlock();
-			AppliedToTxnRet = new List<AppliedToTxnRet>();
+			SalesTaxCodeRef = new SalesTaxCodeRef();
+			LinkedTxn = new LinkedTxn();
+			Check_ExpenseLineRet = new List<Check_ExpenseLineRet>();
 			DataExtRet = new DataExtRet();
 		}
 

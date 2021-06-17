@@ -22,6 +22,7 @@ namespace Yutaka.QuickBooks
 		public SalesOrPurchase SalesOrPurchase;
 		public SalesAndPurchase SalesAndPurchase;
 		public string ExternalGUID;
+		public DataExtRet DataExtRet;
 
 		public ItemNonInventoryRet()
 		{
@@ -31,6 +32,7 @@ namespace Yutaka.QuickBooks
 			SalesTaxCodeRef = new SalesTaxCodeRef();
 			SalesOrPurchase = new SalesOrPurchase();
 			SalesAndPurchase = new SalesAndPurchase();
+			DataExtRet = new DataExtRet();
 		}
 	}
 }

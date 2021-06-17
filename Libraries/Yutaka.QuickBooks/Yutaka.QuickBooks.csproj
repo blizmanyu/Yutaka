@@ -53,17 +53,33 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AccountAddRet.cs" />
     <Compile Include="Data\ARRefundCreditCardRet.cs" />
-    <Compile Include="Data\ARRefundCreditCard_CreditCardTxnInfo.cs" />
+    <Compile Include="Data\BillAddRet.cs" />
     <Compile Include="Data\BillPaymentCheckRet.cs" />
-    <Compile Include="Data\BillPaymentCheck_AppliedToTxnRet.cs" />
+    <Compile Include="Data\BillPaymentCreditCardRet.cs" />
     <Compile Include="Data\ChargeRet.cs" />
+    <Compile Include="Data\CheckRet.cs" />
+    <Compile Include="Data\Check_ExpenseLineRet.cs" />
+    <Compile Include="Data\CreditCardChargeRet.cs" />
+    <Compile Include="Data\CreditCardTxnInfo.cs" />
+    <Compile Include="Data\CreditCard_ExpenseLineRet.cs" />
+    <Compile Include="Data\CreditCardCreditRet.cs" />
+    <Compile Include="Data\CustomerRet.cs" />
+    <Compile Include="Data\Customer_ContactsRet.cs" />
+    <Compile Include="Data\DepositRet.cs" />
+    <Compile Include="Data\Deposit_CashBackInfoRet.cs" />
+    <Compile Include="Data\Deposit_DepositLineRet.cs" />
+    <Compile Include="Data\ExpenseLineRet.cs" />
     <Compile Include="Data\InventoryAdjustmentLineRet.cs" />
     <Compile Include="Data\InventoryAdjustmentRet.cs" />
     <Compile Include="Data\BillRet.cs" />
     <Compile Include="Data\Bill_ExpenseLineRet.cs" />
     <Compile Include="Data\HelperClasses.cs" />
     <Compile Include="Data\ItemNonInventoryRet.cs" />
+    <Compile Include="Data\ReceivePaymentRet.cs" />
+    <Compile Include="Data\AppliedToTxnRet.cs" />
+    <Compile Include="Data\SalesReceiptRet.cs" />
     <Compile Include="QB20191021Util.cs" />
     <Compile Include="Qb13Util.cs" />
     <Compile Include="Qb20191023Util.cs" />
@@ -82,19 +98,27 @@
     <Content Include="XMLOps\BillPaymentCheckAdd.xml" />
     <Content Include="XMLOps\BillPaymentCheckMod.xml" />
     <Content Include="XMLOps\BillPaymentCheckQuery.xml" />
-    <Content Include="XMLOps\BillPaymentCreditCardQuery.xml" />
+    <Content Include="XMLOps\BillPaymentCreditCardQuery.xml">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="XMLOps\BillQuery.xml" />
     <Content Include="XMLOps\ChargeQuery.xml" />
     <Content Include="XMLOps\CheckQuery.xml" />
+    <Content Include="XMLOps\CreditCardChargeAdd.xml" />
     <Content Include="XMLOps\CreditCardChargeQuery.xml" />
+    <Content Include="XMLOps\CreditCardCreditAdd.xml" />
     <Content Include="XMLOps\CreditCardCreditQuery.xml" />
+    <Content Include="XMLOps\CustomerAdd.xml" />
     <Content Include="XMLOps\CustomerQuery.xml" />
     <Content Include="XMLOps\DepositQuery.xml" />
     <Content Include="XMLOps\InventoryAdjustmentAdd.xml" />
     <Content Include="XMLOps\InventoryAdjustmentQuery.xml" />
     <Content Include="XMLOps\ItemInventoryMod.xml" />
+    <Content Include="XMLOps\ItemNonInventoryQuery.xml" />
     <Content Include="XMLOps\ReceivePaymentQuery.xml" />
-    <Content Include="XMLOps\SalesReceiptQuery.xml" />
+    <Content Include="XMLOps\SalesReceiptQuery.xml">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

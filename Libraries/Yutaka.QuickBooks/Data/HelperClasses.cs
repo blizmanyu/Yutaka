@@ -8,6 +8,23 @@
 	}
 	#endregion AccountRef
 
+	#region public class AdditionalContactRef
+	public class AdditionalContactRef
+	{
+		public string ContactName;
+		public string ContactValue;
+	}
+	#endregion
+
+	#region public class AdditionalNotesRet
+	public class AdditionalNotesRet
+	{
+		public int NodeID; //required
+		public string Date; //required
+		public string Note; //required
+	}
+	#endregion
+
 	#region public class Address
 	public class Address
 	{
@@ -51,11 +68,46 @@
 	}
 	#endregion
 
+	#region public class AssetAccountRef
+	public class AssetAccountRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion AssetAccountRef
+
 	#region public class BankAccountRef
 	public class BankAccountRef
 	{
 		public string ListID;
 		public string FullName;
+	}
+	#endregion
+
+	#region public class BillAddress
+	public class BillAddress
+	{
+		public string Addr1;
+		public string Addr2;
+		public string Addr3;
+		public string Addr4;
+		public string Addr5;
+		public string City;
+		public string State;
+		public string PostalCode;
+		public string Country;
+		public string Note;
+	}
+	#endregion
+
+	#region public class BillAddressBlock
+	public class BillAddressBlock
+	{
+		public string Addr1;
+		public string Addr2;
+		public string Addr3;
+		public string Addr4;
+		public string Addr5;
 	}
 	#endregion
 
@@ -67,6 +119,34 @@
 	}
 	#endregion ClassRef
 
+	#region public class COGSAccountRef
+	public class COGSAccountRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion COGSAccountRef
+
+	#region public class CreditCardAccountRef
+	public class CreditCardAccountRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion CreditCardAccountRef
+
+	#region public class CreditCardInfo
+	public class CreditCardInfo
+	{
+		public string CreditCardNumber; 
+		public int ExpirationMonth; 
+		public int ExpirationYear; 
+		public string NameOnCard; 
+		public string CreditCardAddress;
+		public string CreditCardPostalCode;
+
+	}
+	#endregion
 
 	#region public class CreditCardTxnInputInfo
 	public class CreditCardTxnInputInfo
@@ -97,7 +177,7 @@
 		public string ReconBatchId;
 		public int PaymentGroupingCode;
 		public string PaymentStatus; // required
-		public string TxnAuthorization; //required
+		public string TxnAuthorizationTime; //required
 		public int TxnAuthorizationStamp;
 		public string ClientTransID;
 	}
@@ -111,6 +191,22 @@
 	}
 	#endregion CurrencyRef
 
+	#region public class CustomerMsgRef
+	public class CustomerMsgRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion
+
+	#region public class CustomerSalesTaxCodeRef
+	public class CustomerSalesTaxCodeRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion
+
 	#region public class CustomerRef
 	public class CustomerRef
 	{
@@ -119,13 +215,29 @@
 	}
 	#endregion CustomerRef
 
+	#region public class CustomerTypeRef
+	public class CustomerTypeRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion
+
 	#region public class DataExtRet
 	public class DataExtRet
 	{
-		public string OwnerID; //guid type in xml
+		public string OwnerID; 
 		public string DataExtName; //required
 		public string DataExtType; //required
 		public string DataExtValue; //required
+	}
+	#endregion
+
+	#region public class DepositToAccountRef
+	public class DepositToAccountRef
+	{
+		public string ListID;
+		public string FullName;
 	}
 	#endregion
 
@@ -143,6 +255,26 @@
 		public string ListID;
 		public string FullName;
 	}
+	#endregion
+
+	#region public class EntityRef
+	public class EntityRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion
+
+	#region public class ErrorRecovery
+	public class ErrorRecovery
+	{
+		public string ListID;
+		public string TxnNumber;
+		public string EditSequence;
+		public string ExternalGUID;
+	}
+
+
 	#endregion
 
 	#region public class ExpenseAccountRef
@@ -184,6 +316,60 @@
 		public string FullName;
 	}
 	#endregion ItemRef
+
+	#region public class ItemLineRet
+	public class ItemLineRet
+	{
+		public string TxnLineID;
+		public ItemRef ItemRef;
+		public InventorySiteRef InventorySiteRef;
+		public InventorySiteLocationRef InventorySiteLocationRef;
+		public string SerialNumber;
+		public string LotNumber;
+		public string Desc;
+		public decimal? Quantity;
+		public string UnitOfMeasure;
+		public OverrideUOMSetRef OverrideUOMSetRef;
+		public decimal? Cost;
+		public decimal? Amount;
+		public CustomerRef CustomerRef;
+		public ClassRef ClassRef;
+		public SalesTaxCodeRef SalesTaxCodeRef;
+		public string BillableStatus;
+		public SalesRepRef SalesRepRef;
+		public DataExtRet DataExtRet;
+
+		public ItemLineRet()
+		{
+			ItemRef = new ItemRef();
+			InventorySiteRef = new InventorySiteRef();
+			InventorySiteLocationRef = new InventorySiteLocationRef();
+			OverrideUOMSetRef = new OverrideUOMSetRef();
+			CustomerRef = new CustomerRef();
+			ClassRef = new ClassRef();
+			SalesTaxCodeRef = new SalesTaxCodeRef();
+			SalesRepRef = new SalesRepRef();
+			DataExtRet = new DataExtRet();
+		}
+
+	}
+	#endregion
+
+	#region public class ItemSalesTaxRef
+	public class ItemSalesTaxRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion ItemSalesTaxRef
+
+	#region public class JobTypeRef
+	public class JobTypeRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion JobTypeRef
 
 	#region public class LinkedTxn
 
@@ -238,6 +424,22 @@
 		public string FullName;
 	}
 	#endregion PrefVendorRef
+
+	#region public class PreferredPaymentMethodRef
+	public class PreferredPaymentMethodRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion PreferredPaymentMethodRef
+
+	#region public class PriceLevelRef
+	public class PriceLevelRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion PriceLevelRef
 
 	#region public class PurchaseTaxCodeRef
 	public class PurchaseTaxCodeRef
@@ -321,6 +523,75 @@
 		public string FullName;
 	}
 	#endregion SalesTaxCodeRef
+
+	#region public class ShipAddress
+	public class ShipAddress
+	{
+		public string Addr1;
+		public string Addr2;
+		public string Addr3;
+		public string Addr4;
+		public string Addr5;
+		public string City;
+		public string State;
+		public string PostalCode;
+		public string Country;
+		public string Note;
+	}
+	#endregion
+
+	#region public class ShipAddressBlock
+	public class ShipAddressBlock
+	{
+		public string Addr1;
+		public string Addr2;
+		public string Addr3;
+		public string Addr4;
+		public string Addr5;
+	}
+	#endregion
+
+	#region public class ShipMethodRef
+	public class ShipMethodRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion ShipMethodRef
+
+	#region public class ShipToAddress
+	public class ShipToAddress
+	{
+		public string Name; //required
+		public string Addr1;
+		public string Addr2;
+		public string Addr3;
+		public string Addr4;
+		public string Addr5;
+		public string City;
+		public string State;
+		public string PostalCode;
+		public string Country;
+		public string Note;
+		public bool? DefaultShipTo;
+	}
+	#endregion
+
+	#region public class TaxLineInfoRet
+	public class TaxLineInfoRet
+	{
+		public string TaxLineID;
+		public string TaxLineName;
+	}
+	#endregion TaxLineInfoRet
+
+	#region public class TemplateRef
+	public class TemplateRef
+	{
+		public string ListID;
+		public string FullName;
+	}
+	#endregion TemplateRef
 
 	#region public class TermsRef
 	public class TermsRef

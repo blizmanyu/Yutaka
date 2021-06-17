@@ -6,41 +6,34 @@ using System.Threading.Tasks;
 
 namespace Yutaka.QuickBooks.Data
 {
-	public class BillPaymentCheckRet
+	public class BillPaymentCreditCardAddRet
 	{
-		public string TxnID; 
+		public string TxnID;
 		public DateTime TimeCreated;
-		public DateTime TimeModified; 
-		public string EditSequence; 
+		public DateTime TimeModified;
+		public string EditSequence;
 		public int? TxnNumber;
 		public PayeeEntityRef PayeeEntityRef;
 		public APAccountRef APAccountRef;
 		public DateTime TxnDate;
-		public BankAccountRef BankAccountRef;
+		public CreditCardAccountRef CreditCardAccountRef;
 		public decimal? Amount;
 		public CurrencyRef CurrencyRef;
 		public decimal? ExchangeRate;
-		public decimal? AmountDueInHomeCurrency;
+		public decimal? AmountInHomeCurrency;
 		public string RefNumber;
-		public string Memo;
-		public Address Address;
-		public AddressBlock AddressBlock;
-		public bool? IsToBePrinted;
 		public string ExternalGUID;
-		public List<AppliedToTxnRet> AppliedToTxnRet;
+		public AppliedToTxnRet AppliedToTxnRet;
 		public DataExtRet DataExtRet;
 
-		public BillPaymentCheckRet()
+		public BillPaymentCreditCardAddRet()
 		{
 			PayeeEntityRef = new PayeeEntityRef();
 			APAccountRef = new APAccountRef();
-			BankAccountRef = new BankAccountRef();
+			CreditCardAccountRef = new CreditCardAccountRef();
 			CurrencyRef = new CurrencyRef();
-			Address = new Address();
-			AddressBlock = new AddressBlock();
-			AppliedToTxnRet = new List<AppliedToTxnRet>();
+			AppliedToTxnRet = new AppliedToTxnRet();
 			DataExtRet = new DataExtRet();
 		}
-
 	}
 }

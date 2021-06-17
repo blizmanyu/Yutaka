@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace Yutaka.QuickBooks.Data
 {
-	public class BillPaymentCheck_AppliedToTxnRet
+	public class AppliedToTxnRet
 	{
 		public string TxnID; // required
-		public string TxnLineID; // required
+		public string TxnType; //required
 		public DateTime TxnDate;
 		public string RefNumber;
 		public decimal? BalanceRemaining;
@@ -19,12 +19,11 @@ namespace Yutaka.QuickBooks.Data
 		public DiscountClassRef DiscountClassRef;
 		public LinkedTxn LinkedTxn;
 
-		public BillPaymentCheck_AppliedToTxnRet()
+		public AppliedToTxnRet()
 		{
 			DiscountAccountRef = new DiscountAccountRef();
 			DiscountClassRef = new DiscountClassRef();
 			LinkedTxn = new LinkedTxn();
-
 		}
 	}
 }

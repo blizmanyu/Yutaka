@@ -1,6 +1,12 @@
-﻿namespace Yutaka.QuickBooks
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Yutaka.QuickBooks.Data
 {
-	public class Bill_ExpenseLineRet
+	public class ExpenseLineRet
 	{
 		public string TxnLineID; // required
 		public AccountRef AccountRef;
@@ -13,7 +19,7 @@
 		public SalesRepRef SalesRepRef;
 		public DataExtRet DataExtRet;
 
-		public Bill_ExpenseLineRet()
+		public ExpenseLineRet()
 		{
 			AccountRef = new AccountRef();
 			CustomerRef = new CustomerRef();

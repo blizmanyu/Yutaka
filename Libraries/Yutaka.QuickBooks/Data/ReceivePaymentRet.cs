@@ -6,40 +6,40 @@ using System.Threading.Tasks;
 
 namespace Yutaka.QuickBooks.Data
 {
-	public class ARRefundCreditCardRet
+	public class ReceivePaymentRet 
 	{
-		public string TxnID;
-		public DateTime TimeCreated;
-		public DateTime TimeModified;
-		public string EditSequence;
+		public string TxnID; // required
+		public DateTime TimeCreated; // required
+		public DateTime TimeModified; // required
+		public string EditSequence; // required 
 		public int? TxnNumber;
 		public CustomerRef CustomerRef;
-		public RefundFromAccountRef RefundFromAccountRef;
+		public ARAccountRef ARAccountRef;
 		public DateTime TxnDate;
 		public string RefNumber;
-		public decimal TotalAmount;
+		public decimal? TotalAmount;
 		public CurrencyRef CurrencyRef;
-		public float ExchangeRate;
-		public decimal TotalAmountInHomeCurrency;
-		public Address Address;
-		public AddressBlock AddressBlock;
+		public decimal? ExchangeRate;
+		public decimal? TotalAmountInHomeCurrency;
 		public PaymentMethodRef PaymentMethodRef;
 		public string Memo;
+		public DepositToAccountRef DepositToAccountRef;
 		public List<CreditCardTxnInfo> CreditCardTxnInfo;
+		public decimal? UnusedPayment;
+		public decimal? UnusedCredits;
 		public string ExternalGUID;
-		public RefundAppliedToTxnRet RefundAppliedToTxnRet;
+		public List<AppliedToTxnRet> AppliedToTxnRet;
 		public DataExtRet DataExtRet;
 
-		public ARRefundCreditCardRet()
+		public ReceivePaymentRet()
 		{
 			CustomerRef = new CustomerRef();
-			RefundFromAccountRef = new RefundFromAccountRef();
+			ARAccountRef = new ARAccountRef();
 			CurrencyRef = new CurrencyRef();
-			Address = new Address();
-			AddressBlock = new AddressBlock();
 			PaymentMethodRef = new PaymentMethodRef();
+			DepositToAccountRef = new DepositToAccountRef();
 			CreditCardTxnInfo = new List<CreditCardTxnInfo>();
-			RefundAppliedToTxnRet = new RefundAppliedToTxnRet();
+			AppliedToTxnRet = new List<AppliedToTxnRet>();
 			DataExtRet = new DataExtRet();
 		}
 	}
