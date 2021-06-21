@@ -351,20 +351,27 @@ namespace Yutaka.Text
 			return str;
 		}
 
-		public static string ToTitleCaseSmart(string str)
+		/// <summary>
+		/// Converts the specified string to title case.
+		/// </summary>
+		/// <param name="str">The string to convert to title case.</param>
+		/// <param name="ifLengthGreaterThan">Only converts if a word within the string has a length greater than &lt;ifLengthGreaterThan&gt;.</param>
+		/// <returns>The specified string converted to title case.</returns>
+		public static string ToTitleCase(string str, int ifLengthGreaterThan = 3)
 		{
 			if (String.IsNullOrWhiteSpace(str))
 				return "";
+			if (str.Equals(str.ToLower()))
+				return CurrentCulture.ToTitleCase(str);
 
-			var ti = CultureInfo.CurrentCulture.TextInfo;
 			var split = str.Split(' ');
 
 			for (int i = 0; i < split.Length; i++) {
 				if (split[i].Equals(split[i].ToLower()))
-					split[i] = ti.ToTitleCase(split[i]);
+					split[i] = CurrentCulture.ToTitleCase(split[i]);
 
-				else if (split[i].Length > 3 && split[i].Equals(split[i].ToUpper()))
-					split[i] = ti.ToTitleCase(split[i].ToLower());
+				else if (split[i].Length > ifLengthGreaterThan && split[i].Equals(split[i].ToUpper()))
+					split[i] = CurrentCulture.ToTitleCase(split[i].ToLower());
 			}
 
 			return String.Join(" ", split);
