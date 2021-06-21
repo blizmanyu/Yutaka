@@ -284,10 +284,10 @@ namespace Yutaka.Text
 
 			for (int i = 0; i < commonLabels.Length; i++) {
 				if (labelUpper.Equals(commonLabels[i]))
-					return ToTitleCaseIfLengthGreaterThan(label, 0);
+					return ToTitleCase(label, 0);
 			}
 
-			return ToTitleCaseIfLengthGreaterThan(label, 0);
+			return ToTitleCase(label, 0);
 		}
 
 		public static string GetPlainTextFromHtml(string html)
@@ -372,25 +372,6 @@ namespace Yutaka.Text
 
 				else if (split[i].Length > ifLengthGreaterThan && split[i].Equals(split[i].ToUpper()))
 					split[i] = CurrentCulture.ToTitleCase(split[i].ToLower());
-			}
-
-			return String.Join(" ", split);
-		}
-
-		public static string ToTitleCaseIfLengthGreaterThan(string str, int length = 3)
-		{
-			if (String.IsNullOrWhiteSpace(str))
-				return "";
-
-			var ti = CultureInfo.CurrentCulture.TextInfo;
-			var split = str.Split(' ');
-
-			for (int i = 0; i < split.Length; i++) {
-				if (split[i].Equals(split[i].ToLower()))
-					split[i] = ti.ToTitleCase(split[i]);
-
-				else if (split[i].Length > length && split[i].Equals(split[i].ToUpper()))
-					split[i] = ti.ToTitleCase(split[i].ToLower());
 			}
 
 			return String.Join(" ", split);
