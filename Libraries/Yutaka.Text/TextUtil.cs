@@ -388,17 +388,6 @@ namespace Yutaka.Text
 
 			return String.Join(" ", split);
 		}
-
-		#region Deprecated
-		[Obsolete("Deprecated Oct 16, 2019. Use ToTitleCaseSmart(string str) instead.", true)]
-		public static string ToTitleCase(string str)
-		{
-			if (String.IsNullOrWhiteSpace(str))
-				return "";
-
-			return CultureInfo.CurrentCulture.TextInfo.ToTitleCase(str);
-		}
-		#endregion Deprecated
 		#endregion Methods
 	}
 }
