@@ -10,6 +10,7 @@ namespace Yutaka.Text
 	public static class TextUtil
 	{
 		private static readonly Regex RegexWhitespace = new Regex(@"\s+", RegexOptions.Compiled);
+		private static readonly TextInfo CurrentCulture = CultureInfo.CurrentCulture.TextInfo;
 
 		#region Methods
 		#region Encode/Decode
@@ -260,8 +261,12 @@ namespace Yutaka.Text
 			var incoming = str.Replace('_', '/').Replace('-', '+');
 
 			switch (str.Length % 4) {
-				case 2: incoming += "=="; break;
-				case 3: incoming += "="; break;
+				case 2:
+					incoming += "==";
+					break;
+				case 3:
+					incoming += "=";
+					break;
 			}
 
 			var bytes = Convert.FromBase64String(incoming);
