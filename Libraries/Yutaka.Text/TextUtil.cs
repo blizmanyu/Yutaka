@@ -308,6 +308,26 @@ namespace Yutaka.Text
 			return html;
 		}
 
+		/// <summary>
+		/// Gets all uppercase characters from a string.
+		/// </summary>
+		/// <param name="str">The input string to check.</param>
+		/// <returns></returns>
+		public static string GetUppercaseChars(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			var result = "";
+
+			for (var i = 0; i < str.Length; i++) {
+				if (char.IsUpper(str[i]))
+					result = String.Format("{0}{1}", result, str[i]);
+			}
+
+			return result;
+		}
+
 		public static string RemoveExcessWhitespace(string input)
 		{
 			if (String.IsNullOrWhiteSpace(input))
