@@ -290,6 +290,30 @@ namespace Yutaka.Text
 			return ToTitleCase(label, 0);
 		}
 
+		/// <summary>
+		/// Returns the "alias" from an entity's name according to the follow rule: If the string contains multiple uppercase letters, it abbreviates
+		/// it, then lowercases it. Else, it takes the first 4 characters of the word, lowercased.
+		/// </summary>
+		/// <param name="str"></param>
+		/// <returns></returns>
+		public static string GetAlias(string str)
+		{
+			if (String.IsNullOrWhiteSpace(str))
+				return "";
+
+			var result = GetUppercaseChars(str);
+
+			// Only 1 uppercase, so use the first 4 letters of <str> //
+			if (result.Length < 2) {
+				if (str.Length > 4)
+					return str.Substring(0, 4).ToLower();
+				else
+					return str.ToLower();
+			}
+
+			return result.ToLower();
+		}
+
 		public static string GetPlainTextFromHtml(string html)
 		{
 			if (String.IsNullOrWhiteSpace(html))
