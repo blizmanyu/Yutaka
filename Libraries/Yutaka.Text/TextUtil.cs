@@ -333,7 +333,7 @@ namespace Yutaka.Text
 		}
 
 		/// <summary>
-		/// Gets all uppercase characters from a string.
+		/// Returns all uppercase characters from a string.
 		/// </summary>
 		/// <param name="str">The input string to check.</param>
 		/// <returns></returns>
