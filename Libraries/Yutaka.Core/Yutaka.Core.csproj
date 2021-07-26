@@ -57,6 +57,7 @@
     <Compile Include="IO\WinDirStat.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Net\BaseClient.cs" />
+    <Compile Include="Net\ExampleImplementedClient.cs" />
     <Compile Include="Net\FtpClient.cs" />
     <Compile Include="Net\FtpUtil.cs" />
     <Compile Include="Net\GmailSmtpClient.cs" />
