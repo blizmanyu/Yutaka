@@ -43,7 +43,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_PingUtil_ArePingable();
+				Test_ExampleImplementedClientAsync();
 			}
 
 			catch (Exception ex) {
@@ -114,6 +114,13 @@ namespace Yutaka.Core.Tests
 		#endregion IO
 
 		#region Yutaka.Core.Net Tests
+		// Modified Jul 26, 2021 // Created Jul 26, 2021 //
+		private static async void Test_ExampleImplementedClientAsync()
+		{
+			var client = new ExampleImplementedClient();
+			Console.Write("\n\n{0}", await client.SendRequestToEndpoint());
+		}
+
 		// Modified Feb 8, 2021 // Created Feb 8, 2021 //
 		private static void Test_PingUtil_ArePingable()
 		{
