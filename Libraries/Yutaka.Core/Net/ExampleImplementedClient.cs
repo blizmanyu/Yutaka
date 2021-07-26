@@ -7,12 +7,11 @@ namespace Yutaka.Core.Net
 	/// </summary>
 	public class ExampleImplementedClient : BaseClient
 	{
-		public static readonly string endpoint = "https://www.google.com";
+		public static readonly string endpoint = "https://www.example.com";
 
-		public async Task SendRequestToEndpoint()
+		public async Task<string> SendRequestToEndpoint()
 		{
-			for (var count = 0; count < 10; count++)
-				await Client.GetStringAsync(endpoint);
+			return await Client.GetStringAsync(endpoint);
 		}
 	}
 }
