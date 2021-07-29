@@ -171,7 +171,7 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test_String_Split();
+			Test202107291435();
 			EndProgram();
 		}
 
@@ -276,6 +276,33 @@ namespace Yutaka.Tests
 		#endregion Base36 Tests
 
 		#region DateTime Tests
+		// Created Jul 29, 2021 // Modified Jul 29, 2021 //
+		private static void Test202107291435()
+		{
+			DateTime[] tests = {
+				DateTime.MinValue,
+				DateTime.Now,
+				DateTime.MaxValue,
+			};
+
+			TimeSpan ts;
+
+			foreach (var test in tests) {
+				ts = test - DateTime.MinValue;
+				Console.Write("\n");
+				Console.Write("\n{0}) {1}", ++totalCount, test);
+				Console.Write("\n   {0}", DateTime.MinValue);
+				Console.Write("\n   {0}", ts);
+				Console.Write("\n        Ticks: {0}", test.Ticks);
+				//Console.Write("\n     ToBinary: {0}", test.ToBinary());
+				//Console.Write("\n   ToFileTime: {0}", test.ToFileTime());
+				//Console.Write("\nToFileTimeUtc: {0}", test.ToFileTimeUtc());
+				Console.Write("\n     ToString: {0}", test.ToString("yyyyMMddHHmmssfff"));
+				Console.Write("\n Milliseconds: {0}", ts.TotalMilliseconds);
+				Console.Write("\n");
+			}
+		}
+
 		// Created Mar 26, 2020 // Modified Mar 26, 2020 //
 		private static void Test202003261724()
 		{
@@ -659,7 +686,7 @@ namespace Yutaka.Tests
 			for (int i = 0; i < tests.Length; i++) {
 				Console.Write("\n");
 				Console.Write("\n{0}) {1}", ++totalCount, tests[i] ?? "NULL");
-				Console.Write("\n   {0}", TextUtil.ToTitleCaseSmart(tests[i]));
+				Console.Write("\n   {0}", TextUtil.ToTitleCase(tests[i]));
 			}
 		}
 
