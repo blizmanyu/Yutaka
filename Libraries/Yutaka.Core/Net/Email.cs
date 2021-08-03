@@ -7,6 +7,10 @@ namespace Yutaka.Core.Net
 	{
 		#region Fields
 		/// <summary>
+		/// Represents the address of an electronic mail sender or recipient.
+		/// </summary>
+		private MailAddress MailAddress;
+		/// <summary>
 		/// Gets the email address specified when this instance was created.
 		/// </summary>
 		/// <remarks>The value returned by this property does not include the DisplayName information.</remarks>
