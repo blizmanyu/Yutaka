@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Mail;
 
-namespace Yutaka.Core
+namespace Yutaka.Core.Net
 {
 	public class Email
 	{

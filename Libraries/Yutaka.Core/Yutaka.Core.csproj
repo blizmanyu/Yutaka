@@ -51,12 +51,12 @@
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="Drawing\DrawingUtil.cs" />
-    <Compile Include="Email\Email.cs" />
     <Compile Include="IO\DirectoryUtil.cs" />
     <Compile Include="IO\FileUtil.cs" />
     <Compile Include="IO\WinDirStat.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Net\BaseClient.cs" />
+    <Compile Include="Net\Email.cs" />
     <Compile Include="Net\ExampleImplementedClient.cs" />
     <Compile Include="Net\FtpClient.cs" />
     <Compile Include="Net\FtpUtil.cs" />
