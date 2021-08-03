@@ -33,6 +33,14 @@ namespace Yutaka.Core.Net
 		/// </remarks>
 		public string Host { get; }
 		/// <summary>
+		/// Gets the original email address that was passed to the <see cref="Email"/> constructor.
+		/// </summary>
+		/// <remarks>
+		/// If the address specified to the constructor contained leading or trailing spaces, these spaces are preserved.
+		/// The value returned by this property differs from ToString.
+		/// </remarks>
+		public string OriginalString { get; }
+		/// <summary>
 		/// Gets the user information from the address specified when this instance was created.
 		/// </summary>
 		/// <remarks>
