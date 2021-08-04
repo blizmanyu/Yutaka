@@ -191,5 +191,15 @@ namespace Yutaka.Core.Net
 			}
 		}
 		#endregion Constructors
+
+		#region Methods
+		public override string ToString()
+		{
+			if (String.IsNullOrWhiteSpace(DisplayName))
+				return Address;
+
+			return String.Format("{0} <{1}>", DisplayName, Address);
+		}
+		#endregion
 	}
 }
