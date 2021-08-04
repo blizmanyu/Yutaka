@@ -107,7 +107,16 @@ namespace Yutaka.Core.Net
 			}
 			#endregion Check Input
 
-			_mailAddress = new MailAddress(address);
+			try {
+				_mailAddress = new MailAddress(address);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address));
+			}
 		}
 		#endregion Constructors
 	}
