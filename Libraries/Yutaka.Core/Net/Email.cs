@@ -115,7 +115,37 @@ namespace Yutaka.Core.Net
 				if (ex.InnerException == null)
 					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor Email(string address='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, address));
+			}
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Email"/> class using the specified address and display name.
+		/// </summary>
+		/// <param name="address">A <see cref="string"/> that contains an email address.</param>
+		/// <param name="displayName">A <see cref="string"/> that contains the display name associated with address. This parameter can be null.</param>
+		public Email(string address, string displayName)
+		{
+			#region Check Input
+			if (String.IsNullOrWhiteSpace(address))
+				throw new Exception(String.Format("'address' is required.{0}Exception thrown in constructor Email(string address, string displayName).{0}", Environment.NewLine));
+			else {
+				OriginalString = address;
+
+				if (address.IndexOf("undisclosed", StringComparison.OrdinalIgnoreCase) > -1)
+					address = "Undisclosed Recipients <undisclosed@recipients>";
+			}
+			#endregion Check Input
+
+			try {
+				_mailAddress = new MailAddress(address, displayName);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}', string displayName='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address, displayName));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor Email(string address='{3}', string displayName='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, address, displayName));
 			}
 		}
 		#endregion Constructors
