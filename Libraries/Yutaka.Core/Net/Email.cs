@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Mail;
+using System.Text;
 
 namespace Yutaka.Core.Net
 {
@@ -146,6 +147,47 @@ namespace Yutaka.Core.Net
 					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}', string displayName='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address, displayName));
 				else
 					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor Email(string address='{3}', string displayName='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, address, displayName));
+			}
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Email"/> class using the specified address, display name, and encoding.
+		/// </summary>
+		/// <param name="address">A <see cref="string"/> that contains an email address.</param>
+		/// <param name="displayName">A <see cref="string"/> that contains the display name associated with address.</param>
+		/// <param name="displayNameEncoding">The <see cref="Encoding"/> that defines the character set used for displayName.</param>
+		public Email(string address, string displayName, Encoding displayNameEncoding)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(address))
+				log = String.Format("{0}'address' is required.{1}", log, Environment.NewLine);
+			else {
+				OriginalString = address;
+
+				if (address.IndexOf("undisclosed", StringComparison.OrdinalIgnoreCase) > -1)
+					address = "Undisclosed Recipients <undisclosed@recipients>";
+			}
+
+			if (String.IsNullOrWhiteSpace(displayName))
+				log = String.Format("{0}'displayName' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in Email(string address, string displayName, Encoding displayNameEncoding).{1}", log, Environment.NewLine);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				_mailAddress = new MailAddress(address, displayName, displayNameEncoding);
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in Constructor Email(string address='{3}', string displayName='{4}', Encoding displayNameEncoding='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, address, displayName, displayNameEncoding));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Constructor Email(string address='{3}', string displayName='{4}', Encoding displayNameEncoding='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, address, displayName, displayNameEncoding));
 			}
 		}
 		#endregion Constructors
