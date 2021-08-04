@@ -193,6 +193,18 @@ namespace Yutaka.Core.Net
 		#endregion Constructors
 
 		#region Methods
+		public void Debug()
+		{
+			Console.Write("\n");
+			Console.Write("\nOriginalString: {0}", OriginalString);
+			Console.Write("\n   DisplayName: {0}", DisplayName);
+			Console.Write("\n          User: {0}", User);
+			Console.Write("\n          Host: {0}", Host);
+			Console.Write("\n       Address: {0}", Address);
+			Console.Write("\n      ToString: {0}", ToString());
+			Console.Write("\n");
+		}
+
 		public override string ToString()
 		{
 			if (String.IsNullOrWhiteSpace(DisplayName))
