@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 
-namespace Yutaka.Core.Net
+namespace Yutaka.VineSpring
 {
 	public class VineSpringClient : IDisposable
 	{
