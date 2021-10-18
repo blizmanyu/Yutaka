@@ -36,6 +36,35 @@ namespace Yutaka.VineSpring
 		#endregion Constructor
 
 		#region Utilities
+		#region Clubs
+		private async Task<string> ListAllClubs()
+		{
+			try {
+				var endpoint = "clubs";
+				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+
+				using (var response = await Client.GetAsync(endpoint)) {
+					var responseData = await response.Content.ReadAsStringAsync();
+					return responseData;
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+		#endregion Clubs
+
 		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
@@ -71,16 +100,17 @@ namespace Yutaka.VineSpring
 
 		#region Methods
 		#region Clubs
-		public async Task<string> ListAllClubs()
+		public IList<Club> GetAllClubs()
 		{
 			try {
-				var endpoint = "clubs";
-				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+				var list = new List<Club>();
+				var response = ListAllClubs();
+				var clubs = JsonConvert.DeserializeObject<List<Club>>(response.Result);
 
-				using (var response = await Client.GetAsync(endpoint)) {
-					var responseData = await response.Content.ReadAsStringAsync();
-					return responseData;
-				}
+				foreach (var club in clubs)
+					list.Add(club);
+
+				return list;
 			}
 
 			catch (Exception ex) {
@@ -88,9 +118,9 @@ namespace Yutaka.VineSpring
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllClubs().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllClubs().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
 				throw new Exception(log);
