@@ -6,17 +6,32 @@ using System.Threading.Tasks;
 
 namespace Yutaka.QuickBooks.Data
 {
-	public class AccountAddRet
+	public class AccountRet
 	{
 		public string ListID;
-		public DateTime TimeCreated; // required
-		public DateTime TimeModified; // required
-		public string EditSequence; // required
-		public string Name; //required
+		/// <summary>
+		/// required
+		/// </summary>
+		public DateTime TimeCreated;
+		/// <summary>
+		/// required
+		/// </summary>
+		public DateTime TimeModified;
+		/// <summary>
+		/// required
+		/// </summary>
+		public string EditSequence; 
+		/// <summary>
+		/// required
+		/// </summary>
+		public string Name; 
 		public string FullName;
 		public bool? IsActive;
 		public ParentRef ParentRef;
-		public int? Sublevel; //required
+		/// <summary>
+		/// required
+		/// </summary>
+		public int? Sublevel;
 		public string AccountType;
 		public string SpecialAccountType;
 		public bool? IsTaxAccount;
@@ -32,7 +47,7 @@ namespace Yutaka.QuickBooks.Data
 		public DataExtRet DataExtRet;
 		public ErrorRecovery ErrorRecovery;
 
-		public AccountAddRet()
+		public AccountRet()
 		{
 			ParentRef = new ParentRef();
 			SalesTaxCodeRef = new SalesTaxCodeRef();

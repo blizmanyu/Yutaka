@@ -27,6 +27,9 @@ namespace Yutaka.QuickBooks
 		#region protected enum ActionType { .... }
 		protected enum ActionType
 		{
+			AccountAdd,
+			AccountMod,
+			AccountQuery,
 			ARRefundCreditCardQuery,
 			BillAdd,
 			BillQuery,
@@ -97,6 +100,9 @@ namespace Yutaka.QuickBooks
 
 			#region XmlElements
 			XmlElement 
+				AccountAdd,
+				AccountMod,
+				AccountQuery,
 				AccountRef,
 				Address,
 				AdditionalContactRef,
@@ -134,6 +140,7 @@ namespace Yutaka.QuickBooks
 				ItemRef,
 				ItemSalesTaxRef,
 				JobTypeRef,
+				NameFilter,
 				OverrideItemAccountRef,
 				ParentRef,
 				PriceLevelRef,
@@ -162,9 +169,11 @@ namespace Yutaka.QuickBooks
 			//new simple elements, unsure of default values for bool/int values
 			var accountNumber = "";
 			var accountRefFullName = "";
+			var accountType = "";
 			var altContact = "";
 			var altPhone = "";
 			var amount = "";
+			var bankNumber = "";
 			var billableStatus = "";
 			var billedDate = "";
 			var cc = "";
@@ -174,6 +183,7 @@ namespace Yutaka.QuickBooks
 			var creditLimit = "";
 			var desc = "";
 			var dueDate = "";
+			var editSequence = "";
 			var email = "";
 			var exchangeRate ="";
 			var externalGUID = "";
@@ -189,7 +199,9 @@ namespace Yutaka.QuickBooks
 			var jobStartDate = "";
 			var jobTitle = "";
 			var lastName = "";
+			var listID = "";
 			var linkToTxnId = "";
+			var matchCriterion = "";
 			var memo = "";
 			var middleName = "";
 			var name = "";
@@ -207,6 +219,7 @@ namespace Yutaka.QuickBooks
 			var salutation = "";
 			var salesTaxCountry = "";
 			var serialNumber = "";
+			var taxLineID = "";
 			var taxRegistrationNumber = "";
 			var txnDate = "";
 			var txnId = "";
@@ -431,6 +444,9 @@ namespace Yutaka.QuickBooks
 
 			foreach (var param in parameters) {
 				switch (param.Key) {
+					case "accountType":
+						accountType = param.Value.ToString();
+						break;
 					case "accountRefListId":
 						accountRefListId = param.Value.ToString();
 						break;
@@ -445,6 +461,9 @@ namespace Yutaka.QuickBooks
 						break;
 					case "bankAccountRefFullName":
 						apAccountRefFullName = param.Value.ToString();
+						break;
+					case "bankNumber":
+						bankNumber = param.Value.ToString();
 						break;
 					case "billableStatus":
 						billableStatus = param.Value.ToString();
@@ -491,20 +510,23 @@ namespace Yutaka.QuickBooks
 					case "isTaxIncluded":
 						isTaxIncluded = (bool) param.Value;
 						break;
+					case "linkToTxnId":
+						linkToTxnId = param.Value.ToString();
+						break;
 					case "memo":
 						memo = param.Value.ToString();
 						break;
 					case "quantityDifference":
 						quantityDifference = (int) param.Value;
 						break;
-					case "linkToTxnId":
-						linkToTxnId = param.Value.ToString();
-						break;
 					case "refNumber":
 						refNumber = param.Value.ToString();
 						break;
 					case "serialNumber":
 						serialNumber = param.Value.ToString();
+						break;
+					case "taxLineID":
+						taxLineID = param.Value.ToString();
 						break;
 					case "txnDate":
 						txnDate = param.Value.ToString();
@@ -517,6 +539,97 @@ namespace Yutaka.QuickBooks
 			#endregion Go through parameters
 
 			switch (actionType) {
+
+				#region AccountAdd
+				case ActionType.AccountAdd:
+					AccountAdd = doc.CreateElement("AccountAdd");
+					request.AppendChild(AccountAdd);
+
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "Name", name));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "IsActive", isActive));
+
+					#region ParentRef
+					ParentRef = doc.CreateElement("ParentRef");
+					AccountAdd.AppendChild(ParentRef);
+					ParentRef.AppendChild(MakeSimpleElem(doc, "ListID", parentRefListId));
+					ParentRef.AppendChild(MakeSimpleElem(doc, "FullName", parentRefFullName));
+					#endregion
+
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "AccountType", accountType));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "AccountNumber", accountNumber));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "BankNumber", bankNumber));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "Desc", desc));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "OpenBalance", openBalance));
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "OpenBalanceDate", openBalanceDate));
+
+					#region SalesTaxCodeRef
+					SalesTaxCodeRef = doc.CreateElement("SalesTaxCodeRef");
+					AccountAdd.AppendChild(SalesTaxCodeRef);
+					SalesTaxCodeRef.AppendChild(MakeSimpleElem(doc, "ListID", salesTaxCodeRefListId));
+					SalesTaxCodeRef.AppendChild(MakeSimpleElem(doc, "FullName", salesTaxCodeRefFullName));
+					#endregion
+
+					AccountAdd.AppendChild(MakeSimpleElem(doc, "TaxLineID", taxLineID));
+
+					#region CurrencyRef
+					CurrencyRef = doc.CreateElement("CurrencyRef");
+					AccountAdd.AppendChild(CurrencyRef);
+					CurrencyRef.AppendChild(MakeSimpleElem(doc, "ListID", currencyRefListId));
+					CurrencyRef.AppendChild(MakeSimpleElem(doc, "FullName", currencyRefFullName));
+					#endregion
+
+					break;
+				#endregion
+
+				#region AccountMod
+				case ActionType.AccountMod:
+					AccountMod = doc.CreateElement("AccountMod");
+					request.AppendChild(AccountMod);
+
+					AccountMod.AppendChild(MakeSimpleElem(doc, "ListID", listID));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "EditSequence", editSequence));
+
+					#region ParentRef
+					ParentRef = doc.CreateElement("ParentRef");
+					AccountMod.AppendChild(ParentRef);
+					ParentRef.AppendChild(MakeSimpleElem(doc, "ListID", parentRefListId));
+					ParentRef.AppendChild(MakeSimpleElem(doc, "FullName", parentRefFullName));
+					#endregion
+
+					AccountMod.AppendChild(MakeSimpleElem(doc, "AccountType", accountType));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "AccountNumber", accountNumber));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "BankNumber", bankNumber));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "Desc", desc));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "OpenBalance", openBalance));
+					AccountMod.AppendChild(MakeSimpleElem(doc, "OpenBalanceDate", openBalanceDate));
+
+					#region SalesTaxCodeRef
+					SalesTaxCodeRef = doc.CreateElement("SalesTaxCodeRef");
+					AccountMod.AppendChild(SalesTaxCodeRef);
+					SalesTaxCodeRef.AppendChild(MakeSimpleElem(doc, "ListID", salesTaxCodeRefListId));
+					SalesTaxCodeRef.AppendChild(MakeSimpleElem(doc, "FullName", salesTaxCodeRefFullName));
+					#endregion
+
+					AccountMod.AppendChild(MakeSimpleElem(doc, "TaxLineID", taxLineID));
+
+					#region CurrencyRef
+					CurrencyRef = doc.CreateElement("CurrencyRef");
+					AccountMod.AppendChild(CurrencyRef);
+					CurrencyRef.AppendChild(MakeSimpleElem(doc, "ListID", currencyRefListId));
+					CurrencyRef.AppendChild(MakeSimpleElem(doc, "FullName", currencyRefFullName));
+					#endregion
+					break;
+				#endregion
+
+				#region AccountQuery
+				case ActionType.AccountQuery:
+					NameFilter = doc.CreateElement("NameFilter");
+					request.AppendChild(NameFilter);
+					NameFilter.AppendChild(MakeSimpleElem(doc, "MatchCriterion", matchCriterion));
+					NameFilter.AppendChild(MakeSimpleElem(doc, "Name", name));
+					request.AppendChild(MakeSimpleElem(doc, "IncludeLineItems", "1"));
+					break;
+				#endregion
 
 				#region ARRefundCreditCardQuery
 				case ActionType.ARRefundCreditCardQuery:
@@ -1500,6 +1613,119 @@ namespace Yutaka.QuickBooks
 
 			switch (actionType) {
 
+				#region Account
+				case ActionType.AccountAdd:
+				case ActionType.AccountMod:
+				case ActionType.AccountQuery:
+					AccountRet accountRet;
+					ItemList = responseNode.SelectNodes("//AccountRet");
+					for (int i = 0; i < ItemList.Count; i++) {
+						Item = ItemList.Item(i);
+						accountRet = new AccountRet {
+							ListID = Item.SelectSingleNode("ListID") == null ? null : Item.SelectSingleNode("ListID").InnerText,
+							TimeCreated = DateTime.Parse(Item.SelectSingleNode("TimeCreated").InnerText),
+							TimeModified = DateTime.Parse(Item.SelectSingleNode("TimeModified").InnerText),
+							EditSequence = Item.SelectSingleNode("EditSequence") == null ? null : Item.SelectSingleNode("EditSequence").InnerText,
+							Name = Item.SelectSingleNode("Name") == null ? null : Item.SelectSingleNode("Name").InnerText,
+							FullName = Item.SelectSingleNode("FullName") == null ? null : Item.SelectSingleNode("FullName").InnerText,
+							IsActive = Item.SelectSingleNode("IsActive") == null ? (bool?) null : bool.Parse(Item.SelectSingleNode("IsActive").InnerText),
+							Sublevel = Item.SelectSingleNode("Sublevel") == null ? (int?) null : int.Parse(Item.SelectSingleNode("Sublevel").InnerText),
+							AccountType = Item.SelectSingleNode("AccountType") == null ? null : Item.SelectSingleNode("AccountType").InnerText,
+							SpecialAccountType = Item.SelectSingleNode("SpecialAccountType") == null ? null : Item.SelectSingleNode("SpecialAccountType").InnerText,
+							IsTaxAccount = Item.SelectSingleNode("IsTaxAccount") == null ? (bool?) null : bool.Parse(Item.SelectSingleNode("IsTaxAccount").InnerText),
+							AccountNumber = Item.SelectSingleNode("AccountNumber") == null ? null : Item.SelectSingleNode("AccountNumber").InnerText,
+							BankNumber = Item.SelectSingleNode("BankNumber") == null ? null : Item.SelectSingleNode("BankNumber").InnerText,
+							Desc = Item.SelectSingleNode("Desc") == null ? null : Item.SelectSingleNode("Desc").InnerText,
+							Balance = Item.SelectSingleNode("Balance") == null ? (decimal?) null : decimal.Parse(Item.SelectSingleNode("Balance").InnerText),
+							TotalBalance = Item.SelectSingleNode("TotalBalance") == null ? (decimal?) null : decimal.Parse(Item.SelectSingleNode("TotalBalance").InnerText),
+							CashFlowClassification = Item.SelectSingleNode("CashFlowClassification") == null ? null : Item.SelectSingleNode("CashFlowClassification").InnerText,
+						};
+
+						#region ParentRef
+						if (Item.SelectSingleNode("ParentRef") == null) {
+							accountRet.ParentRef.ListID = null;
+							accountRet.ParentRef.FullName = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("ParentRef");
+							accountRet.ParentRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							accountRet.ParentRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion ParentRef
+
+						#region SalesTaxCodeRef
+						if (Item.SelectSingleNode("SalesTaxCodeRef") == null) {
+							accountRet.SalesTaxCodeRef.ListID = null;
+							accountRet.SalesTaxCodeRef.FullName = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("SalesTaxCodeRef");
+							accountRet.SalesTaxCodeRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							accountRet.SalesTaxCodeRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion SalesTaxCodeRef
+
+						#region TaxLineInfoRet
+						if (Item.SelectSingleNode("TaxLineInfoRet") == null) {
+							accountRet.TaxLineInfoRet.TaxLineID = null;
+							accountRet.TaxLineInfoRet.TaxLineName = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("TaxLineInfoRet");
+							accountRet.TaxLineInfoRet.TaxLineID = ItemRef.SelectSingleNode("TaxLineID") == null ? null : ItemRef.SelectSingleNode("TaxLineID").InnerText;
+							accountRet.TaxLineInfoRet.TaxLineName = ItemRef.SelectSingleNode("TaxLineName") == null ? null : ItemRef.SelectSingleNode("TaxLineName").InnerText;
+						}
+						#endregion TaxLineInfoRet
+
+						#region CurrencyRef
+						if (Item.SelectSingleNode("CurrencyRef") == null) {
+							accountRet.CurrencyRef.ListID = null;
+							accountRet.CurrencyRef.FullName = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("CurrencyRef");
+							accountRet.CurrencyRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							accountRet.CurrencyRef.FullName = ItemRef.SelectSingleNode("FullName") == null ? null : ItemRef.SelectSingleNode("FullName").InnerText;
+						}
+						#endregion CurrencyRef
+
+						#region DataExtRet
+						if (Item.SelectSingleNode("DataExtRet") == null) {
+							accountRet.DataExtRet.OwnerID = null;
+							accountRet.DataExtRet.DataExtName = null;
+							accountRet.DataExtRet.DataExtType = null;
+							accountRet.DataExtRet.DataExtValue = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("DataExtRet");
+							accountRet.DataExtRet.OwnerID = ItemRef.SelectSingleNode("OwnerID") == null ? null : ItemRef.SelectSingleNode("OwnerID").InnerText;
+							accountRet.DataExtRet.DataExtName = ItemRef.SelectSingleNode("DataExtName") == null ? null : ItemRef.SelectSingleNode("DataExtName").InnerText;
+							accountRet.DataExtRet.DataExtType = ItemRef.SelectSingleNode("DataExtType") == null ? null : ItemRef.SelectSingleNode("DataExtType").InnerText;
+							accountRet.DataExtRet.DataExtValue = ItemRef.SelectSingleNode("DataExtValue") == null ? null : ItemRef.SelectSingleNode("DataExtValue").InnerText;
+						}
+						#endregion
+
+						#region ErrorRecovery
+						if (Item.SelectSingleNode("ErrorRecovery") == null) {
+							accountRet.ErrorRecovery.ListID = null;
+							accountRet.ErrorRecovery.TxnNumber = null;
+							accountRet.ErrorRecovery.EditSequence = null;
+							accountRet.ErrorRecovery.ExternalGUID = null;
+						}
+						else {
+							ItemRef = Item.SelectSingleNode("ErrorRecovery");
+							accountRet.ErrorRecovery.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
+							accountRet.ErrorRecovery.TxnNumber = ItemRef.SelectSingleNode("TxnNumber") == null ? null : ItemRef.SelectSingleNode("TxnNumber").InnerText;
+							accountRet.ErrorRecovery.EditSequence = ItemRef.SelectSingleNode("EditSequence") == null ? null : ItemRef.SelectSingleNode("EditSequence").InnerText;
+							accountRet.ErrorRecovery.ExternalGUID = ItemRef.SelectSingleNode("ExternalGUID") == null ? null : ItemRef.SelectSingleNode("ExternalGUID").InnerText;
+						}
+						#endregion
+
+						list.Add(accountRet);
+					}
+					break;
+				#endregion
+
 				#region ARRefundCreditCardQuery
 				case ActionType.ARRefundCreditCardQuery:
 			ARRefundCreditCardRet aRRefundCreditCardRet;
@@ -2107,7 +2333,6 @@ namespace Yutaka.QuickBooks
 							billRet.VendorRef.ListID = null;
 							billRet.VendorRef.FullName = null;
 						}
-
 						else {
 							ItemRef = Item.SelectSingleNode("VendorRef");
 							billRet.VendorRef.ListID = ItemRef.SelectSingleNode("ListID") == null ? null : ItemRef.SelectSingleNode("ListID").InnerText;
@@ -4662,6 +4887,121 @@ namespace Yutaka.QuickBooks
 		}
 		#endregion Connection
 
+		#region AccountAdd
+		public bool AddAccountAdjustment(string name, string accountType)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(name))
+				errorMsg = String.Format("{0}<name> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(accountType))
+				errorMsg = String.Format("{0}<accountType> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.AddAccountAdjustment().{1}", errorMsg, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Validation
+
+			try {
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("name", name),
+					new KeyValuePair<string, object>("accountType", accountType),
+
+				};
+
+				var result = DoAction(ActionType.AccountAdd, parameters);
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddAccountAdjustment(string name='{3}', string accountType='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine,name, accountType);
+				else
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddAccountAdjustment(string name='{3}', string accountType='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine,name, accountType);
+
+				Console.Write("\n{0}", errorMsg);
+				return false;
+			}
+		}
+		#endregion
+
+		#region AccountMod
+		public bool ModAccountAdjustment(string listID, string editSequence)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(listID))
+				errorMsg = String.Format("{0}<listID> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(editSequence))
+				errorMsg = String.Format("{0}<editSequence> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.ModAccountAdjustment().{1}", errorMsg, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Validation
+
+			try {
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("listID", listID),
+					new KeyValuePair<string, object>("editSequence", editSequence),
+
+				};
+
+				var result = DoAction(ActionType.AccountMod, parameters);
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.ModAccountAdjustment(string name='{3}', string accountType='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, listID, editSequence);
+				else
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.ModAccountAdjustment(string name='{3}', string accountType='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, listID, editSequence);
+
+				Console.Write("\n{0}", errorMsg);
+				return false;
+			}
+		}
+		#endregion
+
+		#region AccountQuery
+		public List<AccountRet> GetAccountAdjustments(string matchCriterion, string name)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(matchCriterion))
+				errorMsg = String.Format("{0}<matchCriterion> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(name))
+				errorMsg = String.Format("{0}<name> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.GetAllAccountAdjustments().{1}", errorMsg, Environment.NewLine);
+				return new List<AccountRet>();
+			}
+			#endregion Input Validation
+
+			var parameters = new KeyValuePair<string, object>[] {
+				new KeyValuePair<string, object>("matchCriterion", matchCriterion),
+				new KeyValuePair<string, object>("name", name),
+			};
+
+			var list = new List<AccountRet>();
+			var rets = DoAction(ActionType.AccountQuery, parameters);
+
+			foreach (AccountRet ret in rets)
+				list.Add(ret);
+
+			return list;
+
+
+		}
+		#endregion
+
+
 		#region ARRefundCreditCardQuery
 		public List<ARRefundCreditCardRet> GetAllArrRefundCreditCardAdjustments(DateTime? dtFrom, DateTime? dtTo = null)
 		{
@@ -4687,6 +5027,52 @@ namespace Yutaka.QuickBooks
 				list.Add(ret);
 
 			return list;
+		}
+		#endregion
+
+		#region BillPaymentCheckAdd
+		public bool AddBillPaymentCheckAdjustment(string payeeEntityRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(payeeEntityRefListId))
+				errorMsg = String.Format("{0}<payeeEntityRefListId> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnID))
+				errorMsg = String.Format("{0}<appliedToTxnAddTxnID> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnIDPaymentAmount.ToString()))
+				errorMsg = String.Format("{0}<appliedToTxnAddTxnIDPaymentAmount> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddSetCreditAppliedAmount))
+				errorMsg = String.Format("{0}<appliedToTxnAddSetCreditAppliedAmount> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.AddBillPaymentCheckAdjustment(string payeeEntityRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount).{1}", errorMsg, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Validation
+
+			try {
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("payeeEntityRefListId", payeeEntityRefListId),
+					new KeyValuePair<string, object>("appliedToTxnAddTxnID", appliedToTxnAddTxnID),
+					new KeyValuePair<string, object>("appliedToTxnAddTxnIDPaymentAmount", appliedToTxnAddTxnIDPaymentAmount),
+					new KeyValuePair<string, object>("appliedToTxnAddSetCreditAppliedAmount", appliedToTxnAddSetCreditAppliedAmount),
+
+				};
+
+				var result = DoAction(ActionType.BillPaymentCheckAdd, parameters);
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddBillPaymentCheckAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, payeeEntityRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
+				else
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddBillPaymentCheckAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, payeeEntityRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
+
+				Console.Write("\n{0}", errorMsg);
+				return false;
+			}
 		}
 		#endregion
 
@@ -4719,6 +5105,55 @@ namespace Yutaka.QuickBooks
 
 		#endregion
 
+		#region BillPaymentCreditCardAdd
+		public bool AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId,string creditCardAccountRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount)
+		{
+			#region Input Validation
+			var errorMsg = "";
+
+			if (String.IsNullOrWhiteSpace(payeeEntityRefListId))
+				errorMsg = String.Format("{0}<accountRefListId> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(creditCardAccountRefListId))
+				errorMsg = String.Format("{0}<creditCardAccountRefListId> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnID))
+				errorMsg = String.Format("{0}<appliedToTxnAddTxnID> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnIDPaymentAmount.ToString()))
+				errorMsg = String.Format("{0}<appliedToTxnAddTxnIDPaymentAmount> is required.{1}", errorMsg, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(appliedToTxnAddSetCreditAppliedAmount))
+				errorMsg = String.Format("{0}<appliedToTxnAddSetCreditAppliedAmount> is required.{1}", errorMsg, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(errorMsg)) {
+				Console.Write("\n{0}Error in QB20191021Util.AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId,string creditCardAccountRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount).{1}", errorMsg, Environment.NewLine);
+				return false;
+			}
+			#endregion Input Validation
+
+			try {
+				var parameters = new KeyValuePair<string, object>[] {
+					new KeyValuePair<string, object>("payeeEntityRefListId", payeeEntityRefListId),
+					new KeyValuePair<string, object>("creditCardAccountRefListId", creditCardAccountRefListId),
+					new KeyValuePair<string, object>("appliedToTxnAddTxnID", appliedToTxnAddTxnID),
+					new KeyValuePair<string, object>("appliedToTxnAddTxnIDPaymentAmount", appliedToTxnAddTxnIDPaymentAmount),
+					new KeyValuePair<string, object>("appliedToTxnAddSetCreditAppliedAmount", appliedToTxnAddSetCreditAppliedAmount),
+
+				};
+
+				var result = DoAction(ActionType.BillPaymentCreditCardAdd, parameters);
+				return true;
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId ='{3}',string creditCardAccountRefListId ='{4}', string appliedToTxnAddTxnID='{5}', int appliedToTxnAddTxnIDPaymentAmount='{6}', string appliedToTxnAddSetCreditAppliedAmount='{7}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, payeeEntityRefListId, creditCardAccountRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
+				else
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddBillPaymentCreditCardAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, payeeEntityRefListId, creditCardAccountRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
+
+				Console.Write("\n{0}", errorMsg);
+				return false;
+			}
+		}
+		#endregion
+
 		#region BillPaymentCreditCardQuery
 		public List<BillPaymentCreditCardRet> GetAllBillPaymentCreditCardAdjustments(DateTime? dtFrom, DateTime? dtTo = null)
 		{
@@ -4747,8 +5182,7 @@ namespace Yutaka.QuickBooks
 		}
 
 		#endregion
-
-		// revisit parameters
+		
 		#region BillAdd
 		public bool AddBillAdjustment(string vendorRefListId)
 		{
@@ -4814,8 +5248,12 @@ namespace Yutaka.QuickBooks
 
 		#endregion
 
-		// revisit parameters
 		#region ChargeAdd
+		/// <summary>
+		/// if AccountRef refers to an A/P account, CustomerRef must refer to a vendor (not to a customer).
+		/// </summary>
+		/// <param name="customerRefListId">CustomerRef property: List Id</param>
+		/// <returns></returns>
 		public bool AddChargeAdjustment(string customerRefListId)
 		{
 			#region Input Validation
@@ -4841,9 +5279,9 @@ namespace Yutaka.QuickBooks
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddChargeAdjustment(string vendorRefListId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerRefListId);
+					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddChargeAdjustment(string customerRefListId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerRefListId);
 				else
-					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddChargeAdjustment(string vendorRefListId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerRefListId);
+					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddChargeAdjustment(string customerRefListId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerRefListId);
 
 				Console.Write("\n{0}", errorMsg);
 				return false;
@@ -4880,7 +5318,6 @@ namespace Yutaka.QuickBooks
 
 		#endregion
 
-		// revisit parameters
 		#region CheckAdd
 		public bool AddCheckAdjustment(string accountRefListId)
 		{
@@ -4947,102 +5384,6 @@ namespace Yutaka.QuickBooks
 
 		#endregion
 
-		#region BillPaymentCheckAdd
-		public bool AddBillPaymentCheckAdjustment(string payeeEntityRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount)
-		{
-			#region Input Validation
-			var errorMsg = "";
-
-			if (String.IsNullOrWhiteSpace(payeeEntityRefListId))
-				errorMsg = String.Format("{0}<payeeEntityRefListId> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnID))
-				errorMsg = String.Format("{0}<appliedToTxnAddTxnID> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnIDPaymentAmount.ToString()))
-				errorMsg = String.Format("{0}<appliedToTxnAddTxnIDPaymentAmount> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddSetCreditAppliedAmount))
-				errorMsg = String.Format("{0}<appliedToTxnAddSetCreditAppliedAmount> is required.{1}", errorMsg, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(errorMsg)) {
-				Console.Write("\n{0}Error in QB20191021Util.AddBillPaymentCheckAdjustment(string payeeEntityRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount).{1}", errorMsg, Environment.NewLine);
-				return false;
-			}
-			#endregion Input Validation
-
-			try {
-				var parameters = new KeyValuePair<string, object>[] {
-					new KeyValuePair<string, object>("payeeEntityRefListId", payeeEntityRefListId),
-					new KeyValuePair<string, object>("appliedToTxnAddTxnID", appliedToTxnAddTxnID),
-					new KeyValuePair<string, object>("appliedToTxnAddTxnIDPaymentAmount", appliedToTxnAddTxnIDPaymentAmount),
-					new KeyValuePair<string, object>("appliedToTxnAddSetCreditAppliedAmount", appliedToTxnAddSetCreditAppliedAmount),
-
-				};
-
-				var result = DoAction(ActionType.BillPaymentCheckAdd, parameters);
-				return true;
-			}
-
-			catch (Exception ex) {
-				if (ex.InnerException == null)
-					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddBillPaymentCheckAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, payeeEntityRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
-				else
-					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddBillPaymentCheckAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, payeeEntityRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
-
-				Console.Write("\n{0}", errorMsg);
-				return false;
-			}
-		}
-		#endregion
-
-		#region BillPaymentCreditCardAdd
-		public bool AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId,string creditCardAccountRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount)
-		{
-			#region Input Validation
-			var errorMsg = "";
-
-			if (String.IsNullOrWhiteSpace(payeeEntityRefListId))
-				errorMsg = String.Format("{0}<accountRefListId> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(creditCardAccountRefListId))
-				errorMsg = String.Format("{0}<creditCardAccountRefListId> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnID))
-				errorMsg = String.Format("{0}<appliedToTxnAddTxnID> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddTxnIDPaymentAmount.ToString()))
-				errorMsg = String.Format("{0}<appliedToTxnAddTxnIDPaymentAmount> is required.{1}", errorMsg, Environment.NewLine);
-			if (String.IsNullOrWhiteSpace(appliedToTxnAddSetCreditAppliedAmount))
-				errorMsg = String.Format("{0}<appliedToTxnAddSetCreditAppliedAmount> is required.{1}", errorMsg, Environment.NewLine);
-
-			if (!String.IsNullOrWhiteSpace(errorMsg)) {
-				Console.Write("\n{0}Error in QB20191021Util.AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId,string creditCardAccountRefListId, string appliedToTxnAddTxnID, int appliedToTxnAddTxnIDPaymentAmount, string appliedToTxnAddSetCreditAppliedAmount).{1}", errorMsg, Environment.NewLine);
-				return false;
-			}
-			#endregion Input Validation
-
-			try {
-				var parameters = new KeyValuePair<string, object>[] {
-					new KeyValuePair<string, object>("payeeEntityRefListId", payeeEntityRefListId),
-					new KeyValuePair<string, object>("creditCardAccountRefListId", creditCardAccountRefListId),
-					new KeyValuePair<string, object>("appliedToTxnAddTxnID", appliedToTxnAddTxnID),
-					new KeyValuePair<string, object>("appliedToTxnAddTxnIDPaymentAmount", appliedToTxnAddTxnIDPaymentAmount),
-					new KeyValuePair<string, object>("appliedToTxnAddSetCreditAppliedAmount", appliedToTxnAddSetCreditAppliedAmount),
-
-				};
-
-				var result = DoAction(ActionType.BillPaymentCreditCardAdd, parameters);
-				return true;
-			}
-
-			catch (Exception ex) {
-				if (ex.InnerException == null)
-					errorMsg = String.Format("{0}{2}Exception in QB20191021Util.AddBillPaymentCreditCardAdjustment(string payeeEntityRefListId ='{3}',string creditCardAccountRefListId ='{4}', string appliedToTxnAddTxnID='{5}', int appliedToTxnAddTxnIDPaymentAmount='{6}', string appliedToTxnAddSetCreditAppliedAmount='{7}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, payeeEntityRefListId, creditCardAccountRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
-				else
-					errorMsg = String.Format("{0}{2}Exception in INNER EXCEPTION of QB20191021Util.AddBillPaymentCreditCardAdjustment(string accountRefListId='{3}', string itemRefFullName='{4}', int quantityDifference='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, payeeEntityRefListId, creditCardAccountRefListId, appliedToTxnAddTxnID, appliedToTxnAddTxnIDPaymentAmount, appliedToTxnAddSetCreditAppliedAmount);
-
-				Console.Write("\n{0}", errorMsg);
-				return false;
-			}
-		}
-		#endregion
-
-		// revisit parameters
 		#region CreditCardChargeAdd
 		public bool AddCreditCardChargeAdjustment(string accountRefListId)
 		{

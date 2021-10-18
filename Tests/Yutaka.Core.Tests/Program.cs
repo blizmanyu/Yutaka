@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Net.Mail;
 using System.Runtime.InteropServices;
 using NLog;
 using Yutaka.Core.IO;
@@ -43,7 +44,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_ExampleImplementedClientAsync();
+				TestMailAddress();
 			}
 
 			catch (Exception ex) {
@@ -114,6 +115,41 @@ namespace Yutaka.Core.Tests
 		#endregion IO
 
 		#region Yutaka.Core.Net Tests
+		// Modified Aug 3, 2021 // Created Aug 3, 2021 //
+		private static void TestMailAddress()
+		{
+			string[] tests = {
+				"  YBLIZMAN  @  RCW1.COM  ",
+				"  YUTAKA BLIZMAN <YBLIZMAN  @  RCW1.COM>  ",
+				"  USER  @HOST  ",
+				"  \"DISPLAY NAME\" <  USER  @HOST>  ",
+				"  \"DISPLAY NAME\"  USER  @HOST  ",
+				"  DISPLAY NAME <  USER  @HOST>  ",
+				"  \"USER  NAME\"  @HOST  ",
+				"  USER...NAME..  @HOST  ",
+				"  <  USER  @[MY DOMAIN]>  ",
+				"  (COMMENT)\"DISPLAY NAME\"(COMMENT)<  (COMMENT)USER(COMMENT)  @(COMMENT)DOMAIN(COMMENT)>(COMMENT)  ",
+			};
+
+			Email email;
+			MailAddress mailAddress;
+
+			foreach (var test in tests) {
+				mailAddress = new MailAddress(test);
+				email = new Email(test);
+				Console.Write("\n");
+				Console.Write("\n{0}) '{1}'", ++totalCount, test);
+				email.Debug();
+				Console.Write("\nDisplayName: '{0}'", mailAddress.DisplayName);
+				Console.Write("\n       User: '{0}'", mailAddress.User);
+				Console.Write("\n       Host: '{0}'", mailAddress.Host);
+				Console.Write("\n    Address: '{0}'", mailAddress.Address);
+				Console.Write("\n   ToString: '{0}'", mailAddress);
+				Console.Write("\n   ToString: '{0}'", mailAddress.ToString());
+				Console.Write("\n");
+			}
+		}
+
 		// Modified Jul 26, 2021 // Created Jul 26, 2021 //
 		private static async void Test_ExampleImplementedClientAsync()
 		{
