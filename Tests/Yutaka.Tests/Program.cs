@@ -20,6 +20,7 @@ using Yutaka.QuickBooks;
 using Yutaka.Text;
 using Yutaka.Utils;
 using Yutaka.Video;
+using Yutaka.VineSpring;
 using Yutaka.Web;
 
 namespace Yutaka.Tests
@@ -171,9 +172,42 @@ namespace Yutaka.Tests
 		static void Main(string[] args)
 		{
 			StartProgram();
-			Test202107291435();
+			string log;
+
+			try {
+				TestGetAllClubs();
+			}
+
+			catch (Exception ex) {
+				++errorCount;
+				#region Logging
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Main().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Main().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+
+				logger.Error(log);
+				#endregion
+			}
+
 			EndProgram();
 		}
+
+		#region Yutaka.VineSpring Tests
+		private static void TestGetAllClubs()
+		{
+			var apiKey = "eCCk0Uq2Dig9VLE1w4ya2Ddp9my727rLDD4ngBay_55e743f3123e3b057094768a";
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+			var _client = new VineSpringClient(apiKey);
+
+			foreach(var club in _client.GetAllClubs()) {
+				club.DumpToConsole();
+			}
+		}
+		#endregion Yutaka.VineSpring Tests
 
 		#region Aug 11, 2020
 		private static void Test_String_Split()
