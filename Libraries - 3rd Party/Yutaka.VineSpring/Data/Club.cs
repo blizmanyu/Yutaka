@@ -1,4 +1,6 @@
-﻿namespace Yutaka.VineSpring.Data
+﻿using System;
+
+namespace Yutaka.VineSpring.Data
 {
 	public class Club
 	{
@@ -15,6 +17,21 @@
 		public Quantity Quantity { get; set; }
 		public Shipping Shipping { get; set; }
 		public Taxrate TaxRate { get; set; }
+
+		public void DumpToConsole()
+		{
+			Console.Write("\n");
+			Console.Write("\nAllowCustomerHold: {0}", AllowCustomerHold);
+			Console.Write("\nMaxHoldDuration: {0}", MaxHoldDuration);
+			Console.Write("\nAccountId: {0}", AccountId);
+			Console.Write("\nId: {0}", Id);
+			Console.Write("\nMaxHoldPeriod: {0}", MaxHoldPeriod);
+			Console.Write("\nName: {0}", Name);
+			Console.Write("\nSignupDetails: {0}", SignupDetails);
+			Console.Write("\nType: {0}", Type);
+			Console.Write("\nDiscounts: {0}", String.Join(", ", Discounts));
+			Console.Write("\n");
+		}
 	}
 
 	public class Amount { }
