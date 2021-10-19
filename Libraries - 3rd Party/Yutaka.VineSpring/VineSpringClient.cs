@@ -1,14 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Net;
-using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yutaka.IO;
-using Yutaka.VineSpring.Data;
-using Yutaka.VineSpring.Data20191126;
-using Yutaka.VineSpring.Data20200207;
+using Yutaka.VineSpring.Domain.Club;
 
 namespace Yutaka.VineSpring
 {
@@ -44,8 +40,7 @@ namespace Yutaka.VineSpring
 				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
 
 				using (var response = await Client.GetAsync(endpoint)) {
-					var responseData = await response.Content.ReadAsStringAsync();
-					return responseData;
+					return await response.Content.ReadAsStringAsync();
 				}
 			}
 
@@ -57,6 +52,42 @@ namespace Yutaka.VineSpring
 					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListAllClubs().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		private async Task<string> ListAllClubMemberships(string clubId)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(clubId))
+				log = String.Format("{0}'clubId' is required. Exception thrown in VineSpringClient.ListAllClubMemberships(string clubId).{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				var endpoint = String.Format("clubs/{0}/clubMemberships", clubId);
+				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+
+				using (var response = await Client.GetAsync(endpoint)) {
+					return await response.Content.ReadAsStringAsync();
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListAllClubMemberships(string clubId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, clubId);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListAllClubMemberships(string clubId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, clubId);
 
 				Console.Write("\n{0}", log);
 				throw new Exception(log);
