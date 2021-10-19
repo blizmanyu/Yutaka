@@ -56,8 +56,10 @@ namespace Yutaka.VineSpring.Domain.Club
 			Console.Write("\nSource: {0}", Source);
 			Console.Write("\nStatus: {0}", Status);
 			Console.Write("\nUpdatedBy: {0}", UpdatedBy);
-			CustomerNote.DumpToConsole();
-			Note.DumpToConsole();
+			if (CustomerNote != null)
+				CustomerNote.DumpToConsole();
+			if (Note != null)
+				Note.DumpToConsole();
 			Console.Write("\n");
 		}
 	}

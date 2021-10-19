@@ -175,7 +175,7 @@ namespace Yutaka.Tests
 			string log;
 
 			try {
-				TestListAllClubMemberships();
+				TestGetAllClubMemberships();
 			}
 
 			catch (Exception ex) {
@@ -197,19 +197,16 @@ namespace Yutaka.Tests
 		}
 
 		#region Yutaka.VineSpring Tests
-		private static void TestListAllClubMemberships()
+		private static void TestGetAllClubMemberships()
 		{
 			var apiKey = "eCCk0Uq2Dig9VLE1w4ya2Ddp9my727rLDD4ngBay_55e743f3123e3b057094768a";
 			var clubId = "club_5d366d518dd1e90001a5d036";
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 			var _client = new VineSpringClient(apiKey);
 
-			_client.WriteToFile(_client.ListAllClubMemberships(clubId));
-			_client.WriteToFile(_client.ListAllClubMemberships("club_5d366d588dd1e90001a5d037"));
-			_client.WriteToFile(_client.ListAllClubMemberships("club_5d366d5d8dd1e90001a5d038"));
-			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6564f837900085b15bb"));
-			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6804f837900085b15bc"));
-			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6bc4f837900085b15bd"));
+			foreach (var member in _client.GetAllClubMemberships(clubId)) {
+				member.DumpToConsole();
+			}
 		}
 
 		private static void TestGetAllClubs()
