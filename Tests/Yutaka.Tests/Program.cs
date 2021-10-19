@@ -204,7 +204,12 @@ namespace Yutaka.Tests
 			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 			var _client = new VineSpringClient(apiKey);
 
-			//_client.WriteToConsole(_client.ListAllClubMemberships(clubId));
+			_client.WriteToFile(_client.ListAllClubMemberships(clubId));
+			_client.WriteToFile(_client.ListAllClubMemberships("club_5d366d588dd1e90001a5d037"));
+			_client.WriteToFile(_client.ListAllClubMemberships("club_5d366d5d8dd1e90001a5d038"));
+			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6564f837900085b15bb"));
+			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6804f837900085b15bc"));
+			_client.WriteToFile(_client.ListAllClubMemberships("club_5e98f6bc4f837900085b15bd"));
 		}
 
 		private static void TestGetAllClubs()
