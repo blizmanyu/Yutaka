@@ -29,6 +29,37 @@ namespace Yutaka.VineSpring.Domain.Club
 		public string UpdatedBy { get; set; }
 		public Customernote CustomerNote { get; set; }
 		public Note Note { get; set; }
+
+		public void DumpToConsole()
+		{
+			Console.Write("\n");
+			Console.Write("\nIsGift: {0}", IsGift);
+			Console.Write("\nShipmentsCreated: {0}", ShipmentsCreated);
+			Console.Write("\nCancelationOn: {0}", CancelationOn);
+			Console.Write("\nCreatedOn: {0}", CreatedOn);
+			Console.Write("\nHoldOn: {0}", HoldOn);
+			Console.Write("\nHoldUntil: {0}", HoldUntil);
+			Console.Write("\nMemberSince: {0}", MemberSince);
+			Console.Write("\nUpdatedOn: {0}", UpdatedOn);
+			Console.Write("\nShipmentsGifted: {0}", ShipmentsGifted);
+			Console.Write("\nAccountId: {0}", AccountId);
+			Console.Write("\nCancelationReason: {0}", CancelationReason);
+			Console.Write("\nCardId: {0}", CardId);
+			Console.Write("\nClubId: {0}", ClubId);
+			Console.Write("\nCustom1: {0}", Custom1);
+			Console.Write("\nId: {0}", Id);
+			Console.Write("\nPurchaserCustomerId: {0}", PurchaserCustomerId);
+			Console.Write("\nRecipientCustomerId: {0}", RecipientCustomerId);
+			Console.Write("\nSalesrep: {0}", Salesrep);
+			Console.Write("\nShippingAddressId: {0}", ShippingAddressId);
+			Console.Write("\nShippingMethodId: {0}", ShippingMethodId);
+			Console.Write("\nSource: {0}", Source);
+			Console.Write("\nStatus: {0}", Status);
+			Console.Write("\nUpdatedBy: {0}", UpdatedBy);
+			CustomerNote.DumpToConsole();
+			Note.DumpToConsole();
+			Console.Write("\n");
+		}
 	}
 
 	public class Note
@@ -36,6 +67,13 @@ namespace Yutaka.VineSpring.Domain.Club
 		public string Message { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
+
+		public void DumpToConsole()
+		{
+			Console.Write("\nNote Message: {0}", Message);
+			Console.Write("\nNote UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\nNote UpdatedOn: {0}", UpdatedOn);
+		}
 	}
 
 	public class Customernote
@@ -43,5 +81,12 @@ namespace Yutaka.VineSpring.Domain.Club
 		public string Message { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
+
+		public void DumpToConsole()
+		{
+			Console.Write("\nCustomernote Message: {0}", Message);
+			Console.Write("\nCustomernote UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\nCustomernote UpdatedOn: {0}", UpdatedOn);
+		}
 	}
 }
