@@ -158,6 +158,44 @@ namespace Yutaka.VineSpring
 				#endregion Log
 			}
 		}
+
+		public IList<ClubMembership> GetAllClubMemberships(string clubId)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(clubId))
+				log = String.Format("{0}'clubId' is required. Exception thrown in VineSpringClient.GetAllClubMemberships(string clubId).{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				var list = new List<ClubMembership>();
+				var response = ListAllClubMemberships(clubId);
+				var clubMemberships = JsonConvert.DeserializeObject<List<ClubMembership>>(response.Result);
+
+				foreach (var clubMembership in clubMemberships)
+					list.Add(clubMembership);
+
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllClubMemberships(string clubId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, clubId);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllClubMemberships(string clubId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, clubId);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion Clubs
 		#endregion Methods
 	}
