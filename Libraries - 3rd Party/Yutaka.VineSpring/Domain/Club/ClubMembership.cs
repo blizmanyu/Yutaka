@@ -4,44 +4,44 @@ namespace Yutaka.VineSpring.Domain.Club
 {
 	public class ClubMembership
 	{
-		public DateTime updatedOn { get; set; }
-		public string accountId { get; set; }
-		public string purchaserCustomerId { get; set; }
-		public string status { get; set; }
-		public string updatedBy { get; set; }
-		public string source { get; set; }
-		public int shipmentsCreated { get; set; }
-		public string clubId { get; set; }
-		public string cardId { get; set; }
-		public bool isGift { get; set; }
-		public string recipientCustomerId { get; set; }
-		public DateTime createdOn { get; set; }
-		public string id { get; set; }
-		public string shippingAddressId { get; set; }
-		public DateTime memberSince { get; set; }
-		public DateTime holdOn { get; set; }
-		public Note note { get; set; }
-		public DateTime cancelationOn { get; set; }
-		public DateTime holdUntil { get; set; }
-		public string cancelationReason { get; set; }
-		public object shipmentsGifted { get; set; }
-		public string shippingMethodId { get; set; }
-		public string salesrep { get; set; }
-		public Customernote customerNote { get; set; }
-		public string custom1 { get; set; }
+		public bool IsGift { get; set; }
+		public int ShipmentsCreated { get; set; }
+		public DateTime CancelationOn { get; set; }
+		public DateTime CreatedOn { get; set; }
+		public DateTime HoldOn { get; set; }
+		public DateTime HoldUntil { get; set; }
+		public DateTime MemberSince { get; set; }
+		public DateTime UpdatedOn { get; set; }
+		public object ShipmentsGifted { get; set; }
+		public string AccountId { get; set; }
+		public string CancelationReason { get; set; }
+		public string CardId { get; set; }
+		public string ClubId { get; set; }
+		public string Custom1 { get; set; }
+		public string Id { get; set; }
+		public string PurchaserCustomerId { get; set; }
+		public string RecipientCustomerId { get; set; }
+		public string Salesrep { get; set; }
+		public string ShippingAddressId { get; set; }
+		public string ShippingMethodId { get; set; }
+		public string Source { get; set; }
+		public string Status { get; set; }
+		public string UpdatedBy { get; set; }
+		public Customernote CustomerNote { get; set; }
+		public Note Note { get; set; }
 	}
 
 	public class Note
 	{
-		public string message { get; set; }
-		public string updatedBy { get; set; }
-		public DateTime updatedOn { get; set; }
+		public string Message { get; set; }
+		public string UpdatedBy { get; set; }
+		public DateTime UpdatedOn { get; set; }
 	}
 
 	public class Customernote
 	{
-		public string message { get; set; }
-		public string updatedBy { get; set; }
-		public DateTime updatedOn { get; set; }
+		public string Message { get; set; }
+		public string UpdatedBy { get; set; }
+		public DateTime UpdatedOn { get; set; }
 	}
 }
