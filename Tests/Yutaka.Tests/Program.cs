@@ -175,7 +175,7 @@ namespace Yutaka.Tests
 			string log;
 
 			try {
-				TestGetAllClubs();
+				TestListAllClubMemberships();
 			}
 
 			catch (Exception ex) {
@@ -197,6 +197,16 @@ namespace Yutaka.Tests
 		}
 
 		#region Yutaka.VineSpring Tests
+		private static void TestListAllClubMemberships()
+		{
+			var apiKey = "eCCk0Uq2Dig9VLE1w4ya2Ddp9my727rLDD4ngBay_55e743f3123e3b057094768a";
+			var clubId = "club_5d366d518dd1e90001a5d036";
+			ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+			var _client = new VineSpringClient(apiKey);
+
+			//_client.WriteToConsole(_client.ListAllClubMemberships(clubId));
+		}
+
 		private static void TestGetAllClubs()
 		{
 			var apiKey = "eCCk0Uq2Dig9VLE1w4ya2Ddp9my727rLDD4ngBay_55e743f3123e3b057094768a";
