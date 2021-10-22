@@ -54,6 +54,15 @@ namespace Yutaka.WineShipping
 				Console.Write("\n{0}", response.Result);
 		}
 
+		/// <summary>
+		/// Gets Inventory information using the API call /api/Inventory/GetStatus.
+		/// </summary>
+		/// <param name="warehouse">Optional: A warehouse code to return related inventory records for a specific Wineshipping warehouse. If omitted, the operation will return inventory records for all warehouses.</param>
+		/// <param name="itemNumbers">Optional: And array of items to query. If omitted, returns inventory records for all items in the warehouse specified.</param>
+		/// <param name="includeTotalRecordCount">Whether to return the total number of records found or not.</param>
+		/// <param name="skip"></param>
+		/// <param name="top">Maximum number of records to return. Default is set in the DEFAULT_TOP field.</param>
+		/// <returns></returns>
 		public async Task<string> GetInventoryStatus(string warehouse=null, string[] itemNumbers=null, bool? includeTotalRecordCount=null, int? skip=null, int? top=null)
 		{
 			if (includeTotalRecordCount == null)
@@ -87,9 +96,9 @@ namespace Yutaka.WineShipping
 
 			catch (Exception ex) {
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in V3Util.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.Message, ex.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
+					throw new Exception(String.Format("{0}{2}Exception thrown in WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.Message, ex.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of V3Util.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
 			}
 		}
 
