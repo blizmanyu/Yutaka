@@ -1,8 +1,10 @@
 ﻿using System;
+using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Yutaka.IO;
 
 namespace Yutaka.WineShipping
 {
@@ -38,7 +40,7 @@ namespace Yutaka.WineShipping
 		}
 		#endregion Constructor
 
-		#region Methods
+		#region Utilities
 		public void DisplayResponse(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
@@ -52,54 +54,6 @@ namespace Yutaka.WineShipping
 
 			else
 				Console.Write("\n{0}", response.Result);
-		}
-
-		/// <summary>
-		/// Gets Inventory information using the API call /api/Inventory/GetStatus.
-		/// </summary>
-		/// <param name="warehouse">Optional: A warehouse code to return related inventory records for a specific Wineshipping warehouse. If omitted, the operation will return inventory records for all warehouses.</param>
-		/// <param name="itemNumbers">Optional: And array of items to query. If omitted, returns inventory records for all items in the warehouse specified.</param>
-		/// <param name="includeTotalRecordCount">Whether to return the total number of records found or not.</param>
-		/// <param name="skip"></param>
-		/// <param name="top">Maximum number of records to return. Default is set in the DEFAULT_TOP field.</param>
-		/// <returns></returns>
-		public async Task<string> GetInventoryStatus(string warehouse=null, string[] itemNumbers=null, bool? includeTotalRecordCount=null, int? skip=null, int? top=null)
-		{
-			if (includeTotalRecordCount == null)
-				includeTotalRecordCount = true;
-			if (skip == null)
-				skip = 0;
-			if (top == null)
-				top = DEFAULT_TOP;
-
-			try {
-				var endpoint = "api/Inventory/GetStatus";
-				var request = new InventoryStatusRequest {
-					Authentication = new Authentication { UserKey = UserKey, Password = Password, CustomerNo = CustomerNumber, },
-					Warehouse = warehouse,
-					ItemNumbers = itemNumbers,
-					IncludeTotalRecordCount = includeTotalRecordCount,
-					Skip = skip,
-					Top = top,
-				};
-
-				using (var httpClient = new HttpClient { BaseAddress = BaseUrl }) {
-					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
-					using (var content = new StringContent(request.ToJson(), Encoding.Default, "application/json")) {
-						using (var response = await httpClient.PostAsync(endpoint, content)) {
-							var responseData = await response.Content.ReadAsStringAsync();
-							return responseData;
-						}
-					}
-				}
-			}
-
-			catch (Exception ex) {
-				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.Message, ex.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
-				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
-			}
 		}
 
 		public int? ItemUnitToBottlesPerUnit(string itemUnit)
@@ -170,6 +124,56 @@ namespace Yutaka.WineShipping
 					return 1;
 			}
 		}
-		#endregion Methods
+		#endregion Utilities
+
+		#region Methods - API Calls
+		/// <summary>
+		/// Gets Inventory information using the API call /api/Inventory/GetStatus.
+		/// </summary>
+		/// <param name="warehouse">Optional: A warehouse code to return related inventory records for a specific Wineshipping warehouse. If omitted, the operation will return inventory records for all warehouses.</param>
+		/// <param name="itemNumbers">Optional: And array of items to query. If omitted, returns inventory records for all items in the warehouse specified.</param>
+		/// <param name="includeTotalRecordCount">Whether to return the total number of records found or not.</param>
+		/// <param name="skip"></param>
+		/// <param name="top">Maximum number of records to return. Default is set in the DEFAULT_TOP field.</param>
+		/// <returns></returns>
+		public async Task<string> GetInventoryStatus(string warehouse=null, string[] itemNumbers=null, bool? includeTotalRecordCount=null, int? skip=null, int? top=null)
+		{
+			if (includeTotalRecordCount == null)
+				includeTotalRecordCount = true;
+			if (skip == null)
+				skip = 0;
+			if (top == null)
+				top = DEFAULT_TOP;
+
+			try {
+				var endpoint = "api/Inventory/GetStatus";
+				var request = new InventoryStatusRequest {
+					Authentication = new Authentication { UserKey = UserKey, Password = Password, CustomerNo = CustomerNumber, },
+					Warehouse = warehouse,
+					ItemNumbers = itemNumbers,
+					IncludeTotalRecordCount = includeTotalRecordCount,
+					Skip = skip,
+					Top = top,
+				};
+
+				using (var httpClient = new HttpClient { BaseAddress = BaseUrl }) {
+					httpClient.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+					using (var content = new StringContent(request.ToJson(), Encoding.Default, "application/json")) {
+						using (var response = await httpClient.PostAsync(endpoint, content)) {
+							var responseData = await response.Content.ReadAsStringAsync();
+							return responseData;
+						}
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.Message, ex.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
+				else
+					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of WSUtil.GetInventoryStatus(string warehouse='{3}', string[] itemNumbers='{4}', bool? includeTotalRecordCount='{5}', int? skip='{6}', int? top='{7}')", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, warehouse, String.Join(",", itemNumbers), includeTotalRecordCount, skip, top));
+			}
+		}
+		#endregion Methods - API Calls
 	}
 }
