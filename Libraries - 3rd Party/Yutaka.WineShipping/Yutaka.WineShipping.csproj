@@ -47,9 +47,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\AuthenticationDetails.cs" />
+    <Compile Include="Data\TrackingDetailRequest.cs" />
+    <Compile Include="Data\TrackingDetailResult.cs" />
     <Compile Include="Data\InventoryStatusResult.cs" />
     <Compile Include="Data\InventoryStatusRequest.cs" />
     <Compile Include="Data\Authentication.cs" />
+    <Compile Include="Data\OrderOnHoldResult.cs" />
     <Compile Include="WSUtil.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
