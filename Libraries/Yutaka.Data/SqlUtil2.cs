@@ -28,6 +28,31 @@ namespace Yutaka.Data
 			if (!String.IsNullOrWhiteSpace(connectionString))
 				ConnectionString = connectionString;
 		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="SqlUtil2"/> class.
+		/// </summary>
+		/// <param name="server">The name or network address of the instance of SQL Server to connect to.</param>
+		/// <param name="username">The username to be used when connecting to SQL Server.</param>
+		/// <param name="password">The password for the SQL Server account.</param>
+		public SqlUtil2(string server = null, string username = null, string password = null)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(server))
+				log = String.Format("{0}'server' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(username))
+				log = String.Format("{0}'username' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(password))
+				log = String.Format("{0}'password' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in Constructor SqlUtil2(string server, string username, string password).{1}", log, Environment.NewLine));
+			#endregion Check Input
+
+			ConnectionString = String.Format("data source={0};initial catalog=master;user id={1};password={2};asynchronous processing=True;multipleactiveresultsets=True;App=EntityFramework", server, username, password);
+		}
 		#endregion Constructor
 
 		#region Public Methods
