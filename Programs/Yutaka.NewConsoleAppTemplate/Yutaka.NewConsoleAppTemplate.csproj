@@ -67,6 +67,12 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Libraries\Yutaka.Core\Yutaka.Core.csproj">
+      <Project>{F6128925-5C84-4510-962D-BB42320B8CB6}</Project>
+      <Name>Yutaka.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using NLog;
+using Yutaka.Core.Net;
 
 namespace Yutaka.NewConsoleAppTemplate
 {
@@ -22,6 +23,8 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
+		private static readonly string fromEmail = "from@server.com";
+		private static readonly string toEmail = "to@server.com";
 
 		private static int errorCount = 0;
 		private static int processedCount = 0;
@@ -29,6 +32,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static GmailSmtpClient client = new GmailSmtpClient();
 		#endregion
 
 		static void Main(string[] args)
@@ -110,9 +114,8 @@ namespace Yutaka.NewConsoleAppTemplate
 			if (errorCount > errorCountThreshold || errorPerc > errorPercThreshold) {
 				logger.Error("The number of errors is above the threshold.");
 
-				if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold) {
-					//MailUtil.Send("fromEmail", "fromEmail", ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("P")));
-				}
+				if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
+					client.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
 			var log = new string[7];
