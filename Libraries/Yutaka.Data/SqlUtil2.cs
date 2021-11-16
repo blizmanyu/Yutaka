@@ -57,6 +57,35 @@ namespace Yutaka.Data
 
 		#region Public Methods
 		/// <summary>
+		/// Builds and returns a connection string from the given parameters.
+		/// </summary>
+		/// <param name="server">The name or network address of the instance of SQL Server to connect to.</param>
+		/// <param name="username">The username to be used when connecting to SQL Server.</param>
+		/// <param name="password">The password for the SQL Server account.</param>
+		/// <param name="database">The name of the specific database to connect to. Default is [master].</param>
+		/// <returns></returns>
+		public string BuildConnectionString(string server = null, string username = null, string password = null, string database = null)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(server))
+				log = String.Format("{0}'server' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(username))
+				log = String.Format("{0}'username' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(password))
+				log = String.Format("{0}'password' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(database))
+				database = "master";
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in BuildConnectionString(string server = null, string username = null, string password = null, string database = null).{1}", log, Environment.NewLine));
+			#endregion Check Input
+
+			return String.Format("data source={0};initial catalog={3};user id={1};password={2};asynchronous processing=True;multipleactiveresultsets=True;App=EntityFramework", server, username, password, database);
+		}
+
+		/// <summary>
 		/// Checks whether or not we can connect and execute a simple query on the SQL Server.
 		/// </summary>
 		/// <returns>True if it can connect and execute. False otherwise.</returns>
