@@ -8,6 +8,7 @@ namespace Yutaka.NewConsoleAppTemplate
 	class Program
 	{
 		private static readonly bool consoleOut = true; // default = false //
+		private static readonly string ProgramName = "NewConsoleAppTemplate";
 
 		#region Fields
 		#region Static Externs
@@ -21,7 +22,6 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static readonly DateTime startTime = DateTime.Now;
 		private static readonly double errorPercThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
-		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly string fromEmail = "from@server.com";
 		private static readonly string toEmail = "to@server.com";
