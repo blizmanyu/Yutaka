@@ -35,7 +35,7 @@ namespace Yutaka.Data
 		/// <param name="server">The name or network address of the instance of SQL Server to connect to.</param>
 		/// <param name="username">The username to be used when connecting to SQL Server.</param>
 		/// <param name="password">The password for the SQL Server account.</param>
-		public SqlUtil2(string server = null, string username = null, string password = null)
+		public SqlUtil2(string server, string username, string password)
 		{
 			#region Check Input
 			var log = "";
