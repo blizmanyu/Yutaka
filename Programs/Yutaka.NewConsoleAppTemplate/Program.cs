@@ -65,7 +65,28 @@ namespace Yutaka.NewConsoleAppTemplate
 
 		private static void Process()
 		{
+			try {
+				// TODO: Add logic here //
 
+				++processedCount;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				++errorCount;
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Process().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Process().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+
+				logger.Error(log);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+				#endregion Log
+			}
 		}
 
 		#region Methods
