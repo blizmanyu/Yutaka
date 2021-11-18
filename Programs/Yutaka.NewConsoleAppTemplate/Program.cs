@@ -19,7 +19,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
-		private static readonly DateTime startTime = DateTime.Now;
+		private static readonly DateTime startTime = DateTime.UtcNow;
 		private static readonly double errorPercThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
@@ -125,7 +125,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 		private static void EndProgram()
 		{
-			var endTime = DateTime.Now;
+			var endTime = DateTime.UtcNow;
 			var ts = endTime - startTime;
 			var processedPerc = (double) processedCount / totalCount;
 			var skippedPerc = (double) skippedCount / totalCount;
