@@ -142,20 +142,20 @@ namespace Yutaka.NewConsoleAppTemplate
 			var log = new string[7];
 			log[0] = "Ending program";
 
-			if (ts.TotalHours > 1)
-				log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm"));
-			else if (ts.TotalMinutes > 1)
-				log[1] = String.Format("It took {0} to complete", ts.ToString(@"mm\:ss"));
+			if (ts.TotalSeconds < 61)
+				log[1] = String.Format("It took {0} sec to complete", ts.ToString(@"s\.fff"));
+			else if (ts.TotalMinutes < 61)
+				log[1] = String.Format("It took {0}m {1}s to complete", ts.Minutes, ts.Seconds);
 			else
-				log[1] = String.Format("It took {0} to complete", ts.ToString(@"ss\.fff"));
+				log[1] = String.Format("It took {0}h {1}m to complete", ts.Hours, ts.Minutes);
 
-			log[2] = String.Format("Total: {0:n0}", totalCount);
+			log[2] = String.Format("    Total: {0,5:n0}", totalCount);
 
 			if (totalCount > 0) {
-				log[3] = String.Format("Processed: {0:n0} ({1})", processedCount, processedPerc.ToString("p").Replace(" ", ""));
-				log[4] = String.Format("Skipped: {0} ({1})", skippedCount, skippedPerc.ToString("p").Replace(" ", ""));
-				log[5] = String.Format("Success: {0} ({1})", successCount, successPerc.ToString("p").Replace(" ", ""));
-				log[6] = String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p").Replace(" ", ""));
+				log[3] = String.Format("Processed: {0,5:n0} ({1,7})", processedCount, processedPerc.ToString("p").Replace(" ", ""));
+				log[4] = String.Format("  Skipped: {0,5:n0} ({1,7})", skippedCount, skippedPerc.ToString("p").Replace(" ", ""));
+				log[5] = String.Format("  Success: {0,5:n0} ({1,7})", successCount, successPerc.ToString("p").Replace(" ", ""));
+				log[6] = String.Format("   Errors: {0,5:n0} ({1,7})", errorCount, errorPerc.ToString("p").Replace(" ", ""));
 			}
 
 			foreach (var l in log)
