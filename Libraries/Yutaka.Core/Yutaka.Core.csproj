@@ -50,6 +50,7 @@
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="Data\DataSetting.cs" />
+    <Compile Include="YuException.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="Drawing\DrawingUtil.cs" />
     <Compile Include="IO\DirectoryUtil.cs" />
