@@ -54,7 +54,7 @@ namespace CodeGenerator
 		{
 			StartProgram();
 			try {
-				//ScriptTables();
+				ScriptTables();
 				ScriptCSharp();
 				//Test_Method_ToString();
 			}
@@ -121,10 +121,11 @@ namespace CodeGenerator
 		{
 			dumpToConsole = false;
 
+			var destFolder = @"C:\TEMP\";
 			ConnectionString = "asdfg";
 			Database = "asdfg";
 
-			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var dest = Path.Combine(destFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_scripter.ScriptAll(Columns), String.Format("{0}cs", dest));
@@ -132,6 +133,7 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
+			var destFolder = @"C:\TEMP\";
 			ConnectionString = "asdfg";
 			Database = "asdfg";
 			Schema = null;
@@ -139,7 +141,7 @@ namespace CodeGenerator
 
 			dumpToConsole = false;
 			var filename = String.Format("{0}{1}{2}", Database, Schema == null ? "" : String.Format(".{0}", Schema), Table == null ? "" : String.Format(".{0}", Table));
-			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", filename, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var dest = Path.Combine(destFolder, String.Format("{0} {1}.", filename, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
