@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseClient.cs" />
+    <Compile Include="Data\ClubMembership.cs" />
     <Compile Include="Domain\Club\ClubMembership.cs" />
     <Compile Include="Domain\Club\Club.cs" />
     <Compile Include="VineSpringClient.cs" />
