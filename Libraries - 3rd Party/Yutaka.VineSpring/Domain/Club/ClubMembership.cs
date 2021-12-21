@@ -5,14 +5,16 @@ namespace Yutaka.VineSpring.Domain.Club
 	public class ClubMembership
 	{
 		public bool IsGift { get; set; }
-		public int ShipmentsCreated { get; set; }
+		public CustomerNote CustomerNote { get; set; }
 		public DateTime CancelationOn { get; set; }
 		public DateTime CreatedOn { get; set; }
 		public DateTime HoldOn { get; set; }
 		public DateTime HoldUntil { get; set; }
 		public DateTime MemberSince { get; set; }
 		public DateTime UpdatedOn { get; set; }
-		public object ShipmentsGifted { get; set; }
+		public int ShipmentsCreated { get; set; }
+		public Note Note { get; set; }
+		public ShipmentsGifted ShipmentsGifted { get; set; }
 		public string AccountId { get; set; }
 		public string CancelationReason { get; set; }
 		public string CardId { get; set; }
@@ -21,14 +23,13 @@ namespace Yutaka.VineSpring.Domain.Club
 		public string Id { get; set; }
 		public string PurchaserCustomerId { get; set; }
 		public string RecipientCustomerId { get; set; }
-		public string Salesrep { get; set; }
+		public string SalesRep { get; set; }
 		public string ShippingAddressId { get; set; }
 		public string ShippingMethodId { get; set; }
 		public string Source { get; set; }
 		public string Status { get; set; }
 		public string UpdatedBy { get; set; }
-		public Customernote CustomerNote { get; set; }
-		public Note Note { get; set; }
+		public Trustee Trustee { get; set; }
 
 		public void DumpToConsole()
 		{
@@ -50,7 +51,7 @@ namespace Yutaka.VineSpring.Domain.Club
 			Console.Write("\nId: {0}", Id);
 			Console.Write("\nPurchaserCustomerId: {0}", PurchaserCustomerId);
 			Console.Write("\nRecipientCustomerId: {0}", RecipientCustomerId);
-			Console.Write("\nSalesrep: {0}", Salesrep);
+			Console.Write("\nSalesrep: {0}", SalesRep);
 			Console.Write("\nShippingAddressId: {0}", ShippingAddressId);
 			Console.Write("\nShippingMethodId: {0}", ShippingMethodId);
 			Console.Write("\nSource: {0}", Source);
@@ -60,35 +61,62 @@ namespace Yutaka.VineSpring.Domain.Club
 				CustomerNote.DumpToConsole();
 			if (Note != null)
 				Note.DumpToConsole();
+			if (Trustee != null)
+				Trustee.DumpToConsole();
 			Console.Write("\n");
+		}
+	}
+
+	public class CustomerNote
+	{
+		public DateTime CreatedOn { get; set; }
+		public string CreatedBy { get; set; }
+		public string Message { get; set; }
+		public string UpdatedBy { get; set; }
+		public DateTime UpdatedOn { get; set; }
+
+		public void DumpToConsole()
+		{
+			Console.Write("\nCustomerNote:");
+			Console.Write("\n    CreatedOn: {0}", CreatedOn);
+			Console.Write("\n    CreatedBy: {0}", CreatedBy);
+			Console.Write("\n      Message: {0}", Message);
+			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\n    UpdatedOn: {0}", UpdatedOn);
 		}
 	}
 
 	public class Note
 	{
+		public DateTime CreatedOn { get; set; }
+		public DateTime UpdatedOn { get; set; }
+		public string CreatedBy { get; set; }
 		public string Message { get; set; }
 		public string UpdatedBy { get; set; }
-		public DateTime UpdatedOn { get; set; }
 
 		public void DumpToConsole()
 		{
-			Console.Write("\nNote Message: {0}", Message);
-			Console.Write("\nNote UpdatedBy: {0}", UpdatedBy);
-			Console.Write("\nNote UpdatedOn: {0}", UpdatedOn);
+			Console.Write("\nNote:");
+			Console.Write("\n    CreatedOn: {0}", CreatedOn);
+			Console.Write("\n    CreatedBy: {0}", CreatedBy);
+			Console.Write("\n      Message: {0}", Message);
+			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\n    UpdatedOn: {0}", UpdatedOn);
 		}
 	}
 
-	public class Customernote
+	public class ShipmentsGifted { }
+
+	public class Trustee
 	{
-		public string Message { get; set; }
-		public string UpdatedBy { get; set; }
-		public DateTime UpdatedOn { get; set; }
+		public string Email { get; set; }
+		public string FullName { get; set; }
 
 		public void DumpToConsole()
 		{
-			Console.Write("\nCustomernote Message: {0}", Message);
-			Console.Write("\nCustomernote UpdatedBy: {0}", UpdatedBy);
-			Console.Write("\nCustomernote UpdatedOn: {0}", UpdatedOn);
+			Console.Write("\nTrustee:");
+			Console.Write("\n       Email: {0}", Email);
+			Console.Write("\n    FullName: {0}", FullName);
 		}
 	}
 }
