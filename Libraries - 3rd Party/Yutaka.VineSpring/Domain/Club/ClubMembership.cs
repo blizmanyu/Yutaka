@@ -4,6 +4,7 @@ namespace Yutaka.VineSpring.Domain.Club
 {
 	public class ClubMembership
 	{
+		#region Fields
 		public bool IsGift { get; set; }
 		public CustomerNote CustomerNote { get; set; }
 		public DateTime CancelationOn { get; set; }
@@ -30,6 +31,7 @@ namespace Yutaka.VineSpring.Domain.Club
 		public string Status { get; set; }
 		public string UpdatedBy { get; set; }
 		public Trustee Trustee { get; set; }
+		#endregion Fields
 
 		public void DumpToConsole()
 		{
@@ -69,11 +71,13 @@ namespace Yutaka.VineSpring.Domain.Club
 
 	public class CustomerNote
 	{
+		#region Fields
 		public DateTime CreatedOn { get; set; }
 		public string CreatedBy { get; set; }
 		public string Message { get; set; }
 		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
+		#endregion Fields
 
 		public void DumpToConsole()
 		{
@@ -88,11 +92,13 @@ namespace Yutaka.VineSpring.Domain.Club
 
 	public class Note
 	{
+		#region Fields
 		public DateTime CreatedOn { get; set; }
-		public DateTime UpdatedOn { get; set; }
 		public string CreatedBy { get; set; }
 		public string Message { get; set; }
 		public string UpdatedBy { get; set; }
+		public DateTime UpdatedOn { get; set; }
+		#endregion Fields
 
 		public void DumpToConsole()
 		{
@@ -109,8 +115,10 @@ namespace Yutaka.VineSpring.Domain.Club
 
 	public class Trustee
 	{
+		#region Fields
 		public string Email { get; set; }
 		public string FullName { get; set; }
+		#endregion Fields
 
 		public void DumpToConsole()
 		{
