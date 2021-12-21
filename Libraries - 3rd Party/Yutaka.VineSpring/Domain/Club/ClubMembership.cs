@@ -72,42 +72,34 @@ namespace Yutaka.VineSpring.Domain.Club
 	public class CustomerNote
 	{
 		#region Fields
-		public DateTime CreatedOn { get; set; }
-		public string CreatedBy { get; set; }
-		public string Message { get; set; }
-		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
+		public string UpdatedBy { get; set; }
+		public string Message { get; set; }
 		#endregion Fields
 
 		public void DumpToConsole()
 		{
 			Console.Write("\nCustomerNote:");
-			Console.Write("\n    CreatedOn: {0}", CreatedOn);
-			Console.Write("\n    CreatedBy: {0}", CreatedBy);
-			Console.Write("\n      Message: {0}", Message);
-			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
 			Console.Write("\n    UpdatedOn: {0}", UpdatedOn);
+			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\n      Message: {0}", Message);
 		}
 	}
 
 	public class Note
 	{
 		#region Fields
-		public DateTime CreatedOn { get; set; }
-		public string CreatedBy { get; set; }
-		public string Message { get; set; }
-		public string UpdatedBy { get; set; }
 		public DateTime UpdatedOn { get; set; }
+		public string UpdatedBy { get; set; }
+		public string Message { get; set; }
 		#endregion Fields
 
 		public void DumpToConsole()
 		{
 			Console.Write("\nNote:");
-			Console.Write("\n    CreatedOn: {0}", CreatedOn);
-			Console.Write("\n    CreatedBy: {0}", CreatedBy);
-			Console.Write("\n      Message: {0}", Message);
-			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
 			Console.Write("\n    UpdatedOn: {0}", UpdatedOn);
+			Console.Write("\n    UpdatedBy: {0}", UpdatedBy);
+			Console.Write("\n      Message: {0}", Message);
 		}
 	}
 
