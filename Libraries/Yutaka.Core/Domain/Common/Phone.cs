@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Yutaka
+namespace Yutaka.Core.Domain.Common
 {
 	public class Phone
 	{
