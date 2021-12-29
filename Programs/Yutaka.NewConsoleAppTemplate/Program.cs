@@ -9,6 +9,8 @@ namespace Yutaka.NewConsoleAppTemplate
 	{
 		private static readonly bool consoleOut = true; // default = false //
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
+		private static readonly string GmailUsername = "USERNAME";
+		private static readonly string GmailPassword = "PASSWORD";
 
 		#region Fields
 		#region Static Externs
@@ -32,7 +34,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-		private static GmailSmtpClient client = new GmailSmtpClient();
+		private static GmailSmtpClient client = new GmailSmtpClient(GmailUsername, GmailPassword);
 		#endregion
 
 		static void Main(string[] args)
