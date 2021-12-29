@@ -172,7 +172,7 @@ namespace Yutaka.NewConsoleAppTemplate
 				foreach (var l in log)
 					Console.Write("\n{0}{1}", timestamp, l);
 
-				Console.Write("\n.... Press any key to close the program ....");
+				Console.Write("\n\n. . . Press any key to close the program . . .\n\n");
 				Console.ReadKey(true);
 			}
 
