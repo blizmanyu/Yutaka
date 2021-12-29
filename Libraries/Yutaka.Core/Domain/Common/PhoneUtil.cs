@@ -12,8 +12,8 @@ namespace Yutaka.Core.Domain.Common
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
-		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence of similar/bogus
-		/// numbers.
+		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence
+		/// of similar/bogus numbers.
 		/// </summary>
 		/// <param name="phone">The phone number to check.</param>
 		/// <returns>true if valid. Otherwise false.</returns>
