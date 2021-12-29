@@ -39,7 +39,7 @@ namespace Yutaka.Core.Domain.Common
 		}
 
 		/// <summary>
-		/// Removes all non-alphanumerics from a phone number except for '+'.
+		/// Removes all non-numbers from a phone number. If an extension is detected, it will return the number, "ex." then the extension with no spaces.
 		/// </summary>
 		/// <param name="phone">The phone number to minify.</param>
 		/// <returns>The minified phone number.</returns>
@@ -48,31 +48,18 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
-			var startsWithPlus = false;
-			var hasExtension = false;
 			var split = SplitExtension(phone);
+			var number = split[0];
+			var extension = split[1];
 
-			if (!String.IsNullOrWhiteSpace(split[0])) {
-				if (split[0].StartsWith("+"))
-					startsWithPlus = true;
+			number = new string(number.Where(c => char.IsDigit(c)).ToArray());
 
-				split[0] = Whitespace.Replace(split[0], "");
-				split[0] = split[0].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
+			if (String.IsNullOrWhiteSpace(number))
+				return "";
+			if (String.IsNullOrWhiteSpace(extension))
+				return number;
 
-				if (startsWithPlus)
-					split[0] = String.Format("+{0}", split[0]);
-			}
-
-			if (!String.IsNullOrWhiteSpace(split[1])) {
-				hasExtension = true;
-				split[1] = Whitespace.Replace(split[1], "");
-				split[1] = split[1].Replace("`", "").Replace("~", "").Replace("!", "").Replace("@", "").Replace("#", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("+", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "");
-			}
-
-			if (hasExtension)
-				return String.Format("{0}ext{1}", split[0], split[1]);
-
-			return split[0];
+			return String.Format("{0}ex.{1}", number, extension.Trim());
 		}
 
 		/// <summary>
