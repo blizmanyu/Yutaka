@@ -85,24 +85,20 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(phone))
 				return new string[] { "", "" };
 
-			var lower = phone.ToLower();
+			if (phone.IndexOf("ext.", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, @"ext\.", RegexOptions.IgnoreCase);
+			if (phone.IndexOf("ext", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, "ext", RegexOptions.IgnoreCase);
 
-			if (lower.Contains("ext."))
-				return lower.Split(new string[] { "ext." }, StringSplitOptions.None);
-			if (lower.Contains("ext"))
-				return lower.Split(new string[] { "ext" }, StringSplitOptions.None);
-			if (lower.Contains("ex."))
-				return lower.Split(new string[] { "ex." }, StringSplitOptions.None);
-			if (lower.Contains("ex "))
-				return lower.Split(new string[] { "ex " }, StringSplitOptions.None);
-			if (lower.Contains("xt."))
-				return lower.Split(new string[] { "xt." }, StringSplitOptions.None);
-			if (lower.Contains("xt"))
-				return lower.Split(new string[] { "xt" }, StringSplitOptions.None);
-			if (lower.Contains("e."))
-				return lower.Split(new string[] { "e." }, StringSplitOptions.None);
-			if (lower.Contains("x."))
-				return lower.Split(new string[] { "x." }, StringSplitOptions.None);
+			if (phone.IndexOf("ex.", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, @"ex\.", RegexOptions.IgnoreCase);
+			if (phone.IndexOf("ex ", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, "ex ", RegexOptions.IgnoreCase);
+
+			if (phone.IndexOf("xt.", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, @"xt\.", RegexOptions.IgnoreCase);
+			if (phone.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
+				return Regex.Split(phone, "xt ", RegexOptions.IgnoreCase);
 
 			return new string[] { phone, "" };
 		}
