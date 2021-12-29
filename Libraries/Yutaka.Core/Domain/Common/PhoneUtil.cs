@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -10,6 +11,7 @@ namespace Yutaka.Core.Domain.Common
 	{
 		private static readonly Regex TenDigits = new Regex(@"\d{10}", RegexOptions.Compiled);
 		private static readonly Regex Whitespace = new Regex(@"\s+", RegexOptions.Compiled);
+		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
 		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence of similar/bogus
@@ -86,6 +88,24 @@ namespace Yutaka.Core.Domain.Common
 				return Regex.Split(phone, "xt ", RegexOptions.IgnoreCase);
 
 			return new string[] { phone, "" };
+		}
+
+		/// <summary>
+		/// Returns the standardized format of a phone label.
+		/// </summary>
+		/// <param name="label">The string to standardize.</param>
+		/// <returns></returns>
+		public static string StandardizeLabel(string label)
+		{
+			if (String.IsNullOrWhiteSpace(label))
+				return "";
+
+			label = label.Trim();
+
+			if (label.Equals(label.ToLowerInvariant()))
+				return EnglishUS.ToTitleCase(label);
+
+			return label;
 		}
 	}
 }
