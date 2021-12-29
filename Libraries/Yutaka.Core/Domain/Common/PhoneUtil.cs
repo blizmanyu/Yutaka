@@ -9,8 +9,6 @@ namespace Yutaka.Core.Domain.Common
 {
 	public static class PhoneUtil
 	{
-		private static readonly Regex TenDigits = new Regex(@"\d{10}", RegexOptions.Compiled);
-		private static readonly Regex Whitespace = new Regex(@"\s+", RegexOptions.Compiled);
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
