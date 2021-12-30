@@ -23,7 +23,7 @@ namespace Yutaka.Core.Domain.Common
 				return "";
 
 			phone = Minify(phone);
-			var split = SplitExtension(phone);
+			var split = Split(phone);
 			var number = split[0];
 			var extension = split[1];
 			var result = "";
@@ -54,7 +54,7 @@ namespace Yutaka.Core.Domain.Common
 				return false;
 
 			phone = Minify(phone);
-			phone = SplitExtension(phone)[0];
+			phone = Split(phone)[0];
 
 			if (phone.Length < 10 || 20 < phone.Length)
 				return false;
@@ -78,7 +78,7 @@ namespace Yutaka.Core.Domain.Common
 				return "";
 
 			var startsWithPlus = false;
-			var split = SplitExtension(phone);
+			var split = Split(phone);
 			var number = split[0].Trim();
 			var extension = split[1];
 
@@ -108,7 +108,7 @@ namespace Yutaka.Core.Domain.Common
 		/// </summary>
 		/// <param name="phone">The phone number to split.</param>
 		/// <returns>A string[] containing the phone number and extension.</returns>
-		public static string[] SplitExtension(string phone)
+		public static string[] Split(string phone)
 		{
 			if (String.IsNullOrWhiteSpace(phone))
 				return new string[] { "", "", "" };
