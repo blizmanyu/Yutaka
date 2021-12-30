@@ -9,6 +9,7 @@ namespace Yutaka.Core.Domain.Common
 {
 	public static class PhoneUtil
 	{
+		private const string PLUS = "+";
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
@@ -102,31 +103,47 @@ namespace Yutaka.Core.Domain.Common
 		}
 
 		/// <summary>
-		/// Attempts to detect extensions within a string and splits it if it finds one.
+		/// Attempts to detect an Extension, as well as a leading "+" from international numbers. Always returns a string[3] with
+		/// plus, the number, the extension, in that order.
 		/// </summary>
 		/// <param name="phone">The phone number to split.</param>
 		/// <returns>A string[] containing the phone number and extension.</returns>
 		public static string[] SplitExtension(string phone)
 		{
 			if (String.IsNullOrWhiteSpace(phone))
-				return new string[] { "", "" };
+				return new string[] { "", "", "" };
 
-			if (phone.IndexOf("ext.", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, @"ext\.", RegexOptions.IgnoreCase);
-			if (phone.IndexOf("ext", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, "ext", RegexOptions.IgnoreCase);
+			string[] split = null;
+			var result = new string[3] { "", phone, "" };
+			var number = phone.Trim();
 
-			if (phone.IndexOf("ex.", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, @"ex\.", RegexOptions.IgnoreCase);
-			if (phone.IndexOf("ex ", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, "ex ", RegexOptions.IgnoreCase);
+			if (number.StartsWith(PLUS)) {
+				result[0] = PLUS;
+				number = number.Replace(PLUS, "");
+				result[1] = number;
+			}
 
-			if (phone.IndexOf("xt.", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, @"xt\.", RegexOptions.IgnoreCase);
-			if (phone.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
-				return Regex.Split(phone, "xt ", RegexOptions.IgnoreCase);
+			if (number.IndexOf("ext.", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, @"ext\.", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("ext", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "ext", RegexOptions.IgnoreCase);
 
-			return new string[] { phone, "" };
+			else if (number.IndexOf("ex.", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, @"ex\.", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("ex ", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "ex ", RegexOptions.IgnoreCase);
+
+			else if (number.IndexOf("xt.", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, @"xt\.", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "xt ", RegexOptions.IgnoreCase);
+
+			if (split == null || split.Length < 2)
+				return result;
+
+			result[1] = split[0];
+			result[2] = split[1];
+			return result;
 		}
 
 		/// <summary>
