@@ -46,22 +46,33 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
+			var startsWithPlus = false;
 			var split = SplitExtension(phone);
-			var number = split[0];
+			var number = split[0].Trim();
 			var extension = split[1];
+
+			if (number.StartsWith("+"))
+				startsWithPlus = true;
 
 			number = new string(number.Where(c => char.IsDigit(c)).ToArray());
 
 			if (String.IsNullOrWhiteSpace(number))
 				return "";
-			if (String.IsNullOrWhiteSpace(extension))
+			if (String.IsNullOrWhiteSpace(extension)) {
+				if (startsWithPlus)
+					return String.Format("+{0}", number);
+
 				return number;
+			}
+
+			if (startsWithPlus)
+				return String.Format("+{0}ex.{1}", number, extension.Trim());
 
 			return String.Format("{0}ex.{1}", number, extension.Trim());
 		}
 
 		/// <summary>
-		/// Attempts to detect extensions within a string and splits it if it finds it.
+		/// Attempts to detect extensions within a string and splits it if it finds one.
 		/// </summary>
 		/// <param name="phone">The phone number to split.</param>
 		/// <returns>A string[] containing the phone number and extension.</returns>
