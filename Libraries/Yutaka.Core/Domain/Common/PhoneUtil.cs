@@ -25,14 +25,16 @@ namespace Yutaka.Core.Domain.Common
 			var split = SplitExtension(phone);
 			var number = split[0];
 			var extension = split[1];
-
-			if (number.Length < 10 || 20 < number.Length)
-				return phone;
-
 			var result = "";
 
-			if (number.StartsWith("+"))
-				result = "+";
+			if (number.StartsWith("+")) {
+				number = number.Replace("+", "");
+
+				if (number.Length < 10)
+					return phone;
+				if (number.Length == 10)
+					number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})", "($1) $2-$3");
+			}
 
 
 
