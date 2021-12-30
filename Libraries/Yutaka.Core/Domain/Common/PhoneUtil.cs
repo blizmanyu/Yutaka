@@ -12,6 +12,34 @@ namespace Yutaka.Core.Domain.Common
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
+		/// WIP: Do not use yet.
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		public static string Beautify(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				return "";
+
+			phone = Minify(phone);
+			var split = SplitExtension(phone);
+			var number = split[0];
+			var extension = split[1];
+
+			if (number.Length < 10 || 20 < number.Length)
+				return phone;
+
+			var result = "";
+
+			if (number.StartsWith("+"))
+				result = "+";
+
+
+
+			return phone;
+		}
+
+		/// <summary>
 		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence
 		/// of similar/bogus numbers.
 		/// </summary>
