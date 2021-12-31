@@ -54,7 +54,7 @@ namespace Yutaka.Core.Domain.Common
 				return false;
 
 			phone = Minify(phone);
-			phone = Split(phone)[0];
+			phone = Split(phone)[1];
 
 			if (phone.Length < 10 || 20 < phone.Length)
 				return false;
