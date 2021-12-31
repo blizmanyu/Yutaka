@@ -24,8 +24,9 @@ namespace Yutaka.Core.Domain.Common
 
 			phone = Minify(phone);
 			var split = Split(phone);
-			var number = split[0];
-			var extension = split[1];
+			var plus = split[0];
+			var number = split[1];
+			var extension = split[2];
 			var result = "";
 
 			if (number.StartsWith("+")) {
