@@ -77,29 +77,19 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
-			var startsWithPlus = false;
 			var split = Split(phone);
-			var number = split[0].Trim();
-			var extension = split[1];
-
-			if (number.StartsWith("+"))
-				startsWithPlus = true;
+			var plus = split[0];
+			var number = split[1];
+			var extension = split[2];
 
 			number = new string(number.Where(c => char.IsDigit(c)).ToArray());
 
 			if (String.IsNullOrWhiteSpace(number))
 				return "";
-			if (String.IsNullOrWhiteSpace(extension)) {
-				if (startsWithPlus)
-					return String.Format("+{0}", number);
+			if (String.IsNullOrWhiteSpace(extension))
+				return String.Format("{0}{1}", plus, number);
 
-				return number;
-			}
-
-			if (startsWithPlus)
-				return String.Format("+{0}ex.{1}", number, extension.Trim());
-
-			return String.Format("{0}ex.{1}", number, extension.Trim());
+			return String.Format("{0}{1}ex.{2}", plus, number, extension.Trim());
 		}
 
 		/// <summary>
