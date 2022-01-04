@@ -45,7 +45,8 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_PhoneUtil_Split();
+				Test_PhoneUtil_Minify();
+				//Test_PhoneUtil_Split();
 			}
 
 			catch (Exception ex) {
@@ -67,6 +68,35 @@ namespace Yutaka.Core.Tests
 		}
 
 		#region Core.Domain.Common Tests
+		private static void Test_PhoneUtil_Minify()
+		{
+			string[] tests = {
+				null, "", " ",
+				"asdfg",
+				"(123) 456-7890",
+				"1 (234) 567-8901",
+				"123.456.7890",
+				"1.234.567.8901",
+				"+1 (234) 567-8901",
+				"+123.456.7890",
+				"+1.234.567.8901",
+				"1 (234) 567-8901 ext. 200",
+				"123.456.7890 ex. 210",
+				"1.234.567.8901 x.220",
+			};
+
+			string[] split;
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0,2}) '{1}'", ++totalCount, test ?? "NULL");
+				split = PhoneUtil.Split(test);
+				Console.Write("\nSplit: '{0}' || '{1}' || '{2}'", split[0], split[1], split[2]);
+				Console.Write("\nMinified: '{0}'", PhoneUtil.Minify(test));
+				Console.Write("\n");
+			}
+		}
+
 		private static void Test_PhoneUtil_Split()
 		{
 			string[] tests = {
