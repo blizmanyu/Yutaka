@@ -143,6 +143,11 @@ namespace Yutaka.Core.Domain.Common
 			else if (number.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, "xt ", RegexOptions.IgnoreCase);
 
+			else if (Regex.IsMatch(number, @" x\.\d"))
+				split = Regex.Split(number, @" x\.\d", RegexOptions.IgnoreCase);
+			else if (Regex.IsMatch(number, @" x\d"))
+				split = Regex.Split(number, @" x\d", RegexOptions.IgnoreCase);
+
 			if (split == null || split.Length < 2 || String.IsNullOrWhiteSpace(split[1]))
 				return result;
 
