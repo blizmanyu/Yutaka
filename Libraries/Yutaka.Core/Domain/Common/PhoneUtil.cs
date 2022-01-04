@@ -57,11 +57,11 @@ namespace Yutaka.Core.Domain.Common
 			phone = Minify(phone);
 			phone = Split(phone)[1];
 
-			if (phone.Length < 10 || 20 < phone.Length)
+			if (phone.Length < 10 || 15 < phone.Length)
 				return false;
 
 			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
-				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") ||
+				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("77777777") ||
 				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
 				return false;
 
