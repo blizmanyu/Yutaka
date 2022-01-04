@@ -13,9 +13,9 @@ namespace Yutaka.Core.Domain.Common
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
-		/// WIP: Do not use yet.
+		/// Converts a string of numbers into its "pretty"-formatted version [ex.: (000) 000-0000]. If the number is invalid, returns the original string as-is.
 		/// </summary>
-		/// <param name="phone"></param>
+		/// <param name="phone">The phone number to beautify.</param>
 		/// <returns></returns>
 		public static string Beautify(string phone)
 		{
@@ -27,20 +27,32 @@ namespace Yutaka.Core.Domain.Common
 			var plus = split[0];
 			var number = split[1];
 			var extension = split[2];
-			var result = "";
 
-			if (number.StartsWith("+")) {
-				number = number.Replace("+", "");
+			if (number.Length < 10 || 17 < number.Length)
+				return phone;
+			if (number.Length == 10)
+				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})", "($1) $2-$3");
+			else if (number.Length == 11)
+				number = Regex.Replace(number, @"(\d{1})(\d{3})(\d{3})(\d{4})", "$1 ($2) $3-$4");
+			else if (number.Length == 12)
+				number = Regex.Replace(number, @"(\d{2})(\d{3})(\d{3})(\d{4})", "$1 ($2) $3-$4");
+			else if (number.Length == 13)
+				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{3})(\d{4})", "$1 ($2) $3-$4");
 
-				if (number.Length < 10)
-					return phone;
-				if (number.Length == 10)
-					number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})", "($1) $2-$3");
-			}
+			else if (number.Length == 14)
+				number = Regex.Replace(number, @"(\d{3})(\d{4})(\d{3})(\d{4})", "$1 ($2) $3-$4");
+			else if (number.Length == 15)
+				number = Regex.Replace(number, @"(\d{3})(\d{4})(\d{4})(\d{4})", "$1 ($2) $3-$4");
+			else if (number.Length == 16)
+				number = Regex.Replace(number, @"(\d{4})(\d{4})(\d{4})(\d{4})", "$1 ($2) $3-$4");
 
+			else if (number.Length == 17)
+				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})(\d{3})(\d{4})", "$1-$2 ($3) $4-$5");
 
+			if (String.IsNullOrWhiteSpace(extension))
+				return String.Format("{0}{1}", plus, number);
 
-			return phone;
+			return String.Format("{0}{1} ext.{2}", plus, number, extension);
 		}
 
 		/// <summary>
