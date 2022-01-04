@@ -4,6 +4,7 @@ using System.IO;
 using System.Net.Mail;
 using System.Runtime.InteropServices;
 using NLog;
+using Yutaka.Core.Domain.Common;
 using Yutaka.Core.IO;
 using Yutaka.Core.Net;
 
@@ -44,7 +45,7 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				TestMailAddress();
+				Test_PhoneUtil_Split();
 			}
 
 			catch (Exception ex) {
@@ -65,7 +66,59 @@ namespace Yutaka.Core.Tests
 			EndProgram();
 		}
 
-		#region IO
+		#region Core.Domain.Common Tests
+		private static void Test_PhoneUtil_Split()
+		{
+			string[] tests = {
+				null, "", " ",
+				#region Tests starting with '+'
+				"+",
+				"+asdfg",
+				"+9496791222",
+				"+9496791222ext.200",
+				"+9496791222ext200",
+				"+9496791222ex.200",
+				"+9496791222ex 200",
+				"+9496791222xt.200",
+				"+9496791222xt 200",
+				"+9496791222 x.200",
+				"+9496791222 x200",
+				"+9496791222e.200",
+				"+9496791222x.200",
+				"+9496791222e200",
+				"+9496791222x200",
+				#endregion Tests starting with '+'
+				#region Tests NOT starting with '+'
+				"asdfg",
+				"9496791222",
+				"9496791222ext.200",
+				"9496791222ext200",
+				"9496791222ex.200",
+				"9496791222ex 200",
+				"9496791222xt.200",
+				"9496791222xt 200",
+				"9496791222 x.200",
+				"9496791222 x200",
+				"9496791222e.200",
+				"9496791222x.200",
+				"9496791222e200",
+				"9496791222x200",
+				#endregion Tests NOT starting with '+'
+			};
+
+			string[] split;
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0,2}) '{1}'", ++totalCount, test ?? "NULL");
+				split = PhoneUtil.Split(test);
+				Console.Write("\n  '{0}' || '{1}' || '{2}'", split[0], split[1], split[2]);
+				Console.Write("\n");
+			}
+		}
+		#endregion Core.Domain.Common Tests
+
+		#region Core.IO Tests
 		// Modified Sep 30, 2020 // Created Sep 29, 2020 //
 		private static void Test_EnumerateImageFiles()
 		{
@@ -112,9 +165,9 @@ namespace Yutaka.Core.Tests
 			stopWatch.Stop();
 			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
 		}
-		#endregion IO
+		#endregion Core.IO Tests
 
-		#region Yutaka.Core.Net Tests
+		#region Core.Net Tests
 		// Modified Aug 3, 2021 // Created Aug 3, 2021 //
 		private static void TestMailAddress()
 		{
@@ -169,7 +222,7 @@ namespace Yutaka.Core.Tests
 			stopWatch.Stop();
 			Console.Write("\n{0:n0}ms", stopWatch.ElapsedMilliseconds);
 		}
-		#endregion Yutaka.Core.Net Tests
+		#endregion Core.Net Tests
 
 		#region StartProgram & EndProgram
 		private static void StartProgram()
