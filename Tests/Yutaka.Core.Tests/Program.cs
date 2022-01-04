@@ -45,7 +45,8 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				Test_PhoneUtil_Minify();
+				Test_PhoneUtil_Beautify();
+				//Test_PhoneUtil_Minify();
 				//Test_PhoneUtil_Split();
 			}
 
@@ -68,6 +69,72 @@ namespace Yutaka.Core.Tests
 		}
 
 		#region Core.Domain.Common Tests
+		private static void Test_PhoneUtil_Beautify()
+		{
+			string[] tests = {
+				null, "", " ",
+				"asdfg",
+
+				"1234567",
+				"+1234567",
+				"1234567ext.200",
+				"+1234567ext.200",
+
+				"1234567890",
+				"+1234567890",
+				"1234567890ext.200",
+				"+1234567890ext.200",
+
+				"12345678901",
+				"+12345678901",
+				"12345678901ext.200",
+				"+12345678901ext.200",
+
+				"123456789012",
+				"+123456789012",
+				"123456789012ext.200",
+				"+123456789012ext.200",
+
+				"1234567890123",
+				"+1234567890123",
+				"1234567890123ext.200",
+				"+1234567890123ext.200",
+
+				"12345678901234",
+				"+12345678901234",
+				"12345678901234ext.200",
+				"+12345678901234ext.200",
+
+				"123456789012345",
+				"+123456789012345",
+				"123456789012345ext.200",
+				"+123456789012345ext.200",
+
+				"1234567890123456",
+				"+1234567890123456",
+				"1234567890123456ext.200",
+				"+1234567890123456ext.200",
+
+				"12345678901234567",
+				"+12345678901234567",
+				"12345678901234567ext.200",
+				"+12345678901234567ext.200",
+
+				"123456789012345678",
+				"+123456789012345678",
+				"123456789012345678ext.200",
+				"+123456789012345678ext.200",
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0,2}) '{1}'", ++totalCount, test ?? "NULL");
+				Console.Write("\n  Minified: '{0}'", PhoneUtil.Minify(test));
+				Console.Write("\nBeautified: '{0}'", PhoneUtil.Beautify(test));
+				Console.Write("\n");
+			}
+		}
+
 		private static void Test_PhoneUtil_Minify()
 		{
 			string[] tests = {
