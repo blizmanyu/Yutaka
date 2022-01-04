@@ -10,6 +10,8 @@ namespace Yutaka.Core.Domain.Common
 	public static class PhoneUtil
 	{
 		private const string PLUS = "+";
+		private const int MIN_PHONE_LENGTH = 10;
+		private const int MAX_PHONE_LENGTH = 17;
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
@@ -28,7 +30,7 @@ namespace Yutaka.Core.Domain.Common
 			var number = split[1];
 			var extension = split[2];
 
-			if (number.Length < 10 || 17 < number.Length)
+			if (number.Length < MIN_PHONE_LENGTH || MAX_PHONE_LENGTH < number.Length)
 				return phone;
 			if (number.Length == 10)
 				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})", "($1) $2-$3");
@@ -69,7 +71,7 @@ namespace Yutaka.Core.Domain.Common
 			phone = Minify(phone);
 			phone = Split(phone)[1];
 
-			if (phone.Length < 10 || 15 < phone.Length)
+			if (phone.Length < MIN_PHONE_LENGTH || MAX_PHONE_LENGTH < phone.Length)
 				return false;
 
 			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
