@@ -124,29 +124,36 @@ namespace Yutaka.Core.Domain.Common
 
 			if (number.StartsWith(PLUS)) {
 				result[0] = PLUS;
-				number = number.Replace(PLUS, "");
+				number = number.Substring(1);
 				result[1] = number;
 			}
 
 			if (number.IndexOf("ext.", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, @"ext\.", RegexOptions.IgnoreCase);
+
+			// 3 chars //
 			else if (number.IndexOf("ext", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, "ext", RegexOptions.IgnoreCase);
-
 			else if (number.IndexOf("ex.", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, @"ex\.", RegexOptions.IgnoreCase);
-			else if (number.IndexOf("ex ", StringComparison.OrdinalIgnoreCase) > -1)
-				split = Regex.Split(number, "ex ", RegexOptions.IgnoreCase);
-
 			else if (number.IndexOf("xt.", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, @"xt\.", RegexOptions.IgnoreCase);
-			else if (number.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
-				split = Regex.Split(number, "xt ", RegexOptions.IgnoreCase);
 
-			else if (Regex.IsMatch(number, @" x\.\d"))
-				split = Regex.Split(number, @" x\.\d", RegexOptions.IgnoreCase);
-			else if (Regex.IsMatch(number, @" x\d"))
-				split = Regex.Split(number, @" x\d", RegexOptions.IgnoreCase);
+			// 2 chars //
+			else if (number.IndexOf("ex", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "ex", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("xt", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "xt", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("e.", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, @"e\.", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("x.", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, @"x\.", RegexOptions.IgnoreCase);
+
+			// 1 char //
+			else if (number.IndexOf("e", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "e", RegexOptions.IgnoreCase);
+			else if (number.IndexOf("x", StringComparison.OrdinalIgnoreCase) > -1)
+				split = Regex.Split(number, "x", RegexOptions.IgnoreCase);
 
 			if (split == null || split.Length < 2 || String.IsNullOrWhiteSpace(split[1]))
 				return result;
