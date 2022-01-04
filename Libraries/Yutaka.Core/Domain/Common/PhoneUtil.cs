@@ -129,7 +129,7 @@ namespace Yutaka.Core.Domain.Common
 			else if (number.IndexOf("xt ", StringComparison.OrdinalIgnoreCase) > -1)
 				split = Regex.Split(number, "xt ", RegexOptions.IgnoreCase);
 
-			if (split == null || split.Length < 2)
+			if (split == null || split.Length < 2 || String.IsNullOrWhiteSpace(split[1]))
 				return result;
 
 			result[1] = split[0];
