@@ -41,148 +41,6 @@ namespace Yutaka.Text
 		}
 		#endregion Encode/Decode
 
-		#region Phone Utils
-		public static string BeautifyPhone(string phone)
-		{
-			if (String.IsNullOrWhiteSpace(phone))
-				return "";
-
-			#region Handle Extensions
-			var ext = "";
-
-			if (phone.ToUpper().Contains("EXT.")) {
-				var ind = phone.ToUpper().IndexOf("EXT.");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 4, phone.Length - ind - 4).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-
-			else if (phone.ToUpper().Contains("EXT")) {
-				var ind = phone.ToUpper().IndexOf("EXT");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-
-			else if (phone.ToUpper().Contains("EX.")) {
-				var ind = phone.ToUpper().IndexOf("EX.");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-
-			else if (phone.ToUpper().Contains("XT.")) {
-				var ind = phone.ToUpper().IndexOf("XT.");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-
-			else if (phone.ToUpper().Contains("XT")) {
-				var ind = phone.ToUpper().IndexOf("XT");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-
-			else if (phone.ToUpper().Contains("X.")) {
-				var ind = phone.ToUpper().IndexOf("X.");
-				Console.Write("\nind: {0}", ind);
-				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
-				Console.Write("\next: {0}", ext);
-				if (ind == 0)
-					return String.Format("ext.{0}", ext);
-				phone = phone.Substring(0, ind).Trim();
-				Console.Write("\nphone: {0}", phone);
-			}
-			#endregion Handle Extensions
-
-			var stripped = StripPhone(phone);
-			var substring = stripped.Substring(1);
-			var len = stripped.Length;
-
-			if (len < 7)
-				phone = stripped;
-
-			else if (len == 7 && stripped.All(Char.IsDigit))
-				phone = String.Format("{0}-{1}", stripped.Substring(0, 3), stripped.Substring(3, 4));
-
-			else if (len == 10 && stripped.All(Char.IsDigit))
-				phone = String.Format("({0}) {1}-{2}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 4));
-
-			else if (len == 11) {
-				if (stripped.All(Char.IsDigit))
-					phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 1), stripped.Substring(1, 3), stripped.Substring(4, 3), stripped.Substring(7, 4));
-				else if (substring.All(Char.IsDigit))
-					phone = String.Format("{0}-{1}-{2}", stripped.Substring(0, 4), stripped.Substring(4, 3), stripped.Substring(7, 4));
-			}
-
-			else if (len == 12 && substring.All(Char.IsDigit))
-				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 2), stripped.Substring(2, 3), stripped.Substring(5, 3), stripped.Substring(8, 4));
-
-			else if (len == 13 && substring.All(Char.IsDigit))
-				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 3), stripped.Substring(9, 4));
-
-			if (String.IsNullOrWhiteSpace(ext))
-				return phone;
-
-			return String.Format("{0} ext.{1}", phone, ext);
-		}
-
-		[Obsolete("Deprecated Jan 28, 2020. Use PhoneUtil.IsValid() instead.", false)]
-		public static bool IsValidPhone(string phone)
-		{
-			if (String.IsNullOrWhiteSpace(phone))
-				return false;
-
-			phone = StripPhone(phone);
-
-			if (phone.Length < 10)
-				return false;
-
-			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
-				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") ||
-				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
-				return false;
-
-			return true;
-		}
-
-		[Obsolete("Deprecated Jan 28, 2020. Use PhoneUtil.Minify() instead.", false)]
-		public static string StripPhone(string phone)
-		{
-			if (String.IsNullOrWhiteSpace(phone))
-				return "";
-
-			var stripped = phone.Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Trim();
-
-			while (stripped.Contains(" "))
-				stripped = stripped.Replace(" ", "");
-
-			return stripped;
-		}
-		#endregion Phone Utils
-
 		public static string BeautifyJson(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
@@ -271,23 +129,6 @@ namespace Yutaka.Text
 
 			var bytes = Convert.FromBase64String(incoming);
 			return Encoding.ASCII.GetString(bytes);
-		}
-
-		public static string FormatCommonLabels(string label)
-		{
-			if (String.IsNullOrWhiteSpace(label))
-				return "";
-
-			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "FAX", "PAGER" };
-			label = label.Trim();
-			var labelUpper = label.ToUpper();
-
-			for (int i = 0; i < commonLabels.Length; i++) {
-				if (labelUpper.Equals(commonLabels[i]))
-					return ToTitleCase(label, 0);
-			}
-
-			return ToTitleCase(label, 0);
 		}
 
 		/// <summary>
@@ -421,5 +262,186 @@ namespace Yutaka.Text
 			return String.Join(" ", split);
 		}
 		#endregion Methods
+
+		#region Deprecated Jan 4, 2022 - Phone Utils
+		/// <summary>
+		/// Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Beautify() instead.
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Beautify() instead.", true)]
+		public static string BeautifyPhone(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				return "";
+
+			#region Handle Extensions
+			var ext = "";
+
+			if (phone.ToUpper().Contains("EXT.")) {
+				var ind = phone.ToUpper().IndexOf("EXT.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 4, phone.Length - ind - 4).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("EXT")) {
+				var ind = phone.ToUpper().IndexOf("EXT");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("EX.")) {
+				var ind = phone.ToUpper().IndexOf("EX.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("XT.")) {
+				var ind = phone.ToUpper().IndexOf("XT.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 3, phone.Length - ind - 3).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("XT")) {
+				var ind = phone.ToUpper().IndexOf("XT");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+
+			else if (phone.ToUpper().Contains("X.")) {
+				var ind = phone.ToUpper().IndexOf("X.");
+				Console.Write("\nind: {0}", ind);
+				ext = phone.Substring(ind + 2, phone.Length - ind - 2).Trim();
+				Console.Write("\next: {0}", ext);
+				if (ind == 0)
+					return String.Format("ext.{0}", ext);
+				phone = phone.Substring(0, ind).Trim();
+				Console.Write("\nphone: {0}", phone);
+			}
+			#endregion Handle Extensions
+
+			var stripped = StripPhone(phone);
+			var substring = stripped.Substring(1);
+			var len = stripped.Length;
+
+			if (len < 7)
+				phone = stripped;
+
+			else if (len == 7 && stripped.All(Char.IsDigit))
+				phone = String.Format("{0}-{1}", stripped.Substring(0, 3), stripped.Substring(3, 4));
+
+			else if (len == 10 && stripped.All(Char.IsDigit))
+				phone = String.Format("({0}) {1}-{2}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 4));
+
+			else if (len == 11) {
+				if (stripped.All(Char.IsDigit))
+					phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 1), stripped.Substring(1, 3), stripped.Substring(4, 3), stripped.Substring(7, 4));
+				else if (substring.All(Char.IsDigit))
+					phone = String.Format("{0}-{1}-{2}", stripped.Substring(0, 4), stripped.Substring(4, 3), stripped.Substring(7, 4));
+			}
+
+			else if (len == 12 && substring.All(Char.IsDigit))
+				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 2), stripped.Substring(2, 3), stripped.Substring(5, 3), stripped.Substring(8, 4));
+
+			else if (len == 13 && substring.All(Char.IsDigit))
+				phone = String.Format("{0} ({1}) {2}-{3}", stripped.Substring(0, 3), stripped.Substring(3, 3), stripped.Substring(6, 3), stripped.Substring(9, 4));
+
+			if (String.IsNullOrWhiteSpace(ext))
+				return phone;
+
+			return String.Format("{0} ext.{1}", phone, ext);
+		}
+
+		/// <summary>
+		/// Deprecated Jan 4, 2022. Use Yutaka.Core.Domain.Common.PhoneUtil.StandardizeLabel() instead.
+		/// </summary>
+		/// <param name="label"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated Jan 4, 2022. Use Yutaka.Core.Domain.Common.PhoneUtil.StandardizeLabel() instead.", true)]
+		public static string FormatCommonLabels(string label)
+		{
+			if (String.IsNullOrWhiteSpace(label))
+				return "";
+
+			string[] commonLabels = { "HOME", "WORK", "OFFICE", "OTHER", "MOBILE", "CELL", "MAIN", "FAX", "PAGER" };
+			label = label.Trim();
+			var labelUpper = label.ToUpper();
+
+			for (int i = 0; i < commonLabels.Length; i++) {
+				if (labelUpper.Equals(commonLabels[i]))
+					return ToTitleCase(label, 0);
+			}
+
+			return ToTitleCase(label, 0);
+		}
+
+		/// <summary>
+		/// Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Validate() instead.
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Validate() instead.", true)]
+		public static bool IsValidPhone(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				return false;
+
+			phone = StripPhone(phone);
+
+			if (phone.Length < 10)
+				return false;
+
+			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
+				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("7777777") ||
+				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
+				return false;
+
+			return true;
+		}
+
+		/// <summary>
+		/// Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Minify() instead.
+		/// </summary>
+		/// <param name="phone"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Minify() instead.", true)]
+		public static string StripPhone(string phone)
+		{
+			if (String.IsNullOrWhiteSpace(phone))
+				return "";
+
+			var stripped = phone.Replace("~", "").Replace("`", "").Replace("!", "").Replace("@", "").Replace("$", "").Replace("%", "").Replace("^", "").Replace("&", "").Replace("*", "").Replace("(", "").Replace(")", "").Replace("_", "").Replace("-", "").Replace("=", "").Replace("{", "").Replace("[", "").Replace("}", "").Replace("]", "").Replace("|", "").Replace(@"\", "").Replace(":", "").Replace(";", "").Replace("\"", "").Replace("'", "").Replace("<", "").Replace(",", "").Replace(">", "").Replace(".", "").Replace("/", "").Trim();
+
+			while (stripped.Contains(" "))
+				stripped = stripped.Replace(" ", "");
+
+			return stripped;
+		}
+		#endregion Deprecated Jan 4, 2022 - Phone Utils
 	}
 }
