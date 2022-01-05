@@ -76,6 +76,20 @@ namespace Yutaka.Core.Domain.Common
 		#endregion Constructors
 
 		#region Methods
+		public override bool Equals(Object obj)
+		{
+			if ((obj == null) || !this.GetType().Equals(obj.GetType()))
+				return false;
+
+			var x = (Phone) obj;
+			return NumberMinified.Equals(x.NumberMinified);
+		}
+
+		public override int GetHashCode()
+		{
+			return NumberMinified.GetHashCode();
+		}
+
 		public override string ToString()
 		{
 			return NumberPretty;
