@@ -7,10 +7,6 @@ namespace Yutaka.Core.Domain.Common
 	public class Phone
 	{
 		#region Fields
-		protected string AreaCode;
-		protected string BaseNumber;
-		protected string Extension;
-
 		public string Label;
 		public string Number;
 
