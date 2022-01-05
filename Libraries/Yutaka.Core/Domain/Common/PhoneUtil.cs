@@ -22,13 +22,16 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(phone))
 				return "";
 
-			phone = Minify(phone);
 			var split = Split(phone);
 			var plus = split[0];
 			var number = split[1];
 			var extension = split[2];
 
-			if (number.Length < MIN_PHONE_LENGTH || MAX_PHONE_LENGTH < number.Length)
+			number = new string(number.Where(c => char.IsDigit(c)).ToArray());
+
+			if (String.IsNullOrWhiteSpace(number))
+				return phone;
+			if (number.Length < MIN_PHONE_LENGTH || 13 < number.Length)
 				return phone;
 			if (number.Length == 10)
 				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})", "($1) $2-$3");
@@ -39,20 +42,10 @@ namespace Yutaka.Core.Domain.Common
 			else if (number.Length == 13)
 				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{3})(\d{4})", "$1 ($2) $3-$4");
 
-			else if (number.Length == 14)
-				number = Regex.Replace(number, @"(\d{3})(\d{4})(\d{3})(\d{4})", "$1 ($2) $3-$4");
-			else if (number.Length == 15)
-				number = Regex.Replace(number, @"(\d{3})(\d{4})(\d{4})(\d{4})", "$1 ($2) $3-$4");
-			else if (number.Length == 16)
-				number = Regex.Replace(number, @"(\d{4})(\d{4})(\d{4})(\d{4})", "$1 ($2) $3-$4");
-
-			else if (number.Length == 17)
-				number = Regex.Replace(number, @"(\d{3})(\d{3})(\d{4})(\d{3})(\d{4})", "$1-$2 ($3) $4-$5");
-
 			if (String.IsNullOrWhiteSpace(extension))
 				return String.Format("{0}{1}", plus, number);
 
-			return String.Format("{0}{1} ext.{2}", plus, number, extension);
+			return String.Format("{0}{1} ext.{2}", plus, number, extension.Trim());
 		}
 
 		/// <summary>
