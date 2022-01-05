@@ -45,9 +45,11 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
+				#region Core.Domain.Common Tests
 				Test_PhoneUtil_Beautify();
 				//Test_PhoneUtil_Minify();
 				//Test_PhoneUtil_Split();
+				#endregion Core.Domain.Common Tests
 			}
 
 			catch (Exception ex) {
