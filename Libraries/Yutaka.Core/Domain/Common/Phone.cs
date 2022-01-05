@@ -78,16 +78,22 @@ namespace Yutaka.Core.Domain.Common
 		#region Methods
 		public override bool Equals(Object obj)
 		{
-			if ((obj == null) || !this.GetType().Equals(obj.GetType()))
-				return false;
-
-			var x = (Phone) obj;
-			return NumberMinified.Equals(x.NumberMinified);
+			return obj is Phone && this == (Phone) obj;
 		}
 
 		public override int GetHashCode()
 		{
 			return NumberMinified.GetHashCode();
+		}
+
+		public static bool operator ==(Phone x, Phone y)
+		{
+			return x.NumberMinified == y.NumberMinified;
+		}
+
+		public static bool operator !=(Phone x, Phone y)
+		{
+			return !(x == y);
 		}
 
 		public override string ToString()
