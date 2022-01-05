@@ -29,8 +29,8 @@ namespace Yutaka.Core.Domain.Common
 		/// </summary>
 		public Phone()
 		{
-			Label = null;
-			Number = null;
+			Label = "";
+			Number = "";
 		}
 
 		/// <summary>
@@ -42,7 +42,7 @@ namespace Yutaka.Core.Domain.Common
 			if (String.IsNullOrWhiteSpace(number))
 				throw new Exception("'number' is required.");
 
-			Label = null;
+			Label = "";
 			Number = number;
 		}
 
@@ -55,6 +55,8 @@ namespace Yutaka.Core.Domain.Common
 		{
 			if (String.IsNullOrWhiteSpace(number))
 				throw new Exception("'number' is required.");
+			if (String.IsNullOrWhiteSpace(label))
+				throw new Exception("'label' is required.");
 
 			Label = label;
 			Number = number;
