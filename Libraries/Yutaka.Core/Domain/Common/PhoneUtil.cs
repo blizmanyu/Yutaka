@@ -58,31 +58,6 @@ namespace Yutaka.Core.Domain.Common
 		}
 
 		/// <summary>
-		/// Checks whether a phone number is valid or not. General criteria is at least 10 characters and doesn't contain a sequence
-		/// of similar/bogus numbers.
-		/// </summary>
-		/// <param name="phone">The phone number to check.</param>
-		/// <returns>true if valid. Otherwise false.</returns>
-		public static bool IsValid(string phone)
-		{
-			if (String.IsNullOrWhiteSpace(phone))
-				return false;
-
-			phone = Minify(phone);
-			phone = Split(phone)[1];
-
-			if (phone.Length < MIN_PHONE_LENGTH || MAX_PHONE_LENGTH < phone.Length)
-				return false;
-
-			if (phone.Contains("0000000") || phone.Contains("1111111") || phone.Contains("2222222") || phone.Contains("3333333") ||
-				phone.Contains("4444444") || phone.Contains("5555555") || phone.Contains("6666666") || phone.Contains("77777777") ||
-				phone.Contains("8888888") || phone.Contains("9999999") || phone.Contains("12345678") || phone.Contains("98765432"))
-				return false;
-
-			return true;
-		}
-
-		/// <summary>
 		/// Removes all non-numbers from a phone number. If an extension is detected, it will return the number, "ex." then the extension with no spaces.
 		/// </summary>
 		/// <param name="phone">The phone number to minify.</param>
@@ -179,6 +154,53 @@ namespace Yutaka.Core.Domain.Common
 				return EnglishUS.ToTitleCase(label);
 
 			return label;
+		}
+
+		/// <summary>
+		/// Validates a phone number. If a phone is invalid, the error message will be contained in &lt;errorMessage&gt;. Otherwise, it will be <see cref="String.Empty"/>.
+		/// </summary>
+		/// <param name="phone">The phone number to validate.</param>
+		/// <param name="errorMessage">The error message, if any.</param>
+		/// <returns></returns>
+		public static bool Validate(string phone, out string errorMessage)
+		{
+			if (String.IsNullOrWhiteSpace(phone)) {
+				errorMessage = "Phone is required.";
+				return false;
+			}
+
+			var number = Split(phone)[1];
+			number = new string(number.Where(c => char.IsDigit(c)).ToArray());
+
+			if (String.IsNullOrWhiteSpace(number)) {
+				errorMessage = "Phone is required.";
+				return false;
+			}
+
+			if (number.Length < 7) {
+				errorMessage = "Phone is too short.";
+				return false;
+			}
+
+			if (number.Length < MIN_PHONE_LENGTH) {
+				errorMessage = "Phone is too short. Make sure you include an Area Code. If you're using an international number, please include your Country Code.";
+				return false;
+			}
+
+			if (number.Length > MAX_PHONE_LENGTH) {
+				errorMessage = "Phone is too long.";
+				return false;
+			}
+
+			if (number.Contains("0000000") || number.Contains("1111111") || number.Contains("2222222") || number.Contains("3333333") ||
+				number.Contains("4444444") || number.Contains("5555555") || number.Contains("6666666") || number.Contains("7777777") ||
+				number.Contains("8888888") || number.Contains("9999999") || number.Contains("12345678") || number.Contains("98765432")) {
+				errorMessage = "Phone is invalid. Please enter a real phone number.";
+				return false;
+			}
+
+			errorMessage = "";
+			return true;
 		}
 	}
 }
