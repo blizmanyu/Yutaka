@@ -74,5 +74,12 @@ namespace Yutaka.Core.Domain.Common
 			Number = number;
 		}
 		#endregion Constructors
+
+		#region Methods
+		public override string ToString()
+		{
+			return NumberPretty;
+		}
+		#endregion Methods
 	}
 }
