@@ -8,8 +8,8 @@ namespace Yutaka.Core.Domain.Common
 	public static class PhoneUtil
 	{
 		private const string PLUS = "+";
-		private const int MIN_PHONE_LENGTH = 10;
-		private const int MAX_PHONE_LENGTH = 17;
+		private const int MIN_PHONE_LENGTH = 10; // Standard US phone number. Though technically there are countries with shorter phone numbers than this, we do not allow them
+		private const int MAX_PHONE_LENGTH = 17; // China currently has the longest phone numbers at 17-digits (when including country code)
 		private static readonly TextInfo EnglishUS = new CultureInfo("en-US", false).TextInfo;
 
 		/// <summary>
