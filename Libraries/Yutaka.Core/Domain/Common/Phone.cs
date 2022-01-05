@@ -13,14 +13,32 @@ namespace Yutaka.Core.Domain.Common
 
 		public string Label;
 		public string Number;
+
 		/// <summary>
 		/// Gets the minified phone number.
 		/// </summary>
-		public string NumberMinified { get; }
+		public string NumberMinified
+		{
+			get {
+				if (String.IsNullOrWhiteSpace(Number))
+					return "";
+
+				return PhoneUtil.Minify(Number);
+			}
+		}
+
 		/// <summary>
 		/// Gets the "pretty" formatted phone number.
 		/// </summary>
-		public string NumberPretty { get; }
+		public string NumberPretty
+		{
+			get {
+				if (String.IsNullOrWhiteSpace(Number))
+					return "";
+
+				return PhoneUtil.Beautify(Number);
+			}
+		}
 		#endregion Fields
 
 		#region Constructors
