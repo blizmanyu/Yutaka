@@ -52,6 +52,8 @@ namespace Yutaka.Data
 		/// The query is expected to return a single row of the first result set. Execution of the query may affect the database state. Some .NET Framework data providers may, but are not required to, use this information to optimize the performance of the command. When you specify SingleRow with the ExecuteReader() method of the OleDbCommand object, the .NET Framework Data Provider for OLE DB performs binding using the OLE DB IRow interface if it is available. Otherwise, it uses the IRowset interface. If your SQL statement is expected to return only a single row, specifying SingleRow can also improve application performance. It is possible to specify SingleRow when executing queries that are expected to return multiple result sets. In that case, where both a multi-result set SQL query and single row are specified, the result returned will contain only the first row of the first result set. The other result sets of the query will not be returned.
 		/// </summary>
 		public static readonly CommandBehavior CommandBehavior_SingleRow = CommandBehavior.SingleRow;
+
+		public static readonly DateTime SqlDateTime_MinValue = new DateTime(1753, 1, 1);
 		#endregion Fields
 
 		#region Public Methods
