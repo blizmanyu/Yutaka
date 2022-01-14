@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 
 namespace Yutaka.VineSpring
@@ -15,6 +16,7 @@ namespace Yutaka.VineSpring
 				if (_client == null) {
 					lock (_locker) {
 						if (_client == null) {
+							ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
 							_client = new HttpClient { BaseAddress = BaseAddress };
 							_client.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
 						}
