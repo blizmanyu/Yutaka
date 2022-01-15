@@ -17,7 +17,7 @@ namespace Yutaka.VineSpring
 		public const string TIME_FORMAT = @"yyyy-MM-ddT00:00:00.000Z";
 		private static readonly DateTime DOB_THRESHOLD = DateTime.Now.AddYears(-100);
 		public static readonly DateTime MIN_DATE = DateTime.Now.AddYears(-10);
-		public static readonly DateTime MAX_DATE = DateTime.Now.AddYears(1);
+		public static readonly DateTime MAX_DATE = new DateTime(DateTime.Now.Year + 1, 1, 1);
 		public string ApiKey;
 		#endregion Fields
 
