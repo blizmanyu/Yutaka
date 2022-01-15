@@ -34,7 +34,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static Logger logger = LogManager.GetCurrentClassLogger();
-		private static GmailSmtpClient client = new GmailSmtpClient(GmailUsername, GmailPassword);
+		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
 		#endregion
 
 		static void Main(string[] args)
@@ -138,7 +138,7 @@ namespace Yutaka.NewConsoleAppTemplate
 				logger.Error("The number of errors is above the threshold.");
 
 				if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
-					client.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
+					_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
 			var log = new string[7];
