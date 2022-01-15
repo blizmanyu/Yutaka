@@ -158,7 +158,7 @@ namespace Yutaka.VineSpring
 			}
 
 			else
-				new FileUtil().Write(response, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+				new FileUtil().Write(response, Path.Combine(folder, filename));
 		}
 
 		public void WriteToFile(Task<string> response, bool pretty = true)
@@ -167,15 +167,17 @@ namespace Yutaka.VineSpring
 				return;
 
 			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+			var folder = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "JSON");
+			Directory.CreateDirectory(folder);
 
 			if (pretty) {
 				dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
 				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-				new FileUtil().Write(formatted, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+				new FileUtil().Write(formatted, Path.Combine(folder, filename));
 			}
 
 			else
-				new FileUtil().Write(response.Result, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
+				new FileUtil().Write(response.Result, Path.Combine(folder, filename));
 		}
 		#endregion Utilities
 
