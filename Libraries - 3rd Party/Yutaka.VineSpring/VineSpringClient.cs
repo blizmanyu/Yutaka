@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yutaka.IO;
 using Yutaka.VineSpring.Domain.Club;
+using Yutaka.VineSpring.Domain.Customer;
 
 namespace Yutaka.VineSpring
 {
@@ -249,6 +251,39 @@ namespace Yutaka.VineSpring
 			}
 		}
 		#endregion Clubs
+
+		#region Customers
+		public List<Customer> GetAllCustomers(string paginationKey = null)
+		{
+			try {
+				var list = new List<Customer>();
+				var response = ListCustomers(MIN_DATE.ToString(TIME_FORMAT), MAX_DATE.ToString(TIME_FORMAT), paginationKey);
+				var deserialized = JsonConvert.DeserializeObject<ListAllCustomersResponse>(response.Result);
+
+				foreach (var customer in deserialized.Customers)
+					list.Add(customer);
+
+				if (deserialized.HasMore && !String.IsNullOrWhiteSpace(deserialized.PaginationKey))
+					list.AddRange(GetAllCustomers(WebUtility.UrlDecode(deserialized.PaginationKey)));
+
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllCustomers(string paginationKey='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, paginationKey);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllCustomers(string paginationKey='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, paginationKey);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+		#endregion Customers
 		#endregion Methods
 	}
 }
