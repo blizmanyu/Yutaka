@@ -96,6 +96,37 @@ namespace Yutaka.VineSpring
 		}
 		#endregion Clubs
 
+		#region Customers
+		private async Task<string> ListCustomers(string updatedOnStartDate, string updatedOnEndDate, string paginationKey=null)
+		{
+			try {
+				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+				var endpoint = String.Format("customers?updatedOnStartDate={0}&updatedOnEndDate={1}", updatedOnStartDate, updatedOnEndDate);
+
+				if (!String.IsNullOrWhiteSpace(paginationKey))
+					endpoint = String.Format("{0}&paginationKey={1}", endpoint, paginationKey);
+
+				using (var response = await Client.GetAsync(endpoint)) {
+					return await response.Content.ReadAsStringAsync();
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListCustomers(string updatedOnStartDate='{3}', string updatedOnEndDate='{4}', string paginationKey='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, updatedOnStartDate, updatedOnEndDate, paginationKey);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListCustomers(string updatedOnStartDate='{3}', string updatedOnEndDate='{4}', string paginationKey='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, updatedOnStartDate, updatedOnEndDate, paginationKey);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+		#endregion Customers
+
 		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
