@@ -70,7 +70,7 @@ namespace Yutaka.VineSpring.Domain.Customer
 		public string MerchantId { get; set; }
 
 		[JsonProperty("lifetimeValue")]
-		public double LifetimeValue { get; set; }
+		public decimal? LifetimeValue { get; set; }
 
 		[JsonProperty("company")]
 		public string Company { get; set; }
