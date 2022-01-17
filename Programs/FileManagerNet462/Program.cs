@@ -11,9 +11,11 @@ namespace FileManagerNet462
 	class Program
 	{
 		// Config/Settings //
-		const string PROGRAM_NAME = "FileManagerNet462";
+		const string ProgramName = "FileManagerNet462";
 		private const decimal TIME_FACTOR = 395189149.04562228086464351881m; // this is an arbitrary number based on average performance of my computer/drives.
 		private static bool consoleOut = true; // default = false //
+		private static readonly string fromEmail = "from@server.com";
+		private static readonly string toEmail = "to@server.com";
 
 		#region Fields
 		#region Static Externs
@@ -24,13 +26,16 @@ namespace FileManagerNet462
 		const int SW_HIDE = 0;
 		#endregion
 
-		const string TIMESTAMP = @"[HH:mm:ss] ";
-		private static readonly DateTime startTime = DateTime.Now;
-		private static readonly double errorPerThreshold = 0.07;
+		private static readonly DateTime startTime = DateTime.UtcNow;
+		private static readonly double errorPercThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
+		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static Stopwatch stopwatch = new Stopwatch();
 		private static int errorCount = 0;
+		private static int processedCount = 0;
+		private static int skippedCount = 0;
+		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static long totalSize = 0;
 		#endregion
@@ -143,18 +148,38 @@ namespace FileManagerNet462
 			Console.Write("\n\nDeleted {0} cache files", count);
 		}
 
-		#region Start & EndProgram
+		#region StartProgram & EndProgram
+		private static void HandleArgs(string[] args)
+		{
+			if (args == null || args.Length < 1)
+			{
+				; // if you want empty arguments to actually set default args, set them here.
+			}
+
+			else
+			{
+				var temp = String.Join(" ", args);
+
+				if (temp.IndexOf("ASDFG", StringComparison.OrdinalIgnoreCase) > -1)
+				{
+					; // handle args like this
+				}
+			}
+		}
+
 		private static void StartProgram()
 		{
-			var log = String.Format("Starting {0} program", PROGRAM_NAME);
+			var log = String.Format("Starting {0} program", ProgramName);
 			logger.Info(log);
 
-			if (consoleOut) {
+			if (consoleOut)
+			{
 				Console.Clear();
 				Console.Write("{0}{1}", DateTime.Now.ToString(TIMESTAMP), log);
 			}
 
-			else {
+			else
+			{
 				var handle = GetConsoleWindow();
 				ShowWindow(handle, SW_HIDE); // hide window //
 			}
@@ -162,37 +187,59 @@ namespace FileManagerNet462
 
 		private static void EndProgram()
 		{
-			var endTime = DateTime.Now;
+			var endTime = DateTime.UtcNow;
 			var ts = endTime - startTime;
-			var errorPer = (double) errorCount / totalCount;
+			var processedPerc = (double) processedCount / totalCount;
+			var skippedPerc = (double) skippedCount / totalCount;
+			var errorPerc = processedCount > 0 ? (double)errorCount / processedCount : (double)errorCount / totalCount;
+			var successPerc = processedCount > 0 ? (double)successCount / processedCount : (double)successCount / totalCount;
 
-			if (errorCount > errorCountThreshold || errorPer > errorPerThreshold) {
+			if (errorCount > errorCountThreshold || errorPerc > errorPercThreshold) {
 				logger.Error("The number of errors is above the threshold.");
 
-				if (errorCount > errorCountThreshold && errorPer > errorPerThreshold) {
-					//MailUtil.Send("fromEmail", "fromEmail", PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPer.ToString("P")));
-				}
+				//if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
+					//_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
-			var log = new string[5];
+			var log = new string[7];
 			log[0] = "Ending program";
-			log[1] = String.Format("It took {0} to complete", ts.ToString(@"hh\:mm\:ss\.fff"));
-			log[2] = String.Format("Total: {0:n0}", totalCount);
-			log[3] = String.Format("Total Size: {0} ({1:n0} bytes)", FileUtil.BytesToString(totalSize), totalSize);
-			log[4] = String.Format("Errors: {0} ({1}){2}", errorCount, errorPer.ToString("P"), Environment.NewLine + Environment.NewLine);
 
-			foreach (var v in log)
-				logger.Info(v);
+			if (ts.TotalSeconds < 61)
+				log[1] = String.Format("It took {0} sec to complete", ts.ToString(@"s\.fff"));
+			else if (ts.TotalMinutes < 61)
+				log[1] = String.Format("It took {0}m {1}s to complete", ts.Minutes, ts.Seconds);
+			else
+				log[1] = String.Format("It took {0}h {1}m to complete", ts.Hours, ts.Minutes);
 
-			var timestamp = DateTime.Now.ToString(TIMESTAMP);
-			Console.Write("\n");
-			foreach (var v in log)
-				Console.Write("\n{0}{1}", timestamp, v);
-			Console.Write("\n.... Press any key to close the program ....");
-			Console.ReadKey(true);
+			log[2] = String.Format("    Total: {0,5:n0}", totalCount);
+
+			if (totalCount > 0)
+			{
+				log[3] = String.Format("Processed: {0,5:n0} ({1,7})", processedCount, processedPerc.ToString("p").Replace(" ", ""));
+				log[4] = String.Format("  Skipped: {0,5:n0} ({1,7})", skippedCount, skippedPerc.ToString("p").Replace(" ", ""));
+				log[5] = String.Format("  Success: {0,5:n0} ({1,7})", successCount, successPerc.ToString("p").Replace(" ", ""));
+				log[6] = String.Format("   Errors: {0,5:n0} ({1,7})", errorCount, errorPerc.ToString("p").Replace(" ", ""));
+			}
+
+			foreach (var l in log)
+				logger.Info(l);
+
+			logger.Info(Environment.NewLine + Environment.NewLine);
+
+			if (consoleOut)
+			{
+				var timestamp = DateTime.Now.ToString(TIMESTAMP);
+				Console.Write("\n");
+
+				foreach (var l in log)
+					Console.Write("\n{0}{1}", timestamp, l);
+
+				Console.Write("\n\n. . . Press any key to close the program . . .\n\n");
+				Console.ReadKey(true);
+			}
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
-		#endregion Start & EndProgram
+		#endregion StartProgram & EndProgram
 	}
 }
