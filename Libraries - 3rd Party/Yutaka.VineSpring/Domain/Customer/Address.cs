@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Yutaka.VineSpring.Domain.Customer
 {
-	public class ListAllAddressesResponse
+	public class Address
 	{
 		[JsonProperty("isInternational")]
 		public bool IsInternational { get; set; }

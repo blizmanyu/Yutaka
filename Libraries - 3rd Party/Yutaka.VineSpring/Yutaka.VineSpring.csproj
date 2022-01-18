@@ -53,7 +53,7 @@
     <Compile Include="BaseClient.cs" />
     <Compile Include="Domain\Club\ClubMembership.cs" />
     <Compile Include="Domain\Club\Club.cs" />
-    <Compile Include="Domain\Customer\ListAllAddressesResponse.cs" />
+    <Compile Include="Domain\Customer\Address.cs" />
     <Compile Include="Domain\Customer\ListAllCustomersResponse.cs" />
     <Compile Include="VineSpringClient.cs" />
     <Compile Include="Data20191126\Address.cs" />
