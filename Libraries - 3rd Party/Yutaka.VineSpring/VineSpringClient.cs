@@ -281,33 +281,43 @@ namespace Yutaka.VineSpring
 		#endregion Clubs
 
 		#region Customers
-		//public IList<Address> GetAllAddresses()
-		//{
-		//	try {
-		//		var list = new List<Address>();
-		//		var response = ListAllAddresses();
-		//		var addresses = JsonConvert.DeserializeObject<List<Address>>(response.Result);
+		public IList<Address> GetAllAddresses(string customerId)
+		{
+			#region Check Input
+			var log = "";
 
-		//		foreach (var address in addresses)
-		//			list.Add(address);
+			if (String.IsNullOrWhiteSpace(customerId))
+				log = String.Format("{0}'customerId' is required. Exception thrown in VineSpringClient.GetAllAddresses(string customerId).{1}", log, Environment.NewLine);
 
-		//		return list;
-		//	}
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+			}
+			#endregion Check Input
 
-		//	catch (Exception ex) {
-		//		#region Log
-		//		string log;
+			try {
+				var list = new List<Address>();
+				var response = ListAllAddresses(customerId);
+				var addresses = JsonConvert.DeserializeObject<List<Address>>(response.Result);
 
-		//		if (ex.InnerException == null)
-		//			log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllAddresses().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-		//		else
-		//			log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllAddresses().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+				foreach (var address in addresses)
+					list.Add(address);
 
-		//		Console.Write("\n{0}", log);
-		//		throw new Exception(log);
-		//		#endregion Log
-		//	}
-		//}
+				return list;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerId);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 
 		public List<Customer> GetAllCustomers(string paginationKey = null)
 		{
