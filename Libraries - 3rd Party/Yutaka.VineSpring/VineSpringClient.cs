@@ -127,8 +127,35 @@ namespace Yutaka.VineSpring
 				#endregion Log
 			}
 		}
+
+		private async Task<string> ListAllAddresses(string customerId)
+		{
+			try {
+				var endpoint = String.Format("customers/{0}/addresses", customerId);
+				Client.DefaultRequestHeaders.TryAddWithoutValidation("x-api-key", ApiKey);
+
+				using (var response = await Client.GetAsync(endpoint)) {
+					return await response.Content.ReadAsStringAsync();
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.ListAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerId);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.ListAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion Customers
 
+		#region Writes
 		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
@@ -181,6 +208,7 @@ namespace Yutaka.VineSpring
 			else
 				new FileUtil().Write(response.Result, Path.Combine(folder, filename));
 		}
+		#endregion Writes
 		#endregion Utilities
 
 		#region Methods
@@ -253,6 +281,67 @@ namespace Yutaka.VineSpring
 		#endregion Clubs
 
 		#region Customers
+		public IList<Address> GetAllAddresses(string customerId)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(customerId))
+				log = String.Format("{0}'customerId' is required. Exception thrown in VineSpringClient.GetAllAddresses(string customerId).{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				var list = new List<Address>();
+				var response = ListAllAddresses(customerId);
+
+				try {
+					var addresses = JsonConvert.DeserializeObject<List<Address>>(response.Result);
+
+					foreach (var address in addresses)
+						list.Add(address);
+
+					return list;
+				}
+
+				catch (Exception) {
+					try {
+						var address = JsonConvert.DeserializeObject<Address>(response.Result);
+						list.Add(address);
+						return list;
+					}
+
+					catch (Exception ex) {
+						#region Log
+						if (ex.InnerException == null)
+							log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerId);
+						else
+							log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId);
+
+						Console.Write("\n{0}", log);
+						throw new Exception(log);
+						#endregion Log
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerId);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
 		public List<Customer> GetAllCustomers(string paginationKey = null)
 		{
 			try {
