@@ -20,8 +20,8 @@ namespace Yutaka.IO2
 		protected const int FIVE_HUNDRED_TWELVE_KB = 524288;
 		protected const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.propertyitem.id //
 		protected const string FORMAT = @"yyyy-MM-dd HH:mm:ss.fff";
-		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now.AddDays(1);
-		protected static readonly DateTime MinDateTimeThreshold = UnixTimeUnspecified;
+		protected static readonly DateTime MinDateTimeThreshold = new DateTime(1960, 1, 1);
+		protected static readonly DateTime MaxDateTimeThreshold = DateTime.Now;
 		protected static readonly DateTime OldThreshold = DateTime.Now.AddYears(-10);
 		protected static readonly DateTime ReallyOldThreshold = DateTime.Now.AddYears(-20);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
