@@ -298,12 +298,21 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Address>();
 				var response = ListAllAddresses(customerId);
-				var addresses = JsonConvert.DeserializeObject<List<Address>>(response.Result);
 
-				foreach (var address in addresses)
+				try {
+					var addresses = JsonConvert.DeserializeObject<List<Address>>(response.Result);
+
+					foreach (var address in addresses)
+						list.Add(address);
+
+					return list;
+				}
+
+				catch (Exception) {
+					var address = JsonConvert.DeserializeObject<Address>(response.Result);
 					list.Add(address);
-
-				return list;
+					return list;
+				}
 			}
 
 			catch (Exception ex) {
