@@ -309,9 +309,23 @@ namespace Yutaka.VineSpring
 				}
 
 				catch (Exception) {
-					var address = JsonConvert.DeserializeObject<Address>(response.Result);
-					list.Add(address);
-					return list;
+					try {
+						var address = JsonConvert.DeserializeObject<Address>(response.Result);
+						list.Add(address);
+						return list;
+					}
+
+					catch (Exception ex) {
+						#region Log
+						if (ex.InnerException == null)
+							log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerId);
+						else
+							log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllAddresses(string customerId='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerId);
+
+						Console.Write("\n{0}", log);
+						throw new Exception(log);
+						#endregion Log
+					}
 				}
 			}
 
