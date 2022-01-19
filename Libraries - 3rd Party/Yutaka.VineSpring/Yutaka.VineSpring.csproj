@@ -46,7 +46,7 @@
       <HintPath>..\..\Libraries\Yutaka.Core\bin\Release\Yutaka.Core.dll</HintPath>
     </Reference>
     <Reference Include="Yutaka.IO">
-      <HintPath>..\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
+      <HintPath>..\..\Libraries\Yutaka.IO\bin\Release\Yutaka.IO.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
