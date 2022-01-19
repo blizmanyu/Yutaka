@@ -130,8 +130,17 @@ namespace Yutaka.IO2
 				DirectoryName = fi.DirectoryName;
 				ExtensionOrig = fi.Extension;
 				Extension = ExtensionOrig.ToLower();
-				FullName = fi.FullName.Replace(ExtensionOrig, Extension);
-				Name = fi.Name.Replace(ExtensionOrig, Extension);
+
+				if (String.IsNullOrWhiteSpace(ExtensionOrig))
+					FullName = fi.FullName;
+				else
+					FullName = fi.FullName.Replace(ExtensionOrig, Extension);
+
+				if (String.IsNullOrWhiteSpace(ExtensionOrig))
+					Name = fi.Name;
+				else
+					Name = fi.Name.Replace(ExtensionOrig, Extension);
+
 				NewFolder = "";
 				ParentFolder = fi.Directory.Name;
 				Root = Path.GetPathRoot(FullName);
