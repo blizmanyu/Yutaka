@@ -218,12 +218,37 @@ namespace Yutaka.VineSpring
 			try {
 				var list = new List<Club>();
 				var response = ListAllClubs();
-				var clubs = JsonConvert.DeserializeObject<List<Club>>(response.Result);
 
-				foreach (var club in clubs)
-					list.Add(club);
+				try {
+					var clubs = JsonConvert.DeserializeObject<List<Club>>(response.Result);
 
-				return list;
+					foreach (var club in clubs)
+						list.Add(club);
+
+					return list;
+				}
+
+				catch (Exception) {
+					try {
+						var club = JsonConvert.DeserializeObject<Club>(response.Result);
+						list.Add(club);
+						return list;
+					}
+
+					catch (Exception ex) {
+						#region Log
+						string log;
+
+						if (ex.InnerException == null)
+							log = String.Format("{0}{2}Exception thrown in VineSpringClient.GetAllClubs().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+						else
+							log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of VineSpringClient.GetAllClubs().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+						Console.Write("\n{0}", log);
+						throw new Exception(log);
+						#endregion Log
+					}
+				}
 			}
 
 			catch (Exception ex) {
