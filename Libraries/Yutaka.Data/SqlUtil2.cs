@@ -417,6 +417,51 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
+		/// Truncates a SQL table. Specifying the schema and table.
+		/// </summary>
+		/// <param name="schema">The schema of the table. If null or empty, it will default to "dbo".</param>
+		/// <param name="table">The table to truncate.</param>
+		public void TruncateTable(string schema, string table)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(schema))
+				schema = "[dbo]";
+			if (String.IsNullOrWhiteSpace(table))
+				log = String.Format("{0}'table' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.TruncateTable(string schema, string table).{1}{1}", log, Environment.NewLine));
+			#endregion Input Check
+
+			var sql = String.Format("TRUNCATE TABLE {0}.{1}", schema, table);
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					using (var cmd = new SqlCommand(sql, conn)) {
+						cmd.CommandType = CommandType.Text;
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in SqlUtil2.TruncateTable(string schema='{3}', string table='{4}').{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, schema, table);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string schema='{3}', string table='{4}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, schema, table);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// Truncates a SQL table.
 		/// </summary>
 		/// <param name="database">Optional database of the table, but beware because it will run on the "current" database.</param>
