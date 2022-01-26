@@ -377,6 +377,48 @@ namespace Yutaka.Data
 		/// <summary>
 		/// Truncates a SQL table.
 		/// </summary>
+		/// <param name="table">The table to truncate.</param>
+		public void TruncateTable(string table)
+		{
+			#region Input Check
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(ConnectionString))
+				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(table))
+				log = String.Format("{0}'table' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.TruncateTable(string table).{1}{1}", log, Environment.NewLine));
+			#endregion Input Check
+
+			var sql = String.Format("TRUNCATE TABLE [dbo].{0}", table);
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					using (var cmd = new SqlCommand(sql, conn)) {
+						cmd.CommandType = CommandType.Text;
+						conn.Open();
+						cmd.ExecuteNonQuery();
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in SqlUtil2.TruncateTable(string table='{3}').{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, table);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string table='{3}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, table);
+
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
+		/// Truncates a SQL table.
+		/// </summary>
 		/// <param name="database">Optional database of the table, but beware because it will run on the "current" database.</param>
 		/// <param name="schema">The schema of the table. If null or empty, it will default to "dbo".</param>
 		/// <param name="table">The table to truncate.</param>
