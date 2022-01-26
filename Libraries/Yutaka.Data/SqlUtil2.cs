@@ -462,20 +462,22 @@ namespace Yutaka.Data
 		}
 
 		/// <summary>
-		/// Truncates a SQL table.
+		/// Truncates a SQL table. Specifying the database, schema, and table.
 		/// </summary>
-		/// <param name="database">Optional database of the table, but beware because it will run on the "current" database.</param>
+		/// <param name="database">The database of the table.</param>
 		/// <param name="schema">The schema of the table. If null or empty, it will default to "dbo".</param>
 		/// <param name="table">The table to truncate.</param>
-		public void TruncateTable(string database = null, string schema = null, string table = null)
+		public void TruncateTable(string database, string schema, string table)
 		{
 			#region Input Check
 			var log = "";
 
 			if (String.IsNullOrWhiteSpace(ConnectionString))
 				log = String.Format("{0}'ConnectionString' is required.{1}", log, Environment.NewLine);
+			if (String.IsNullOrWhiteSpace(database))
+				log = String.Format("{0}'database' is required.{1}", log, Environment.NewLine);
 			if (String.IsNullOrWhiteSpace(schema))
-				schema = "dbo";
+				schema = "[dbo]";
 			if (String.IsNullOrWhiteSpace(table))
 				log = String.Format("{0}'table' is required.{1}", log, Environment.NewLine);
 
@@ -483,10 +485,7 @@ namespace Yutaka.Data
 				throw new Exception(String.Format("{0}Exception thrown in SqlUtil2.TruncateTable(string database, string schema, string table).{1}{1}", log, Environment.NewLine));
 			#endregion Input Check
 
-			var sql = String.Format("TRUNCATE TABLE {0}.{1}", schema, table);
-
-			if (!String.IsNullOrWhiteSpace(database))
-				sql = sql.Replace("TRUNCATE TABLE ", String.Format("TRUNCATE TABLE {0}.", database));
+			var sql = String.Format("TRUNCATE TABLE {0}.{1}.{2}", database, schema, table);
 
 			try {
 				using (var conn = new SqlConnection(ConnectionString)) {
