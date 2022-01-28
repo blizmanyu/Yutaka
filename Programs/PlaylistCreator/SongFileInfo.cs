@@ -5,6 +5,7 @@ namespace PlaylistCreator
 {
 	public class SongFileInfo
 	{
+		#region Fields
 		private static readonly DateTime DateThreshold = new DateTime(1960, 1, 1);
 
 		public string Path { get; set; }
@@ -21,7 +22,9 @@ namespace PlaylistCreator
 		public string Comment { get; set; }
 		public string AlbumArtist { get; set; }
 		public string Composer { get; set; }
+		#endregion
 
+		#region Constructors
 		public SongFileInfo(string artist, string title)
 		{
 			if (String.IsNullOrWhiteSpace(artist))
@@ -181,7 +184,9 @@ namespace PlaylistCreator
 				Composer = "";
 			}
 		}
+		#endregion
 
+		#region Methods
 		public void ConsoleOut()
 		{
 			Console.Write("\n");
@@ -231,5 +236,6 @@ namespace PlaylistCreator
 		{
 			return String.Format("{0} - {1}", Artist, Title);
 		}
+		#endregion
 	}
 }
