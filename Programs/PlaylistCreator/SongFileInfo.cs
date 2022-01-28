@@ -5,7 +5,7 @@ namespace PlaylistCreator
 {
 	public class SongFileInfo
 	{
-		private readonly DateTime DATE_THRESHOLD = new DateTime(1900, 1, 1);
+		private static readonly DateTime DateThreshold = new DateTime(1960, 1, 1);
 
 		public string Path { get; set; }
 		public DateTime Date { get; set; }
@@ -42,9 +42,9 @@ namespace PlaylistCreator
 			var creationTime = fInfo.CreationTime;
 			var lastWriteTime = fInfo.LastWriteTime;
 
-			if (creationTime == null || creationTime < DATE_THRESHOLD)
+			if (creationTime == null || creationTime < DateThreshold)
 				throw new Exception(String.Format("Can't determine CreationTime of {0}", Path));
-			if (lastWriteTime == null || lastWriteTime < DATE_THRESHOLD)
+			if (lastWriteTime == null || lastWriteTime < DateThreshold)
 				throw new Exception(String.Format("Can't determine LastWriteTime of {0}", Path));
 
 			if (creationTime < lastWriteTime) {
@@ -117,9 +117,9 @@ namespace PlaylistCreator
 			var creationTime = fInfo.CreationTime;
 			var lastWriteTime = fInfo.LastWriteTime;
 
-			if (creationTime == null || creationTime < DATE_THRESHOLD)
+			if (creationTime == null || creationTime < DateThreshold)
 				throw new Exception(String.Format("Can't determine CreationTime of {0}", Path));
-			if (lastWriteTime == null || lastWriteTime < DATE_THRESHOLD)
+			if (lastWriteTime == null || lastWriteTime < DateThreshold)
 				throw new Exception(String.Format("Can't determine LastWriteTime of {0}", Path));
 
 			//if (creationTime < lastWriteTime) {
