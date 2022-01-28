@@ -8,20 +8,19 @@ namespace PlaylistCreator
 		#region Fields
 		private static readonly DateTime DateThreshold = new DateTime(1960, 1, 1);
 
-		public string Path { get; set; }
 		public DateTime Date { get; set; }
 		public int Duration { get; set; }
-
-		public uint TrackNum { get; set; }
-		public uint DiscNum { get; set; }
-		public string Title { get; set; }
-		public string Artist { get; set; }
 		public string Album { get; set; }
-		public uint Year { get; set; }
-		public string Genre { get; set; }
-		public string Comment { get; set; }
 		public string AlbumArtist { get; set; }
+		public string Artist { get; set; }
+		public string Comment { get; set; }
 		public string Composer { get; set; }
+		public string Genre { get; set; }
+		public string Path { get; set; }
+		public string Title { get; set; }
+		public uint DiscNum { get; set; }
+		public uint TrackNum { get; set; }
+		public uint Year { get; set; }
 		#endregion
 
 		#region Constructors
