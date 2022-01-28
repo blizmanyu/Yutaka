@@ -109,13 +109,15 @@ namespace PlaylistCreator
 			}
 		}
 
-		public SongFileInfo(string filePath)
+		public SongFileInfo(string path)
 		{
-			if (String.IsNullOrWhiteSpace(filePath))
-				throw new Exception(String.Format("<filePath> is required.{0}Exception thrown in PlaylistCreator.SongFileInfo(string file).", Environment.NewLine));
+			if (path == null)
+				throw new Exception(String.Format("path is null.{0}Exception thrown in Constructor SongFileInfo(string path).", Environment.NewLine));
+			if (String.IsNullOrWhiteSpace(path))
+				throw new Exception(String.Format("path is empty.{0}Exception thrown in Constructor SongFileInfo(string path).", Environment.NewLine));
 
-			Path = filePath;
-			var fInfo = new FileInfo(filePath);
+			Path = path;
+			var fInfo = new FileInfo(path);
 			var creationTime = fInfo.CreationTime;
 			var lastWriteTime = fInfo.LastWriteTime;
 
