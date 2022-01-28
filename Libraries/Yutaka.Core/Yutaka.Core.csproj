@@ -59,6 +59,7 @@
     <Compile Include="IO\DirectoryUtil.cs" />
     <Compile Include="IO\FileUtil.cs" />
     <Compile Include="IO\WinDirStat.cs" />
+    <Compile Include="IO\YuFile.cs" />
     <Compile Include="LogLevel.cs" />
     <Compile Include="Net\BaseClient.cs" />
     <Compile Include="Net\Email.cs" />
