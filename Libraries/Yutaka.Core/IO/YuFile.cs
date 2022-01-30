@@ -144,5 +144,31 @@ namespace Yutaka.Core.IO
 			}
 		}
 		#endregion
+
+		#region Methods
+		/// <summary>
+		/// Dumps all field values to Console.
+		/// </summary>
+		public void DumpToConsole()
+		{
+			Console.Write("\n");
+			Console.Write("\n     OriginalPath: {0}", OriginalPath);
+			Console.Write("\n       IsReadOnly: {0}", IsReadOnly);
+			Console.Write("\n     CreationTime: {0:yyyy-MM-dd HH:mm:ss.fff}", CreationTime);
+			Console.Write("\n  CreationTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", CreationTimeUtc);
+			Console.Write("\n   LastAccessTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastAccessTime);
+			Console.Write("\nLastAccessTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", LastAccessTimeUtc);
+			Console.Write("\n    LastWriteTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTime);
+			Console.Write("\n LastWriteTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTimeUtc);
+			Console.Write("\n             Size: {0:n0}", Size);
+			Console.Write("\n        Extension: {0}", Extension);
+			Console.Write("\nFullDirectoryPath: {0}", FullDirectoryPath);
+			Console.Write("\n         FullPath: {0}", FullPath);
+			Console.Write("\n             Name: {0}", Name);
+			Console.Write("\n  ParentDirectory: {0}", ParentDirectory);
+			Console.Write("\n             Root: {0}", Root);
+			Console.Write("\n");
+		}
+		#endregion
 	}
 }
