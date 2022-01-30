@@ -26,15 +26,14 @@ namespace Yutaka.Core.IO
 		public DateTime LastWriteTime { get; set; }
 		public DateTime LastWriteTimeUtc { get; set; }
 		#region public DateTime? DateTaken { }
+		private DateTime? _dateTaken;
 		public DateTime? DateTaken {
 			get {
-				if (DateTaken == null)
+				if (_dateTaken == null)
 					SetDateTaken();
 
-				return DateTaken;
+				return _dateTaken;
 			} 
-
-			private set { }
 		}
 		#endregion
 		/// <summary>
@@ -200,15 +199,15 @@ namespace Yutaka.Core.IO
 						var dateTaken = Regex_Colon.Replace(Encoding.UTF8.GetString(propItem.Value), "-", 2);
 
 						if (DateTime.TryParse(dateTaken, out var result))
-							DateTaken = result;
+							_dateTaken = result;
 						else
-							DateTaken = null;
+							_dateTaken = null;
 					}
 				}
 			}
 
 			catch (Exception) {
-				DateTaken = null;
+				_dateTaken = null;
 			}
 		}
 		#endregion
