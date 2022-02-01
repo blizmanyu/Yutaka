@@ -166,7 +166,7 @@ namespace Yutaka.Diagnostics
 
 			if (force)
 				args = String.Format("{0} -f", args);
-			if (waitTime > 0)
+			if (waitTime > -1)
 				args = String.Format("{0} -t {1}", args, waitTime);
 			if (!String.IsNullOrWhiteSpace(remoteCompName))
 				args = String.Format(@"{0} -m \\{1}", args, remoteCompName);
