@@ -18,7 +18,7 @@ namespace Yutaka.Core.IO
 		/// </summary>
 		protected string OriginalPath;
 		protected DateTime? _dateTaken;
-		protected DateTime _minDate;
+		protected DateTime? _minDate;
 		#endregion
 
 		#region Properties
@@ -43,7 +43,7 @@ namespace Yutaka.Core.IO
 				if (_minDate == null)
 					SetMinDate();
 
-				return _minDate;
+				return _minDate.Value;
 			}
 		}
 		#endregion
@@ -154,6 +154,7 @@ namespace Yutaka.Core.IO
 			Console.Write("\n   LastAccessTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastAccessTime);
 			Console.Write("\n    LastWriteTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTime);
 			Console.Write("\n        DateTaken: {0:yyyy-MM-dd HH:mm:ss.fff}", DateTaken);
+			Console.Write("\n          MinDate: {0:yyyy-MM-dd HH:mm:ss.fff}", MinDate);
 			Console.Write("\n             Size: {0:n0}", Size);
 			Console.Write("\n        Extension: {0}", Extension);
 			Console.Write("\nFullDirectoryPath: {0}", FullDirectoryPath);
@@ -205,7 +206,7 @@ namespace Yutaka.Core.IO
 			/// On most devices, the DateTaken field doesn't have millisecond precision, so it rounds to the nearest second.
 			/// So if the difference is less than 1 second, the current MinDate carries a more precise DateTime.
 			if (DateTaken.HasValue && MinDateThreshold < DateTaken && DateTaken < _minDate) {
-				var diff = _minDate - DateTaken.Value;
+				var diff = _minDate.Value - DateTaken.Value;
 
 				if (diff.TotalSeconds < -.999 || .999 < diff.TotalSeconds)
 					_minDate = DateTaken.Value;
