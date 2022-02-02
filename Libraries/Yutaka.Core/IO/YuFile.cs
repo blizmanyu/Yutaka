@@ -155,7 +155,7 @@ namespace Yutaka.Core.IO
 			Console.Write("\n    LastWriteTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTime);
 			Console.Write("\n        DateTaken: {0:yyyy-MM-dd HH:mm:ss.fff}", DateTaken);
 			Console.Write("\n          MinDate: {0:yyyy-MM-dd HH:mm:ss.fff}", MinDate);
-			Console.Write("\n             Size: {0:n0}", Size);
+			Console.Write("\n             Size: {0:n0} bytes", Size);
 			Console.Write("\n        Extension: {0}", Extension);
 			Console.Write("\nFullDirectoryPath: {0}", FullDirectoryPath);
 			Console.Write("\n         FullPath: {0}", FullPath);
