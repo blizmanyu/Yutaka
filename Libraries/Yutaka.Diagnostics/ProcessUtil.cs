@@ -16,7 +16,7 @@ namespace Yutaka.Diagnostics
 		public const int FOUR_DAYS_IN_SECONDS = 345600;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
 		public const int TWENTY_ONE_HOURS = 75600;
-		public static readonly int DefaultSleepTime = 2200;
+		public const int DEFAULT_SLEEPTIME = 2500;
 
 		[StructLayout(LayoutKind.Sequential)]
 		private struct RECT
@@ -96,9 +96,9 @@ namespace Yutaka.Diagnostics
 				}
 			}
 
-			Thread.Sleep(DefaultSleepTime);
+			Thread.Sleep(DEFAULT_SLEEPTIME);
 			FreeResources(processes);
-			Thread.Sleep(DefaultSleepTime);
+			Thread.Sleep(DEFAULT_SLEEPTIME);
 			KillProcess(programName);
 			return count;
 		}
@@ -139,7 +139,7 @@ namespace Yutaka.Diagnostics
 				}
 			}
 
-			Thread.Sleep(DefaultSleepTime);
+			Thread.Sleep(DEFAULT_SLEEPTIME);
 			FreeResources(processes);
 			return count;
 		}
