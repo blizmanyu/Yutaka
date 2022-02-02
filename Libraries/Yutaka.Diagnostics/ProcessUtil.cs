@@ -160,6 +160,18 @@ namespace Yutaka.Diagnostics
 			RefreshTrayArea(notificationAreaHandle);
 		}
 
+		/// <summary>
+		/// Restarts the calling computer.
+		/// </summary>
+		/// <param name="waitTime">The number of seconds to wait before restarting. Default is 60 seconds. If waitTime is less than 0, it will ignore and use the default waitTime.</param>
+		public static void RestartComputer(int waitTime = 60)
+		{
+			if (waitTime < 0)
+				waitTime = 60;
+
+			RestartComputer(true, waitTime, null, false);
+		}
+
 		public static void RestartComputer(bool force = true, int waitTime = 60, string remoteCompName = null, bool createWindow = false)
 		{
 			var args = "-r";
