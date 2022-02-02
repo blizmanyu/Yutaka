@@ -20,11 +20,8 @@ namespace Yutaka.Core.IO
 
 		public bool IsReadOnly { get; set; }
 		public DateTime CreationTime { get; set; }
-		public DateTime CreationTimeUtc { get; set; }
 		public DateTime LastAccessTime { get; set; }
-		public DateTime LastAccessTimeUtc { get; set; }
 		public DateTime LastWriteTime { get; set; }
-		public DateTime LastWriteTimeUtc { get; set; }
 		#region public DateTime? DateTaken { }
 		private DateTime? _dateTaken;
 		public DateTime? DateTaken {
@@ -93,23 +90,7 @@ namespace Yutaka.Core.IO
 					}
 				}
 				#endregion
-				#region CreationTimeUtc = fInfo.CreationTimeUtc;
-				try {
-					CreationTimeUtc = fInfo.CreationTimeUtc;
-				}
-
-				catch {
-					try {
-						CreationTimeUtc = fInfo.LastWriteTime;
-					}
-
-					catch {
-						CreationTimeUtc = fInfo.LastAccessTime;
-					}
-				}
-				#endregion
 				LastAccessTime = fInfo.LastAccessTime;
-				LastAccessTimeUtc = fInfo.LastAccessTimeUtc;
 				#region LastWriteTime = fInfo.LastWriteTime;
 				try {
 					LastWriteTime = fInfo.LastWriteTime;
@@ -122,21 +103,6 @@ namespace Yutaka.Core.IO
 
 					catch {
 						LastWriteTime = fInfo.LastAccessTime;
-					}
-				}
-				#endregion
-				#region LastWriteTimeUtc = fInfo.LastWriteTimeUtc;
-				try {
-					LastWriteTimeUtc = fInfo.LastWriteTimeUtc;
-				}
-
-				catch {
-					try {
-						LastWriteTimeUtc = fInfo.CreationTimeUtc;
-					}
-
-					catch {
-						LastWriteTimeUtc = fInfo.LastAccessTime;
 					}
 				}
 				#endregion
@@ -171,11 +137,8 @@ namespace Yutaka.Core.IO
 			Console.Write("\n     OriginalPath: {0}", OriginalPath);
 			Console.Write("\n       IsReadOnly: {0}", IsReadOnly);
 			Console.Write("\n     CreationTime: {0:yyyy-MM-dd HH:mm:ss.fff}", CreationTime);
-			Console.Write("\n  CreationTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", CreationTimeUtc);
 			Console.Write("\n   LastAccessTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastAccessTime);
-			Console.Write("\nLastAccessTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", LastAccessTimeUtc);
 			Console.Write("\n    LastWriteTime: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTime);
-			Console.Write("\n LastWriteTimeUtc: {0:yyyy-MM-dd HH:mm:ss.fff}", LastWriteTimeUtc);
 			Console.Write("\n        DateTaken: {0:yyyy-MM-dd HH:mm:ss.fff}", DateTaken);
 			Console.Write("\n             Size: {0:n0}", Size);
 			Console.Write("\n        Extension: {0}", Extension);
