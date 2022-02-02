@@ -10,20 +10,23 @@ namespace Yutaka.Core.IO
 	{
 		#region Fields
 		protected const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.propertyitem.id //
-		protected static readonly DateTime DateThreshold = new DateTime(1960, 1, 1);
+		protected static readonly DateTime MinDateThreshold = new DateTime(1960, 1, 1);
 		protected static readonly DateTime TwoYearsAgo = DateTime.Today.AddYears(-2);
 		protected static readonly Regex Regex_Colon = new Regex(":", RegexOptions.Compiled);
 		/// <summary>
 		/// The path originally specified by the user, whether relative or absolute.
 		/// </summary>
 		protected string OriginalPath;
+		protected DateTime? _dateTaken;
+		protected DateTime _minDate;
+		#endregion
 
+		#region Properties
 		public bool IsReadOnly { get; set; }
 		public DateTime CreationTime { get; set; }
 		public DateTime LastAccessTime { get; set; }
 		public DateTime LastWriteTime { get; set; }
 		#region public DateTime? DateTaken { }
-		private DateTime? _dateTaken;
 		public DateTime? DateTaken {
 			get {
 				if (_dateTaken == null)
@@ -31,6 +34,17 @@ namespace Yutaka.Core.IO
 
 				return _dateTaken;
 			} 
+		}
+		#endregion
+		#region public DateTime MinDate { }
+		public DateTime MinDate
+		{
+			get {
+				if (_minDate == null)
+					SetMinDate();
+
+				return _minDate;
+			}
 		}
 		#endregion
 		/// <summary>
@@ -171,6 +185,27 @@ namespace Yutaka.Core.IO
 
 			catch (Exception) {
 				_dateTaken = null;
+			}
+		}
+
+		protected void SetMinDate()
+		{
+			_minDate = DateTime.Now;
+
+			if (MinDateThreshold < CreationTime && CreationTime < _minDate)
+				_minDate = CreationTime;
+			if (MinDateThreshold < LastWriteTime && LastWriteTime < _minDate)
+				_minDate = LastWriteTime;
+			if (MinDateThreshold < LastAccessTime && LastAccessTime < _minDate)
+				_minDate = LastAccessTime;
+
+			/// On most devices, the DateTaken field doesn't have millisecond precision, so it rounds to the nearest second.
+			/// So if the difference is less than 1 second, the current MinDate carries a more precise DateTime.
+			if (DateTaken.HasValue && MinDateThreshold < DateTaken && DateTaken < _minDate) {
+				var diff = _minDate - DateTaken.Value;
+
+				if (diff.TotalSeconds < -.999 || .999 < diff.TotalSeconds)
+					_minDate = DateTaken.Value;
 			}
 		}
 		#endregion
