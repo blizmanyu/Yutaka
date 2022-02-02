@@ -188,6 +188,9 @@ namespace Yutaka.Core.IO
 			}
 		}
 
+		/// <summary>
+		/// Determines the MinDate, then sets it.
+		/// </summary>
 		protected void SetMinDate()
 		{
 			_minDate = DateTime.Now;
