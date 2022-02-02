@@ -9,6 +9,11 @@ namespace Yutaka.Core.IO
 	public class YuFile
 	{
 		#region Fields
+		public const decimal ONE_KB = 1024m;
+		public const decimal ONE_MB = 1048576m;
+		public const decimal ONE_GB = 1073741824m;
+		public const decimal ONE_TB = 1099511627776m;
+		public const decimal ONE_PB = 1125899906842624m;
 		protected const int PROPERTY_TAG_EXIF_DATE_TAKEN = 36867; // PropertyTagExifDTOrig // https://docs.microsoft.com/en-us/dotnet/api/system.drawing.imaging.propertyitem.id //
 		protected static readonly DateTime MinDateThreshold = new DateTime(1960, 1, 1);
 		protected static readonly DateTime TwoYearsAgo = DateTime.Today.AddYears(-2);
