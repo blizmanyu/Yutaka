@@ -15,6 +15,7 @@ namespace Yutaka.Diagnostics
 		public const int THREE_DAYS_IN_SECONDS = 259200;
 		public const int FOUR_DAYS_IN_SECONDS = 345600;
 		public const int FIVE_DAYS_IN_SECONDS = 432000;
+		public const int TWENTY_ONE_HOURS = 75600;
 		public static readonly int DefaultSleepTime = 2200;
 
 		[StructLayout(LayoutKind.Sequential)]
@@ -194,7 +195,7 @@ namespace Yutaka.Diagnostics
 		/// </summary>
 		/// <param name="waitTime">The number of seconds to wait before restarting. Default is 60 seconds. If waitTime is less than 0, it will ignore and use the default waitTime.</param>
 		/// <param name="uptime">Restarts only if the current Uptime is greater than &lt;uptime&gt;. Default is 75600 (21 hours).</param>
-		public static void RestartComputerIfUptimeGreaterThan(int waitTime = 60, float uptime = 75600)
+		public static void RestartComputerIfUptimeGreaterThan(int waitTime = 60, float uptime = TWENTY_ONE_HOURS)
 		{
 			if (waitTime < 0)
 				waitTime = 60;
