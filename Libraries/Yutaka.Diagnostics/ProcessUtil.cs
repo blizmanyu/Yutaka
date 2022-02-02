@@ -189,6 +189,20 @@ namespace Yutaka.Diagnostics
 			});
 		}
 
+		/// <summary>
+		/// Restarts the calling computer if and only if the UpTime is greater than &lt;uptime&gt;.
+		/// </summary>
+		/// <param name="waitTime">The number of seconds to wait before restarting. Default is 60 seconds. If waitTime is less than 0, it will ignore and use the default waitTime.</param>
+		/// <param name="uptime">Restarts only if the current Uptime is greater than &lt;uptime&gt;. Default is 75600 (21 hours).</param>
+		public static void RestartComputerIfUptimeGreaterThan(int waitTime = 60, float uptime = 75600)
+		{
+			if (waitTime < 0)
+				waitTime = 60;
+
+			if (GetUpTime() > uptime)
+				RestartComputer(waitTime);
+		}
+
 		public static int StartProcess(string fileName, string args = null, bool redirectStandardOutput = true, bool redirectStandardError = true, bool useShellExecute = false, bool createNoWindow = true)
 		{
 			if (String.IsNullOrWhiteSpace(fileName))
