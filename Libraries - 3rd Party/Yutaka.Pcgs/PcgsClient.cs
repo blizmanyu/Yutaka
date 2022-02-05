@@ -26,6 +26,41 @@ namespace Yutaka.Pcgs
 		#endregion
 
 		#region Utilities
+		public async Task<string> GetCoinFactsByCertNo(string certNo)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(certNo))
+				log = String.Format("{0}'certNo' is required.{1}Exception thrown in PcgsClient.GetCoinFactsByCertNo(string certNo).{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				var endpoint = String.Format("GetCoinFactsByCertNo/{0}", certNo);
+				Client.DefaultRequestHeaders.TryAddWithoutValidation("authorization", ApiToken);
+
+				using (var response = await Client.GetAsync(endpoint)) {
+					return await response.Content.ReadAsStringAsync();
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in PcgsClient.GetCoinFactsByCertNo().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of PcgsClient.GetCoinFactsByCertNo().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 
 		#region Writes
 		public void WriteToConsole(Task<string> response, bool pretty = true)
