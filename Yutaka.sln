@@ -81,6 +81,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.WineShipping", "Libr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Pcgs", "Libraries - 3rd Party\Yutaka.Pcgs\Yutaka.Pcgs.csproj", "{B1F8F5A7-73C0-4A0F-8896-D2993D1958E5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Yutaka.Helcim", "Libraries - 3rd Party\Yutaka.Helcim\Yutaka.Helcim.csproj", "{7415F0BD-E16B-45E0-A12A-7661A878CFFA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -227,6 +229,10 @@ Global
 		{B1F8F5A7-73C0-4A0F-8896-D2993D1958E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1F8F5A7-73C0-4A0F-8896-D2993D1958E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1F8F5A7-73C0-4A0F-8896-D2993D1958E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7415F0BD-E16B-45E0-A12A-7661A878CFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7415F0BD-E16B-45E0-A12A-7661A878CFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7415F0BD-E16B-45E0-A12A-7661A878CFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7415F0BD-E16B-45E0-A12A-7661A878CFFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,6 +273,7 @@ Global
 		{4B217D22-8B8D-4384-B5AC-2C811ACFA3D0} = {4910ED87-4253-469E-B47F-EB0384EB9D95}
 		{01E94A65-93EB-4E54-A46C-5F76E3C58217} = {4910ED87-4253-469E-B47F-EB0384EB9D95}
 		{B1F8F5A7-73C0-4A0F-8896-D2993D1958E5} = {4910ED87-4253-469E-B47F-EB0384EB9D95}
+		{7415F0BD-E16B-45E0-A12A-7661A878CFFA} = {4910ED87-4253-469E-B47F-EB0384EB9D95}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E99AAE14-A8BB-4295-8A99-2AB3B123ABEB}
