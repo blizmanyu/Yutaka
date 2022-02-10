@@ -30,6 +30,14 @@ namespace Yutaka.Helcim
 		#endregion Constructor
 
 		#region Utilities
+		private string GetAuthenticationString()
+		{
+			var str = "{ ";
+			str = String.Format("{0}\"accountId\": {1}, ", str, AccountId);
+			str = String.Format("{0}\"apiToken\": \"{1}\", ", str, ApiToken);
+			return str;
+		}
+
 		#region Writes
 		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
