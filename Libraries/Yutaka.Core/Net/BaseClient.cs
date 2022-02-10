@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Net.Http;
 
 namespace Yutaka.Core.Net
@@ -13,8 +14,14 @@ namespace Yutaka.Core.Net
 			get {
 				if (_client == null) {
 					lock (_locker) {
-						if (_client == null)
+						if (_client == null) {
+							ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
+							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
+							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
+							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Ssl3;
 							_client = new HttpClient();
+							_client.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
+						}
 					}
 				}
 
