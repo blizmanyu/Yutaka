@@ -95,6 +95,42 @@ namespace Yutaka.Helcim
 		#endregion Utilities
 
 		#region Methods
+		public async Task TestConnection()
+		{
+			try {
+				var str = GetAuthenticationString();
+				str = String.Format("{0}\"action\": \"connectionTest\" ", str);
+				str = String.Format("{0} }}", str);
+				#region Debug
+				if (Debug)
+					Console.Write("\n{0}", str);
+				#endregion
+
+				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+					using (var response = await Client.PostAsync(BASE_URL, content)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+						#region Debug
+						if (Debug)
+							Console.Write("\n{0}", responseData);
+						#endregion
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.TestConnection().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.TestConnection().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion Methods
 	}
 }
