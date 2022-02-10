@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yutaka.Core.Net;
@@ -10,18 +11,19 @@ namespace Yutaka.Helcim
 	public class HelcimClient : BaseClient
 	{
 		#region Fields
-		public int AccountId;
+		public const string BASE_URL = "https://secure.myhelcim.com/api/";
+		public bool Debug;
 		public string ApiToken;
+		public uint AccountId;
 		#endregion Fields
 
 		#region Constructor
-		public HelcimClient(int accountId, string apiToken)
+		public HelcimClient(uint accountId, string apiToken)
 		{
-			if (accountId < 1)
-				throw new Exception(String.Format("'accountId' is invalid.{0}Exception thrown in Constructor HelcimClient(int accountId, string apiToken).{0}", Environment.NewLine));
 			if (String.IsNullOrWhiteSpace(apiToken))
-				throw new Exception(String.Format("'apiToken' is required.{0}Exception thrown in Constructor HelcimClient(int accountId, string apiToken).{0}", Environment.NewLine));
+				throw new Exception(String.Format("'apiToken' is required.{0}Exception thrown in Constructor HelcimClient(uint accountId, string apiToken).{0}", Environment.NewLine));
 
+			Debug = false;
 			AccountId = accountId;
 			ApiToken = apiToken;
 		}
