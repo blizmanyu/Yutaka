@@ -53,6 +53,7 @@
     <Compile Include="CSharp\NopController.cs" />
     <Compile Include="Data\DataSetting.cs" />
     <Compile Include="DateTimeExtension.cs" />
+    <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Domain\Common\Phone.cs" />
     <Compile Include="Domain\Common\PhoneUtil.cs" />
     <Compile Include="Drawing\DrawingUtil.cs" />
