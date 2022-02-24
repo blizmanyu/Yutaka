@@ -17,6 +17,7 @@ namespace Yutaka.Data
 		/// </summary>
 		public static readonly CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
 		public static readonly DateTime SqlDateTime_MinValue = new DateTime(1753, 1, 1);
+		public const CommandBehavior CLOSE_CONNECTION = CommandBehavior.CloseConnection;
 		#endregion Fields
 
 		#region Constructor
