@@ -8,6 +8,7 @@ namespace Yutaka.Data
 	{
 		#region Fields
 		protected string ConnectionString;
+		public const CommandBehavior CommandBehavior_CloseConnection = CommandBehavior.CloseConnection;
 		/// <summary>
 		/// An SQL text command. (Default.)
 		/// </summary>
@@ -17,7 +18,6 @@ namespace Yutaka.Data
 		/// </summary>
 		public const CommandType CommandType_StoredProcedure = CommandType.StoredProcedure;
 		public static readonly DateTime SqlDateTime_MinValue = new DateTime(1753, 1, 1);
-		public const CommandBehavior CommandBehavior_CloseConnection = CommandBehavior.CloseConnection;
 		#endregion Fields
 
 		#region Constructor
