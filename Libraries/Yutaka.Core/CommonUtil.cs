@@ -306,6 +306,16 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Removes all whitespaces.
+		/// </summary>
+		/// <param name="input">The input string to remove whitespaces from.</param>
+		/// <returns></returns>
+		public static string RemoveAllWhitespaces(string input)
+		{
+			return RegexWhitespace.Replace(input, "");
+		}
+
+		/// <summary>
 		/// Replaces all whitespace characters with the specified replacement.
 		/// </summary>
 		/// <param name="input">The input string.</param>
