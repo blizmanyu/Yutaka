@@ -18,6 +18,8 @@ namespace Yutaka.Core
 	/// </summary>
 	public partial class CommonUtil
 	{
+		private static readonly Regex RegexWhitespace = new Regex(@"\s+", RegexOptions.Compiled);
+
 		/// <summary>
 		/// Indicates whether the specified strings are null or empty strings
 		/// </summary>
