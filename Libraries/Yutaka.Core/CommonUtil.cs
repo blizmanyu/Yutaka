@@ -276,6 +276,17 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Replaces all whitespace characters with the specified replacement.
+		/// </summary>
+		/// <param name="input">The input string.</param>
+		/// <param name="replacement">The replacement string.</param>
+		/// <returns></returns>
+		public static string ReplaceWhitespace(string input, string replacement)
+		{
+			return RegexWhitespace.Replace(input, replacement);
+		}
+
+		/// <summary>
 		/// Sets a property on an object to a valuae.
 		/// </summary>
 		/// <param name="instance">The object whose property to set.</param>
