@@ -218,11 +218,6 @@ namespace Yutaka.Text
 			return input.Trim();
 		}
 
-		public static string ReplaceWhitespace(string input, string replacement)
-		{
-			return RegexWhitespace.Replace(input, replacement);
-		}
-
 		public static string StripExcessWhitespace(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
@@ -263,7 +258,16 @@ namespace Yutaka.Text
 		}
 		#endregion Methods
 
-		#region Deprecated Jan 4, 2022 - Phone Utils
+		#region Deprecated
+		#region Feb 25, 2022
+		[Obsolete("Deprecated Feb 25, 2022. Use Yutaka.Core.CommonUtil.ReplaceWhitespace(string, string) instead.", true)]
+		public static string ReplaceWhitespace(string input, string replacement)
+		{
+			return null;
+		}
+		#endregion
+
+		#region Jan 4, 2022 - Phone Utils
 		/// <summary>
 		/// Deprecated Jan 28, 2020. Use Yutaka.Core.Domain.Common.PhoneUtil.Beautify() instead.
 		/// </summary>
@@ -442,6 +446,7 @@ namespace Yutaka.Text
 
 			return stripped;
 		}
-		#endregion Deprecated Jan 4, 2022 - Phone Utils
+		#endregion
+		#endregion
 	}
 }
