@@ -193,19 +193,6 @@ namespace Yutaka.Text
 			return result;
 		}
 
-		public static string StripExcessWhitespace(string str)
-		{
-			if (String.IsNullOrWhiteSpace(str))
-				return "";
-
-			str = str.Replace("\n", " ").Replace("\r", " ").Replace("\t", " ").Trim();
-
-			while (str.Contains("  "))
-				str = str.Replace("  ", " ");
-
-			return str;
-		}
-
 		/// <summary>
 		/// Converts the specified string to title case.
 		/// </summary>
@@ -243,6 +230,12 @@ namespace Yutaka.Text
 
 		[Obsolete("Deprecated Feb 25, 2022. Use Yutaka.Core.CommonUtil.ReplaceWhitespace(string, string) instead.", true)]
 		public static string ReplaceWhitespace(string input, string replacement)
+		{
+			return null;
+		}
+
+		[Obsolete("Deprecated Feb 25, 2022. Use Yutaka.Core.CommonUtil.ReplaceWhitespaceWithSpace(string) instead.", true)]
+		public static string StripExcessWhitespace(string str)
 		{
 			return null;
 		}
