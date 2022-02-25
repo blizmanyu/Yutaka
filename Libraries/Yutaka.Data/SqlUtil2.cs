@@ -8,6 +8,9 @@ namespace Yutaka.Data
 	{
 		#region Fields
 		protected string ConnectionString;
+		/// <summary>
+		/// When the command is executed, the associated Connection object is closed when the associated DataReader object is closed.
+		/// </summary>
 		public const CommandBehavior CommandBehavior_CloseConnection = CommandBehavior.CloseConnection;
 		/// <summary>
 		/// An SQL text command. (Default.)
