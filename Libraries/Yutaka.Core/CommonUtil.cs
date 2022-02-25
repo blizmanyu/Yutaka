@@ -276,6 +276,25 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Masks a credit card number except for the first 4 and last 4 digits. If a card is less than 12 digits, its invalid, so just return.
+		/// </summary>
+		/// <param name="card"></param>
+		/// <returns></returns>
+		public static string MaskCreditCardNumber(string card)
+		{
+			if (String.IsNullOrWhiteSpace(card))
+				return "";
+
+			card = RemoveAllWhitespaces(card);
+			var cardLength = card.Length;
+
+			if (cardLength < 12)
+				return card;
+
+			return String.Format("{0} **** {1}", card.Substring(0, 4), card.Substring(cardLength - 4));
+		}
+
+		/// <summary>
 		/// Reduces excessive amounts of whitespaces.
 		/// </summary>
 		/// <param name="input">The input string to reduce.</param>
