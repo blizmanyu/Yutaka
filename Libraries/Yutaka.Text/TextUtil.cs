@@ -9,7 +9,6 @@ namespace Yutaka.Text
 {
 	public static class TextUtil
 	{
-		private static readonly Regex RegexWhitespace = new Regex(@"\s+", RegexOptions.Compiled);
 		private static readonly TextInfo CurrentCulture = CultureInfo.CurrentCulture.TextInfo;
 
 		#region Methods
