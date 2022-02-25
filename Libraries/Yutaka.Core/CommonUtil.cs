@@ -276,6 +276,36 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Reduces excessive amounts of whitespaces.
+		/// </summary>
+		/// <param name="input">The input string to reduce.</param>
+		/// <returns></returns>
+		public static string ReduceExcessiveWhitespace(string input)
+		{
+			if (String.IsNullOrWhiteSpace(input))
+				return "";
+
+			input = input.Trim();
+
+			while (input.Contains("\r\n\r\n\r\n"))
+				input = input.Replace("\r\n\r\n\r\n", "\r\n\r\n");
+
+			while (input.Contains("\r\r\r"))
+				input = input.Replace("\r\r\r", "\r\r");
+
+			while (input.Contains("\n\n\n"))
+				input = input.Replace("\n\n\n", "\n\n");
+
+			while (input.Contains("\t\t"))
+				input = input.Replace("\t\t", "\t");
+
+			while (input.Contains("  "))
+				input = input.Replace("  ", " ");
+
+			return input.Trim();
+		}
+
+		/// <summary>
 		/// Replaces all whitespace characters with the specified replacement.
 		/// </summary>
 		/// <param name="input">The input string.</param>
