@@ -317,6 +317,24 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Replaces all whitespaces with a single space.
+		/// </summary>
+		/// <param name="input">The input string to strip.</param>
+		/// <returns></returns>
+		public static string ReplaceWhitespaceWithSpace(string input)
+		{
+			if (String.IsNullOrWhiteSpace(input))
+				return "";
+
+			input = input.Trim().Replace("\r\n", " ").Replace("\r", " ").Replace("\n", " ").Replace("\t", " ");
+
+			while (input.Contains("  "))
+				input = input.Replace("  ", " ");
+
+			return input.Trim();
+		}
+
+		/// <summary>
 		/// Sets a property on an object to a valuae.
 		/// </summary>
 		/// <param name="instance">The object whose property to set.</param>
