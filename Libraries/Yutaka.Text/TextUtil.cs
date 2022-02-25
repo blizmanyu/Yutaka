@@ -193,31 +193,6 @@ namespace Yutaka.Text
 			return result;
 		}
 
-		public static string RemoveExcessWhitespace(string input)
-		{
-			if (String.IsNullOrWhiteSpace(input))
-				return "";
-
-			input = input.Trim();
-
-			while (input.Contains("\r\n\r\n\r\n"))
-				input = input.Replace("\r\n\r\n\r\n", "\r\n\r\n");
-
-			while (input.Contains("\r\r\r"))
-				input = input.Replace("\r\r\r", "\r\r");
-
-			while (input.Contains("\n\n\n"))
-				input = input.Replace("\n\n\n", "\n\n");
-
-			while (input.Contains("\t\t"))
-				input = input.Replace("\t\t", "\t");
-
-			while (input.Contains("  "))
-				input = input.Replace("  ", " ");
-
-			return input.Trim();
-		}
-
 		public static string StripExcessWhitespace(string str)
 		{
 			if (String.IsNullOrWhiteSpace(str))
@@ -260,6 +235,12 @@ namespace Yutaka.Text
 
 		#region Deprecated
 		#region Feb 25, 2022
+		[Obsolete("Deprecated Feb 25, 2022. Use Yutaka.Core.CommonUtil.ReduceExcessiveWhitespace(string) instead.", true)]
+		public static string RemoveExcessWhitespace(string input)
+		{
+			return null;
+		}
+
 		[Obsolete("Deprecated Feb 25, 2022. Use Yutaka.Core.CommonUtil.ReplaceWhitespace(string, string) instead.", true)]
 		public static string ReplaceWhitespace(string input, string replacement)
 		{
