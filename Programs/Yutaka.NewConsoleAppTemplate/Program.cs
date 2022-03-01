@@ -7,7 +7,7 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
-		private static readonly bool consoleOut = true; // default = false //
+		private static readonly bool consoleOut = true; // true/false
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string GmailUsername = "USERNAME";
 		private static readonly string GmailPassword = "PASSWORD";
