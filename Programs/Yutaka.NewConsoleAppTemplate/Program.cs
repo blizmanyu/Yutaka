@@ -7,8 +7,6 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
-		private const double errorPercThreshold = 0.07;
-		private const int errorCountThreshold = 7;
 		private const string ProgramName = "NewConsoleAppTemplate";
 		private static readonly bool consoleOut = true; // true/false
 		private static readonly string GmailPassword = "PASSWORD";
@@ -25,8 +23,11 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
+		private const double errorPercThreshold = 0.07;
+		private const int errorCountThreshold = 7;
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly DateTime startTime = DateTime.UtcNow;
+
 		private static int errorCount = 0;
 		private static int processedCount = 0;
 		private static int skippedCount = 0;
