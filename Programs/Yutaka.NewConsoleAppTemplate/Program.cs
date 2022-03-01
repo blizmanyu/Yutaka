@@ -23,7 +23,7 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
-		private const double errorPercThreshold = 0.07;
+		private const double errorPercentThreshold = 0.07;
 		private const int errorCountThreshold = 7;
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly DateTime startTime = DateTime.UtcNow;
@@ -208,7 +208,7 @@ namespace Yutaka.NewConsoleAppTemplate
 			var errorPerc = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
 			var successPerc = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
-			if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
+			if (errorCount > errorCountThreshold && errorPerc > errorPercentThreshold)
 				_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 
 			var log = new string[7];
