@@ -11,6 +11,8 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static readonly string ProgramName = "NewConsoleAppTemplate";
 		private static readonly string GmailUsername = "USERNAME";
 		private static readonly string GmailPassword = "PASSWORD";
+		private static readonly string fromEmail = "from@server.com";
+		private static readonly string toEmail = "to@server.com";
 
 		#region Fields
 		#region Static Externs
@@ -25,8 +27,6 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static readonly double errorPercThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
 		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
-		private static readonly string fromEmail = "from@server.com";
-		private static readonly string toEmail = "to@server.com";
 
 		private static int errorCount = 0;
 		private static int processedCount = 0;
