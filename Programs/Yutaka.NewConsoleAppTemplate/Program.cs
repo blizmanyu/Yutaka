@@ -65,6 +65,7 @@ namespace Yutaka.NewConsoleAppTemplate
 			EndProgram();
 		}
 
+		#region Methods
 		private static void Method1()
 		{
 			#region Logging
@@ -98,7 +99,71 @@ namespace Yutaka.NewConsoleAppTemplate
 			}
 		}
 
-		#region Methods
+		private static void Method2()
+		{
+			#region Logging
+			logger.Trace("Begin method Method2().");
+			#endregion
+
+			try {
+				// TODO: Add logic here //
+
+				++successCount;
+				#region Logging
+				logger.Trace("End method Method2().");
+				#endregion
+			}
+
+			catch (Exception ex) {
+				++errorCount;
+				#region Logging
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Method2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Method2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+
+				logger.Error(log);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+				#endregion
+			}
+		}
+
+		private static void Method3()
+		{
+			#region Logging
+			logger.Trace("Begin method Method3().");
+			#endregion
+
+			try {
+				// TODO: Add logic here //
+
+				++successCount;
+				#region Logging
+				logger.Trace("End method Method3().");
+				#endregion
+			}
+
+			catch (Exception ex) {
+				++errorCount;
+				#region Logging
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in Method3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Method3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+
+				logger.Error(log);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+				#endregion
+			}
+		}
 
 		#region StartProgram & EndProgram
 		private static void HandleArgs(string[] args)
