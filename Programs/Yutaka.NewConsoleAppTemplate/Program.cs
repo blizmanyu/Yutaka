@@ -7,10 +7,12 @@ namespace Yutaka.NewConsoleAppTemplate
 {
 	class Program
 	{
+		private const double errorPercThreshold = 0.07;
+		private const int errorCountThreshold = 7;
+		private const string ProgramName = "NewConsoleAppTemplate";
 		private static readonly bool consoleOut = true; // true/false
-		private static readonly string ProgramName = "NewConsoleAppTemplate";
-		private static readonly string GmailUsername = "USERNAME";
 		private static readonly string GmailPassword = "PASSWORD";
+		private static readonly string GmailUsername = "USERNAME";
 		private static readonly string fromEmail = "from@server.com";
 		private static readonly string toEmail = "to@server.com";
 
@@ -23,18 +25,15 @@ namespace Yutaka.NewConsoleAppTemplate
 		const int SW_HIDE = 0;
 		#endregion
 
+		private const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly DateTime startTime = DateTime.UtcNow;
-		private static readonly double errorPercThreshold = 0.07;
-		private static readonly int errorCountThreshold = 7;
-		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
-
 		private static int errorCount = 0;
 		private static int processedCount = 0;
 		private static int skippedCount = 0;
 		private static int successCount = 0;
 		private static int totalCount = 0;
-		private static Logger logger = LogManager.GetCurrentClassLogger();
 		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
+		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
 
 		static void Main(string[] args)
