@@ -42,7 +42,7 @@ namespace Yutaka.NewConsoleAppTemplate
 			StartProgram();
 
 			try {
-				Process();
+				Method1();
 			}
 
 			catch (Exception ex) {
@@ -65,17 +65,24 @@ namespace Yutaka.NewConsoleAppTemplate
 			EndProgram();
 		}
 
-		private static void Process()
+		private static void Method1()
 		{
+			#region Logging
+			logger.Trace("Begin method Method1().");
+			#endregion
+
 			try {
 				// TODO: Add logic here //
 
-				++processedCount;
+				++successCount;
+				#region Logging
+				logger.Trace("End method Method1().");
+				#endregion
 			}
 
 			catch (Exception ex) {
-				#region Log
 				++errorCount;
+				#region Logging
 				string log;
 
 				if (ex.InnerException == null)
@@ -87,7 +94,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 				if (consoleOut)
 					Console.Write("\n{0}", log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -174,7 +181,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
-		#endregion StartProgram & EndProgram
-		#endregion Methods
+		#endregion
+		#endregion
 	}
 }
