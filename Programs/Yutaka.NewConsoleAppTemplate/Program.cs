@@ -134,12 +134,8 @@ namespace Yutaka.NewConsoleAppTemplate
 			var errorPerc = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
 			var successPerc = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
-			if (errorCount > errorCountThreshold || errorPerc > errorPercThreshold) {
-				logger.Error("The number of errors is above the threshold.");
-
-				if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
-					_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
-			}
+			if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
+				_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 
 			var log = new string[7];
 			log[0] = "Ending program";
