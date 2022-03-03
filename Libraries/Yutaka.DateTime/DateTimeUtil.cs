@@ -322,6 +322,27 @@ namespace Yutaka
 				}
 			}
 		}
+
+		/// <summary>
+		/// Converts the datetime to how Gmail displays it.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns>A string that represents time that corresponds to the dateTime parameter.</returns>
+		public static string ToGmailStyle(DateTime dt)
+		{
+			var today = DateTime.Today;
+
+			if (dt.Date == today)
+				return String.Format("{0:h:mm tt}", dt); // 1:01 PM
+
+			if (dt.Date == today.AddDays(-1))
+				return "Yesterday";
+
+			if (dt.Year == today.Year)
+				return String.Format("{0:MMM d}", dt); // Jan 1
+
+			return String.Format("{0:M/d/yy}", dt); // 1/1/21
+		}
 		#endregion Methods
 	}
 }
