@@ -324,11 +324,11 @@ namespace Yutaka
 		}
 
 		/// <summary>
-		/// Converts the datetime to how Gmail displays it.
+		/// Converts the datetime to a relative date. If the date is today, it actually displays the time.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
 		/// <returns>A string that represents time that corresponds to the dateTime parameter.</returns>
-		public static string ToGmailStyle(DateTime dt)
+		public static string ToRelativeDateString(DateTime dt)
 		{
 			var today = DateTime.Today;
 
