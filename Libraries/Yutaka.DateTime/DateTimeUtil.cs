@@ -327,7 +327,7 @@ namespace Yutaka
 		/// Converts the datetime to a relative date. If the date is today, it actually displays the time.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
-		/// <returns>A string that represents time that corresponds to the dateTime parameter.</returns>
+		/// <returns>A string that represents date that corresponds to the dateTime parameter.</returns>
 		public static string ToRelativeDateString(DateTime dt)
 		{
 			var today = DateTime.Today;
@@ -342,6 +342,27 @@ namespace Yutaka
 				return String.Format("{0:MMM d}", dt); // Jan 1
 
 			return String.Format("{0:M/d/yy}", dt); // 1/1/21
+		}
+
+		/// <summary>
+		/// Converts the datetime to a relative date and time.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns>A string that represents time that corresponds to the dateTime parameter.</returns>
+		public static string ToRelativeDateTimeString(DateTime dt)
+		{
+			var today = DateTime.Today;
+
+			if (dt.Date == today)
+				return String.Format("Today, {0:h:mm tt}", dt); // Today, 1:01 PM
+
+			if (dt.Date == today.AddDays(-1))
+				return String.Format("Yesterday, {0:h:mm tt}", dt); // Yesterday, 1:01 PM
+
+			if (dt.Year == today.Year)
+				return String.Format("{0:MMM d, h:mm tt}", dt); // Jan 1, 1:01 PM
+
+			return String.Format("{0:MMM d, yyyy, h:mm tt}", dt); // Jan 1, 2021, 1:01 PM
 		}
 		#endregion Methods
 	}
