@@ -324,6 +324,16 @@ namespace Yutaka
 		}
 
 		/// <summary>
+		/// Converts the datetime to the long-form U.S. format. Example: "Jan 1, 2009, 1:01 PM".
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns>A string that represents date that corresponds to the dateTime parameter.</returns>
+		public static string ToLongDateTimeString(DateTime dt)
+		{
+			return String.Format("{0:MMM d, yyyy, h:mm tt}", dt);
+		}
+
+		/// <summary>
 		/// Converts the datetime to a relative date. If the date is today, it actually displays the time.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
