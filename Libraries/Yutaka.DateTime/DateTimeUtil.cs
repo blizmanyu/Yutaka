@@ -362,7 +362,7 @@ namespace Yutaka
 			if (dt.Year == today.Year)
 				return String.Format("{0:MMM d, h:mm tt}", dt); // Jan 1, 1:01 PM
 
-			return String.Format("{0:MMM d, yyyy, h:mm tt}", dt); // Jan 1, 2021, 1:01 PM
+			return String.Format("{0:M/d/yy, h:mm tt}", dt); // 1/1/21, 1:01 PM
 		}
 		#endregion Methods
 	}
