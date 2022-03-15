@@ -102,6 +102,10 @@ namespace Yutaka.Helcim
 		#endregion
 
 		#region Methods
+		/// <summary>
+		/// This API call lets you do a connection test. The response is an XML of the result of the connection test.
+		/// </summary>
+		/// <returns></returns>
 		public async Task TestConnection()
 		{
 			try {
@@ -121,7 +125,7 @@ namespace Yutaka.Helcim
 						#region Debug
 						if (Debug) {
 							Console.Write("\n{0}", responseData);
-							WriteToFile(str);
+							WriteToFile(responseData);
 						}
 						#endregion
 					}
@@ -138,6 +142,7 @@ namespace Yutaka.Helcim
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.TestConnection().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
+				WriteToFile(log);
 				throw new Exception(log);
 				#endregion Log
 			}
