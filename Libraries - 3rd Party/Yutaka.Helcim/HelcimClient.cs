@@ -11,14 +11,20 @@ namespace Yutaka.Helcim
 	public class HelcimClient : BaseClient
 	{
 		#region Fields
+		// Constants and readonlys //
 		public const string BASE_URL = "https://secure.myhelcim.com/api/";
 		public const string LOG_FOLDER = "HelcimClient";
-		protected static readonly string DesktopFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-		protected readonly string Timestamp;
+		private static readonly string DesktopFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+		// Properties //
 		public bool Debug;
 		public string ApiToken;
 		public uint AccountId;
-		#endregion Fields
+		private readonly string Timestamp;
+
+		// PIVs //
+		private static FileUtil fileUtil = new FileUtil();
+		#endregion
 
 		#region Constructor
 		public HelcimClient(uint accountId, string apiToken)
@@ -31,7 +37,7 @@ namespace Yutaka.Helcim
 			AccountId = accountId;
 			ApiToken = apiToken;
 		}
-		#endregion Constructor
+		#endregion
 
 		#region Utilities
 		private string GetAuthenticationString()
@@ -96,7 +102,7 @@ namespace Yutaka.Helcim
 				new FileUtil().Write(response.Result, Path.Combine(folder, filename));
 		}
 		#endregion Writes
-		#endregion Utilities
+		#endregion
 
 		#region Methods
 		public async Task TestConnection()
@@ -139,6 +145,6 @@ namespace Yutaka.Helcim
 				#endregion Log
 			}
 		}
-		#endregion Methods
+		#endregion
 	}
 }
