@@ -142,6 +142,77 @@ namespace Yutaka.Helcim
 				#endregion Log
 			}
 		}
+
+		/// <summary>
+		/// This API call lets you process a purchase transaction for a customer that has already been saved in your Helcim account.
+		/// The response is an XML of the processed sale.
+		/// </summary>
+		/// <param name="customerCode">The customer ID code.</param>
+		/// <param name="amount">The amount of the transaction. Must be at least $1.</param>
+		/// <param name="comments">Optional comments added to the transaction.</param>
+		/// <returns></returns>
+		public async Task Purchase(string customerCode, decimal amount, string comments=null)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(customerCode))
+				log = String.Format("{0}customerCode is required.{1}", log, Environment.NewLine);
+			if (amount < 1)
+				log = String.Format("{0}amount must be at least $1.{1}", log, Environment.NewLine);
+			if (comments != null)
+				comments = comments.Trim();
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				WriteToFile(log);
+				return;
+			}
+			#endregion
+
+			try {
+				var str = GetAuthenticationString();
+				str = String.Format("{0}\"action\": \"purchase\" ", str);
+				str = String.Format("{0}\"customerCode\": \"{1}\" ", str, customerCode);
+				str = String.Format("{0}\"amount\": \"{1}\" ", str, amount);
+
+				if (!String.IsNullOrWhiteSpace(comments))
+					str = String.Format("{0}\"comments\": \"{1}\" ", str, comments);
+
+				str = String.Format("{0} }}", str);
+				#region Debug
+				if (Debug) {
+					Console.Write("\n{0}", str);
+					WriteToFile(str);
+				}
+				#endregion
+
+				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+					using (var response = await Client.PostAsync(BASE_URL, content)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+						#region Debug
+						if (Debug) {
+							Console.Write("\n{0}", responseData);
+							WriteToFile(responseData);
+						}
+						#endregion
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.Purchase(string customerCode='{3}', decimal amount='{4}', string comments='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerCode, amount, comments);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.Purchase(string customerCode='{3}', decimal amount='{4}', string comments='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerCode, amount, comments);
+
+				Console.Write("\n{0}", log);
+				WriteToFile(log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
 		#endregion
 	}
 }
