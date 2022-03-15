@@ -14,6 +14,7 @@ namespace Yutaka.Helcim
 		public const string BASE_URL = "https://secure.myhelcim.com/api/";
 		public const string LOG_FOLDER = "HelcimClient";
 		protected static readonly string DesktopFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		protected readonly string Timestamp;
 		public bool Debug;
 		public string ApiToken;
 		public uint AccountId;
@@ -26,6 +27,7 @@ namespace Yutaka.Helcim
 				throw new Exception(String.Format("'apiToken' is required.{0}Exception thrown in Constructor HelcimClient(uint accountId, string apiToken).{0}", Environment.NewLine));
 
 			Debug = false;
+			Timestamp = DateTime.Now.ToString("yyyy MMdd HHmm ssff");
 			AccountId = accountId;
 			ApiToken = apiToken;
 		}
@@ -61,7 +63,7 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response))
 				return;
 
-			var filename = String.Format("{0}.xml", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+			var filename = String.Format("{0}.xml", Timestamp);
 			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
@@ -80,7 +82,7 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
 				return;
 
-			var filename = String.Format("{0}.xml", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+			var filename = String.Format("{0}.xml", Timestamp);
 			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
