@@ -61,7 +61,7 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response))
 				return;
 
-			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+			var filename = String.Format("{0}.xml", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
 			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
@@ -80,7 +80,7 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
 				return;
 
-			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+			var filename = String.Format("{0}.xml", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
 			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
