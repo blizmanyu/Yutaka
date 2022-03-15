@@ -103,52 +103,6 @@ namespace Yutaka.Helcim
 
 		#region Methods
 		/// <summary>
-		/// This API call lets you do a connection test. The response is an XML of the result of the connection test.
-		/// </summary>
-		/// <returns></returns>
-		public async Task TestConnection()
-		{
-			try {
-				var str = GetAuthenticationString();
-				str = String.Format("{0}\"action\": \"connectionTest\" ", str);
-				str = String.Format("{0} }}", str);
-				#region Debug
-				if (Debug) {
-					Console.Write("\n{0}", str);
-					WriteToFile(str);
-				}
-				#endregion
-
-				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
-					using (var response = await Client.PostAsync(BASE_URL, content)) {
-						string responseData = await response.Content.ReadAsStringAsync();
-						#region Debug
-						if (Debug) {
-							Console.Write("\n{0}", responseData);
-							WriteToFile(responseData);
-						}
-						#endregion
-					}
-				}
-			}
-
-			catch (Exception ex) {
-				#region Log
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in HelcimClient.TestConnection().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.TestConnection().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
-
-				Console.Write("\n{0}", log);
-				WriteToFile(log);
-				throw new Exception(log);
-				#endregion Log
-			}
-		}
-
-		/// <summary>
 		/// This API call lets you process a purchase transaction for a customer that has already been saved in your Helcim account.
 		/// The response is an XML of the processed sale.
 		/// </summary>
@@ -156,7 +110,7 @@ namespace Yutaka.Helcim
 		/// <param name="amount">The amount of the transaction. Must be at least $1.</param>
 		/// <param name="comments">Optional comments added to the transaction.</param>
 		/// <returns></returns>
-		public async Task Purchase(string customerCode, decimal amount, string comments=null)
+		public async Task Purchase(string customerCode, decimal amount, string comments = null)
 		{
 			#region Check Input
 			var log = "";
@@ -211,6 +165,52 @@ namespace Yutaka.Helcim
 					log = String.Format("{0}{2}Exception thrown in HelcimClient.Purchase(string customerCode='{3}', decimal amount='{4}', string comments='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, customerCode, amount, comments);
 				else
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.Purchase(string customerCode='{3}', decimal amount='{4}', string comments='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerCode, amount, comments);
+
+				Console.Write("\n{0}", log);
+				WriteToFile(log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
+		/// This API call lets you do a connection test. The response is an XML of the result of the connection test.
+		/// </summary>
+		/// <returns></returns>
+		public async Task TestConnection()
+		{
+			try {
+				var str = GetAuthenticationString();
+				str = String.Format("{0}\"action\": \"connectionTest\" ", str);
+				str = String.Format("{0} }}", str);
+				#region Debug
+				if (Debug) {
+					Console.Write("\n{0}", str);
+					WriteToFile(str);
+				}
+				#endregion
+
+				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
+					using (var response = await Client.PostAsync(BASE_URL, content)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+						#region Debug
+						if (Debug) {
+							Console.Write("\n{0}", responseData);
+							WriteToFile(responseData);
+						}
+						#endregion
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				string log;
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.TestConnection().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.TestConnection().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
 				WriteToFile(log);
