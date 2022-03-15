@@ -13,8 +13,7 @@ namespace Yutaka.Helcim
 		#region Fields
 		// Constants and readonlys //
 		public const string BASE_URL = "https://secure.myhelcim.com/api/";
-		public const string LOG_FOLDER = "HelcimClient";
-		private static readonly string DesktopFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+		private static readonly string LogPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), "HelcimClient");
 
 		// Properties //
 		public bool Debug;
@@ -70,17 +69,16 @@ namespace Yutaka.Helcim
 				return;
 
 			var filename = String.Format("{0}.xml", Timestamp);
-			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
-			Directory.CreateDirectory(folder);
+			Directory.CreateDirectory(LogPath);
 
 			if (pretty) {
 				dynamic parsedJson = JsonConvert.DeserializeObject(response);
 				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-				new FileUtil().Write(formatted, Path.Combine(folder, filename));
+				fileUtil.Write(formatted, Path.Combine(LogPath, filename));
 			}
 
 			else
-				new FileUtil().Write(response, Path.Combine(folder, filename));
+				fileUtil.Write(response, Path.Combine(LogPath, filename));
 		}
 
 		public void WriteToFile(Task<string> response, bool pretty = true)
@@ -89,17 +87,16 @@ namespace Yutaka.Helcim
 				return;
 
 			var filename = String.Format("{0}.xml", Timestamp);
-			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
-			Directory.CreateDirectory(folder);
+			Directory.CreateDirectory(LogPath);
 
 			if (pretty) {
 				dynamic parsedJson = JsonConvert.DeserializeObject(response.Result);
 				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-				new FileUtil().Write(formatted, Path.Combine(folder, filename));
+				fileUtil.Write(formatted, Path.Combine(LogPath, filename));
 			}
 
 			else
-				new FileUtil().Write(response.Result, Path.Combine(folder, filename));
+				fileUtil.Write(response.Result, Path.Combine(LogPath, filename));
 		}
 		#endregion Writes
 		#endregion
