@@ -143,9 +143,9 @@ namespace Yutaka.Helcim
 
 			try {
 				var str = GetAuthenticationString();
-				str = String.Format("{0}\"action\": \"purchase\" ", str);
-				str = String.Format("{0}\"customerCode\": \"{1}\" ", str, customerCode);
-				str = String.Format("{0}\"amount\": \"{1}\" ", str, amount);
+				str = String.Format("{0}\"transactionType\": \"purchase\", ", str);
+				str = String.Format("{0}\"customerCode\": \"{1}\", ", str, customerCode);
+				str = String.Format("{0}\"amount\": {1}, ", str, amount);
 
 				if (!String.IsNullOrWhiteSpace(comments))
 					str = String.Format("{0}\"comments\": \"{1}\" ", str, comments);
