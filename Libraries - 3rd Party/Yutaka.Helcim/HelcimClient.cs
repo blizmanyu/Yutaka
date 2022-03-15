@@ -12,6 +12,7 @@ namespace Yutaka.Helcim
 	{
 		#region Fields
 		public const string BASE_URL = "https://secure.myhelcim.com/api/";
+		public const string LOG_FOLDER = "HelcimClient";
 		protected static readonly string DesktopFolderPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 		public bool Debug;
 		public string ApiToken;
@@ -61,7 +62,7 @@ namespace Yutaka.Helcim
 				return;
 
 			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
-			var folder = Path.Combine(DesktopFolderPath, "JSON");
+			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
 			if (pretty) {
@@ -80,7 +81,7 @@ namespace Yutaka.Helcim
 				return;
 
 			var filename = String.Format("{0}.json", DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
-			var folder = Path.Combine(DesktopFolderPath, "JSON");
+			var folder = Path.Combine(DesktopFolderPath, LOG_FOLDER);
 			Directory.CreateDirectory(folder);
 
 			if (pretty) {
