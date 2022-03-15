@@ -104,16 +104,20 @@ namespace Yutaka.Helcim
 				str = String.Format("{0}\"action\": \"connectionTest\" ", str);
 				str = String.Format("{0} }}", str);
 				#region Debug
-				if (Debug)
+				if (Debug) {
 					Console.Write("\n{0}", str);
+					WriteToFile(str);
+				}
 				#endregion
 
 				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
 					using (var response = await Client.PostAsync(BASE_URL, content)) {
 						string responseData = await response.Content.ReadAsStringAsync();
 						#region Debug
-						if (Debug)
+						if (Debug) {
 							Console.Write("\n{0}", responseData);
+							WriteToFile(str);
+						}
 						#endregion
 					}
 				}
