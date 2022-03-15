@@ -48,6 +48,26 @@ namespace Yutaka.Helcim
 		}
 
 		#region Writes
+		public void JsonToFile(string response, bool pretty = true)
+		{
+			if (response == null || String.IsNullOrWhiteSpace(response))
+				return;
+
+			var filename = String.Format("{0}.log", Timestamp);
+			Directory.CreateDirectory(LogPath);
+
+			if (pretty) {
+				dynamic parsedJson = JsonConvert.DeserializeObject(response);
+				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
+				fileUtil.Write(formatted, Path.Combine(LogPath, filename));
+			}
+
+			else
+				fileUtil.Write(response, Path.Combine(LogPath, filename));
+
+			fileUtil.Write(Environment.NewLine, Path.Combine(LogPath, filename));
+		}
+
 		public void WriteToConsole(Task<string> response, bool pretty = true)
 		{
 			if (response == null || String.IsNullOrWhiteSpace(response.Result))
@@ -61,24 +81,6 @@ namespace Yutaka.Helcim
 
 			else
 				Console.Write("\n{0}", response.Result);
-		}
-
-		public void WriteToFile(string response, bool pretty = true)
-		{
-			if (response == null || String.IsNullOrWhiteSpace(response))
-				return;
-
-			var filename = String.Format("{0}.xml", Timestamp);
-			Directory.CreateDirectory(LogPath);
-
-			if (pretty) {
-				dynamic parsedJson = JsonConvert.DeserializeObject(response);
-				var formatted = JsonConvert.SerializeObject(parsedJson, Formatting.Indented);
-				fileUtil.Write(formatted, Path.Combine(LogPath, filename));
-			}
-
-			else
-				fileUtil.Write(response, Path.Combine(LogPath, filename));
 		}
 
 		public void WriteToFile(Task<string> response, bool pretty = true)
@@ -97,6 +99,16 @@ namespace Yutaka.Helcim
 
 			else
 				fileUtil.Write(response.Result, Path.Combine(LogPath, filename));
+		}
+
+		public void XmlToFile(string response)
+		{
+			if (response == null || String.IsNullOrWhiteSpace(response))
+				return;
+
+			var filename = String.Format("{0}.log", Timestamp);
+			Directory.CreateDirectory(LogPath);
+			fileUtil.Write(response, Path.Combine(LogPath, filename));
 		}
 		#endregion Writes
 		#endregion
@@ -124,7 +136,7 @@ namespace Yutaka.Helcim
 
 			if (!String.IsNullOrWhiteSpace(log)) {
 				Console.Write("\n{0}", log);
-				WriteToFile(log);
+				XmlToFile(log);
 				return;
 			}
 			#endregion
@@ -142,7 +154,7 @@ namespace Yutaka.Helcim
 				#region Debug
 				if (Debug) {
 					Console.Write("\n{0}", str);
-					WriteToFile(str);
+					JsonToFile(str);
 				}
 				#endregion
 
@@ -152,7 +164,7 @@ namespace Yutaka.Helcim
 						#region Debug
 						if (Debug) {
 							Console.Write("\n{0}", responseData);
-							WriteToFile(responseData);
+							XmlToFile(responseData);
 						}
 						#endregion
 					}
@@ -167,7 +179,7 @@ namespace Yutaka.Helcim
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.Purchase(string customerCode='{3}', decimal amount='{4}', string comments='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerCode, amount, comments);
 
 				Console.Write("\n{0}", log);
-				WriteToFile(log);
+				XmlToFile(log);
 				throw new Exception(log);
 				#endregion Log
 			}
@@ -186,7 +198,7 @@ namespace Yutaka.Helcim
 				#region Debug
 				if (Debug) {
 					Console.Write("\n{0}", str);
-					WriteToFile(str);
+					JsonToFile(str);
 				}
 				#endregion
 
@@ -196,7 +208,7 @@ namespace Yutaka.Helcim
 						#region Debug
 						if (Debug) {
 							Console.Write("\n{0}", responseData);
-							WriteToFile(responseData);
+							XmlToFile(responseData);
 						}
 						#endregion
 					}
@@ -213,7 +225,7 @@ namespace Yutaka.Helcim
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.TestConnection().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
 
 				Console.Write("\n{0}", log);
-				WriteToFile(log);
+				XmlToFile(log);
 				throw new Exception(log);
 				#endregion Log
 			}
