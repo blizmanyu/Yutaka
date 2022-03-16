@@ -106,9 +106,10 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response))
 				return;
 
-			var filename = String.Format("{0}.log", Timestamp);
+			var filename = String.Format("{0}.xml", Timestamp);
 			Directory.CreateDirectory(LogPath);
 			fileUtil.Write(response, Path.Combine(LogPath, filename));
+			fileUtil.Write(Environment.NewLine, Path.Combine(LogPath, filename));
 		}
 		#endregion Writes
 		#endregion
