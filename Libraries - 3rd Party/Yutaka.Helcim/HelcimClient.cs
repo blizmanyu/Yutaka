@@ -53,7 +53,7 @@ namespace Yutaka.Helcim
 			if (response == null || String.IsNullOrWhiteSpace(response))
 				return;
 
-			var filename = String.Format("{0}.log", Timestamp);
+			var filename = String.Format("{0}.json", Timestamp);
 			Directory.CreateDirectory(LogPath);
 
 			if (pretty) {
