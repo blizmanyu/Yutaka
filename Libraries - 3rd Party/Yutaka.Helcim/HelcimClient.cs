@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Yutaka.Core.Net;
@@ -162,6 +163,7 @@ namespace Yutaka.Helcim
 				using (var content = new StringContent(str, System.Text.Encoding.Default, "application/json")) {
 					using (var response = await Client.PostAsync(BASE_URL, content)) {
 						string responseData = await response.Content.ReadAsStringAsync();
+						Thread.Sleep(1000);
 						#region Debug
 						if (Debug) {
 							Console.Write("\n{0}", responseData);
