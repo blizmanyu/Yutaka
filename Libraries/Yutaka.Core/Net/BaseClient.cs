@@ -6,6 +6,7 @@ namespace Yutaka.Core.Net
 {
 	public abstract class BaseClient : IDisposable
 	{
+		protected const SecurityProtocolType TLS13 = (SecurityProtocolType) 12288;
 		private static object _locker = new object();
 		private static volatile HttpClient _client;
 
@@ -15,10 +16,19 @@ namespace Yutaka.Core.Net
 				if (_client == null) {
 					lock (_locker) {
 						if (_client == null) {
-							ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12;
-							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
-							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
-							ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Ssl3;
+							try {
+								ServicePointManager.SecurityProtocol |= TLS13 | SecurityProtocolType.Tls12;
+								ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls11;
+								ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
+								ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Ssl3;
+							}
+
+							catch (NotSupportedException) {
+								ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11;
+								ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Tls;
+								ServicePointManager.SecurityProtocol &= ~SecurityProtocolType.Ssl3;
+							}
+
 							_client = new HttpClient();
 							_client.DefaultRequestHeaders.TryAddWithoutValidation("accept", "application/json");
 						}
