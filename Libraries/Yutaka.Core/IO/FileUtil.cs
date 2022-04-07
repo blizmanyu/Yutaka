@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualBasic.FileIO;
 
 namespace Yutaka.Core.IO
 {
@@ -44,18 +43,73 @@ namespace Yutaka.Core.IO
 			}
 		}
 
-		//public static string BytesToString(long bytes)
-		//{
-		//	var order = 0;
+		/// <summary>
+		/// Converts a flat file to a <see cref="DataTable"/>.
+		/// </summary>
+		/// <param name="filePath">The file path.</param>
+		/// <param name="delimiter">The delimiter. The default is a comma.</param>
+		/// <param name="hasFieldsEnclosedInQuotes">Whether the fields are enclosed in quotes or not (key distinguisher for CSV files).</param>
+		/// <returns></returns>
+		public static DataTable ToDataTable(string filePath, string delimiter = ",", bool hasFieldsEnclosedInQuotes = false)
+		{
+			#region Check Input
+			var log = "";
 
-		//	while (bytes >= 1024 && order < _sizes.Length - 1) {
-		//		++order;
-		//		bytes = bytes / 1024;
-		//	}
+			if (String.IsNullOrWhiteSpace(filePath))
+				log = String.Format("{0}filePath is required.{1}", log, Environment.NewLine);
+			else if (!File.Exists(filePath))
+				log = String.Format("{0}filePath '{2}' does not exist.{1}", log, Environment.NewLine, filePath);
 
-		//	// Adjust the format string to your preferences. For example "{0:0.#}{1}" would
-		//	// show a single decimal place, and no space.
-		//	string result = String.Format("{0:0.##} {1}", bytes, _sizes[order]);
-		//}
+			if (String.IsNullOrEmpty(delimiter)) // whitespace is a valid delimiter, so only check IsNullOrEmpty
+				log = String.Format("{0}delimiter is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.ToDataTable(string filePath, string delimiter, bool hasFieldsEnclosedInQuotes).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
+				return null;
+			}
+			#endregion
+			var dt = new DataTable();
+
+			try {
+				using (var tfp = new TextFieldParser(filePath)) {
+					DataColumn datecolumn;
+					tfp.SetDelimiters(new string[] { delimiter });
+					tfp.HasFieldsEnclosedInQuotes = hasFieldsEnclosedInQuotes;
+					var colFields = tfp.ReadFields();
+
+					foreach (string column in colFields) {
+						datecolumn = new DataColumn(column);
+						datecolumn.AllowDBNull = true;
+						dt.Columns.Add(datecolumn);
+					}
+
+					string[] fieldData;
+
+					while (!tfp.EndOfData) {
+						fieldData = tfp.ReadFields();
+						
+						for (int i = 0; i < fieldData.Length; i++) {
+							if (fieldData[i].Equals("")) // make empty values null
+								fieldData[i] = null;
+						}
+
+						dt.Rows.Add(fieldData);
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					Console.Write("{0}{2}Exception thrown in FileUtil.ToDataTable(string filePath='{3}', string delimiter='{4}', bool hasFieldsEnclosedInQuotes='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, filePath, delimiter, hasFieldsEnclosedInQuotes);
+				else
+					Console.Write("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.ToDataTable(string filePath='{3}', string delimiter='{4}', bool hasFieldsEnclosedInQuotes='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, filePath, delimiter, hasFieldsEnclosedInQuotes);
+				#endregion Log
+				return null;
+			}
+
+			return dt;
+		}
 	}
 }
