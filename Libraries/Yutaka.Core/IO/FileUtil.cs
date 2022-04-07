@@ -15,6 +15,33 @@ namespace Yutaka.Core.IO
 		static extern bool DeleteFile(string lpFileName);
 
 		/// <summary>
+		/// Dumps the contents of a <see cref="DataTable"/> to console.
+		/// </summary>
+		/// <param name="dt">The <see cref="DataTable"/>.</param>
+		public static void ConsoleOut(DataTable dt)
+		{
+			if (dt == null)
+				Console.Write("\nThe DataTable is null.\n");
+
+			else if (dt.Rows.Count < 1)
+				Console.Write("\nThe DataTable is empty.\n");
+
+			else {
+				Console.Write("\n");
+				var count = 0;
+
+				foreach (DataRow row in dt.Rows) {
+					Console.Write("{0,3})", ++count);
+
+					foreach (var item in row.ItemArray)
+						Console.Write("{0,10}", item);
+
+					Console.Write("\n");
+				}
+			}
+		}
+
+		/// <summary>
 		/// Converts a flat file to a <see cref="DataTable"/>.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
