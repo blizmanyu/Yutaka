@@ -60,6 +60,74 @@ namespace Yutaka.Data
 		}
 		#endregion Constructor
 
+		#region Utilities
+		/// <summary>
+		/// Tries to perform <see cref="SqlBulkCopy"/> to fast-import a <see cref="DataTable"/> into a SQL table.
+		/// </summary>
+		/// <param name="dt">The <see cref="DataTable"/> to import.</param>
+		/// <param name="destinationTableName">The destination table name to insert into.</param>
+		/// <param name="errorMessage">The output error message if any. Otherwise, empty string.</param>
+		/// <returns></returns>
+		protected bool TryBulkCopy(DataTable dt, string destinationTableName, out string errorMessage)
+		{
+			#region Log
+			errorMessage = "";
+
+			if (dt == null)
+				errorMessage = String.Format("{0}dt is null.{1}", errorMessage, Environment.NewLine);
+			else if (dt.Rows.Count < 1)
+				errorMessage = String.Format("{0}dt is empty.{1}", errorMessage, Environment.NewLine);
+
+			if (String.IsNullOrWhiteSpace(destinationTableName))
+				errorMessage = String.Format("{0}destinationTableName is required.{1}", errorMessage, Environment.NewLine);
+			else
+				destinationTableName = destinationTableName.Trim();
+
+			if (!String.IsNullOrWhiteSpace(errorMessage))
+				return false;
+			#endregion
+
+			try {
+				using (var conn = new SqlConnection(ConnectionString)) {
+					conn.Open();
+					using (var s = new SqlBulkCopy(conn)) {
+						s.DestinationTableName = destinationTableName;
+
+						foreach (var column in dt.Columns) {
+							try {
+								s.ColumnMappings.Add(column.ToString(), column.ToString());
+							}
+
+							catch (Exception ex) {
+								#region Log
+								if (ex.InnerException == null)
+									errorMessage = String.Format("{0}{2}Exception thrown in SqlUtil2.TryBulkCopy(DataTable dt, string destinationTableName='{3}', out string errorMessage).{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destinationTableName);
+								else
+									errorMessage = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TryBulkCopy(DataTable dt, string destinationTableName='{3}', out string errorMessage).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destinationTableName);
+								#endregion
+								return false;
+							}
+						}
+
+						s.WriteToServer(dt);
+					}
+				}
+
+				return true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					errorMessage = String.Format("{0}{2}Possibly wrong delimiter.{2}Exception thrown in SqlUtil2.TryBulkCopy(DataTable dt, string destinationTableName='{3}', out string errorMessage).{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, destinationTableName);
+				else
+					errorMessage = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TryBulkCopy(DataTable dt, string destinationTableName='{3}', out string errorMessage).{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, destinationTableName);
+				#endregion
+				return false;
+			}
+		}
+		#endregion
+
 		#region Public Methods
 		/// <summary>
 		/// Builds and returns a connection string from the given parameters.
@@ -153,7 +221,7 @@ namespace Yutaka.Data
 
 				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -198,7 +266,7 @@ namespace Yutaka.Data
 
 				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -243,7 +311,7 @@ namespace Yutaka.Data
 
 				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -304,7 +372,7 @@ namespace Yutaka.Data
 
 				log = log.Replace("_PARAMS_", ToString(parameters, true));
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -350,7 +418,7 @@ namespace Yutaka.Data
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.StartJob(string jobId='{3}', string stepName='{4}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, jobId, stepName);
 
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -416,7 +484,7 @@ namespace Yutaka.Data
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string table='{3}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, table);
 
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -461,7 +529,7 @@ namespace Yutaka.Data
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string schema='{3}', string table='{4}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, schema, table);
 
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 
@@ -509,7 +577,7 @@ namespace Yutaka.Data
 					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of SqlUtil2.TruncateTable(string database='{3}', string schema='{4}', string table='{5}').{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, database, schema, table);
 
 				throw new Exception(log);
-				#endregion Log
+				#endregion
 			}
 		}
 		#endregion Public Methods
