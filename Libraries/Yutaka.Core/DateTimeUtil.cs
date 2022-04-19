@@ -17,15 +17,7 @@ namespace Yutaka.Core
 		/// <returns></returns>
 		public static DateTime GetShipDate()
 		{
-			// Ordering is important here. Don't re-order without realizing the repercussions //
-			if (Now < April1.AddDays(-14))
-				return April1;
-			if (Now < May1.AddDays(-14))
-				return May1;
-			if (Now < October1.AddDays(-14))
-				return October1;
-
-			return April1.AddYears(1);
+			return DateTime.Today.AddDays(30);
 		}
 
 		/// <summary>
