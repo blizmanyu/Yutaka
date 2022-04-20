@@ -42,6 +42,68 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
+		/// Checks if 2 files are different based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
+		/// </summary>
+		/// <param name="f1">File 1</param>
+		/// <param name="f2">File 2</param>
+		/// <returns></returns>
+		public static bool IsDifferent(FileInfo f1, FileInfo f2)
+		{
+			#region Check Input
+			var log = "";
+
+			if (f1 == null)
+				log = String.Format("{0}f1 is null.{1}", log, Environment.NewLine);
+			if (f2 == null)
+				log = String.Format("{0}f2 is null.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.IsDifferent(FileInfo f1, FileInfo f2).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			if (f1.Length != f2.Length)
+				return true;
+			if (f1.LastWriteTime != f2.LastWriteTime)
+				return true;
+
+			return false;
+		}
+
+		/// <summary>
+		/// Checks if 2 files are the same based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
+		/// </summary>
+		/// <param name="f1">File 1</param>
+		/// <param name="f2">File 2</param>
+		/// <returns></returns>
+		public static bool IsSame(FileInfo f1, FileInfo f2)
+		{
+			#region Check Input
+			var log = "";
+
+			if (f1 == null)
+				log = String.Format("{0}f1 is null.{1}", log, Environment.NewLine);
+			if (f2 == null)
+				log = String.Format("{0}f2 is null.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.IsSame(FileInfo f1, FileInfo f2).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			if (f1.Length != f2.Length)
+				return false;
+			if (f1.LastWriteTime != f2.LastWriteTime)
+				return false;
+
+			return true;
+		}
+
+		/// <summary>
 		/// Converts a flat file to a <see cref="DataTable"/>.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
