@@ -1014,22 +1014,6 @@ namespace Yutaka.IO
 			return IsSameDate(new FileInfo(path1), new FileInfo(path2));
 		}
 
-		public bool IsSameFile(FileInfo fi1, FileInfo fi2)
-		{
-			try {
-				return IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2);
-			}
-
-			catch (Exception) {
-				throw;
-			}
-		}
-
-		public bool IsSameFile(string path1, string path2)
-		{
-			return IsSameFile(new FileInfo(path1), new FileInfo(path2));
-		}
-
 		public bool IsSameSize(FileInfo fi1, FileInfo fi2)
 		{
 			try {
@@ -1217,6 +1201,24 @@ namespace Yutaka.IO
 		#endregion Enum
 
 		#region Deprecated
+		[Obsolete("Deprecated April 21, 2022. Use Yutaka.Core.IO.FileUtil.IsSame(FileInfo, FileInfo) instead.", true)]
+		public bool IsSameFile(FileInfo fi1, FileInfo fi2)
+		{
+			try {
+				return IsSameDate(fi1, fi2) && IsSameSize(fi1, fi2);
+			}
+
+			catch (Exception) {
+				throw;
+			}
+		}
+
+		[Obsolete("Deprecated April 21, 2022. Use Yutaka.Core.IO.FileUtil.IsSame(string, string) instead.", true)]
+		public bool IsSameFile(string path1, string path2)
+		{
+			return IsSameFile(new FileInfo(path1), new FileInfo(path2));
+		}
+
 		[Obsolete("Deprecated on May 13, 2019. Use IsStringInArray(string str, string[] array) instead.")]
 		public bool IsInIgnoreList(string str, string[] ignoreList)
 		{
