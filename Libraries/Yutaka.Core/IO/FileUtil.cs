@@ -104,6 +104,41 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
+		/// Checks if 2 files are the same based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
+		/// </summary>
+		/// <param name="filePath1">Path of file 1.</param>
+		/// <param name="filePath2">Path of file 2.</param>
+		/// <returns></returns>
+		public static bool IsSame(string filePath1, string filePath2)
+		{
+			#region Check Input
+			var log = "";
+
+			if (filePath1 == null)
+				log = String.Format("{0}filePath1 is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(filePath1))
+				log = String.Format("{0}filePath1 is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(filePath1))
+				log = String.Format("{0}filePath1 '{2}' doesn't exist.{1}", log, Environment.NewLine, filePath1);
+
+			if (filePath2 == null)
+				log = String.Format("{0}filePath2 is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(filePath2))
+				log = String.Format("{0}filePath2 is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(filePath2))
+				log = String.Format("{0}filePath2 '{2}' doesn't exist.{1}", log, Environment.NewLine, filePath2);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.IsSame(string filePath1, string filePath2).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			return IsSame(new FileInfo(filePath1), new FileInfo(filePath2));
+		}
+
+		/// <summary>
 		/// Converts a flat file to a <see cref="DataTable"/>.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
