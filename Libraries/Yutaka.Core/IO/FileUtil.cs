@@ -183,6 +183,81 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
+		/// Sets the LastWriteTime of a file.
+		/// </summary>
+		/// <param name="fi">The file.</param>
+		/// <param name="dt">The new datetime to set it as.</param>
+		public static void SetLastWriteTime(FileInfo fi, DateTime dt)
+		{
+			#region Check Input
+			var log = "";
+
+			if (fi == null)
+				log = String.Format("{0}fi is null.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.SetLastWriteTime(FileInfo fi, DateTime dt).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			try {
+				var isReadOnly = false;
+
+				if (fi.IsReadOnly) {
+					isReadOnly = true;
+					fi.IsReadOnly = false;
+					fi.Refresh();
+				}
+
+				fi.LastWriteTime = dt;
+
+				if (isReadOnly)
+					fi.IsReadOnly = true;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.SetLastWriteTime(FileInfo fi='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, fi, dt);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.SetLastWriteTime(FileInfo fi='{3}', DateTime dt='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, fi, dt);
+
+				Console.Write("\n{0}", log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
+		/// Sets the LastWriteTime of a file.
+		/// </summary>
+		/// <param name="filePath">The file path of the file.</param>
+		/// <param name="dt">The new datetime to set it as.</param>
+		public static void SetLastWriteTime(string filePath, DateTime dt)
+		{
+			#region Check Input
+			var log = "";
+
+			if (filePath == null)
+				log = String.Format("{0}filePath is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(filePath))
+				log = String.Format("{0}filePath is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(filePath))
+				log = String.Format("{0}filePath '{2}' doesn't exist.{1}", log, Environment.NewLine, filePath);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.SetLastWriteTime(string filePath, DateTime dt).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			SetLastWriteTime(new FileInfo(filePath), dt);
+		}
+
+		/// <summary>
 		/// Converts a flat file to a <see cref="DataTable"/>.
 		/// </summary>
 		/// <param name="filePath">The file path.</param>
