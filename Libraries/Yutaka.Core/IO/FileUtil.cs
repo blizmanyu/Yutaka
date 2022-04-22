@@ -106,6 +106,50 @@ namespace Yutaka.Core.IO
 		/// <summary>
 		/// Checks if 2 files are the same based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
 		/// </summary>
+		/// <param name="filePath">Path of file 1.</param>
+		/// <param name="obj">Object containing size and LastWriteTime of file 2.</param>
+		/// <returns></returns>
+		public static bool IsSame(string filePath, YuFile obj)
+		{
+			#region Check Input
+			var log = "";
+
+			if (filePath == null)
+				log = String.Format("{0}filePath is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(filePath))
+				log = String.Format("{0}filePath is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(filePath))
+				log = String.Format("{0}filePath '{2}' doesn't exist.{1}", log, Environment.NewLine, filePath);
+
+			if (obj == null)
+				log = String.Format("{0}obj is null.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.IsSame(string filePath, YuFile obj).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}\n");
+				throw new Exception(log);
+			}
+			#endregion
+
+			var fi = new FileInfo(filePath);
+
+			if (fi.Length != obj.Size) {
+				fi = null;
+				return false;
+			}
+
+			if (fi.LastWriteTime != obj.LastWriteTime) {
+				fi = null;
+				return false;
+			}
+
+			fi = null;
+			return true;
+		}
+
+		/// <summary>
+		/// Checks if 2 files are the same based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
+		/// </summary>
 		/// <param name="filePath1">Path of file 1.</param>
 		/// <param name="filePath2">Path of file 2.</param>
 		/// <returns></returns>
