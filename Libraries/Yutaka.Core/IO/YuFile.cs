@@ -144,6 +144,18 @@ namespace Yutaka.Core.IO
 				#endregion
 			}
 		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="YuFile"/> class. This constructor should only be used as a helper when you
+		/// want to compare size and LastWriteTime only. Not for actual file manipulation.
+		/// </summary>
+		/// <param name="size">Size of the file.</param>
+		/// <param name="lastWriteTime">Last write time of the file.</param>
+		public YuFile(long size, DateTime lastWriteTime)
+		{
+			Size = size;
+			LastWriteTime = lastWriteTime;
+		}
 		#endregion
 
 		#region Methods
