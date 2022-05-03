@@ -58,6 +58,7 @@
     <Compile Include="Domain\Common\Phone.cs" />
     <Compile Include="Domain\Common\PhoneUtil.cs" />
     <Compile Include="Drawing\DrawingUtil.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="IO\DirectoryUtil.cs" />
     <Compile Include="IO\FileUtil.cs" />
     <Compile Include="IO\WinDirStat.cs" />
