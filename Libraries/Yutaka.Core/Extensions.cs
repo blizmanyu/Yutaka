@@ -10,7 +10,7 @@ namespace Yutaka.Core
 		/// <param name="source">This <see cref="string"/>.</param>
 		/// <param name="toCheck">The <see cref="string"/> to look for.</param>
 		/// <returns></returns>
-		public static bool FastContains(this string source, string toCheck)
+		public static bool FastContainsIgnoreCase(this string source, string toCheck)
 		{
 			if (source == null)
 				return false;
