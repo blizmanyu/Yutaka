@@ -126,5 +126,55 @@ namespace Yutaka.Core.Drawing
 				#endregion
 			}
 		}
+
+		/// <summary>
+		/// Resizes an image by the width, conforming the height to the same aspect ratio.
+		/// </summary>
+		/// <param name="imagePath">The path to the image to resize.</param>
+		/// <param name="newWidth">The new width of the image.</param>
+		/// <returns></returns>
+		public static Bitmap ScaleImageByWidth(string imagePath, int newWidth)
+		{
+			#region Check Input
+			var log = "";
+
+			if (imagePath == null)
+				log = String.Format("{0}imagePath is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(imagePath))
+				log = String.Format("{0}imagePath is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(imagePath))
+				log = String.Format("{0}imagePath '{2}' doesn't exist.{1}", log, Environment.NewLine, imagePath);
+
+			if (newWidth < 1)
+				log = String.Format("{0}newWidth is less than 1.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in DrawingUtil.ScaleImageByWidth(string imagePath, int newWidth).{1}", log, Environment.NewLine);
+				throw new Exception(log);
+			}
+			#endregion Check Input
+
+			try {
+				using (var fileStream = new FileStream(imagePath, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+					using (var image = Image.FromStream(fileStream, false, false)) {
+						var ratio = (decimal) newWidth / image.Width;
+						var newHeight = Math.Round(image.Height * ratio, MidpointRounding.AwayFromZero);
+
+						return ResizeImage(image, newWidth, (int) newHeight);
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in DrawingUtil.ScaleImageByWidth(string imagePath='{3}', int newWidth='{4}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, imagePath, newWidth);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of DrawingUtil.ScaleImageByWidth(string imagePath='{3}', int newWidth='{4}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, imagePath, newWidth);
+
+				throw new Exception(log);
+				#endregion
+			}
+		}
 	}
 }
