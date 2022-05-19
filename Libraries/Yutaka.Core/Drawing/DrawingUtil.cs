@@ -81,12 +81,24 @@ namespace Yutaka.Core.Drawing
 		public static Bitmap ScaleImage(string imagePath, int maxWidth, int maxHeight)
 		{
 			#region Check Input
+			var log = "";
+
 			if (imagePath == null)
-				throw new ArgumentNullException("imagePath");
+				log = String.Format("{0}imagePath is null.{1}", log, Environment.NewLine);
 			else if (String.IsNullOrWhiteSpace(imagePath))
-				throw new ArgumentException("'imagePath' is empty or whitespace.", "imagePath");
-			if (!File.Exists(imagePath))
-				throw new FileNotFoundException("File not found.", imagePath);
+				log = String.Format("{0}imagePath is empty.{1}", log, Environment.NewLine);
+			else if (!File.Exists(imagePath))
+				log = String.Format("{0}imagePath '{2}' doesn't exist.{1}", log, Environment.NewLine, imagePath);
+
+			if (maxWidth < 1)
+				log = String.Format("{0}maxWidth is less than 1.{1}", log, Environment.NewLine);
+			if (maxHeight < 1)
+				log = String.Format("{0}maxHeight is less than 1.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in DrawingUtil.ScaleImage(string imagePath, int maxWidth, int maxHeight).{1}", log, Environment.NewLine);
+				throw new Exception(log);
+			}
 			#endregion Check Input
 
 			try {
@@ -104,10 +116,14 @@ namespace Yutaka.Core.Drawing
 			}
 
 			catch (Exception ex) {
+				#region Log
 				if (ex.InnerException == null)
-					throw new Exception(String.Format("{0}{2}Exception thrown in DrawingUtil.ScaleImage(string imagePath='{3}', int maxWidth='{4}', int maxHeight='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, imagePath, maxWidth, maxHeight));
+					log = String.Format("{0}{2}Exception thrown in DrawingUtil.ScaleImage(string imagePath='{3}', int maxWidth='{4}', int maxHeight='{5}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, imagePath, maxWidth, maxHeight);
 				else
-					throw new Exception(String.Format("{0}{2}Exception thrown in INNER EXCEPTION of DrawingUtil.ScaleImage(string imagePath='{3}', int maxWidth='{4}', int maxHeight='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, imagePath, maxWidth, maxHeight));
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of DrawingUtil.ScaleImage(string imagePath='{3}', int maxWidth='{4}', int maxHeight='{5}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, imagePath, maxWidth, maxHeight);
+
+				throw new Exception(log);
+				#endregion
 			}
 		}
 	}
