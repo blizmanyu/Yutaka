@@ -17,6 +17,22 @@ namespace Yutaka.Core.Drawing
 		/// <returns>The resized image.</returns>
 		public static Bitmap ResizeImage(Image image, int width, int height)
 		{
+			#region Check Input
+			var log = "";
+
+			if (image == null)
+				log = String.Format("{0}image is null.{1}", log, Environment.NewLine);
+			if (width < 1)
+				log = String.Format("{0}width is less than 1.{1}", log, Environment.NewLine);
+			if (height < 1)
+				log = String.Format("{0}height is less than 1.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in DrawingUtil.ResizeImage(Image image, int width, int height).{1}", log, Environment.NewLine);
+				throw new Exception(log);
+			}
+			#endregion
+
 			var destRect = new Rectangle(0, 0, width, height);
 			var destImage = new Bitmap(width, height);
 			destImage.SetResolution(image.HorizontalResolution, image.VerticalResolution);
