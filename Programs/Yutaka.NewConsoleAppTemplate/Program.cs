@@ -42,9 +42,9 @@ namespace Yutaka.NewConsoleAppTemplate
 			StartProgram();
 
 			try {
-				Method1();
-				Method2();
-				Method3();
+				Step1();
+				Step2();
+				Step3();
 			}
 
 			catch (Exception ex) {
@@ -68,10 +68,10 @@ namespace Yutaka.NewConsoleAppTemplate
 		}
 
 		#region Methods
-		private static void Method1()
+		private static void Step1()
 		{
 			#region Logging
-			logger.Trace("Begin method Method1().");
+			logger.Trace("Begin method Step1().");
 			#endregion
 
 			try {
@@ -79,7 +79,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 				++successCount;
 				#region Logging
-				logger.Trace("End method Method1().");
+				logger.Trace("End method Step1().");
 				#endregion
 			}
 
@@ -89,9 +89,9 @@ namespace Yutaka.NewConsoleAppTemplate
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in Method1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Method1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 
 				logger.Error(log);
 
@@ -101,10 +101,10 @@ namespace Yutaka.NewConsoleAppTemplate
 			}
 		}
 
-		private static void Method2()
+		private static void Step2()
 		{
 			#region Logging
-			logger.Trace("Begin method Method2().");
+			logger.Trace("Begin method Step2().");
 			#endregion
 
 			try {
@@ -112,7 +112,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 				++successCount;
 				#region Logging
-				logger.Trace("End method Method2().");
+				logger.Trace("End method Step2().");
 				#endregion
 			}
 
@@ -122,9 +122,9 @@ namespace Yutaka.NewConsoleAppTemplate
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in Method2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in Step2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Method2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 
 				logger.Error(log);
 
@@ -134,10 +134,10 @@ namespace Yutaka.NewConsoleAppTemplate
 			}
 		}
 
-		private static void Method3()
+		private static void Step3()
 		{
 			#region Logging
-			logger.Trace("Begin method Method3().");
+			logger.Trace("Begin method Step3().");
 			#endregion
 
 			try {
@@ -145,7 +145,7 @@ namespace Yutaka.NewConsoleAppTemplate
 
 				++successCount;
 				#region Logging
-				logger.Trace("End method Method3().");
+				logger.Trace("End method Step3().");
 				#endregion
 			}
 
@@ -155,9 +155,9 @@ namespace Yutaka.NewConsoleAppTemplate
 				string log;
 
 				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in Method3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in Step3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Method3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 
 				logger.Error(log);
 
