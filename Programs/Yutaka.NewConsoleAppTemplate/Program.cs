@@ -70,17 +70,12 @@ namespace Yutaka.NewConsoleAppTemplate
 		#region Methods
 		private static void Step1()
 		{
-			#region Logging
 			logger.Trace("Begin method Step1().");
-			#endregion
 
 			try {
 				// TODO: Add logic here //
 
 				++successCount;
-				#region Logging
-				logger.Trace("End method Step1().");
-				#endregion
 			}
 
 			catch (Exception ex) {
@@ -99,21 +94,18 @@ namespace Yutaka.NewConsoleAppTemplate
 					Console.Write("\n{0}", log);
 				#endregion
 			}
+
+			logger.Trace("End method Step1().{0}", Environment.NewLine);
 		}
 
 		private static void Step2()
 		{
-			#region Logging
 			logger.Trace("Begin method Step2().");
-			#endregion
 
 			try {
 				// TODO: Add logic here //
 
 				++successCount;
-				#region Logging
-				logger.Trace("End method Step2().");
-				#endregion
 			}
 
 			catch (Exception ex) {
@@ -132,21 +124,18 @@ namespace Yutaka.NewConsoleAppTemplate
 					Console.Write("\n{0}", log);
 				#endregion
 			}
+
+			logger.Trace("End method Step2().{0}", Environment.NewLine);
 		}
 
 		private static void Step3()
 		{
-			#region Logging
 			logger.Trace("Begin method Step3().");
-			#endregion
 
 			try {
 				// TODO: Add logic here //
 
 				++successCount;
-				#region Logging
-				logger.Trace("End method Step3().");
-				#endregion
 			}
 
 			catch (Exception ex) {
@@ -165,6 +154,8 @@ namespace Yutaka.NewConsoleAppTemplate
 					Console.Write("\n{0}", log);
 				#endregion
 			}
+
+			logger.Trace("End method Step3().{0}", Environment.NewLine);
 		}
 
 		#region StartProgram & EndProgram
