@@ -64,7 +64,7 @@ namespace Yutaka.NewConsoleAppTemplate
 				#endregion
 			}
 
-			EndProgram();
+			EndProgram(0);
 		}
 
 		#region Methods
@@ -190,7 +190,11 @@ namespace Yutaka.NewConsoleAppTemplate
 			}
 		}
 
-		private static void EndProgram()
+		/// <summary>
+		/// Ends the program and returns an exit code to the operating system.
+		/// </summary>
+		/// <param name="exitCode">The exit code to return to the operating system. Use 0 (zero) to indicate that the process completed successfully.</param>
+		private static void EndProgram(int exitCode)
 		{
 			var endTime = DateTime.UtcNow;
 			var ts = endTime - startTime;
@@ -237,7 +241,8 @@ namespace Yutaka.NewConsoleAppTemplate
 				Console.ReadKey(true);
 			}
 
-			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
+			if (exitCode != 0)
+				Environment.Exit(exitCode);
 		}
 		#endregion
 		#endregion
