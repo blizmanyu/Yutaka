@@ -35,15 +35,15 @@ namespace Yutaka.NewConsoleAppTemplate
 		private static int successCount = 0;
 		private static int totalCount = 0;
 		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
+		private static List<object> Step1Failed = new List<object>();
+		private static List<object> Step1Skipped = new List<object>();
 		private static List<object> Step1Success = new List<object>();
-		private static List<object> Step1Skip = new List<object>();
-		private static List<object> Step1Error = new List<object>();
+		private static List<object> Step2Failed = new List<object>();
+		private static List<object> Step2Skipped = new List<object>();
 		private static List<object> Step2Success = new List<object>();
-		private static List<object> Step2Skip = new List<object>();
-		private static List<object> Step2Error = new List<object>();
+		private static List<object> Step3Failed = new List<object>();
+		private static List<object> Step3Skipped = new List<object>();
 		private static List<object> Step3Success = new List<object>();
-		private static List<object> Step3Skip = new List<object>();
-		private static List<object> Step3Error = new List<object>();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
 
