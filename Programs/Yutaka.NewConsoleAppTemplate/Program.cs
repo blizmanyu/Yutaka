@@ -80,29 +80,55 @@ namespace Yutaka.NewConsoleAppTemplate
 		#region Methods
 		private static void Step1()
 		{
+			#region Trace then Check Input
 			logger.Trace("Begin method Step1().");
+			var log = "";
 
-			try {
-				// TODO: Add logic here //
+			// Example only //
+			//if (str == null)
+			//	log = String.Format("{0}'str' is null.{1}", log, Environment.NewLine);
+			//else if (String.IsNullOrWhiteSpace(str))
+			//	log = String.Format("{0}'str' is empty.{1}", log, Environment.NewLine);
+			//else
+			//	str = str.Trim();
 
-				++successCount;
-			}
-
-			catch (Exception ex) {
-				++errorCount;
-				#region Logging
-				string log;
-
-				if (ex.InnerException == null)
-					log = String.Format("{0}{2}Exception thrown in Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-				else
-					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in Step1().{1}{1}", log, Environment.NewLine);
 				logger.Error(log);
 
 				if (consoleOut)
 					Console.Write("\n{0}", log);
-				#endregion
+
+				return;
+			}
+			#endregion
+
+			var list = new List<object>();
+
+			foreach (var item in list) {
+				try {
+					if (item != item) {
+						Step1Skipped.Add(item);
+						continue;
+					}
+
+					Step1Success.Add(item);
+				}
+
+				catch (Exception ex) {
+					Step1Failed.Add(item);
+					#region Logging
+					if (ex.InnerException == null)
+						log = String.Format("{0}{2}Exception thrown in Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+					else
+						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+
+					logger.Error(log);
+
+					if (consoleOut)
+						Console.Write("\n{0}", log);
+					#endregion
+				}
 			}
 
 			logger.Trace("End method Step1().{0}", Environment.NewLine);
