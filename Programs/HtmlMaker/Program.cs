@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using NLog;
 using Yutaka.Core.Net;
+using Yutaka.IO;
 
 namespace HtmlMaker
 {
@@ -27,6 +30,7 @@ namespace HtmlMaker
 		private const double errorPercentThreshold = 0.07;
 		private const int errorCountThreshold = 7;
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
+		private const string CSS_RESET = "*{margin:0;outline:none;padding:0;text-decoration:none}*,:before,:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}html{margin:0;-webkit-text-size-adjust:none}ol,ul{list-style:none}a img{border:none}a:active{outline:none}input[type='button']::-moz-focus-inner,input[type='submit']::-moz-focus-inner,input[type='reset']::-moz-focus-inner,input[type='file'] > input[type='button']::-moz-focus-inner{margin:0;border:0;padding:0}input[type='button'],input[type='submit'],input[type='reset'],input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea{border-radius:0}input[type='button'],input[type='submit'],input[type='reset']{-webkit-appearance:none}input:-webkit-autofill{-webkit-box-shadow:inset 0 0 0 1000px #fff}script{display:none!important}";
 		private static readonly DateTime startTime = DateTime.UtcNow;
 
 		private static int errorCount = 0;
@@ -34,6 +38,7 @@ namespace HtmlMaker
 		private static int skippedCount = 0;
 		private static int successCount = 0;
 		private static int totalCount = 0;
+		private static FileUtil _fileUtil = new FileUtil();
 		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
 		private static List<object> Step1Failed = new List<object>();
 		private static List<object> Step1Skipped = new List<object>();
@@ -47,12 +52,35 @@ namespace HtmlMaker
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
 
+		#region Utilities
+		private static string GetHtmlGeneral()
+		{
+			return String.Format(
+				"\t/** HTML General **/{0}" +
+				"\tbody{{max-width:100%;overflow-x:hidden;background-color:#000;font:normal 1rem/1.5 Arial,Helvetica,sans-serif;color:#ccc}}{0}" +
+				"\tb,h1,h2,h3,h4,h5,h6,strong{{color:#fff}}{0}" +
+				"\ta{{color:inherit;cursor:pointer}}{0}" +
+				"\ta:hover{{color:#fff;text-decoration:underline}}{0}" +
+				"\ta img{{opacity:.99}}{0}" +
+				"\timg{{max-width:100%;height:auto}}{0}" +
+				"\ttable{{width:100%;border-collapse:collapse}}{0}" +
+				"\tinput[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea,select{{height:2.5rem;border:1px solid #ddd;padding:8px;vertical-align:middle}}{0}" +
+				"\tinput,textarea,select{{font-size:1.25rem;font-family:Arial,Helvetica,sans-serif;color:#777}}{0}" +
+				"\ttextarea{{min-height:150px}}{0}" +
+				"\tselect{{min-width:50px;height:2.5rem;padding:6px}}{0}" +
+				"\tinput[type='tel']:focus,input[type='text']:focus,input[type='email']:focus,input[type='password']:focus,textarea:focus,select:focus{{border-color:#ccc;color:#444}}{0}" +
+				"\tinput[type='checkbox'],input[type='radio'],input[type='checkbox'] + *,input[type='radio'] + *{{vertical-align:middle}}{0}" +
+				"\tinput[type='button'],input[type='submit'],button,.button-1,.button-2{{cursor:pointer}}{0}" +
+				"\tlabel,label + *{{vertical-align:middle}}", Environment.NewLine);
+		}
+		#endregion
+
 		static void Main(string[] args)
 		{
 			StartProgram();
 
 			try {
-				Step1();
+				Step1(@"ASDFG\");
 				Step2();
 				Step3();
 			}
@@ -78,22 +106,23 @@ namespace HtmlMaker
 		}
 
 		#region Methods
-		private static void Step1()
+		private static void Step1(string root)
 		{
 			#region Trace then Check Input
-			logger.Trace("Begin method Step1().");
+			logger.Trace("Begin method Step1(string root).");
 			var log = "";
 
-			// Example only //
-			//if (str == null)
-			//	log = String.Format("{0}'str' is null.{1}", log, Environment.NewLine);
-			//else if (String.IsNullOrWhiteSpace(str))
-			//	log = String.Format("{0}'str' is empty.{1}", log, Environment.NewLine);
-			//else
-			//	str = str.Trim();
+			if (root == null)
+				log = String.Format("{0}'root' is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(root))
+				log = String.Format("{0}'root' is empty.{1}", log, Environment.NewLine);
+			else if (!Directory.Exists(root))
+				log = String.Format("{0}Directory '{2}' doesn't exist.{1}", log, Environment.NewLine, root);
+			else
+				root = root.Trim();
 
 			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in Step1().{1}{1}", log, Environment.NewLine);
+				log = String.Format("{0}Exception thrown in Step1(string root).{1}{1}", log, Environment.NewLine);
 				logger.Error(log);
 
 				if (consoleOut)
@@ -103,25 +132,29 @@ namespace HtmlMaker
 			}
 			#endregion
 
-			var list = new List<object>();
+			var html = "";
+			html = String.Format("{0}<style>{1}", html, Environment.NewLine);
+			html = String.Format("{0}\t/** CSS RESET **/{1}", html, Environment.NewLine);
+			html = String.Format("{0}\t{2}{1}", html, Environment.NewLine, CSS_RESET);
+			html = String.Format("{0}{1}", html, Environment.NewLine);
+			html = String.Format("{0}{2}{1}", html, Environment.NewLine, GetHtmlGeneral());
+			html = String.Format("{0}</style>{1}", html, Environment.NewLine);
+			html = String.Format("{0}<body>{1}", html, Environment.NewLine);
+			html = String.Format("{0}\t<div style='margin:1rem auto;padding:1rem'>{1}", html, Environment.NewLine);
 
-			foreach (var item in list) {
+			foreach (var dir in Directory.EnumerateDirectories(root)) {
 				try {
-					if (item != item) {
-						Step1Skipped.Add(item);
-						continue;
-					}
-
-					Step1Success.Add(item);
+					html = String.Format("{0}\t\t<div><a href='{3}'>{2}</a></div>{1}", html, Environment.NewLine, dir, dir.Replace(root, ""));
+					Step1Success.Add(dir);
 				}
 
 				catch (Exception ex) {
-					Step1Failed.Add(item);
+					Step1Failed.Add(dir);
 					#region Logging
 					if (ex.InnerException == null)
-						log = String.Format("{0}{2}Exception thrown in Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+						log = String.Format("{0}{2}Exception thrown in Step1(string root).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 					else
-						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1(string root).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
 
 					logger.Error(log);
 
@@ -131,7 +164,15 @@ namespace HtmlMaker
 				}
 			}
 
-			logger.Trace("End method Step1().{0}", Environment.NewLine);
+			html = String.Format("{0}\t</div>{1}", html, Environment.NewLine);
+			html = String.Format("{0}</body>{1}", html, Environment.NewLine);
+			var newPath = String.Format("{0}__.html", root);
+
+			if (File.Exists(newPath))
+				File.Delete(newPath);
+
+			_fileUtil.Write(html, newPath, false, Encoding.Unicode);
+			logger.Trace("End method Step1(string root).{0}", Environment.NewLine);
 		}
 
 		private static void Step2()
