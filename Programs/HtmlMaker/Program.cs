@@ -12,6 +12,7 @@ namespace HtmlMaker
 	class Program
 	{
 		private const string ProgramName = "HtmlMaker";
+		private const string SOURCE = @"ASDFG\";
 		private static readonly bool consoleOut = true; // true/false
 		private static readonly string GmailPassword = "PASSWORD";
 		private static readonly string GmailUsername = "USERNAME";
@@ -80,7 +81,7 @@ namespace HtmlMaker
 			StartProgram();
 
 			try {
-				Step1(@"ASDFG\");
+				Step1(SOURCE);
 				Step2();
 				Step3();
 			}
@@ -133,6 +134,7 @@ namespace HtmlMaker
 			#endregion
 
 			var html = "";
+			html = String.Format("{0}<meta name='viewport' content='width=device-width, initial-scale=1'>{1}", html, Environment.NewLine);
 			html = String.Format("{0}<style>{1}", html, Environment.NewLine);
 			html = String.Format("{0}\t/** CSS RESET **/{1}", html, Environment.NewLine);
 			html = String.Format("{0}\t{2}{1}", html, Environment.NewLine, CSS_RESET);
