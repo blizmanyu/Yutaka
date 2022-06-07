@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -11,11 +10,11 @@ namespace Yutaka.Core.IO
 	{
 		#region Fields
 		private static readonly string[] _sizes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
-		#region public static readonly HashSet<string> ImageExtensions & VideoExtensions
-		public static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+		#region public static readonly string[] ImageExtensions & VideoExtensions
+		public static readonly string[] ImageExtensions = new string[] {
 			".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff", ".webp",
 		};
-		public static readonly HashSet<string> VideoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+		public static readonly string[] VideoExtensions = new string[] {
 			".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv",
 		};
 		#endregion
