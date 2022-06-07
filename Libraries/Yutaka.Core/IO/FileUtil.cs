@@ -10,9 +10,12 @@ namespace Yutaka.Core.IO
 	public static class FileUtil
 	{
 		private static readonly string[] _sizes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
-		#region public static readonly HashSet<string> ImageExtensions
+		#region public static readonly HashSet<string> ImageExtensions & VideoExtensions
 		public static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
 			".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff", ".webp",
+		};
+		public static readonly HashSet<string> VideoExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
+			".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv",
 		};
 		#endregion
 
