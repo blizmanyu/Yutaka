@@ -388,7 +388,7 @@ namespace Yutaka.Core.IO
 		/// </summary>
 		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
 		/// <returns></returns>
-		[Obsolete("Deprecated June 7, 2022. Use FastDelete(string) instead.", false)]
+		[Obsolete("Deprecated June 7, 2022. Use FastDelete(string) instead.", true)]
 		public static int TryDelete(string path)
 		{
 			return FastDelete(path);
