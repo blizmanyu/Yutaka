@@ -256,6 +256,24 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
+		/// Determines if a file is an video file or not.
+		/// </summary>
+		/// <param name="path">The file path or name.</param>
+		/// <returns></returns>
+		public static bool IsVideoFile(string path)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				return false;
+
+			foreach (var ext in VideoExtensions) {
+				if (path.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
+					return true;
+			}
+
+			return false;
+		}
+
+		/// <summary>
 		/// Sets the LastWriteTime of a file.
 		/// </summary>
 		/// <param name="fi">The file.</param>
