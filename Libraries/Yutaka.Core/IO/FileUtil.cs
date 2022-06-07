@@ -9,6 +9,7 @@ namespace Yutaka.Core.IO
 {
 	public static class FileUtil
 	{
+		#region Fields
 		private static readonly string[] _sizes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 		#region public static readonly HashSet<string> ImageExtensions & VideoExtensions
 		public static readonly HashSet<string> ImageExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) {
@@ -18,7 +19,9 @@ namespace Yutaka.Core.IO
 			".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv",
 		};
 		#endregion
+		#endregion
 
+		#region Methods
 		[DllImport("kernel32.dll", SetLastError = true)]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		static extern bool DeleteFile(string lpFileName);
@@ -363,5 +366,6 @@ namespace Yutaka.Core.IO
 				return 0;
 			}
 		}
+		#endregion
 	}
 }
