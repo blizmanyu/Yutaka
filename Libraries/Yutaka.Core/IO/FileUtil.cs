@@ -128,6 +128,19 @@ namespace Yutaka.Core.IO
 			return false;
 		}
 
+		public static bool IsImageFile(string path)
+		{
+			if (String.IsNullOrWhiteSpace(path))
+				return false;
+			
+			foreach (var ext in ImageExtensions) {
+				if (path.EndsWith(ext, StringComparison.OrdinalIgnoreCase))
+					return true;
+			}
+
+			return false;
+		}
+
 		/// <summary>
 		/// Checks if 2 files are the same based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
 		/// </summary>
