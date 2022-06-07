@@ -22,10 +22,6 @@ namespace Yutaka.Core.IO
 		#endregion
 
 		#region Methods
-		[DllImport("kernel32.dll", SetLastError = true)]
-		[return: MarshalAs(UnmanagedType.Bool)]
-		static extern bool DeleteFile(string lpFileName);
-
 		/// <summary>
 		/// Dumps the contents of a <see cref="DataTable"/> to console.
 		/// </summary>
@@ -52,6 +48,54 @@ namespace Yutaka.Core.IO
 				}
 			}
 		}
+
+		#region Delete
+		[DllImport("kernel32.dll", SetLastError = true)]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		static extern bool DeleteFile(string lpFileName);
+
+		/// <summary>
+		/// Deletes the specified file faster than File.Delete().
+		/// </summary>
+		/// <param name="path">The name of the file to be deleted. Wildcard characters are not supported.</param>
+		/// <returns></returns>
+		public static int FastDelete(string path)
+		{
+			#region Check Input
+			var log = "";
+
+			if (path == null)
+				log = String.Format("{0}path is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}path is empty.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				log = String.Format("{0}Exception thrown in FileUtil.FastDelete(string path).{1}", log, Environment.NewLine);
+				Console.Write("\n{0}", log);
+				return 0;
+			}
+			#endregion
+
+			try {
+				if (DeleteFile(path))
+					return 1;
+
+				return 0;
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.FastDelete(string path='{3}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, path);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.FastDelete(string path='{3}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, path);
+
+				Console.Write("\n{0}", log);
+				#endregion
+				return 0;
+			}
+		}
+		#endregion
 
 		/// <summary>
 		/// Checks if 2 files are different based on file Length and LastWriteTime only. Does not check filenames, checksums, CRC, or anything else.
