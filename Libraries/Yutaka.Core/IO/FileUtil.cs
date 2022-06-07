@@ -127,6 +127,11 @@ namespace Yutaka.Core.IO
 			return false;
 		}
 
+		/// <summary>
+		/// Determines if a file is an image file or not.
+		/// </summary>
+		/// <param name="path">The file path or name.</param>
+		/// <returns></returns>
 		public static bool IsImageFile(string path)
 		{
 			if (String.IsNullOrWhiteSpace(path))
