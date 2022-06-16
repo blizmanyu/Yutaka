@@ -418,6 +418,19 @@ namespace Yutaka.Core.IO
 		}
 
 		/// <summary>
+		/// Writes the text representation of an object to the specified file on the specified path, using the default encoding.
+		/// If the file exists, it can be either overwritten or appended to. If the file does not exist, this method creates a new file.
+		/// </summary>
+		/// <param name="value">The object to write.</param>
+		/// <param name="path">The complete file path to write to.</param>
+		/// <param name="append">true to append data to the file; false to overwrite the file. If the specified
+		/// file does not exist, this parameter has no effect, and the constructor creates a new file.</param>
+		public static void Write(object value, string path, bool append)
+		{
+			Write(value, path, append, Encoding.Default);
+		}
+
+		/// <summary>
 		/// Writes the text representation of an object to the specified file on the specified path, using the specified encoding.
 		/// If the file exists, it can be either overwritten or appended to. If the file does not exist, this method creates a new file.
 		/// </summary>
