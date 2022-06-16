@@ -9,15 +9,14 @@ namespace Yutaka.Core.IO
 	public static class FileUtil
 	{
 		#region Fields
+		private const int BUFFER_SIZE = 65536;
 		private static readonly string[] _sizes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
-		#region public static readonly string[] ImageExtensions & VideoExtensions
 		public static readonly string[] ImageExtensions = new string[] {
 			".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff", ".webp",
 		};
 		public static readonly string[] VideoExtensions = new string[] {
 			".3gp", ".avi", ".flv", ".m4v", ".mkv", ".mpg", ".mpeg", ".mp4", ".ogv", ".mov", ".webm", ".wmv",
 		};
-		#endregion
 		#endregion
 
 		#region Methods
