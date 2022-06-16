@@ -54,6 +54,16 @@ namespace HtmlMaker
 		#endregion
 
 		#region Utilities
+		//private static string EnumerateFilesToHtml(string path)
+		//{
+		//	var videos = "<div style='margin:1rem auto;'>";
+		//	var images = "<div style='margin:1rem auto;'>";
+
+		//	foreach (var file in path) {
+		//		if (Yutaka.Core.IO.FileUtil.is)
+		//	}
+		//}
+
 		private static string GetHtmlGeneral()
 		{
 			return String.Format(
@@ -168,6 +178,12 @@ namespace HtmlMaker
 
 			html = String.Format("{0}\t</div>{1}", html, Environment.NewLine);
 			html = String.Format("{0}</body>{1}", html, Environment.NewLine);
+
+
+
+
+
+
 			var newPath = String.Format("{0}__.html", root);
 
 			if (File.Exists(newPath))
