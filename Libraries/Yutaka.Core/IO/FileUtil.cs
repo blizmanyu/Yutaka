@@ -2,6 +2,7 @@
 using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Text;
 using Microsoft.VisualBasic.FileIO;
 
 namespace Yutaka.Core.IO
@@ -9,7 +10,7 @@ namespace Yutaka.Core.IO
 	public static class FileUtil
 	{
 		#region Fields
-		private const int BUFFER_SIZE = 65536;
+		private const int BUFFER_SIZE = 65536; // 64KB
 		private static readonly string[] _sizes = { "bytes", "KB", "MB", "GB", "TB", "PB", "EB" };
 		public static readonly string[] ImageExtensions = new string[] {
 			".ai", ".bmp", ".eps", ".gif", ".ico", ".jpg", ".jpeg", ".png", ".psd", ".tiff", ".webp",
@@ -414,6 +415,56 @@ namespace Yutaka.Core.IO
 			}
 
 			return dt;
+		}
+
+		/// <summary>
+		/// Writes the text representation of an object to the specified file on the specified path, using the specified encoding.
+		/// If the file exists, it can be either overwritten or appended to. If the file does not exist, this method creates a new file.
+		/// </summary>
+		/// <param name="value">The object to write.</param>
+		/// <param name="path">The complete file path to write to.</param>
+		/// <param name="append">true to append data to the file; false to overwrite the file. If the specified
+		/// file does not exist, this parameter has no effect, and the constructor creates a new file.</param>
+		/// <param name="encoding">The character encoding to use.</param>
+		public static void Write(object value, string path, bool append, Encoding encoding)
+		{
+			#region Input Check
+			var log = "";
+
+			if (value == null)
+				log = String.Format("{0}value is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrEmpty(value.ToString()))
+				log = String.Format("{0}value is empty.{1}", log, Environment.NewLine);
+
+			if (path == null)
+				log = String.Format("{0}path is null.{1}", log, Environment.NewLine);
+			else if (String.IsNullOrWhiteSpace(path))
+				log = String.Format("{0}path is empty.{1}", log, Environment.NewLine);
+
+			if (encoding == null)
+				encoding = Encoding.Default;
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				return;
+			}
+			#endregion
+
+			try {
+				using (var sw = new StreamWriter(path, append, encoding, BUFFER_SIZE))
+					sw.Write(value);
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileUtil.Write(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}').{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine, value, path, append, encoding);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileUtil.Write(object value='{3}', string path='{4}', bool append='{5}', Encoding encoding='{6}').{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, value, path, append, encoding);
+
+				Console.Write("\n{0}", log);
+				#endregion
+			}
 		}
 
 		#region Deprecated
