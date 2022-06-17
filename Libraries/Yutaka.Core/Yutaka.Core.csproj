@@ -57,6 +57,7 @@
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Domain\Common\Phone.cs" />
     <Compile Include="Domain\Common\PhoneUtil.cs" />
+    <Compile Include="Domain\Security\SecurityUtil.cs" />
     <Compile Include="Domain\Security\Base36.cs" />
     <Compile Include="Drawing\DrawingUtil.cs" />
     <Compile Include="Extensions.cs" />
