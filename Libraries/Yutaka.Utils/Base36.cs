@@ -64,6 +64,28 @@ namespace Yutaka.Utils
 			return sb.ToString();
 		}
 
+		public static string EncodeIP(string ip, bool lowerCase = true)
+		{
+			if (String.IsNullOrWhiteSpace(ip))
+				return "";
+
+			var sb = new StringBuilder();
+			var split = ip.Split('.');
+
+			for (int i = 0; i < split.Length; i++)
+				sb.Append(split[i].PadLeft(3, '0'));
+
+			return Encode(long.Parse(sb.ToString()), lowerCase);
+		}
+
+		#region Deprecated
+		/// <summary>
+		/// Deprecated on Jun 15, 2022. Use Yutaka.Core.Domain.Security.Base36.Encode(long input) instead.
+		/// </summary>
+		/// <param name="input"></param>
+		/// <param name="lowerCase"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated on Jun 15, 2022. Use Yutaka.Core.Domain.Security.Base36.Encode(long input) instead.", false)]
 		public static string Encode(long input, bool lowerCase = true)
 		{
 			if (input < 0)
@@ -86,21 +108,6 @@ namespace Yutaka.Utils
 			return new string(result.ToArray());
 		}
 
-		public static string EncodeIP(string ip, bool lowerCase = true)
-		{
-			if (String.IsNullOrWhiteSpace(ip))
-				return "";
-
-			var sb = new StringBuilder();
-			var split = ip.Split('.');
-
-			for (int i = 0; i < split.Length; i++)
-				sb.Append(split[i].PadLeft(3, '0'));
-
-			return Encode(long.Parse(sb.ToString()), lowerCase);
-		}
-
-		#region Deprecated
 		/// <summary>
 		/// Deprecated on Jun 15, 2022. Use Yutaka.Core.Domain.Security.SecurityUtil.Encode(DateTime dt) instead.
 		/// </summary>
