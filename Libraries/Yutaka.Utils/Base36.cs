@@ -64,14 +64,6 @@ namespace Yutaka.Utils
 			return sb.ToString();
 		}
 
-		public static string Encode(DateTime? dt = null, bool lowerCase = true)
-		{
-			if (dt == null)
-				dt = DateTime.UtcNow;
-
-			return Encode(long.Parse(dt.Value.ToString("yyyyMMddHHmmssfff")), lowerCase);
-		}
-
 		public static string Encode(long input, bool lowerCase = true)
 		{
 			if (input < 0)
@@ -109,6 +101,21 @@ namespace Yutaka.Utils
 		}
 
 		#region Deprecated
+		/// <summary>
+		/// Deprecated on Jun 15, 2022. Use Yutaka.Core.Domain.Security.SecurityUtil.Encode(DateTime dt) instead.
+		/// </summary>
+		/// <param name="dt">The <see cref="DateTime"/> to use.</param>
+		/// <param name="lowerCase"></param>
+		/// <returns></returns>
+		[Obsolete("Deprecated on Jun 15, 2022. Use Yutaka.Core.Domain.Security.SecurityUtil.Encode(DateTime dt) instead.", true)]
+		public static string Encode(DateTime? dt = null, bool lowerCase = true)
+		{
+			if (dt == null)
+				dt = DateTime.UtcNow;
+
+			return Encode(long.Parse(dt.Value.ToString("yyyyMMddHHmmssfff")), lowerCase);
+		}
+
 		[Obsolete("Deprecated on Sep 30, 2019. Use Encode(DateTime? dt = null, bool lowerCase = true) instead.")]
 		public static string GetUniqueId(DateTime? time = null)
 		{
