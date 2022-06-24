@@ -45,11 +45,9 @@ namespace Yutaka.Core.Tests
 			string log;
 
 			try {
-				#region Core.Domain.Common Tests
-				Test_PhoneUtil_Beautify();
+				Test_GetSystemTimeZones();
 				//Test_PhoneUtil_Minify();
 				//Test_PhoneUtil_Split();
-				#endregion Core.Domain.Common Tests
 			}
 
 			catch (Exception ex) {
@@ -69,6 +67,36 @@ namespace Yutaka.Core.Tests
 
 			EndProgram();
 		}
+
+		#region General
+		private static void Test_GetSystemTimeZones()
+		{
+			Console.WriteLine();
+
+			foreach (var v in TimeZoneInfo.GetSystemTimeZones())
+				Console.Write("\n{0}", v.Id);
+
+			Console.WriteLine();
+		}
+
+		private static void Test_DateTimeUtil_ToTemplate()
+		{
+			var dateTimeUtil = new DateTimeUtil();
+			DateTime[] tests = {
+				DateTime.Now,
+				DateTime.Now.AddDays(-1),
+				DateTime.Now.AddMonths(-1),
+				DateTime.Now.AddYears(-1),
+			};
+
+			foreach (var test in tests) {
+				Console.Write("\n");
+				Console.Write("\n{0,2}) '{1}'", ++totalCount, test);
+				Console.Write("\n{0}", DateTimeUtil.ToTemplate(test));
+				Console.Write("\n");
+			}
+		}
+		#endregion
 
 		#region Core.Domain.Common Tests
 		private static void Test_PhoneUtil_Beautify()
