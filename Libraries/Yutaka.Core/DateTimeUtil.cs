@@ -71,5 +71,26 @@ namespace Yutaka.Core
 
 			return String.Format("{0:M/d/yy, h:mm tt}", dt); // 1/1/21, 1:01 PM
 		}
+
+		/// <summary>
+		/// Converts a <see cref="DateTime"/> to an HTML span snippet.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns></returns>
+		public static string ToTemplate(DateTime dt)
+		{
+			var today = DateTime.Today;
+
+			if (dt.Date == today)
+				return String.Format("<span title='Today, {0:MMM d, h:mm tt}'>{0:h:mm tt}</span>", dt);
+
+			if (dt.Date == today.AddDays(-1))
+				return String.Format("<span title='Yesterday, {0:MMM d, h:mm tt}'>{0:MMM d}</span>", dt);
+
+			if (dt.Year == today.Year)
+				return String.Format("<span title='{0:MMM d, h:mm tt}'>{0:MMM d}</span>", dt);
+
+			return String.Format("<span title='{0:MMM d, yyyy h:mm tt}'>{0:M/d/yy}</span>", dt);
+		}
 	}
 }
