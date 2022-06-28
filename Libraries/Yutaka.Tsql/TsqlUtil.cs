@@ -254,7 +254,7 @@ namespace Yutaka.Data
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- VIEWS");
 			sb.AppendLine("-- =============================================");
-			sb.Append(ScriptCreateViewEdit(columns));
+			sb.Append(ScriptCreateView(columns));
 			sb.Append(ScriptCreateViewList(columns));
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- STORED PROCEDURES");
@@ -557,7 +557,7 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptCreateViewEdit(IList<Column> columns)
+		public string ScriptCreateView(IList<Column> columns)
 		{
 			var script = new StringBuilder(ScriptCreateViewTemplate());
 
@@ -578,7 +578,7 @@ namespace Yutaka.Data
 					table = col.TableName;
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
 					script = script.Replace("_SCHEMA_", schema);
-					script = script.Replace("_VIEW_NAME_", String.Format("{0}Edit", table));
+					script = script.Replace("_VIEW_NAME_", String.Format("{0}View", table));
 					isFirstCol = false;
 				}
 
