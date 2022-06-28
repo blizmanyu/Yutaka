@@ -22,6 +22,11 @@ namespace CodeGenerator
 		const string PROGRAM_NAME = "CodeGenerator";
 		private static readonly bool consoleOut = true; // default = false //
 		private static bool dumpToConsole = false; // default = false //
+		private static readonly string DestFolder = @"C:\TEMP\";
+		private static string ConnectionString = "";
+		private static string Database = "";
+		private static string Schema = "";
+		private static string Table = "";
 
 		#region Fields
 		#region Static Externs
@@ -36,14 +41,9 @@ namespace CodeGenerator
 		private static readonly DateTime startTime = DateTime.Now;
 		private static readonly double errorPerThreshold = 0.07;
 		private static readonly int errorCountThreshold = 7;
-		private static readonly string DestFolder = @"C:\TEMP\";
 
 		private static int errorCount = 0;
 		private static int totalCount = 0;
-		private static string ConnectionString = "";
-		private static string Database = "";
-		private static string Schema = "";
-		private static string Table = "";
 		private static List<Column> Columns = new List<Column>();
 		private static FileUtil _fileUtil = new FileUtil();
 		private static Scripter _scripter = new Scripter();
@@ -121,11 +121,7 @@ namespace CodeGenerator
 		{
 			dumpToConsole = false;
 
-			var destFolder = @"C:\TEMP\";
-			ConnectionString = "asdfg";
-			Database = "asdfg";
-
-			var dest = Path.Combine(destFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", Database, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_scripter.ScriptAll(Columns), String.Format("{0}cs", dest));
@@ -133,15 +129,9 @@ namespace CodeGenerator
 
 		private static void ScriptTables()
 		{
-			var destFolder = @"C:\TEMP\";
-			ConnectionString = "asdfg";
-			Database = "asdfg";
-			Schema = null;
-			Table = null;
-
 			dumpToConsole = false;
 			var filename = String.Format("{0}{1}{2}", Database, Schema == null ? "" : String.Format(".{0}", Schema), Table == null ? "" : String.Format(".{0}", Table));
-			var dest = Path.Combine(destFolder, String.Format("{0} {1}.", filename, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
+			var dest = Path.Combine(DestFolder, String.Format("{0} {1}.", filename, DateTime.Now.ToString("yyyy MMdd HHmm ssff")));
 			_tsqlUtil = new TsqlUtil(Database, "Yutaka Blizman");
 			GetColumnsInformation();
 			_fileUtil.Write(_tsqlUtil.ScriptAll(Columns), String.Format("{0}sql", dest));
