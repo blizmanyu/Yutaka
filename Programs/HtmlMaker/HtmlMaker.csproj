@@ -63,11 +63,5 @@
     </None>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Libraries\Yutaka.IO\Yutaka.IO.csproj">
-      <Project>{EFE67BB5-CDA4-4B3E-89F1-60628003D560}</Project>
-      <Name>Yutaka.IO</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,18 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using NLog;
+using Yutaka.Core.IO;
 using Yutaka.Core.Net;
-using Yutaka.IO;
 
 namespace HtmlMaker
 {
 	class Program
 	{
+		private const int CAPACITY = 100;
 		private const string ProgramName = "HtmlMaker";
 		private const string SOURCE = @"ASDFG\";
+		private static readonly Regex OneDigit = new Regex(@"\d", RegexOptions.Compiled);
+		private static readonly Regex TwoDigit = new Regex(@"\d{2}", RegexOptions.Compiled);
 		private static readonly bool consoleOut = true; // true/false
 		private static readonly string GmailPassword = "PASSWORD";
 		private static readonly string GmailUsername = "USERNAME";
@@ -31,7 +36,6 @@ namespace HtmlMaker
 		private const double errorPercentThreshold = 0.07;
 		private const int errorCountThreshold = 7;
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
-		private const string CSS_RESET = "*{margin:0;outline:none;padding:0;text-decoration:none}*,:before,:after{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}html{margin:0;-webkit-text-size-adjust:none}ol,ul{list-style:none}a img{border:none}a:active{outline:none}input[type='button']::-moz-focus-inner,input[type='submit']::-moz-focus-inner,input[type='reset']::-moz-focus-inner,input[type='file'] > input[type='button']::-moz-focus-inner{margin:0;border:0;padding:0}input[type='button'],input[type='submit'],input[type='reset'],input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea{border-radius:0}input[type='button'],input[type='submit'],input[type='reset']{-webkit-appearance:none}input:-webkit-autofill{-webkit-box-shadow:inset 0 0 0 1000px #fff}script{display:none!important}";
 		private static readonly DateTime startTime = DateTime.UtcNow;
 
 		private static int errorCount = 0;
@@ -39,17 +43,10 @@ namespace HtmlMaker
 		private static int skippedCount = 0;
 		private static int successCount = 0;
 		private static int totalCount = 0;
-		private static FileUtil _fileUtil = new FileUtil();
 		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
-		private static List<object> Step1Failed = new List<object>();
-		private static List<object> Step1Skipped = new List<object>();
-		private static List<object> Step1Success = new List<object>();
-		private static List<object> Step2Failed = new List<object>();
-		private static List<object> Step2Skipped = new List<object>();
-		private static List<object> Step2Success = new List<object>();
-		private static List<object> Step3Failed = new List<object>();
-		private static List<object> Step3Skipped = new List<object>();
-		private static List<object> Step3Success = new List<object>();
+		private static List<object> TraverseTreeFailed = new List<object>();
+		private static List<object> TraverseTreeSkipped = new List<object>();
+		private static List<object> TraverseTreeSuccess = new List<object>();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
 		#endregion
 
@@ -66,23 +63,112 @@ namespace HtmlMaker
 
 		private static string GetHtmlGeneral()
 		{
-			return String.Format(
-				"\t/** HTML General **/{0}" +
-				"\tbody{{max-width:100%;overflow-x:hidden;background-color:#000;font:normal 1rem/1.5 Arial,Helvetica,sans-serif;color:#ccc}}{0}" +
-				"\tb,h1,h2,h3,h4,h5,h6,strong{{color:#fff}}{0}" +
-				"\ta{{color:inherit;cursor:pointer}}{0}" +
-				"\ta:hover{{color:#fff;text-decoration:underline}}{0}" +
-				"\ta img{{opacity:.99}}{0}" +
-				"\timg{{max-width:100%;height:auto}}{0}" +
-				"\ttable{{width:100%;border-collapse:collapse}}{0}" +
-				"\tinput[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea,select{{height:2.5rem;border:1px solid #ddd;padding:8px;vertical-align:middle}}{0}" +
-				"\tinput,textarea,select{{font-size:1.25rem;font-family:Arial,Helvetica,sans-serif;color:#777}}{0}" +
-				"\ttextarea{{min-height:150px}}{0}" +
-				"\tselect{{min-width:50px;height:2.5rem;padding:6px}}{0}" +
-				"\tinput[type='tel']:focus,input[type='text']:focus,input[type='email']:focus,input[type='password']:focus,textarea:focus,select:focus{{border-color:#ccc;color:#444}}{0}" +
-				"\tinput[type='checkbox'],input[type='radio'],input[type='checkbox'] + *,input[type='radio'] + *{{vertical-align:middle}}{0}" +
-				"\tinput[type='button'],input[type='submit'],button,.button-1,.button-2{{cursor:pointer}}{0}" +
-				"\tlabel,label + *{{vertical-align:middle}}", Environment.NewLine);
+			var sb = new StringBuilder();
+			sb.AppendFormat("/** HTML General **/{0}", Environment.NewLine);
+			sb.AppendFormat("body{{max-width:100%;overflow-x:hidden;background-color:#000;font:normal 1rem/1.5 Arial,Helvetica,sans-serif;color:#ccc}}{0}", Environment.NewLine);
+			sb.AppendFormat("b,h1,h2,h3,h4,h5,h6,strong{{color:#fff}}{0}", Environment.NewLine);
+			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
+			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
+			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
+			sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
+			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
+			sb.AppendFormat("input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea,select{{height:2.5rem;border:1px solid #ddd;padding:8px;vertical-align:middle}}{0}", Environment.NewLine);
+			sb.AppendFormat("input,textarea,select{{font-size:1.25rem;font-family:Arial,Helvetica,sans-serif;color:#777}}{0}", Environment.NewLine);
+			sb.AppendFormat("textarea{{min-height:150px}}{0}", Environment.NewLine);
+			sb.AppendFormat("select{{min-width:50px;height:2.5rem;padding:6px}}{0}", Environment.NewLine);
+			sb.AppendFormat("input[type='tel']:focus,input[type='text']:focus,input[type='email']:focus,input[type='password']:focus,textarea:focus,select:focus{{border-color:#ccc;color:#444}}{0}", Environment.NewLine);
+			sb.AppendFormat("input[type='checkbox'],input[type='radio'],input[type='checkbox'] + *,input[type='radio'] + *{{vertical-align:middle}}{0}", Environment.NewLine);
+			sb.AppendFormat("input[type='button'],input[type='submit'],button,.button,.button-1,.button-2{{cursor:pointer}}{0}", Environment.NewLine);
+			sb.AppendFormat("label,label + *{{vertical-align:middle}}{0}", Environment.NewLine);
+			return sb.ToString();
+		}
+
+		private static string GetHeader()
+		{
+			var sb = new StringBuilder();
+			sb.AppendFormat("<head>{0}", Environment.NewLine);
+			sb.AppendFormat("<meta name='viewport' content='width=device-width, initial-scale=1'>{0}", Environment.NewLine);
+			sb.AppendFormat("<style>{0}", Environment.NewLine);
+			sb.AppendFormat("/** CSS RESET **/{0}", Environment.NewLine);
+			sb.AppendFormat("*{{margin:0;outline:none;padding:0;text-decoration:none}}*,:before,:after{{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;box-sizing:border-box}}html{{margin:0;-webkit-text-size-adjust:none}}ol,ul{{list-style:none}}a img{{border:none}}a:active{{outline:none}}input[type='button']::-moz-focus-inner,input[type='submit']::-moz-focus-inner,input[type='reset']::-moz-focus-inner,input[type='file'] > input[type='button']::-moz-focus-inner{{margin:0;border:0;padding:0}}input[type='button'],input[type='submit'],input[type='reset'],input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea{{border-radius:0}}input[type='button'],input[type='submit'],input[type='reset']{{-webkit-appearance:none}}input:-webkit-autofill{{-webkit-box-shadow:inset 0 0 0 1000px #fff}}script{{display:none!important}}{0}", Environment.NewLine);
+			sb.AppendFormat(Environment.NewLine);
+			sb.Append(GetHtmlGeneral());
+			sb.AppendFormat(".video-container {{ height:90vh }}{0}", Environment.NewLine);
+			sb.AppendFormat("video,iframe {{ width:100%;height:auto;max-height:100% }}{0}", Environment.NewLine);
+			sb.AppendFormat("@media all and (min-width: 1024px) {{{0}", Environment.NewLine);
+			sb.AppendFormat("img {{ width:50% }}{0}", Environment.NewLine);
+			sb.AppendFormat("}}{0}", Environment.NewLine);
+			sb.AppendFormat("</style>{0}", Environment.NewLine);
+
+			sb.AppendFormat("</head>{0}", Environment.NewLine);
+			return sb.ToString();
+		}
+
+		private static string DirectoriesToHtml(string[] subDirs)
+		{
+			if (subDirs == null || subDirs.Length < 1)
+				return "";
+
+			var sb = new StringBuilder();
+			sb.AppendFormat("<div style='margin:0 auto 1rem;padding:1rem;'>{0}", Environment.NewLine);
+
+			foreach (var dir in subDirs)
+				sb.AppendFormat("<a href=\"{1}/__.html\">/ {1} /</a><br/>{0}", Environment.NewLine, dir.Split('\\').Last());
+
+			sb.AppendFormat("</div>{0}", Environment.NewLine);
+			return sb.ToString();
+		}
+
+		private static string FilesToHtml(string[] files)
+		{
+			if (files == null || files.Length < 1)
+				return "";
+
+			string filename, extension, filenameWithoutExtension;
+			var sb = new StringBuilder();
+
+			#region Videos
+			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0'>{0}", Environment.NewLine);
+
+			foreach (var file in files) {
+				if (FileUtil.IsVideoFile(file)) {
+					filename = Path.GetFileName(file);
+					filenameWithoutExtension = Path.GetFileNameWithoutExtension(file);
+					extension = Path.GetExtension(file).Replace(".", "");
+
+					if (OneDigit.Match(filenameWithoutExtension).Success)
+						logger.Trace("OneDigit: {0}", filenameWithoutExtension);
+					else if (TwoDigit.Match(filenameWithoutExtension).Success)
+						logger.Trace("TwoDigit: {0}", filenameWithoutExtension);
+
+					sb.AppendFormat("<div class='video-container'><video controls><source src=\"{1}\" type='video/{2}'></video></div>{0}", Environment.NewLine, filename, extension);
+				}
+			}
+
+			sb.AppendFormat("</div>{0}", Environment.NewLine);
+			#endregion
+
+			#region Images
+			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0'>{0}", Environment.NewLine);
+
+			foreach (var file in files) {
+				if (FileUtil.IsImageFile(file)) {
+					filename = Path.GetFileName(file);
+					filenameWithoutExtension = Path.GetFileNameWithoutExtension(file);
+
+					if (OneDigit.Match(filenameWithoutExtension).Success)
+						logger.Trace("OneDigit: {0}", filenameWithoutExtension);
+					else if (TwoDigit.Match(filenameWithoutExtension).Success)
+						logger.Trace("TwoDigit: {0}", filenameWithoutExtension);
+
+					sb.AppendFormat("<img src=\"{1}\" />{0}", Environment.NewLine, filename);
+				}
+			}
+
+			sb.AppendFormat("</div>{0}", Environment.NewLine);
+			#endregion
+
+			return sb.ToString();
 		}
 		#endregion
 
@@ -91,9 +177,7 @@ namespace HtmlMaker
 			StartProgram();
 
 			try {
-				Step1(SOURCE);
-				Step2();
-				Step3();
+				TraverseTree(SOURCE);
 			}
 
 			catch (Exception ex) {
@@ -117,10 +201,10 @@ namespace HtmlMaker
 		}
 
 		#region Methods
-		private static void Step1(string root)
+		private static void TraverseTree(string root)
 		{
 			#region Trace then Check Input
-			logger.Trace("Begin method Step1(string root).");
+			logger.Trace("Begin method TraverseTree(string root).");
 			var log = "";
 
 			if (root == null)
@@ -128,12 +212,10 @@ namespace HtmlMaker
 			else if (String.IsNullOrWhiteSpace(root))
 				log = String.Format("{0}'root' is empty.{1}", log, Environment.NewLine);
 			else if (!Directory.Exists(root))
-				log = String.Format("{0}Directory '{2}' doesn't exist.{1}", log, Environment.NewLine, root);
-			else
-				root = root.Trim();
+				log = String.Format("{0}root '{2}' doesn't exist.{1}", log, Environment.NewLine, root);
 
 			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in Step1(string root).{1}{1}", log, Environment.NewLine);
+				log = String.Format("{0}Exception thrown in TraverseTree(string root).{1}{1}", log, Environment.NewLine);
 				logger.Error(log);
 
 				if (consoleOut)
@@ -143,166 +225,62 @@ namespace HtmlMaker
 			}
 			#endregion
 
-			var html = "";
-			html = String.Format("{0}<meta name='viewport' content='width=device-width, initial-scale=1'>{1}", html, Environment.NewLine);
-			html = String.Format("{0}<style>{1}", html, Environment.NewLine);
-			html = String.Format("{0}\t/** CSS RESET **/{1}", html, Environment.NewLine);
-			html = String.Format("{0}\t{2}{1}", html, Environment.NewLine, CSS_RESET);
-			html = String.Format("{0}{1}", html, Environment.NewLine);
-			html = String.Format("{0}{2}{1}", html, Environment.NewLine, GetHtmlGeneral());
-			html = String.Format("{0}</style>{1}", html, Environment.NewLine);
-			html = String.Format("{0}<body>{1}", html, Environment.NewLine);
-			html = String.Format("{0}\t<div style='margin:1rem auto;padding:1rem'>{1}", html, Environment.NewLine);
+			var dirs = new Stack<string>(CAPACITY);
+			dirs.Push(root);
+			string html, currentDir;
+			string[] files, subDirs;
 
-			foreach (var dir in Directory.EnumerateDirectories(root)) {
+			while (dirs.Count > 0) {
+				#region Html Header
+				html = "";
+				html = GetHeader();
+				html = String.Format("{0}<body>{1}", html, Environment.NewLine);
+				#endregion
+				currentDir = dirs.Pop();
+
 				try {
-					html = String.Format("{0}\t\t<div><a href='{3}'>{2}</a></div>{1}", html, Environment.NewLine, dir, dir.Replace(root, ""));
-					Step1Success.Add(dir);
+					subDirs = Directory.GetDirectories(currentDir);
+					html = String.Format("{0}{1}", html, DirectoriesToHtml(subDirs));
 				}
 
-				catch (Exception ex) {
-					Step1Failed.Add(dir);
-					#region Logging
-					if (ex.InnerException == null)
-						log = String.Format("{0}{2}Exception thrown in Step1(string root).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-					else
-						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step1(string root).{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-
-					logger.Error(log);
-
-					if (consoleOut)
-						Console.Write("\n{0}", log);
-					#endregion
+				catch (UnauthorizedAccessException e) {
+					TraverseTreeSkipped.Add(e.Message);
+					continue;
 				}
-			}
+				catch (DirectoryNotFoundException e) {
+					TraverseTreeSkipped.Add(e.Message);
+					continue;
+				}
 
-			html = String.Format("{0}\t</div>{1}", html, Environment.NewLine);
-			html = String.Format("{0}</body>{1}", html, Environment.NewLine);
-
-
-
-
-
-
-			var newPath = String.Format("{0}__.html", root);
-
-			if (File.Exists(newPath))
-				File.Delete(newPath);
-
-			_fileUtil.Write(html, newPath, false, Encoding.Unicode);
-			logger.Trace("End method Step1(string root).{0}", Environment.NewLine);
-		}
-
-		private static void Step2()
-		{
-			#region Trace then Check Input
-			logger.Trace("Begin method Step2().");
-			var log = "";
-
-			// Example only //
-			//if (str == null)
-			//	log = String.Format("{0}'str' is null.{1}", log, Environment.NewLine);
-			//else if (String.IsNullOrWhiteSpace(str))
-			//	log = String.Format("{0}'str' is empty.{1}", log, Environment.NewLine);
-			//else
-			//	str = str.Trim();
-
-			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in Step2().{1}{1}", log, Environment.NewLine);
-				logger.Error(log);
-
-				if (consoleOut)
-					Console.Write("\n{0}", log);
-
-				return;
-			}
-			#endregion
-
-			var list = new List<object>();
-
-			foreach (var item in list) {
 				try {
-					if (item != item) {
-						Step2Skipped.Add(item);
-						continue;
-					}
-
-					Step2Success.Add(item);
+					files = Directory.GetFiles(currentDir);
+					html = String.Format("{0}{1}", html, FilesToHtml(files));
 				}
 
-				catch (Exception ex) {
-					Step2Failed.Add(item);
-					#region Logging
-					if (ex.InnerException == null)
-						log = String.Format("{0}{2}Exception thrown in Step2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-					else
-						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step2().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-
-					logger.Error(log);
-
-					if (consoleOut)
-						Console.Write("\n{0}", log);
-					#endregion
+				catch (UnauthorizedAccessException e) {
+					TraverseTreeSkipped.Add(e.Message);
+					continue;
 				}
+
+				catch (DirectoryNotFoundException e) {
+					TraverseTreeSkipped.Add(e.Message);
+					continue;
+				}
+
+				foreach (var str in subDirs)
+					dirs.Push(str);
+
+				html = String.Format("{0}</body>{1}", html, Environment.NewLine);
+				var newPath = String.Format(@"{0}\__.html", currentDir);
+
+				if (File.Exists(newPath))
+					File.Delete(newPath);
+
+				FileUtil.Write(html, newPath, false, Encoding.Unicode);
+				TraverseTreeSuccess.Add(currentDir);
 			}
 
-			logger.Trace("End method Step2().{0}", Environment.NewLine);
-		}
-
-		private static void Step3()
-		{
-			#region Trace then Check Input
-			logger.Trace("Begin method Step3().");
-			var log = "";
-
-			// Example only //
-			//if (str == null)
-			//	log = String.Format("{0}'str' is null.{1}", log, Environment.NewLine);
-			//else if (String.IsNullOrWhiteSpace(str))
-			//	log = String.Format("{0}'str' is empty.{1}", log, Environment.NewLine);
-			//else
-			//	str = str.Trim();
-
-			if (!String.IsNullOrWhiteSpace(log)) {
-				log = String.Format("{0}Exception thrown in Step3().{1}{1}", log, Environment.NewLine);
-				logger.Error(log);
-
-				if (consoleOut)
-					Console.Write("\n{0}", log);
-
-				return;
-			}
-			#endregion
-
-			var list = new List<object>();
-
-			foreach (var item in list) {
-				try {
-					if (item != item) {
-						Step3Skipped.Add(item);
-						continue;
-					}
-
-					Step3Success.Add(item);
-				}
-
-				catch (Exception ex) {
-					Step3Failed.Add(item);
-					#region Logging
-					if (ex.InnerException == null)
-						log = String.Format("{0}{2}Exception thrown in Step3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-					else
-						log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of Step3().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
-
-					logger.Error(log);
-
-					if (consoleOut)
-						Console.Write("\n{0}", log);
-					#endregion
-				}
-			}
-
-			logger.Trace("End method Step3().{0}", Environment.NewLine);
+			logger.Trace("End method TraverseTree(string root).{0}", Environment.NewLine);
 		}
 
 		#region StartProgram & EndProgram
@@ -376,6 +354,7 @@ namespace HtmlMaker
 				logger.Info(l);
 
 			logger.Info(Environment.NewLine + Environment.NewLine);
+			LogManager.Flush();
 
 			if (consoleOut) {
 				var timestamp = DateTime.Now.ToString(TIMESTAMP);
