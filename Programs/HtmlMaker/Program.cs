@@ -16,6 +16,7 @@ namespace HtmlMaker
 		private const int CAPACITY = 100;
 		private const string ProgramName = "HtmlMaker";
 		private const string SOURCE = @"ASDFG\";
+		private const string FILENAME = "__.html";
 		private static readonly Regex OneDigit = new Regex(@"\d", RegexOptions.Compiled);
 		private static readonly Regex TwoDigit = new Regex(@"\d{2}", RegexOptions.Compiled);
 		private static readonly bool consoleOut = true; // true/false
@@ -70,7 +71,8 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
+			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
+			sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
 			sb.AppendFormat("input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea,select{{height:2.5rem;border:1px solid #ddd;padding:8px;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("input,textarea,select{{font-size:1.25rem;font-family:Arial,Helvetica,sans-serif;color:#777}}{0}", Environment.NewLine);
@@ -96,7 +98,7 @@ namespace HtmlMaker
 			sb.AppendFormat(".video-container {{ height:90vh }}{0}", Environment.NewLine);
 			sb.AppendFormat("video,iframe {{ width:100%;height:auto;max-height:100% }}{0}", Environment.NewLine);
 			sb.AppendFormat("@media all and (min-width: 1024px) {{{0}", Environment.NewLine);
-			sb.AppendFormat("img {{ width:50% }}{0}", Environment.NewLine);
+			//sb.AppendFormat("img {{ width:50% }}{0}", Environment.NewLine);
 			sb.AppendFormat("}}{0}", Environment.NewLine);
 			sb.AppendFormat("</style>{0}", Environment.NewLine);
 
@@ -113,7 +115,7 @@ namespace HtmlMaker
 			sb.AppendFormat("<div style='margin:0 auto 1rem;padding:1rem;'>{0}", Environment.NewLine);
 
 			foreach (var dir in subDirs)
-				sb.AppendFormat("<a href=\"{1}/__.html\">/ {1} /</a><br/>{0}", Environment.NewLine, dir.Split('\\').Last());
+				sb.AppendFormat("<a href=\"{1}/{2}\">/ {1} /</a><br/>{0}", Environment.NewLine, dir.Split('\\').Last(), FILENAME);
 
 			sb.AppendFormat("</div>{0}", Environment.NewLine);
 			return sb.ToString();
@@ -149,7 +151,7 @@ namespace HtmlMaker
 			#endregion
 
 			#region Images
-			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0'>{0}", Environment.NewLine);
+			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0;text-align:center'>{0}", Environment.NewLine);
 
 			foreach (var file in files) {
 				if (FileUtil.IsImageFile(file)) {
@@ -271,7 +273,7 @@ namespace HtmlMaker
 					dirs.Push(str);
 
 				html = String.Format("{0}</body>{1}", html, Environment.NewLine);
-				var newPath = String.Format(@"{0}\__.html", currentDir);
+				var newPath = String.Format(@"{0}\{1}", currentDir, FILENAME);
 
 				if (File.Exists(newPath))
 					File.Delete(newPath);
