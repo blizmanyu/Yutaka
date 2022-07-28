@@ -17,8 +17,9 @@ namespace HtmlMaker
 		private const string ProgramName = "HtmlMaker";
 		private const string SOURCE = @"ASDFG\";
 		private const string FILENAME = "__.html";
-		private static readonly Regex OneDigit = new Regex(@"\d", RegexOptions.Compiled);
-		private static readonly Regex TwoDigit = new Regex(@"\d{2}", RegexOptions.Compiled);
+		private const string MAX_WIDTH = "582px";
+		private static readonly Regex OneDigit = new Regex(@"^\d{1}$", RegexOptions.Compiled);
+		private static readonly Regex TwoDigits = new Regex(@"^\d{2}$", RegexOptions.Compiled);
 		private static readonly bool consoleOut = true; // true/false
 		private static readonly string GmailPassword = "PASSWORD";
 		private static readonly string GmailUsername = "USERNAME";
@@ -71,8 +72,9 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
+			sb.AppendFormat("img{{width:100%;max-width:{0};height:auto;display:inline-block;vertical-align:middle}}{1}", MAX_WIDTH, Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
+			//sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
 			sb.AppendFormat("input[type='tel'],input[type='text'],input[type='email'],input[type='password'],textarea,select{{height:2.5rem;border:1px solid #ddd;padding:8px;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("input,textarea,select{{font-size:1.25rem;font-family:Arial,Helvetica,sans-serif;color:#777}}{0}", Environment.NewLine);
@@ -126,6 +128,7 @@ namespace HtmlMaker
 			if (files == null || files.Length < 1)
 				return "";
 
+			Match oneDigitMatch, twoDigitMatch;
 			string filename, extension, filenameWithoutExtension;
 			var sb = new StringBuilder();
 
@@ -139,9 +142,9 @@ namespace HtmlMaker
 					extension = Path.GetExtension(file).Replace(".", "");
 
 					if (OneDigit.Match(filenameWithoutExtension).Success)
-						logger.Trace("OneDigit: {0}", filenameWithoutExtension);
-					else if (TwoDigit.Match(filenameWithoutExtension).Success)
-						logger.Trace("TwoDigit: {0}", filenameWithoutExtension);
+						logger.Trace(" OneDigit:  {0}", filenameWithoutExtension);
+					else if (TwoDigits.Match(filenameWithoutExtension).Success)
+						logger.Trace("TwoDigits: {0}", filenameWithoutExtension);
 
 					sb.AppendFormat("<div class='video-container'><video controls><source src=\"{1}\" type='video/{2}'></video></div>{0}", Environment.NewLine, filename, extension);
 				}
@@ -157,11 +160,15 @@ namespace HtmlMaker
 				if (FileUtil.IsImageFile(file)) {
 					filename = Path.GetFileName(file);
 					filenameWithoutExtension = Path.GetFileNameWithoutExtension(file);
+					oneDigitMatch = OneDigit.Match(filenameWithoutExtension);
+					twoDigitMatch = TwoDigits.Match(filenameWithoutExtension);
 
-					if (OneDigit.Match(filenameWithoutExtension).Success)
-						logger.Trace("OneDigit: {0}", filenameWithoutExtension);
-					else if (TwoDigit.Match(filenameWithoutExtension).Success)
-						logger.Trace("TwoDigit: {0}", filenameWithoutExtension);
+					if (oneDigitMatch.Success) {
+						logger.Trace(" OneDigit:  {0}", filenameWithoutExtension);
+
+					}
+					else if (twoDigitMatch.Success)
+						logger.Trace("TwoDigits: {0}", filenameWithoutExtension);
 
 					sb.AppendFormat("<img src=\"{1}\" />{0}", Environment.NewLine, filename);
 				}
