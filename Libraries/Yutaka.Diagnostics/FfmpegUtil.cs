@@ -6,7 +6,7 @@ namespace Yutaka.Diagnostics
 {
 	public class FfmpegUtil
 	{
-		public static string DefaultPaletteFolder = @"G:\TEMP\";
+		public static string DefaultPaletteFolder = @"C:\TEMP\";
 
 		/// <summary>
 		/// Creates an animated GIF.
@@ -55,14 +55,21 @@ namespace Yutaka.Diagnostics
 			#endregion Defaults
 
 			try {
+				Console.Write("\n[{0:HH:mm:ss}] using (var proc1 = StartCreatingPalette(startTime, source, length, fps, width, createWindow", DateTime.Now);
 				using (var proc1 = StartCreatingPalette(startTime, source, length, fps, width, createWindow)) {
+					Console.Write("\n[{0:HH:mm:ss}] proc1.WaitForExit", DateTime.Now);
 					proc1.WaitForExit();
 
+					Console.Write("\n[{0:HH:mm:ss}] using (var proc2 = StartCreatingAnimatedGif(startTime, source, overwriteAll, length, fps, width, destFolder, createWindow", DateTime.Now);
 					using (var proc2 = StartCreatingAnimatedGif(startTime, source, overwriteAll, length, fps, width, destFolder, createWindow)) {
+						Console.Write("\n[{0:HH:mm:ss}] proc2.WaitForExit", DateTime.Now);
 						proc2.WaitForExit();
 
+						Console.Write("\n[{0:HH:mm:ss}] if (alsoCreateThumbnail", DateTime.Now);
 						if (alsoCreateThumbnail) {
+							Console.Write("\n[{0:HH:mm:ss}] using (var proc3 = StartCreatingThumbnail(startTime, source, overwriteAll, length, fps, width / 2, destFolder, createWindow", DateTime.Now);
 							using (var proc3 = StartCreatingThumbnail(startTime, source, overwriteAll, length, fps, width / 2, destFolder, createWindow)) {
+								Console.Write("\n[{0:HH:mm:ss}] proc3.WaitForExit", DateTime.Now);
 								proc3.WaitForExit();
 							}
 						}
