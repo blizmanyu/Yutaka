@@ -14,7 +14,7 @@ namespace HtmlMaker
 	class Program
 	{
 		private static readonly bool consoleOut = true; // true/false
-		private static readonly bool ltr = false; // true/false
+		private static readonly bool ltr = true; // true/false
 		private const string SOURCE = @"ASDFG\";
 		private const string MAX_WIDTH = "600px";
 
