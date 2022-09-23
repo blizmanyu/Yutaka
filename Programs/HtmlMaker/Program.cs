@@ -13,18 +13,10 @@ namespace HtmlMaker
 {
 	class Program
 	{
-		private const int CAPACITY = 100;
-		private const string ProgramName = "HtmlMaker";
-		private const string SOURCE = @"ASDFG\";
-		private const string FILENAME = "__.html";
-		private const string MAX_WIDTH = "582px";
-		private static readonly Regex OneDigit = new Regex(@"^\d{1}$", RegexOptions.Compiled);
-		private static readonly Regex TwoDigits = new Regex(@"^\d{2}$", RegexOptions.Compiled);
 		private static readonly bool consoleOut = true; // true/false
-		private static readonly string GmailPassword = "PASSWORD";
-		private static readonly string GmailUsername = "USERNAME";
-		private static readonly string fromEmail = "from@server.com";
-		private static readonly string toEmail = "to@server.com";
+		private static readonly bool ltr = false; // true/false
+		private const string SOURCE = @"ASDFG\";
+		private const string MAX_WIDTH = "600px";
 
 		#region Fields
 		#region Static Externs
@@ -36,9 +28,19 @@ namespace HtmlMaker
 		#endregion
 
 		private const double errorPercentThreshold = 0.07;
+		private const int CAPACITY = 100;
 		private const int errorCountThreshold = 7;
+		private const string FILENAME = "__.html";
+		private const string ProgramName = "HtmlMaker";
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
+
 		private static readonly DateTime startTime = DateTime.UtcNow;
+		private static readonly Regex OneDigit = new Regex(@"^\d{1}$", RegexOptions.Compiled);
+		private static readonly Regex TwoDigits = new Regex(@"^\d{2}$", RegexOptions.Compiled);
+		private static readonly string fromEmail = "from@server.com";
+		private static readonly string GmailPassword = "PASSWORD";
+		private static readonly string GmailUsername = "USERNAME";
+		private static readonly string toEmail = "to@server.com";
 
 		private static int errorCount = 0;
 		private static int processedCount = 0;
@@ -72,7 +74,7 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{width:100%;max-width:{0};height:auto;display:inline-block;vertical-align:middle}}{1}", MAX_WIDTH, Environment.NewLine);
+			sb.AppendFormat("img{{margin:1px auto;width:100%;max-width:{0};height:auto;display:inline-block;vertical-align:middle}}{1}", MAX_WIDTH, Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
@@ -90,6 +92,12 @@ namespace HtmlMaker
 		private static string GetHeader()
 		{
 			var sb = new StringBuilder();
+
+			if (ltr)
+				sb.AppendFormat("<html>{0}", Environment.NewLine);
+			else
+				sb.AppendFormat("<html dir='rtl'>{0}", Environment.NewLine);
+
 			sb.AppendFormat("<head>{0}", Environment.NewLine);
 			sb.AppendFormat("<meta name='viewport' content='width=device-width, initial-scale=1'>{0}", Environment.NewLine);
 			sb.AppendFormat("<style>{0}", Environment.NewLine);
@@ -279,7 +287,7 @@ namespace HtmlMaker
 				foreach (var str in subDirs)
 					dirs.Push(str);
 
-				html = String.Format("{0}</body>{1}", html, Environment.NewLine);
+				html = String.Format("{0}</body>{1}</html>", html, Environment.NewLine);
 				var newPath = String.Format(@"{0}\{1}", currentDir, FILENAME);
 
 				if (File.Exists(newPath))
