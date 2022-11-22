@@ -26,7 +26,7 @@ namespace Yutaka.Core.Net
 		private int m_port = 0;
 		/// <summary>
 		/// The port to connect to. If this value is set to 0 (Default) the port used will be determined
-		/// by the type of SSL used or if no SSL is to be used it  will automatically connect to port 21.
+		/// by the type of SSL used or if no SSL is to be used it will automatically connect to port 21.
 		/// </summary>
 		public int Port
 		{
@@ -43,7 +43,7 @@ namespace Yutaka.Core.Net
 		/// Credentials used for authentication
 		/// </summary>
 		public NetworkCredential Credentials { get; set; } = new NetworkCredential("anonymous", "anonymous");
-		#endregion Fields
+		#endregion
 
 		#region Constructors
 		/// <summary>
@@ -188,6 +188,10 @@ namespace Yutaka.Core.Net
 
 			return host.Host;
 		}
-		#endregion Utilities
+		#endregion
+
+		#region Methods
+
+		#endregion
 	}
 }
