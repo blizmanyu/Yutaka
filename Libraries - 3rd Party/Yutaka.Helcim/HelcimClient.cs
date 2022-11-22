@@ -179,6 +179,52 @@ namespace Yutaka.Helcim
 		}
 
 		/// <summary>
+		/// This API call lets you retrieve the customer's detailed information, including any cards in the vault associated with the customer.
+		/// The response is an XML of the processed sale.
+		/// </summary>
+		/// <returns></returns>
+		public async Task<string> ListCustomers()
+		{
+			#region Check Input
+			var log = "";
+			#endregion
+
+			try {
+				var thisAction = "customer/search";
+				var action = String.Format("{0}{1}", BASE_URL, thisAction);
+
+				using (var content = new StringContent(action, System.Text.Encoding.Default, "application/x-www-form-urlencoded")) {
+					AddHeaders();
+					using (var response = await Client.PostAsync(action, content)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+						//Thread.Sleep(1000);
+						#region Debug  
+
+						if (Debug) {
+							Console.Write("\n{0}", responseData);
+							XmlToFile(responseData);
+						}
+						#endregion
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.ListCustomers().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.ListCustomers().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+
+				Console.Write("\n{0}", log);
+				XmlToFile(log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// This API call lets you process a purchase transaction for a customer that has already been saved in your Helcim account.
 		/// The response is an XML of the processed sale.
 		/// </summary>
