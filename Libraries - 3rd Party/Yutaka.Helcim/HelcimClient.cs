@@ -122,6 +122,63 @@ namespace Yutaka.Helcim
 
 		#region Methods
 		/// <summary>
+		/// This API call lets you retrieve the customer's detailed information, including any cards in the vault associated with the customer.
+		/// The response is an XML of the processed sale.
+		/// </summary>
+		/// <param name="customerCode">The customer ID code. CST1263</param>
+		/// <returns></returns>
+		public async Task<string> GetCustomer(string customerCode)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(customerCode))
+				log = String.Format("{0}customerCode is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log)) {
+				Console.Write("\n{0}", log);
+				XmlToFile(log);
+				return null;
+
+			}
+			#endregion
+
+			try {
+				var thisAction = "customer/view";
+				var action = String.Format("{0}{1}", BASE_URL, thisAction);
+
+				using (var requestBody = new StringContent(String.Format("customerCode={0}", customerCode), System.Text.Encoding.Default, "application/x-www-form-urlencoded")) {
+					AddHeaders();
+					using (var response = await Client.PostAsync(action, requestBody)) {
+						string responseData = await response.Content.ReadAsStringAsync();
+						//Thread.Sleep(1000);
+						#region Debug
+						if (Debug) {
+							Console.Write("\n{0}", responseData);
+							XmlToFile(responseData);
+						}
+						#endregion
+
+						return responseData;
+					}
+				}
+			}
+
+			catch (Exception ex) {
+				#region Log
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in HelcimClient.GetCustomer(string customerCode='{3}'", ex.Message, ex.ToString(), Environment.NewLine, customerCode);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of HelcimClient.GetCustomer(string customerCode='{3}'", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine, customerCode);
+
+				Console.Write("\n{0}", log);
+				XmlToFile(log);
+				throw new Exception(log);
+				#endregion Log
+			}
+		}
+
+		/// <summary>
 		/// This API call lets you process a purchase transaction for a customer that has already been saved in your Helcim account.
 		/// The response is an XML of the processed sale.
 		/// </summary>
