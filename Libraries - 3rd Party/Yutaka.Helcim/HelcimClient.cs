@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
-using Yutaka.Core.Net;
 using Yutaka.IO;
 
 namespace Yutaka.Helcim
@@ -46,6 +45,12 @@ namespace Yutaka.Helcim
 			str = String.Format("{0}\"accountId\": {1}, ", str, AccountId);
 			str = String.Format("{0}\"apiToken\": \"{1}\", ", str, ApiToken);
 			return str;
+		}
+
+		private void AddHeaders()
+		{
+			Client.DefaultRequestHeaders.TryAddWithoutValidation("account-id", AccountId.ToString());
+			Client.DefaultRequestHeaders.TryAddWithoutValidation("api-token", ApiToken);
 		}
 
 		#region Writes
