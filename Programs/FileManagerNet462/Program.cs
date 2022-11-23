@@ -12,6 +12,7 @@ namespace FileManagerNet462
 	{
 		// Config/Settings //
 		private static bool consoleOut = true; // default = false //
+		private static string Dest = @"ASDFG\";
 
 		#region Fields
 		// Const and readonlys //
@@ -51,7 +52,6 @@ namespace FileManagerNet462
 
 			var deleteFiles = false;
 			consoleOut = !deleteFiles;
-			var dest = @"asdfasdf\";
 			var sources = new string[] {
 				@"asdfasdf\",
 			};
@@ -66,7 +66,7 @@ namespace FileManagerNet462
 				}
 
 				foreach (var source in sources)
-					MoveAllFiles(source, dest);
+					MoveAllFiles(source, Dest);
 			}
 
 			else {
@@ -76,7 +76,7 @@ namespace FileManagerNet462
 				}
 
 				foreach (var source in sources)
-					CopyAllFiles(source, dest);
+					CopyAllFiles(source, Dest);
 			}
 
 			EndProgram();
