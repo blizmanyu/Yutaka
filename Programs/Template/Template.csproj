@@ -7,8 +7,8 @@
     <ProjectGuid>{78EEE560-70D0-467C-8619-C2E02695BC11}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Yutaka.NewConsoleAppTemplate</RootNamespace>
-    <AssemblyName>Yutaka.NewConsoleAppTemplate</AssemblyName>
+    <RootNamespace>Template</RootNamespace>
+    <AssemblyName>Template</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

@@ -4,11 +4,11 @@ using System.Runtime.InteropServices;
 using NLog;
 using Yutaka.Core.Net;
 
-namespace Yutaka.NewConsoleAppTemplate
+namespace Template
 {
 	class Program
 	{
-		private const string ProgramName = "NewConsoleAppTemplate";
+		private const string ProgramName = "Template";
 		private static readonly bool consoleOut = true; // true/false
 		private static readonly string GmailPassword = "PASSWORD";
 		private static readonly string GmailUsername = "USERNAME";
