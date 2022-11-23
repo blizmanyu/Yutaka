@@ -11,8 +11,11 @@ namespace FileManagerNet462
 	class Program
 	{
 		// Config/Settings //
-		private static bool consoleOut = true; // default = false //
+		private static bool consoleOut = true; // true/false
 		private static string Dest = @"ASDFG\";
+		private static string[] Sources = {
+			@"ASDFG\",
+		};
 
 		#region Fields
 		// Const and readonlys //
@@ -52,11 +55,8 @@ namespace FileManagerNet462
 
 			var deleteFiles = false;
 			consoleOut = !deleteFiles;
-			var sources = new string[] {
-				@"asdfasdf\",
-			};
 
-			foreach (var source in sources)
+			foreach (var source in Sources)
 				totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 
 			if (deleteFiles) {
@@ -65,7 +65,7 @@ namespace FileManagerNet462
 					Console.ReadKey(true);
 				}
 
-				foreach (var source in sources)
+				foreach (var source in Sources)
 					MoveAllFiles(source, Dest);
 			}
 
@@ -75,7 +75,7 @@ namespace FileManagerNet462
 					Console.ReadKey(true);
 				}
 
-				foreach (var source in sources)
+				foreach (var source in Sources)
 					CopyAllFiles(source, Dest);
 			}
 
