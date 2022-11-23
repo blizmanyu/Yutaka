@@ -11,13 +11,31 @@ namespace FileManagerNet462
 	class Program
 	{
 		// Config/Settings //
-		const string ProgramName = "FileManagerNet462";
-		private const decimal TIME_FACTOR = 395189149.04562228086464351881m; // this is an arbitrary number based on average performance of my computer/drives.
 		private static bool consoleOut = true; // default = false //
-		private static readonly string fromEmail = "from@server.com";
-		private static readonly string toEmail = "to@server.com";
 
 		#region Fields
+		// Const and readonlys //
+		private const decimal TIME_FACTOR = 395189149.04562228086464351881m; // this is an arbitrary number based on average performance of my computer/drives.
+		private const double ERROR_PERCENT_THRESHOLD = 0.07;
+		private const int ERROR_COUNT_THRESHOLD = 7;
+		private const string FROM_EMAIL = "from@server.com";
+		private const string PROGRAM_NAME = "FileManagerNet462";
+		private const string TIMESTAMP = @"[HH:mm:ss] ";
+		private const string TO_EMAIL = "to@server.com";
+		private static readonly DateTime startTime = DateTime.UtcNow;
+
+		// Counters //
+		private static int errorCount = 0;
+		private static int processedCount = 0;
+		private static int skippedCount = 0;
+		private static int successCount = 0;
+		private static int totalCount = 0;
+		private static long totalSize = 0;
+
+		// PIVs //
+		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static Stopwatch stopwatch = new Stopwatch();
+
 		#region Static Externs
 		[DllImport("kernel32.dll")]
 		static extern IntPtr GetConsoleWindow();
@@ -25,19 +43,6 @@ namespace FileManagerNet462
 		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 		const int SW_HIDE = 0;
 		#endregion
-
-		private static readonly DateTime startTime = DateTime.UtcNow;
-		private static readonly double errorPercThreshold = 0.07;
-		private static readonly int errorCountThreshold = 7;
-		private static readonly string TIMESTAMP = @"[HH:mm:ss] ";
-		private static Logger logger = LogManager.GetCurrentClassLogger();
-		private static Stopwatch stopwatch = new Stopwatch();
-		private static int errorCount = 0;
-		private static int processedCount = 0;
-		private static int skippedCount = 0;
-		private static int successCount = 0;
-		private static int totalCount = 0;
-		private static long totalSize = 0;
 		#endregion
 
 		static void Main(string[] args)
@@ -169,7 +174,7 @@ namespace FileManagerNet462
 
 		private static void StartProgram()
 		{
-			var log = String.Format("Starting {0} program", ProgramName);
+			var log = String.Format("Starting {0} program", PROGRAM_NAME);
 			logger.Info(log);
 
 			if (consoleOut)
@@ -194,11 +199,11 @@ namespace FileManagerNet462
 			var errorPerc = processedCount > 0 ? (double)errorCount / processedCount : (double)errorCount / totalCount;
 			var successPerc = processedCount > 0 ? (double)successCount / processedCount : (double)successCount / totalCount;
 
-			if (errorCount > errorCountThreshold || errorPerc > errorPercThreshold) {
+			if (errorCount > ERROR_COUNT_THRESHOLD || errorPerc > ERROR_PERCENT_THRESHOLD) {
 				logger.Error("The number of errors is above the threshold.");
 
-				//if (errorCount > errorCountThreshold && errorPerc > errorPercThreshold)
-					//_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
+				//if (errorCount > ERROR_COUNT_THRESHOLD && errorPerc > ERROR_PERCENT_THRESHOLD)
+					//_smtpClient.TrySend(FROM_EMAIL, TO_EMAIL, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
 			var log = new string[7];
