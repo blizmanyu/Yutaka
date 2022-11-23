@@ -18,10 +18,10 @@ namespace FileManagerNet462
 		private const decimal TIME_FACTOR = 395189149.04562228086464351881m; // this is an arbitrary number based on average performance of my computer/drives.
 		private const double ERROR_PERCENT_THRESHOLD = 0.07;
 		private const int ERROR_COUNT_THRESHOLD = 7;
-		private const string FROM_EMAIL = "from@server.com";
+		private const string EMAIL_FROM = "from@server.com";
+		private const string EMAIL_TO = "to@server.com";
 		private const string PROGRAM_NAME = "FileManagerNet462";
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
-		private const string TO_EMAIL = "to@server.com";
 		private static readonly DateTime startTime = DateTime.UtcNow;
 
 		// Counters //
@@ -203,7 +203,7 @@ namespace FileManagerNet462
 				logger.Error("The number of errors is above the threshold.");
 
 				//if (errorCount > ERROR_COUNT_THRESHOLD && errorPerc > ERROR_PERCENT_THRESHOLD)
-					//_smtpClient.TrySend(FROM_EMAIL, TO_EMAIL, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
+					//_smtpClient.TrySend(EMAIL_FROM, EMAIL_TO, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
 			var log = new string[7];
