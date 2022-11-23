@@ -156,17 +156,14 @@ namespace FileManagerNet462
 		#region StartProgram & EndProgram
 		private static void HandleArgs(string[] args)
 		{
-			if (args == null || args.Length < 1)
-			{
+			if (args == null || args.Length < 1) {
 				; // if you want empty arguments to actually set default args, set them here.
 			}
 
-			else
-			{
+			else {
 				var temp = String.Join(" ", args);
 
-				if (temp.IndexOf("ASDFG", StringComparison.OrdinalIgnoreCase) > -1)
-				{
+				if (temp.IndexOf("ASDFG", StringComparison.OrdinalIgnoreCase) > -1) {
 					; // handle args like this
 				}
 			}
@@ -177,14 +174,12 @@ namespace FileManagerNet462
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
 			logger.Info(log);
 
-			if (consoleOut)
-			{
+			if (consoleOut) {
 				Console.Clear();
 				Console.Write("{0}{1}", DateTime.Now.ToString(TIMESTAMP), log);
 			}
 
-			else
-			{
+			else {
 				var handle = GetConsoleWindow();
 				ShowWindow(handle, SW_HIDE); // hide window //
 			}
@@ -196,14 +191,14 @@ namespace FileManagerNet462
 			var ts = endTime - startTime;
 			var processedPerc = (double) processedCount / totalCount;
 			var skippedPerc = (double) skippedCount / totalCount;
-			var errorPerc = processedCount > 0 ? (double)errorCount / processedCount : (double)errorCount / totalCount;
-			var successPerc = processedCount > 0 ? (double)successCount / processedCount : (double)successCount / totalCount;
+			var errorPerc = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
+			var successPerc = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
 			if (errorCount > ERROR_COUNT_THRESHOLD || errorPerc > ERROR_PERCENT_THRESHOLD) {
 				logger.Error("The number of errors is above the threshold.");
 
 				//if (errorCount > ERROR_COUNT_THRESHOLD && errorPerc > ERROR_PERCENT_THRESHOLD)
-					//_smtpClient.TrySend(EMAIL_FROM, EMAIL_TO, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
+				//_smtpClient.TrySend(EMAIL_FROM, EMAIL_TO, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 			}
 
 			var log = new string[7];
@@ -218,8 +213,7 @@ namespace FileManagerNet462
 
 			log[2] = String.Format("    Total: {0,5:n0}", totalCount);
 
-			if (totalCount > 0)
-			{
+			if (totalCount > 0) {
 				log[3] = String.Format("Processed: {0,5:n0} ({1,7})", processedCount, processedPerc.ToString("p").Replace(" ", ""));
 				log[4] = String.Format("  Skipped: {0,5:n0} ({1,7})", skippedCount, skippedPerc.ToString("p").Replace(" ", ""));
 				log[5] = String.Format("  Success: {0,5:n0} ({1,7})", successCount, successPerc.ToString("p").Replace(" ", ""));
@@ -231,8 +225,7 @@ namespace FileManagerNet462
 
 			logger.Info(Environment.NewLine + Environment.NewLine);
 
-			if (consoleOut)
-			{
+			if (consoleOut) {
 				var timestamp = DateTime.Now.ToString(TIMESTAMP);
 				Console.Write("\n");
 
@@ -245,6 +238,6 @@ namespace FileManagerNet462
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
-		#endregion StartProgram & EndProgram
+		#endregion
 	}
 }
