@@ -8,33 +8,30 @@ namespace Template
 {
 	class Program
 	{
-		private const string ProgramName = "Template";
+		// Config/Settings //
 		private static readonly bool consoleOut = true; // true/false
-		private static readonly string GmailPassword = "PASSWORD";
-		private static readonly string GmailUsername = "USERNAME";
-		private static readonly string fromEmail = "from@server.com";
-		private static readonly string toEmail = "to@server.com";
 
 		#region Fields
-		#region Static Externs
-		[DllImport("kernel32.dll")]
-		static extern IntPtr GetConsoleWindow();
-		[DllImport("user32.dll")]
-		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-		const int SW_HIDE = 0;
-		#endregion
-
-		private const double errorPercentThreshold = 0.07;
-		private const int errorCountThreshold = 7;
+		// Constants & Readonlys //
+		private const int ERROR_COUNT_THRESHOLD = 7;
+		private const double ERROR_PERCENT_THRESHOLD = 0.07;
+		private const string EMAIL_FROM = "from@server.com";
+		private const string EMAIL_TO = "to@server.com";
+		private const string GMAIL_PASSWORD = "PASSWORD";
+		private const string GMAIL_USERNAME = "USERNAME";
+		private const string PROGRAM_NAME = "Template";
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly DateTime startTime = DateTime.UtcNow;
 
+		// Counters //
 		private static int errorCount = 0;
 		private static int processedCount = 0;
 		private static int skippedCount = 0;
 		private static int successCount = 0;
 		private static int totalCount = 0;
-		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GmailUsername, GmailPassword);
+
+		// PIVs //
+		private static GmailSmtpClient _smtpClient = new GmailSmtpClient(GMAIL_USERNAME, GMAIL_PASSWORD);
 		private static List<object> Step1Failed = new List<object>();
 		private static List<object> Step1Skipped = new List<object>();
 		private static List<object> Step1Success = new List<object>();
@@ -45,6 +42,14 @@ namespace Template
 		private static List<object> Step3Skipped = new List<object>();
 		private static List<object> Step3Success = new List<object>();
 		private static Logger logger = LogManager.GetCurrentClassLogger();
+
+		#region Static Externs
+		[DllImport("kernel32.dll")]
+		static extern IntPtr GetConsoleWindow();
+		[DllImport("user32.dll")]
+		static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+		const int SW_HIDE = 0;
+		#endregion
 		#endregion
 
 		static void Main(string[] args)
@@ -264,7 +269,7 @@ namespace Template
 
 		private static void StartProgram()
 		{
-			var log = String.Format("Starting {0} program", ProgramName);
+			var log = String.Format("Starting {0} program", PROGRAM_NAME);
 			logger.Info(log);
 
 			if (consoleOut) {
@@ -291,8 +296,8 @@ namespace Template
 			var errorPerc = processedCount > 0 ? (double) errorCount / processedCount : (double) errorCount / totalCount;
 			var successPerc = processedCount > 0 ? (double) successCount / processedCount : (double) successCount / totalCount;
 
-			if (errorCount > errorCountThreshold && errorPerc > errorPercentThreshold)
-				_smtpClient.TrySend(fromEmail, toEmail, ProgramName, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
+			if (errorCount > ERROR_COUNT_THRESHOLD && errorPerc > ERROR_PERCENT_THRESHOLD)
+				_smtpClient.TrySend(EMAIL_FROM, EMAIL_TO, PROGRAM_NAME, String.Format("Errors: {0} ({1})", errorCount, errorPerc.ToString("p")), out var response);
 
 			var log = new string[7];
 			log[0] = "Ending program";
