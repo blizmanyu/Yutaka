@@ -60,6 +60,7 @@ namespace Template
 				Step1();
 				Step2();
 				Step3();
+				EndProgram(0);
 			}
 
 			catch (Exception ex) {
@@ -77,9 +78,8 @@ namespace Template
 
 				logger.Error(log);
 				#endregion
+				EndProgram(1);
 			}
-
-			EndProgram(0);
 		}
 
 		#region Methods
