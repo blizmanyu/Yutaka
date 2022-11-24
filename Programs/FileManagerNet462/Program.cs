@@ -53,33 +53,53 @@ namespace FileManagerNet462
 		{
 			StartProgram();
 
-			var deleteFiles = false;
-			consoleOut = !deleteFiles;
-
-			foreach (var source in Sources)
-				totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
-
-			if (deleteFiles) {
-				if (totalSize > FileUtil.FOUR_GB) {
-					Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
-					Console.ReadKey(true);
-				}
+			try {
+				var deleteFiles = false;
+				consoleOut = !deleteFiles;
 
 				foreach (var source in Sources)
-					MoveAllFiles(source, Dest);
-			}
+					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 
-			else {
-				if (totalSize > FileUtil.TWO_GB) {
-					Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
-					Console.ReadKey(true);
+				if (deleteFiles) {
+					if (totalSize > FileUtil.FOUR_GB) {
+						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
+						Console.ReadKey(true);
+					}
+
+					foreach (var source in Sources)
+						MoveAllFiles(source, Dest);
 				}
 
-				foreach (var source in Sources)
-					CopyAllFiles(source, Dest);
+				else {
+					if (totalSize > FileUtil.TWO_GB) {
+						Console.Write("\n******* Total Size is {0}! Estimated time is {1:n1}min. Press any key if you're certain you want to continue! *******", FileUtil.BytesToString(totalSize), totalSize / TIME_FACTOR);
+						Console.ReadKey(true);
+					}
+
+					foreach (var source in Sources)
+						CopyAllFiles(source, Dest);
+				}
+
+				EndProgram(0);
 			}
 
-			EndProgram();
+			catch (Exception ex) {
+				++errorCount;
+				#region Logging
+				var log = "";
+
+				if (ex.InnerException == null)
+					log = String.Format("{0}{2}Exception thrown in FileManagerNet462.Main().{2}{1}{2}{2}", ex.Message, ex.ToString(), Environment.NewLine);
+				else
+					log = String.Format("{0}{2}Exception thrown in INNER EXCEPTION of FileManagerNet462.Main().{2}{1}{2}{2}", ex.InnerException.Message, ex.InnerException.ToString(), Environment.NewLine);
+
+				logger.Error(log);
+
+				if (consoleOut)
+					Console.Write("\n{0}", log);
+				#endregion
+				EndProgram(1);
+			}
 		}
 
 		private static void CopyAllFiles(string source, string dest)
@@ -185,7 +205,11 @@ namespace FileManagerNet462
 			}
 		}
 
-		private static void EndProgram()
+		/// <summary>
+		/// Ends the program and returns an exit code to the operating system.
+		/// </summary>
+		/// <param name="exitCode">The exit code to return to the operating system. Use 0 (zero) to indicate that the process completed successfully.</param>
+		private static void EndProgram(int exitCode)
 		{
 			var endTime = DateTime.UtcNow;
 			var ts = endTime - startTime;
@@ -236,7 +260,7 @@ namespace FileManagerNet462
 				Console.ReadKey(true);
 			}
 
-			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
+			Environment.Exit(exitCode); // in case you want to call this method outside of a standard successful program completion, this line will close the app
 		}
 		#endregion
 	}
