@@ -12,6 +12,7 @@ namespace FileManagerNet462
 	{
 		// Config/Settings //
 		private static bool consoleOut = true; // true/false
+		private static bool deleteFiles = false;
 		private static string Dest = @"ASDFG\";
 		private static string[] Sources = {
 			@"ASDFG\",
@@ -54,9 +55,6 @@ namespace FileManagerNet462
 			StartProgram();
 
 			try {
-				var deleteFiles = false;
-				consoleOut = !deleteFiles;
-
 				foreach (var source in Sources)
 					totalSize = FileUtil.GetDirectorySize(source, SearchOption.AllDirectories);
 
