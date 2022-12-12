@@ -293,8 +293,25 @@ namespace HtmlMaker
 				if (File.Exists(newPath))
 					File.Delete(newPath);
 
-				FileUtil.Write(html, newPath, false, Encoding.Unicode);
-				TraverseTreeSuccess.Add(currentDir);
+				try {
+					FileUtil.Write(html, newPath, false, Encoding.Unicode);
+					TraverseTreeSuccess.Add(currentDir);
+				}
+
+				catch (Exception ex) {
+					#region Log
+					if (ex.InnerException == null)
+						log = String.Format("{0}{1}", ex.Message, Environment.NewLine);
+					else
+						log = String.Format("{0}{1}", ex.InnerException.Message, Environment.NewLine);
+
+					logger.Error(log);
+
+					if (consoleOut)
+						Console.Write("\n{0}", log);
+					#endregion
+					TraverseTreeFailed.Add(newPath);
+				}
 			}
 
 			logger.Trace("End method TraverseTree(string root).{0}", Environment.NewLine);
