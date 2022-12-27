@@ -19,7 +19,7 @@ namespace Template
 		private const string EMAIL_FROM = "from@server.com";
 		private const string GMAIL_PASSWORD = "PASSWORD";
 		private const string GMAIL_USERNAME = "USERNAME";
-		private const string PROGRAM_NAME = "Template";
+		private const string PROGRAM_NAME = "REPLACE_THIS";
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 		private static readonly DateTime startTime = DateTime.UtcNow;
 
