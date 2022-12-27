@@ -334,8 +334,7 @@ namespace Template
 				Console.ReadKey(true);
 			}
 
-			if (exitCode != 0)
-				Environment.Exit(exitCode);
+			Environment.Exit(exitCode);
 		}
 		#endregion
 		#endregion
