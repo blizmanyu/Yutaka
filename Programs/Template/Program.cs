@@ -9,6 +9,7 @@ namespace Template
 	class Program
 	{
 		// Config/Settings //
+		private const string EMAIL_TO = "to@server.com";
 		private static readonly bool consoleOut = true; // true/false
 
 		#region Fields
@@ -16,7 +17,6 @@ namespace Template
 		private const int ERROR_COUNT_THRESHOLD = 7;
 		private const double ERROR_PERCENT_THRESHOLD = 0.07;
 		private const string EMAIL_FROM = "from@server.com";
-		private const string EMAIL_TO = "to@server.com";
 		private const string GMAIL_PASSWORD = "PASSWORD";
 		private const string GMAIL_USERNAME = "USERNAME";
 		private const string PROGRAM_NAME = "Template";
