@@ -39,6 +39,16 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Converts the <see cref="DateTime"/> to the way Gmail does it. This method includes &lt;span title&gt; for expanded hover text.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns></returns>
+		public static string ToGmailStyleTemplate(DateTime dt)
+		{
+			return String.Format("<span title='{0:MMM d, yyyy, h:mm tt}'>{1}</span>", dt, ToGmailStyle(dt));
+		}
+
+		/// <summary>
 		/// Converts the datetime to the long-form U.S. format. Example: "Jan 1, 2009, 1:01 PM".
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
