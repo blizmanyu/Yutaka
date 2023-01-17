@@ -21,6 +21,24 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Converts the <see cref="DateTime"/> to the way Gmail does it.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns></returns>
+		public static string ToGmailStyle(DateTime dt)
+		{
+			var today = DateTime.Today;
+
+			if (dt.Date == today)
+				return String.Format("{0:h:mm tt}", dt); // 1:01 PM
+
+			if (dt.Year == today.Year)
+				return String.Format("{0:MMM d}", dt); // Jan 1
+
+			return String.Format("{0:M/d/yy}", dt); // 1/1/21
+		}
+
+		/// <summary>
 		/// Converts the datetime to the long-form U.S. format. Example: "Jan 1, 2009, 1:01 PM".
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
