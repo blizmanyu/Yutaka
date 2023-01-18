@@ -58,13 +58,25 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
-		/// Converts the <see cref="DateTime"/> to the way Gmail does it. This method includes &lt;span title&gt; for expanded hover text.
+		/// Converts the <see cref="DateTime"/> to the format that Gmail uses. This method includes &lt;span title&gt; for expanded hover text.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
 		/// <returns></returns>
 		public static string ToGmailStyleTemplate(DateTime dt)
 		{
-			return String.Format("<span title='{0:MMM d, yyyy, h:mm tt}'>{1}</span>", dt, ToGmailStyle(dt));
+			var today = DateTime.Today;
+			var tt = dt.ToString("tt").ToLower();
+
+			if (dt.Date == today)
+				return String.Format("<span title='Today, {0:MMM d, yyyy, h:mm}{1}'>{0:h:mm}{1}</span>", dt, tt);
+
+			if (dt.Date == today.AddDays(-1))
+				return String.Format("<span title='Yesterday, {0:MMM d, yyyy, h:mm}{1}'>{0:MMM d}</span>", dt, tt);
+
+			if (dt.Year == today.Year)
+				return String.Format("<span title='{0:MMM d, yyyy, h:mm}{1}'>{0:MMM d}</span>", dt, tt);
+
+			return String.Format("<span title='{0:MMM d, yyyy, h:mm}{1}'>{0:M/d/yy}</span>", dt, tt);
 		}
 
 		/// <summary>
