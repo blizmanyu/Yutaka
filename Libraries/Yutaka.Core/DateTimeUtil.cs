@@ -40,7 +40,7 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
-		/// Converts the <see cref="DateTime"/> to the way Gmail does it.
+		/// Converts the <see cref="DateTime"/> to the format that Gmail uses.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
 		/// <returns></returns>
@@ -49,7 +49,7 @@ namespace Yutaka.Core
 			var today = DateTime.Today;
 
 			if (dt.Date == today)
-				return String.Format("{0:h:mm tt}", dt); // 1:01 PM
+				return String.Format("{0:h:mm}{1}", dt, dt.ToString("tt").ToLower()); // 1:01pm
 
 			if (dt.Year == today.Year)
 				return String.Format("{0:MMM d}", dt); // Jan 1
