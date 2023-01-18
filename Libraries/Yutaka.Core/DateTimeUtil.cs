@@ -21,6 +21,25 @@ namespace Yutaka.Core
 		}
 
 		/// <summary>
+		/// Converts the <see cref="DateTime"/> for Edit and Detail pages.
+		/// </summary>
+		/// <param name="dt">The date and time to convert.</param>
+		/// <returns></returns>
+		public static string ToEditPageTemplate(DateTime dt)
+		{
+			var today = DateTime.Today;
+			var tt = dt.ToString("tt").ToLower();
+
+			if (dt.Date == today)
+				return String.Format("Today, {0:MMM d, yyyy, h:mm}{1}", dt, tt);
+
+			if (dt.Date == today.AddDays(-1))
+				return String.Format("Yesterday, {0:MMM d, yyyy, h:mm}{1}", dt, tt);
+
+			return String.Format("{0:MMM d, yyyy, h:mm}{1}", dt, tt);
+		}
+
+		/// <summary>
 		/// Converts the <see cref="DateTime"/> to the way Gmail does it.
 		/// </summary>
 		/// <param name="dt">The date and time to convert.</param>
