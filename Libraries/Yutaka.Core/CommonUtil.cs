@@ -239,7 +239,7 @@ namespace Yutaka.Core
 		/// <returns>true if the string is a valid e-mail address and false if it's not</returns>
 		public static bool IsValidEmail(string email)
 		{
-			if (String.IsNullOrEmpty(email))
+			if (String.IsNullOrWhiteSpace(email))
 				return false;
 
 			email = email.Trim();
