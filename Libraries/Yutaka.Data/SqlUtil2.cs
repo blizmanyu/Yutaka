@@ -212,6 +212,18 @@ namespace Yutaka.Data
 				}
 			}
 
+			catch (SqlException ex) {
+				#region Log
+				log = String.Format("{0}{1}", ex.Message, Environment.NewLine);
+
+				foreach (SqlError er in ex.Errors)
+					log = String.Format("{0}{1}{2}", log, er.Message, Environment.NewLine);
+
+				log = String.Format("{0}Exception thrown in SqlUtil2.ExecuteNonQuery(string commandText, CommandType commandType, params SqlParameter[] parameters).{2}{1}{2}{2}", log, ex.ToString(), Environment.NewLine);
+				throw new Exception(log);
+				#endregion Log
+			}
+
 			catch (Exception ex) {
 				#region Log
 				if (ex.InnerException == null)
