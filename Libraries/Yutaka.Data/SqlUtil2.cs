@@ -220,6 +220,10 @@ namespace Yutaka.Data
 					log = String.Format("{0}{1}{2}", log, er.Message, Environment.NewLine);
 
 				log = String.Format("{0}Exception thrown in SqlUtil2.ExecuteNonQuery(string commandText, CommandType commandType, params SqlParameter[] parameters).{2}{1}{2}{2}", log, ex.ToString(), Environment.NewLine);
+
+				if (parameters != null && parameters.Length > 0)
+					log = log.Replace("Exception ", String.Format("{0}{1}Exception ", ToString(parameters), Environment.NewLine));
+
 				throw new Exception(log);
 				#endregion Log
 			}
