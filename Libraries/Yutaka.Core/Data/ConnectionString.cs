@@ -4,14 +4,14 @@ using System.Collections.Generic;
 namespace Yutaka.Core.Data
 {
 	/// <summary>
-	/// Represents a <see cref="DataSetting"/> (connection string information).
+	/// Represents a <see cref="ConnectionString"/> (connection string information).
 	/// </summary>
-	public partial class DataSetting
+	public partial class ConnectionString
 	{
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DataSetting"/> class.
+		/// Initializes a new instance of the <see cref="ConnectionString"/> class.
 		/// </summary>
-		public DataSetting()
+		public ConnectionString()
 		{
 			RawDataSetting = new Dictionary<string, string>();
 		}

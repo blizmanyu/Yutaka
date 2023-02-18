@@ -52,7 +52,7 @@
     <Compile Include="CSharp\Field.cs" />
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="CSharp\NopController.cs" />
-    <Compile Include="Data\DataSetting.cs" />
+    <Compile Include="Data\ConnectionString.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Domain\Common\Phone.cs" />
