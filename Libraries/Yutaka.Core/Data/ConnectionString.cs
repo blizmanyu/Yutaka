@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Yutaka.Core.Data
 {
 	/// <summary>
-	/// Represents a <see cref="ConnectionString"/> (connection string information).
+	/// Represents a <see cref="ConnectionString"/>.
 	/// </summary>
 	public partial class ConnectionString
 	{
@@ -17,14 +17,14 @@ namespace Yutaka.Core.Data
 		}
 
 		/// <summary>
-		/// Gets or sets the Data Provider.
+		/// Gets or sets the Name.
 		/// </summary>
-		public string DataProvider { get; set; }
+		public string Name { get; set; }
 
 		/// <summary>
 		/// Gets or sets the Connection String.
 		/// </summary>
-		public string DataConnectionString { get; set; }
+		public string ConnString { get; set; }
 
 		/// <summary>
 		/// Gets the raw DataSetting.
@@ -37,7 +37,7 @@ namespace Yutaka.Core.Data
 		/// <returns></returns>
 		public bool IsValid()
 		{
-			return !String.IsNullOrEmpty(DataProvider) && !String.IsNullOrEmpty(DataConnectionString);
+			return !String.IsNullOrEmpty(Name) && !String.IsNullOrEmpty(ConnString);
 		}
 	}
 }
