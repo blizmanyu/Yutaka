@@ -168,6 +168,7 @@ namespace CodeGenerator
 			new FileUtil().Write(sb, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), filename));
 		}
 
+		#region StartProgram & EndProgram
 		private static void StartProgram()
 		{
 			var log = String.Format("Starting {0} program", PROGRAM_NAME);
@@ -214,6 +215,7 @@ namespace CodeGenerator
 
 			Environment.Exit(0); // in case you want to call this method outside of a standard successful program completion, this line will close the app //
 		}
+		#endregion
 		#endregion Methods
 	}
 }
