@@ -22,7 +22,7 @@ namespace CodeGenerator
 		const string PROGRAM_NAME = "CodeGenerator";
 		private static readonly bool consoleOut = true; // default = false //
 		private static bool dumpToConsole = false; // default = false //
-		private static readonly string DestFolder = @"C:\TEMP\";
+		private static string DestFolder = @"C:\TEMP\";
 		private static string ConnectionString = "";
 		private static string Database = "";
 		private static string Schema = "";
