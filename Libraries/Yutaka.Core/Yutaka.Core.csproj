@@ -53,6 +53,7 @@
     <Compile Include="CSharp\Method.cs" />
     <Compile Include="CSharp\NopController.cs" />
     <Compile Include="Data\ConnectionString.cs" />
+    <Compile Include="Data\ConnectionStringManager.cs" />
     <Compile Include="DateTimeExtension.cs" />
     <Compile Include="DateTimeUtil.cs" />
     <Compile Include="Domain\Common\Phone.cs" />
