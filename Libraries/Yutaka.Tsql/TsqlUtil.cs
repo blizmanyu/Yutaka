@@ -10,60 +10,85 @@ namespace Yutaka.Data
 	public class TsqlUtil
 	{
 		#region Fields
-		public DateTime CreateDate;
-		public string Author;
-		public string CreateDateStr;
-		public string Database;
-		public string DateFormat;
-		public string Description;
-		#endregion Fields
+		public DateTime CreateDate = DateTime.Now;
+		public string Author = "";
+		public string Database = "";
+		public string DateFormat = "MMM d, yyyy";
+		public string EditViewDescription = String.Format("Only use this on Edit and View pages where you're getting 1 record.\r\n--\t\t\t\tDo *not* use this on List or Search pages where you're pulling multiple rows. Use View [**ListView] instead.");
+		public string ListViewDescription = String.Format("Optimized version that only gets the columns you need for List and Search pages.");
+		public string Schema = "";
+		public string Table = "";
+		#endregion
 
-		#region Constructor
+		#region Constructors
 		/// <summary>
-		/// Creates an instance of TsqlUtil.
+		/// Creates an instance of <see cref="TsqlUtil"/>.
 		/// </summary>
-		/// <param name="database">The database.</param>
-		/// <param name="author">The author's name.</param>
-		/// <param name="createDate">The Create date you want to set this as. The default is Today.</param>
-		/// <param name="dateFormat">The date format you want to use for the Create date and Modified date. Default is "MMM dd, yyyy".</param>
-		/// <param name="description">The description. Default is "-".</param>
-		public TsqlUtil(string database = null, string author = null, DateTime? createDate = null, string dateFormat = null, string description = null)
+		public TsqlUtil() { }
+
+		/// <summary>
+		/// Creates an instance of <see cref="TsqlUtil"/>. Specifying the database name.
+		/// </summary>
+		/// <param name="database">The database name.</param>
+		public TsqlUtil(string database)
 		{
 			if (String.IsNullOrWhiteSpace(database))
-				throw new ArgumentException("<database> is required.", "database");
+				throw new Exception("'database' is required. Exception thrown in Constructor TsqlUtil(string database).");
+			else
+				Database = database.Trim();
+		}
+
+		/// <summary>
+		/// Creates an instance of <see cref="TsqlUtil"/>. Specifying the database and schema name.
+		/// </summary>
+		/// <param name="database">The database name.</param>
+		/// <param name="schema">The schema name.</param>
+		public TsqlUtil(string database, string schema)
+		{
+			if (String.IsNullOrWhiteSpace(database))
+				throw new Exception("'database' is required. Exception thrown in Constructor TsqlUtil(string database, string schema).");
 			else
 				Database = database.Trim();
 
-			if (String.IsNullOrWhiteSpace(author))
-				Author = "";
+			if (String.IsNullOrWhiteSpace(schema))
+				throw new Exception("'schema' is required. Exception thrown in Constructor TsqlUtil(string database, string schema).");
 			else
-				Author = author.Trim();
-
-			if (createDate == null)
-				CreateDate = DateTime.Today;
-			else
-				CreateDate = createDate.Value;
-
-			if (String.IsNullOrWhiteSpace(dateFormat))
-				CreateDateStr = CreateDate.ToString(@"MMM dd, yyyy");
-			else
-				CreateDateStr = CreateDate.ToString(dateFormat);
-
-			if (String.IsNullOrWhiteSpace(description))
-				Description = "-";
-			else
-				Description = description.Trim();
+				Schema = schema.Trim();
 		}
-		#endregion Constructor
+
+		/// <summary>
+		/// Creates an instance of <see cref="TsqlUtil"/>. Specifying the database, schema, and table name.
+		/// </summary>
+		/// <param name="database">The database name.</param>
+		/// <param name="schema">The schema name.</param>
+		/// <param name="table">The table name.</param>
+		public TsqlUtil(string database, string schema, string table)
+		{
+			if (String.IsNullOrWhiteSpace(database))
+				throw new Exception("'database' is required. Exception thrown in Constructor TsqlUtil(string database, string schema, string table).");
+			else
+				Database = database.Trim();
+
+			if (String.IsNullOrWhiteSpace(schema))
+				throw new Exception("'schema' is required. Exception thrown in Constructor TsqlUtil(string database, string schema, string table).");
+			else
+				Schema = schema.Trim();
+
+			if (String.IsNullOrWhiteSpace(table))
+				throw new Exception("'table' is required. Exception thrown in Constructor TsqlUtil(string database, string schema, string table).");
+			else
+				Table = table.Trim();
+		}
+		#endregion
 
 		#region Utilities
 		/// <summary>
 		/// Scripts a CREATE PROCEDURE template.
 		/// </summary>
 		/// <returns></returns>
-		protected string ScriptCreateProcedureTemplate()
+		protected string ScriptCreateProcedureTemplate(string description = "")
 		{
-			var sb = new StringBuilder(ScriptHeading());
+			var sb = new StringBuilder(ScriptHeading(description));
 			sb.AppendLine("CREATE PROCEDURE [_SCHEMA_].[_PROCEDURE_NAME_]");
 			sb.AppendLine("_PARAMETERS_");
 			sb.AppendLine("AS");
@@ -83,9 +108,9 @@ namespace Yutaka.Data
 		/// Scripts a CREATE VIEW template.
 		/// </summary>
 		/// <returns></returns>
-		protected string ScriptCreateViewTemplate()
+		protected string ScriptCreateViewTemplate(string description = "")
 		{
-			var sb = new StringBuilder(ScriptHeading());
+			var sb = new StringBuilder(ScriptHeading(description));
 			sb.AppendLine("CREATE VIEW [_SCHEMA_].[_VIEW_NAME_] AS (");
 			sb.AppendLine("_SELECT_CLAUSE_");
 			sb.AppendLine("_FROM_CLAUSE_");
@@ -100,7 +125,7 @@ namespace Yutaka.Data
 		/// Scripts the heading part of almost all T-Sql script.
 		/// </summary>
 		/// <returns>The heading part of the script.</returns>
-		protected string ScriptHeading()
+		protected string ScriptHeading(string description = "")
 		{
 			var sb = new StringBuilder();
 			sb.AppendLine(String.Format("USE [{0}]", Database));
@@ -110,15 +135,15 @@ namespace Yutaka.Data
 			sb.AppendLine(String.Format("SET QUOTED_IDENTIFIER ON"));
 			sb.AppendLine(String.Format("GO"));
 			sb.AppendLine(String.Format("-- ============================================="));
-			sb.AppendLine(String.Format("-- Author:      {0}", Author));
-			sb.AppendLine(String.Format("-- Create date: {0}", CreateDateStr));
-			sb.AppendLine(String.Format("-- Modified:    {0}", CreateDateStr));
-			sb.AppendLine(String.Format("-- Description: {0}", Description));
+			sb.AppendLine(String.Format("-- Author:\t\t{0}",	Author));
+			sb.AppendLine(String.Format("-- Create date:\t{0}",	CreateDate.ToString("MMM d, yyyy")));
+			sb.AppendLine(String.Format("-- Modified:\t{0}",	CreateDate.ToString("MMM d, yyyy")));
+			sb.AppendLine(String.Format("-- Description:\t{0}", description));
 			sb.AppendLine(String.Format("-- ============================================="));
 
 			return sb.ToString();
 		}
-		#endregion Utilities
+		#endregion
 
 		#region Public Methods
 		/// <summary>
@@ -254,8 +279,8 @@ namespace Yutaka.Data
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- VIEWS");
 			sb.AppendLine("-- =============================================");
-			sb.Append(ScriptCreateView(columns));
-			sb.Append(ScriptCreateViewForList(columns));
+			sb.Append(ScriptCreateEditView(columns));
+			sb.Append(ScriptCreateListView(columns));
 			sb.AppendLine("-- =============================================");
 			sb.AppendLine("-- STORED PROCEDURES");
 			sb.AppendLine("-- =============================================");
@@ -265,6 +290,7 @@ namespace Yutaka.Data
 			return sb.ToString();
 		}
 
+		#region Stored Procedure
 		/// <summary>
 		/// Generates script text to create a SQL Stored Procedure used to Delete.
 		/// </summary>
@@ -551,15 +577,17 @@ namespace Yutaka.Data
 			result.Append(script);
 			return result.ToString();
 		}
+		#endregion
 
+		#region View
 		/// <summary>
 		/// Generates script text to create a SQL View used for Editing.
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptCreateView(IList<Column> columns)
+		public string ScriptCreateEditView(IList<Column> columns)
 		{
-			var script = new StringBuilder(ScriptCreateViewTemplate());
+			var script = new StringBuilder(ScriptCreateViewTemplate(EditViewDescription));
 
 			if (columns == null || columns.Count < 1)
 				return script.ToString();
@@ -578,7 +606,7 @@ namespace Yutaka.Data
 					table = col.TableName;
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
 					script = script.Replace("_SCHEMA_", schema);
-					script = script.Replace("_VIEW_NAME_", String.Format("{0}View", table));
+					script = script.Replace("_VIEW_NAME_", String.Format("{0}EditView", table));
 					isFirstCol = false;
 				}
 
@@ -627,9 +655,9 @@ namespace Yutaka.Data
 		/// </summary>
 		/// <param name="columns">The list of all columns from a table.</param>
 		/// <returns></returns>
-		public string ScriptCreateViewForList(IList<Column> columns)
+		public string ScriptCreateListView(IList<Column> columns)
 		{
-			var script = new StringBuilder(ScriptCreateViewTemplate());
+			var script = new StringBuilder(ScriptCreateViewTemplate(ListViewDescription));
 
 			if (columns == null || columns.Count < 1)
 				return script.ToString();
@@ -648,7 +676,7 @@ namespace Yutaka.Data
 					table = col.TableName;
 					alias = table.Replace("_", "").Substring(0, 2).ToLower();
 					script = script.Replace("_SCHEMA_", schema);
-					script = script.Replace("_VIEW_NAME_", String.Format("{0}ViewForList", table));
+					script = script.Replace("_VIEW_NAME_", String.Format("{0}ListView", table));
 					isFirstCol = false;
 				}
 
@@ -691,6 +719,7 @@ namespace Yutaka.Data
 			script = script.Replace("_FROM_CLAUSE_", fromClause);
 			return script.ToString();
 		}
-		#endregion Public Methods
+		#endregion
+		#endregion
 	}
 }
