@@ -54,6 +54,7 @@ namespace CodeGenerator
 		{
 			StartProgram();
 			try {
+				CreateFolders();
 				ScriptTables();
 				ScriptCSharp();
 				//Test_Method_ToString();
@@ -116,6 +117,22 @@ namespace CodeGenerator
 			_fileUtil.Write(field, dest);
 		}
 		#endregion Tests
+
+		private static void CreateFolders()
+		{
+			try {
+				Directory.CreateDirectory(DestFolder);
+				DestFolder = String.Format(@"{0}{1}\", DestFolder, DateTime.Now.ToString("yyyy MMdd HHmm ssff"));
+
+				try {
+					Directory.CreateDirectory(DestFolder);
+				}
+
+				catch { }
+			}
+
+			catch { }
+		}
 
 		private static void ScriptCSharp()
 		{
