@@ -23,8 +23,20 @@ namespace Yutaka.Services
 		/// Initializes a new instance of the <see cref="FtpClient"/> class using the specified FTP server.
 		/// </summary>
 		/// <param name="host">A <see cref="string"/> that contains the name or IP address of the host computer used for FTP transactions.</param>
-		public FtpClient(string host) {
+		public FtpClient(string host)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(host))
+				log = String.Format("{0}host is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}{1}Exception thrown in Constructor FtpClient(string host).", log, Environment.NewLine));
+			#endregion
+
 			Host = host;
+			Port = 21;
 		}
 
 		/// <summary>
