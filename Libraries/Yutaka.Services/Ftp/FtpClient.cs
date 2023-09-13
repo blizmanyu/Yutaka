@@ -123,6 +123,7 @@ namespace Yutaka.Services
 
 			Host = host;
 			Port = port;
+			Credentials = credentials;
 		}
 		#endregion Constructors
 
@@ -135,7 +136,7 @@ namespace Yutaka.Services
 		public void UploadFile(string source, string dest)
 		{
 			// Get the object used to communicate with the server.
-			var request = (FtpWebRequest) WebRequest.Create(Path.Combine(Host, dest));
+			var request = (FtpWebRequest)WebRequest.Create(Path.Combine(Host, dest));
 			request.Method = WebRequestMethods.Ftp.UploadFile;
 
 			if (Credentials == null || String.IsNullOrWhiteSpace(Credentials.UserName))
@@ -157,6 +158,65 @@ namespace Yutaka.Services
 
 			using (var response = (FtpWebResponse) request.GetResponse()) {
 				Console.WriteLine($"Upload File Complete, status {response.StatusDescription}");
+			}
+		}
+
+		/// <summary>
+		/// Uploads an image.
+		/// </summary>
+		/// <param name="source">The source path to upload.</param>
+		/// <param name="dest">The destination path to upload to.</param>
+		public void UploadImage(string source, string dest)
+		{
+			#region Check Input
+			var log = "";
+
+			if (String.IsNullOrWhiteSpace(source))
+				log = String.Format("{0}'source' is required.{1}", log, Environment.NewLine);
+			else if (!File.Exists(source))
+				log = String.Format("{0}File '{2}' doesn't exist.{1}", log, Environment.NewLine, source);
+
+			if (String.IsNullOrWhiteSpace(dest))
+				log = String.Format("{0}'dest' is required.{1}", log, Environment.NewLine);
+
+			if (!String.IsNullOrWhiteSpace(log))
+				throw new Exception(String.Format("{0}{1}Exception thrown in UploadImage(string source, string dest).{1}", log, Environment.NewLine));
+			#endregion
+
+			FtpWebResponse response;
+
+			try {
+				byte[] array;
+				using (var stream = File.OpenRead(source)) {
+					array = new byte[stream.Length];
+					stream.Read(array, 0, array.Length);
+					stream.Close();
+				}
+
+				var request = (FtpWebRequest)WebRequest.Create(dest);
+				request.ContentLength = array.Length;
+				request.Credentials = Credentials;
+				request.EnableSsl = true;
+				request.KeepAlive = true;
+				request.Method = WebRequestMethods.Ftp.UploadFile;
+				request.UseBinary = true;
+				request.UsePassive = true;
+
+				using (var stream = request.GetRequestStream()) {
+					stream.Write(array, 0, array.Length);
+					stream.Close();
+				}
+
+				using (response = (FtpWebResponse) request.GetResponse()) {
+					response.Close();
+				}
+			}
+
+			catch (Exception ex) {
+				if (ex.InnerException == null)
+					throw new Exception(String.Format("{0}{2}Exception thrown in FtpClient.UploadImage(string source='{3}', string dest='{4}').", ex.Message, ex.ToString(), Environment.NewLine, source, dest));
+				else
+					throw;
 			}
 		}
 		#endregion Public Methods
