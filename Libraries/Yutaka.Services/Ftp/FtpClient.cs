@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Yutaka.Ftp
+namespace Yutaka.Services
 {
 	public class FtpClient
 	{
