@@ -8,10 +8,10 @@ namespace Yutaka.Services
 	public class FtpClient
 	{
 		#region Fields
-		public NetworkCredential Credentials;
-		public string Host;
 		public int Port;
-		#endregion Fields
+		public string Host;
+		public NetworkCredential Credentials;
+		#endregion
 
 		#region Constructors
 		/// <summary>
