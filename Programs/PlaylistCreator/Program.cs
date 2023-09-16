@@ -9,13 +9,13 @@ namespace PlaylistCreator
 	class Program
 	{
 		// Config/Settings //
-		const string srcFolder = @"C:\Music\00 Genres\";
-		const string playlistFolder = @"C:\Music\01 Playlists\";
-		private static readonly bool doEnglish = true;
-		private static readonly bool doJPopFallWinter = false;
+		const string srcFolder = @"H:\Music\00 Genres\";
+		const string playlistFolder = @"H:\Music\01 Playlists\";
+		private static readonly bool doEnglish = false;
+		private static readonly bool doJPopFallWinter = true;
 		private static readonly bool doJPopSpringSummer = true;
 		private static readonly DateTime newSongThreshold = DateTime.Now.AddYears(-2);
-		private static readonly HashSet<string> supportedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".mp3", ".m4a", ".wma" };
+		private static readonly HashSet<string> supportedExtensions = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { ".mp3", ".m4a", ".wav", ".wma" };
 		private static bool consoleOut = true; // default = false
 
 		#region Fields
@@ -44,7 +44,7 @@ namespace PlaylistCreator
 			#region English
 			if (doEnglish) {
 				var EnglishPlaylist = new Playlist(Playlist.PType.English);
-				EnglishPlaylist.Create(@"C:\Music\00 Genres\");
+				EnglishPlaylist.Create(@"H:\Music\00 Genres\");
 				EnglishPlaylist.WriteForWinamp(destFolder);
 				EnglishPlaylist.WriteForITunes(destFolder);
 
@@ -58,7 +58,7 @@ namespace PlaylistCreator
 			#region JPopSpringSummer
 			if (doJPopSpringSummer) {
 				var playlist1 = new Playlist(Playlist.PType.JPopSpringSummer);
-				playlist1.Create(@"C:\Music\00 Genres\J-Pop\");
+				playlist1.Create(@"H:\Music\00 Genres\J-Pop\");
 				playlist1.WriteForWinamp(destFolder);
 				playlist1.WriteForITunes(destFolder);
 
@@ -72,7 +72,7 @@ namespace PlaylistCreator
 			#region JPopFallWinter
 			if (doJPopFallWinter) {
 				var playlist2 = new Playlist(Playlist.PType.JPopFallWinter);
-				playlist2.Create(@"C:\Music\00 Genres\J-Pop\");
+				playlist2.Create(@"H:\Music\00 Genres\J-Pop\");
 				playlist2.WriteForWinamp(destFolder);
 				playlist2.WriteForITunes(destFolder);
 
@@ -89,7 +89,7 @@ namespace PlaylistCreator
 		#region Methods
 		private static void CheckFolders()
 		{
-			string[] folders = { @"C:\Music\", @"C:\Music\01 Playlists" };
+			string[] folders = { @"C:\Music\", @"H:\Music\01 Playlists" };
 
 			for (int i=0; i<folders.Length; i++)
 				Directory.CreateDirectory(folders[i]);
