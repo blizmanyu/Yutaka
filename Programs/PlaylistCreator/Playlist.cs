@@ -149,10 +149,10 @@ namespace PlaylistCreator
 						name = "English";
 						break;
 					case PType.JPopFallWinter:
-						name = "J-Pop FaWi";
+						name = "J-Pop Fall Winter";
 						break;
 					case PType.JPopSpringSummer:
-						name = "J-Pop SpSu";
+						name = "J-Pop Spring Summer";
 						break;
 					default:
 						name = type.ToString();
