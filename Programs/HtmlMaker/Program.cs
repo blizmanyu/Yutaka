@@ -14,7 +14,7 @@ namespace HtmlMaker
 	class Program
 	{
 		private static readonly bool consoleOut = true; // true/false
-		private static readonly bool ltr = true; // true/false
+		private const string DIRECTION = "ltr"; // ltr/rtl
 		private const string SOURCE = @"ASDFG\";
 		private const string MAX_WIDTH = "600px";
 
@@ -92,12 +92,7 @@ namespace HtmlMaker
 		private static string GetHeader()
 		{
 			var sb = new StringBuilder();
-
-			if (ltr)
-				sb.AppendFormat("<html>{0}", Environment.NewLine);
-			else
-				sb.AppendFormat("<html dir='rtl'>{0}", Environment.NewLine);
-
+			sb.AppendFormat("<html dir='{0}'>{1}", DIRECTION, Environment.NewLine);
 			sb.AppendFormat("<head>{0}", Environment.NewLine);
 			sb.AppendFormat("<meta name='viewport' content='width=device-width, initial-scale=1'>{0}", Environment.NewLine);
 			sb.AppendFormat("<style>{0}", Environment.NewLine);
