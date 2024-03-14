@@ -134,6 +134,7 @@ namespace HtmlMaker
 			Match oneDigitMatch, twoDigitMatch;
 			string filename, extension, filenameWithoutExtension;
 			var sb = new StringBuilder();
+			files = files.OrderBy(x => x).ToArray();
 
 			#region Videos
 			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0'>{0}", Environment.NewLine);
