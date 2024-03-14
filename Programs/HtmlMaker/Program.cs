@@ -74,7 +74,7 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{margin:1px auto;width:100%;max-width:{0};height:auto;display:inline-block;vertical-align:middle}}{1}", MAX_WIDTH, Environment.NewLine);
+			sb.AppendFormat("img{{margin:0 auto 5px;max-width:100%;height:auto;display:inline-block;vertical-align:top}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
