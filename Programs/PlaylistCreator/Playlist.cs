@@ -131,16 +131,18 @@ namespace PlaylistCreator
 
 		private FileUtil _fileUtil;
 		private List<SongFileInfo> AllSongs = new List<SongFileInfo>();
+		private List<SongFileInfo> FallWinterList = new List<SongFileInfo>();
 		private List<SongFileInfo> GoodList = new List<SongFileInfo>();
 		private List<SongFileInfo> NewList = new List<SongFileInfo>();
 		private List<SongFileInfo> NewPlusGoodList = new List<SongFileInfo>();
+		private List<SongFileInfo> SpringSummerList = new List<SongFileInfo>();
 		private List<SongFileInfo> ThePlaylist = new List<SongFileInfo>();
 		private int AllSongsCount = 0;
 		private int GoodListCount = 0;
 		private int NewListCount = 0;
 		private int NewPlusGoodListCount = 0;
 		private int ThePlaylistCount = 0;
-		#endregion Fields
+		#endregion
 
 		public Playlist(PType type, string name=null)
 		{
@@ -229,7 +231,7 @@ namespace PlaylistCreator
 					#endregion English
 					#region JPopFallWinter
 					case PType.JPopFallWinter:
-						exclusions = new string[] { @"\_Album", @"_Christmas", @"_SpringSummer" };
+						exclusions = new string[] { @"\_Album", @"_Christmas", };
 
 						// Step 1: Get all songs //
 						files = _fileUtil.GetAllAudioFiles(musicFolder, exclusions);
@@ -246,6 +248,13 @@ namespace PlaylistCreator
 
 						// Step 3: Create NewList // Ignored for J-Pop lists //
 						// Step 4: Create NewPlusGoodList // Ignored for J-Pop lists //
+
+						SpringSummerList = AllSongs.Where(x => x.Title.IndexOf("Christmas", StringComparison.OrdinalIgnoreCase) > -1 ||
+															   x.Title.IndexOf("Haru", StringComparison.OrdinalIgnoreCase) > -1 ||
+															   x.Title.IndexOf("Natsu", StringComparison.OrdinalIgnoreCase) > -1 ||
+															   x.Title.IndexOf("Spring", StringComparison.OrdinalIgnoreCase) > -1 ||
+															   x.Title.IndexOf("Summer", StringComparison.OrdinalIgnoreCase) > -1 ||
+															   x.Title.IndexOf("Xmas", StringComparison.OrdinalIgnoreCase) > -1).ToList();
 
 						// Step 5: Create ThePlaylist //
 						AllSongs = AllSongs.Except(GoodList).ToList();
@@ -277,7 +286,7 @@ namespace PlaylistCreator
 					#endregion JPopFallWinter
 					#region JPopSpringSummer
 					case PType.JPopSpringSummer:
-						exclusions = new string[] { @"\_Album", @"_Christmas", @"_FallWinter" };
+						exclusions = new string[] { @"\_Album", @"_Christmas", };
 
 						// Step 1: Get all songs //
 						files = _fileUtil.GetAllAudioFiles(musicFolder, exclusions);
@@ -294,6 +303,17 @@ namespace PlaylistCreator
 
 						// Step 3: Create NewList // Ignored for J-Pop lists //
 						// Step 4: Create NewPlusGoodList // Ignored for J-Pop lists //
+
+						FallWinterList = AllSongs.Where(x => x.Title.IndexOf("Aki", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Autumn", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Christmas", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf(" Fall", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Fall ", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Fuyu", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Snow", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Winter", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Xmas", StringComparison.OrdinalIgnoreCase) > -1 ||
+															 x.Title.IndexOf("Yuki", StringComparison.OrdinalIgnoreCase) > -1).ToList();
 
 						// Step 5: Create ThePlaylist //
 						AllSongs = AllSongs.Except(GoodList).ToList();
