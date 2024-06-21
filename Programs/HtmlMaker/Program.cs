@@ -16,7 +16,6 @@ namespace HtmlMaker
 		private static readonly bool consoleOut = true; // true/false
 		private const string DIRECTION = "ltr"; // ltr/rtl
 		private const string SOURCE = @"ASDFG\";
-		private const string MAX_WIDTH = "600px";
 
 		#region Fields
 		#region Static Externs
@@ -74,7 +73,7 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{margin:0 auto 5px;max-width:100%;height:auto;display:inline-block;vertical-align:top}}{0}", Environment.NewLine);
+			sb.AppendFormat("img{{margin:0 auto 5px;width:auto;height:auto;max-width:100vw;max-height:100vh;display:inline-block;vertical-align:top}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
@@ -131,13 +130,12 @@ namespace HtmlMaker
 			if (files == null || files.Length < 1)
 				return "";
 
-			Match oneDigitMatch, twoDigitMatch;
 			string filename, extension, filenameWithoutExtension;
 			var sb = new StringBuilder();
-			files = files.OrderBy(x => x?.Length).ThenBy(x => x).ToArray();
+			Array.Sort(files, new LogicalSort());
 
 			#region Videos
-			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0'>{0}", Environment.NewLine);
+			sb.AppendFormat("<div style='margin:0 auto;font-size:0'>{0}", Environment.NewLine);
 
 			foreach (var file in files) {
 				if (FileUtil.IsVideoFile(file)) {
@@ -158,21 +156,12 @@ namespace HtmlMaker
 			#endregion
 
 			#region Images
-			sb.AppendFormat("<div style='margin:0 auto 1rem;font-size:0;text-align:center'>{0}", Environment.NewLine);
+			sb.AppendFormat("<div style='margin:0 auto;font-size:0;text-align:center'>{0}", Environment.NewLine);
 
 			foreach (var file in files) {
 				if (FileUtil.IsImageFile(file)) {
 					filename = Path.GetFileName(file);
 					filenameWithoutExtension = Path.GetFileNameWithoutExtension(file);
-					oneDigitMatch = OneDigit.Match(filenameWithoutExtension);
-					twoDigitMatch = TwoDigits.Match(filenameWithoutExtension);
-
-					if (oneDigitMatch.Success) {
-						logger.Trace(" OneDigit:  {0}", filenameWithoutExtension);
-
-					}
-					else if (twoDigitMatch.Success)
-						logger.Trace("TwoDigits: {0}", filenameWithoutExtension);
 
 					sb.AppendFormat("<img src=\"{1}\" />{0}", Environment.NewLine, filename);
 				}
@@ -402,4 +391,17 @@ namespace HtmlMaker
 		#endregion
 		#endregion
 	}
+
+	#region public class LogicalSort : IComparer<string>
+	public class LogicalSort : IComparer<string>
+	{
+		[DllImport("shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		static extern int StrCmpLogicalW(String x, String y);
+
+		public int Compare(string x, string y)
+		{
+			return StrCmpLogicalW(x, y);
+		}
+	}
+	#endregion
 }
