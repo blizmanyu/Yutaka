@@ -4,14 +4,13 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Text.RegularExpressions;
 using NLog;
 using Yutaka.Core.IO;
 using Yutaka.Core.Net;
 
 namespace HtmlMaker
 {
-	class Program
+	partial class Program
 	{
 		private static readonly bool consoleOut = true; // true/false
 		private const string DIRECTION = "ltr"; // ltr/rtl
@@ -34,8 +33,6 @@ namespace HtmlMaker
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 
 		private static readonly DateTime startTime = DateTime.UtcNow;
-		private static readonly Regex OneDigit = new Regex(@"^\d{1}$", RegexOptions.Compiled);
-		private static readonly Regex TwoDigits = new Regex(@"^\d{2}$", RegexOptions.Compiled);
 		private static readonly string fromEmail = "from@server.com";
 		private static readonly string GmailPassword = "PASSWORD";
 		private static readonly string GmailUsername = "USERNAME";
@@ -73,7 +70,7 @@ namespace HtmlMaker
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
 			sb.AppendFormat("a img{{opacity:.99}}{0}", Environment.NewLine);
-			sb.AppendFormat("img{{margin:0 auto 5px;width:auto;height:auto;max-width:100vw;max-height:100vh;display:inline-block;vertical-align:top}}{0}", Environment.NewLine);
+			sb.AppendFormat("img{{margin:0 auto 5px;width:auto;height:auto;display:inline-block;vertical-align:top}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;height:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			//sb.AppendFormat("img{{max-width:100%;max-height:94vh;width:auto;display:inline-block;vertical-align:middle}}{0}", Environment.NewLine);
 			sb.AppendFormat("table{{width:100%;border-collapse:collapse}}{0}", Environment.NewLine);
@@ -142,12 +139,6 @@ namespace HtmlMaker
 					filename = Path.GetFileName(file);
 					filenameWithoutExtension = Path.GetFileNameWithoutExtension(file);
 					extension = Path.GetExtension(file).Replace(".", "");
-
-					if (OneDigit.Match(filenameWithoutExtension).Success)
-						logger.Trace(" OneDigit:  {0}", filenameWithoutExtension);
-					else if (TwoDigits.Match(filenameWithoutExtension).Success)
-						logger.Trace("TwoDigits: {0}", filenameWithoutExtension);
-
 					sb.AppendFormat("<div class='video-container'><video controls><source src=\"{1}\" type='video/{2}'></video></div>{0}", Environment.NewLine, filename, extension);
 				}
 			}
@@ -272,7 +263,9 @@ namespace HtmlMaker
 				foreach (var str in subDirs)
 					dirs.Push(str);
 
-				html = String.Format("{0}</body>{1}</html>", html, Environment.NewLine);
+				html = $"{html}</body>{Environment.NewLine}";
+				html = $"{html}{GetJavascript()}";
+				html = $"{html}</html>";
 				var newPath = String.Format(@"{0}\{1}", currentDir, FILENAME);
 
 				if (File.Exists(newPath))
