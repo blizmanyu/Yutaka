@@ -28,7 +28,7 @@ namespace HtmlMaker
 		private const double errorPercentThreshold = 0.07;
 		private const int CAPACITY = 100;
 		private const int errorCountThreshold = 7;
-		private const string FILENAME = "__.html";
+		private const string FILENAME = "[[.html";
 		private const string ProgramName = "HtmlMaker";
 		private const string TIMESTAMP = @"[HH:mm:ss] ";
 
@@ -65,7 +65,7 @@ namespace HtmlMaker
 		{
 			var sb = new StringBuilder();
 			sb.AppendFormat("/** HTML General **/{0}", Environment.NewLine);
-			sb.AppendFormat("body{{max-width:100%;overflow-x:hidden;background-color:#000;font:normal 1rem/1.5 Arial,Helvetica,sans-serif;color:#ccc}}{0}", Environment.NewLine);
+			sb.AppendFormat("body{{max-width:100%;overflow-x:hidden;background-color:#000;font:normal 1rem/2 Arial,Helvetica,sans-serif;color:#ccc}}{0}", Environment.NewLine);
 			sb.AppendFormat("b,h1,h2,h3,h4,h5,h6,strong{{color:#fff}}{0}", Environment.NewLine);
 			sb.AppendFormat("a{{color:inherit;cursor:pointer}}{0}", Environment.NewLine);
 			sb.AppendFormat("a:hover{{color:#fff;text-decoration:underline}}{0}", Environment.NewLine);
