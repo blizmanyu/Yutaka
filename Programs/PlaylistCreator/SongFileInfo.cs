@@ -160,7 +160,7 @@ namespace PlaylistCreator
 
 				TrackNum = file.Tag.Track;
 				DiscNum = file.Tag.Disc;
-				Title = file.Tag.Title;
+				Title = string.IsNullOrWhiteSpace(file.Tag.Title) ? "" : file.Tag.Title;
 				Artist = (file.Tag.Performers == null || file.Tag.Performers.Length < 1) ? "" : file.Tag.Performers[0];
 				Album = file.Tag.Album;
 				Year = file.Tag.Year;
