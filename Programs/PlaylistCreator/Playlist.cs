@@ -401,6 +401,31 @@ namespace PlaylistCreator
 			}
 		}
 
+		public void WriteForVlcAndroid(string destFolder)
+		{
+			var dest = String.Format("{0}{1}.m3u", destFolder, Name);
+			var content = "#EXTM3U";
+
+			foreach (var song in ThePlaylist) {
+				content += String.Format("\n#EXTINF:{0},{1} - {2}", song.Duration, song.Artist, song.Title);
+				content += String.Format("\n{0}", song.Path.Replace(@"H:\Music\00 Genres\", "").Replace('\\', '/'));
+			}
+
+			content += "\n";
+			_fileUtil.Write(content, dest);
+
+			dest = String.Format("{0}{1} Good.m3u", destFolder, Name);
+			content = "#EXTM3U";
+
+			foreach (var song in GoodList) {
+				content += String.Format("\n#EXTINF:{0},{1} - {2}", song.Duration, song.Artist, song.Title);
+				content += String.Format("\n{0}", song.Path.Replace(@"H:\Music\00 Genres\", "").Replace('\\', '/'));
+			}
+
+			content += "\n";
+			_fileUtil.Write(content, dest);
+		}
+
 		public void WriteForWinamp(string destFolder)
 		{
 			var dest = String.Format("{0}{1} {2:yyyy MMdd HHmm}.m3u", destFolder, Name, DateTime.Now);
