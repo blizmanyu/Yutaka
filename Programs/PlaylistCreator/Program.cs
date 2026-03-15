@@ -46,7 +46,7 @@ namespace PlaylistCreator
 				var EnglishPlaylist = new Playlist(Playlist.PType.English);
 				EnglishPlaylist.Create(@"H:\Music\00 Genres\");
 				EnglishPlaylist.WriteForWinamp(destFolder);
-				EnglishPlaylist.WriteForITunes(destFolder);
+				//EnglishPlaylist.WriteForITunes(destFolder);
 
 				if (openFolder) {
 					Process.Start("explorer.exe", destFolder);
@@ -60,7 +60,7 @@ namespace PlaylistCreator
 				var playlist1 = new Playlist(Playlist.PType.JPopSpringSummer);
 				playlist1.Create(@"H:\Music\00 Genres\J-Pop\");
 				playlist1.WriteForWinamp(destFolder);
-				playlist1.WriteForITunes(destFolder);
+				//playlist1.WriteForITunes(destFolder);
 
 				if (openFolder) {
 					Process.Start("explorer.exe", destFolder);
@@ -74,7 +74,7 @@ namespace PlaylistCreator
 				var playlist2 = new Playlist(Playlist.PType.JPopFallWinter);
 				playlist2.Create(@"H:\Music\00 Genres\J-Pop\");
 				playlist2.WriteForWinamp(destFolder);
-				playlist2.WriteForITunes(destFolder);
+				//playlist2.WriteForITunes(destFolder);
 
 				if (openFolder) {
 					Process.Start("explorer.exe", destFolder);
