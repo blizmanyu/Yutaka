@@ -120,7 +120,6 @@ namespace PlaylistCreator
 			new SongFileInfo("Mr.Children", "hana"),
 			new SongFileInfo("Mr.Children", "kuchibue"),
 			new SongFileInfo("Mr.Children", "kurumi"),
-			new SongFileInfo("Mr.Children", "mirai"),
 			new SongFileInfo("Mr.Children", "namonaki uta"),
 			new SongFileInfo("Mr.Children", "owarinaki tabi"),
 			new SongFileInfo("Mr.Children", "te no hira"),
