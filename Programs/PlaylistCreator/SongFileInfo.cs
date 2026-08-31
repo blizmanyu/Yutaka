@@ -215,12 +215,7 @@ namespace PlaylistCreator
 
 			try {
 				var other = (SongFileInfo) obj;
-				var thisArtist = this.Artist.ToUpper();
-				var thisTitle = this.Title.ToUpper();
-				var otherArtist = other.Artist.ToUpper();
-				var otherTitle = other.Title.ToUpper();
-
-				return otherArtist.StartsWith(thisArtist) && otherTitle.StartsWith(thisTitle);
+				return string.Equals(Title, other.Title, StringComparison.OrdinalIgnoreCase) && string.Equals(Artist, other.Artist, StringComparison.OrdinalIgnoreCase);
 			}
 
 			catch (Exception) {

@@ -89,7 +89,7 @@ namespace PlaylistCreator
 		#region public List<SongFileInfo> GoodJPopSongs = new List<SongFileInfo> {
 		public List<SongFileInfo> GoodJPopSongs = new List<SongFileInfo> {
 			new SongFileInfo("Aina The End", "Kakumei Douchuu ~ On the Way"),
-			new SongFileInfo("Amuro Namie", "Can You Celebrate"),
+			new SongFileInfo("Amuro Namie", "Can You Celebrate?"),
 			new SongFileInfo("Brilliant Green", "There Will Be Love There"),
 			new SongFileInfo("B'z", "Mienai Chikara ~Invisible One~"),
 			new SongFileInfo("Chemistry", "Floatin'"),
@@ -115,7 +115,7 @@ namespace PlaylistCreator
 			new SongFileInfo("I WiSH", "asu e no tobira"),
 			new SongFileInfo("Kiroro", "Mirai e"),
 			new SongFileInfo("Kiroro", "Nagai Aida"),
-			new SongFileInfo("Kubota Toshinobu", "La La La Love Song"),
+			new SongFileInfo("Kubota Toshinobu", "La La La Love Song [ft. Naomi Campbell]"),
 			new SongFileInfo("Mr.Children", "Everything (It's you)"),
 			new SongFileInfo("Mr.Children", "hana"),
 			new SongFileInfo("Mr.Children", "kuchibue"),
@@ -129,7 +129,7 @@ namespace PlaylistCreator
 			new SongFileInfo("My Littler Lover", "Hello, Again"),
 			new SongFileInfo("Smap", "fly"),
 			new SongFileInfo("Utada Hikaru & Yonezu Kenshi", "Jane Doe"),
-			new SongFileInfo("Wands", "Sekai ga Owaru Madewa"),
+			new SongFileInfo("Wands", "Sekai ga Owaru Madewa..."),
 			new SongFileInfo("Wands", "Sekaijuu no Dare Yori Kitto"),
 		};
 		#endregion GoodJPopSongs
