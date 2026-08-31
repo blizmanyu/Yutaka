@@ -128,6 +128,7 @@ namespace PlaylistCreator
 			new SongFileInfo("My Littler Lover", "Destiny"),
 			new SongFileInfo("My Littler Lover", "Hello, Again"),
 			new SongFileInfo("Smap", "fly"),
+			new SongFileInfo("Utada Hikaru", "Final Distance"),
 			new SongFileInfo("Utada Hikaru & Yonezu Kenshi", "Jane Doe"),
 			new SongFileInfo("Wands", "Sekai ga Owaru Madewa..."),
 			new SongFileInfo("Wands", "Sekaijuu no Dare Yori Kitto"),
