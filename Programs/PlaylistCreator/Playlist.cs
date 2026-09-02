@@ -427,7 +427,7 @@ namespace PlaylistCreator
 			}
 
 			content += "\n";
-			_fileUtil.Write(content, dest);
+			_fileUtil.Write(content, dest, false);
 		}
 
 		public void WriteForWinamp(string destFolder)
