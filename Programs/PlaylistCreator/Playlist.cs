@@ -265,6 +265,7 @@ namespace PlaylistCreator
 
 						// Step 5: Create ThePlaylist //
 						AllSongs = AllSongs.Except(GoodList).ToList();
+						AllSongs = AllSongs.Except(SpringSummerList).ToList();
 						AllSongs = AllSongs.OrderBy(x => x.Title).ThenBy(y => y.Artist).ToList();
 						goodInd = 0;
 
@@ -311,7 +312,7 @@ namespace PlaylistCreator
 						// Step 3: Create NewList // Ignored for J-Pop lists //
 						// Step 4: Create NewPlusGoodList // Ignored for J-Pop lists //
 
-						FallWinterList = AllSongs.Where(x => x.Title.IndexOf("Aki", StringComparison.OrdinalIgnoreCase) > -1 ||
+						FallWinterList = AllSongs.Where(x => x.Title.IndexOf("Aki ", StringComparison.OrdinalIgnoreCase) > -1 ||
 															 x.Title.IndexOf("Autumn", StringComparison.OrdinalIgnoreCase) > -1 ||
 															 x.Title.IndexOf("Christmas", StringComparison.OrdinalIgnoreCase) > -1 ||
 															 x.Title.IndexOf(" Fall", StringComparison.OrdinalIgnoreCase) > -1 ||
@@ -324,6 +325,7 @@ namespace PlaylistCreator
 
 						// Step 5: Create ThePlaylist //
 						AllSongs = AllSongs.Except(GoodList).ToList();
+						AllSongs = AllSongs.Except(FallWinterList).ToList();
 						AllSongs = AllSongs.OrderBy(x => x.Title).ThenBy(y => y.Artist).ToList();
 						goodInd = 0;
 
