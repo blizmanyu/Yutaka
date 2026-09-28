@@ -418,7 +418,7 @@ namespace PlaylistCreator
 			}
 
 			content += "\n";
-			_fileUtil.Write(content, dest);
+			_fileUtil.Write(content, dest, false);
 
 			dest = String.Format("{0}{1} Good.m3u", destFolder, Name);
 			content = "#EXTM3U";
