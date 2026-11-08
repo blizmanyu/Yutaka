@@ -90,7 +90,6 @@ namespace PlaylistCreator
 		public List<SongFileInfo> GoodJPopSongs = new List<SongFileInfo> {
 			new SongFileInfo("Aina The End", "Kakumei Douchuu ~ On the Way"),
 			new SongFileInfo("Amuro Namie", "Can You Celebrate?"),
-			new SongFileInfo("Brilliant Green", "There Will Be Love There"),
 			new SongFileInfo("B'z", "Mienai Chikara ~Invisible One~"),
 			new SongFileInfo("Chemistry", "Floatin'"),
 			new SongFileInfo("Chemistry", "It Takes Two"),
@@ -101,6 +100,8 @@ namespace PlaylistCreator
 			new SongFileInfo("Do As Infinity", "Under the Moon"),
 			new SongFileInfo("Do As Infinity", "Yesterday & Today"),
 			new SongFileInfo("Dragon Ash", "grateful days"),
+			new SongFileInfo("Dreams Come True", "Thank You."),
+			new SongFileInfo("Exile", "The Birthday ~Ti Amo~"),
 			new SongFileInfo("Exile", "your eyes only"),
 			new SongFileInfo("Glay", "Be With You"),
 			new SongFileInfo("Glay", "Beloved"),
@@ -128,10 +129,12 @@ namespace PlaylistCreator
 			new SongFileInfo("My Littler Lover", "Destiny"),
 			new SongFileInfo("My Littler Lover", "Hello, Again"),
 			new SongFileInfo("Smap", "fly"),
+			new SongFileInfo("The Brilliant Green", "There Will Be Love There"),
 			new SongFileInfo("Utada Hikaru", "Final Distance"),
 			new SongFileInfo("Utada Hikaru & Yonezu Kenshi", "Jane Doe"),
 			new SongFileInfo("Wands", "Sekai ga Owaru Madewa..."),
 			new SongFileInfo("Wands", "Sekaijuu no Dare Yori Kitto"),
+			new SongFileInfo("Zone", "Secret Base"),
 		};
 		#endregion GoodJPopSongs
 		public DateTime NewSongThreshold;
